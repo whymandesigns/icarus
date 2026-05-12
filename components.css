@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--ic-space-2);
-  height: 40px; /* default — md */
-  padding: 0 var(--ic-space-4);
-  font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+  height: 32px; /* default — sm */
+  padding: 0 var(--ic-space-3);
+  font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
   border-radius: var(--ic-radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
@@ -16,19 +16,20 @@
               transform var(--ic-duration-fast) var(--ic-ease),
               box-shadow var(--ic-duration-fast) var(--ic-ease);
 }
-.btn-sm {
-  height: 32px;
-  padding: 0 var(--ic-space-3);
-  font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
+.btn-xs {
+  height: 24px;
+  padding: 0 var(--ic-space-2);
+  font: var(--ic-weight-medium) var(--ic-text-xs)/1 var(--ic-font-sans);
 }
 
 /* Icons inside buttons. Place an <svg class="btn-icon" /> as a child. */
-.btn-icon { width: 16px; height: 16px; flex-shrink: 0; }
-.btn-sm .btn-icon { width: 14px; height: 14px; }
+.btn-icon { width: 14px; height: 14px; flex-shrink: 0; }
+.btn-xs .btn-icon { width: 12px; height: 12px; }
 
 /* Square icon-only button (no text) */
-.btn-icon-only            { width: 40px; padding: 0; }
-.btn-icon-only.btn-sm     { width: 32px; }
+.btn-icon-only            { width: 32px; padding: 0; }
+.btn-icon-only.btn-xs     { width: 24px; }
+.btn:active { transform: translateY(1px); }
 .btn:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
@@ -38,7 +39,7 @@
   color: var(--color-text-inverse);
 }
 .btn-primary:hover  { background: var(--color-brand-hover); }
-.btn-primary:active { background: var(--color-brand-active); transform: translateY(1px); }
+.btn-primary:active { background: var(--color-brand-active); }
 
 .btn-secondary {
   background: var(--color-surface);
@@ -58,7 +59,6 @@
   color: var(--color-text-inverse);
 }
 .btn-danger:hover  { background: var(--color-danger-hover); }
-.btn-danger:active { transform: translateY(1px); }
 
 /* ---------- Field + Input ---------- */
 .field { display: flex; flex-direction: column; gap: var(--ic-space-2); }
@@ -72,9 +72,9 @@
 }
 .field-hint.is-error { color: var(--color-danger); }
 .input {
-  height: 40px; /* default — md */
-  padding: 0 var(--ic-space-4);
-  font: var(--type-body);
+  height: 32px; /* default — sm */
+  padding: 0 var(--ic-space-3);
+  font: var(--type-body-sm);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--ic-radius-sm);
@@ -82,10 +82,10 @@
   transition: border-color var(--ic-duration-fast) var(--ic-ease),
               box-shadow var(--ic-duration-fast) var(--ic-ease);
 }
-.input-sm {
-  height: 32px;
-  padding: 0 var(--ic-space-3);
-  font: var(--type-body-sm);
+.input-xs {
+  height: 24px;
+  padding: 0 var(--ic-space-2);
+  font: var(--ic-weight-regular) var(--ic-text-xs)/var(--ic-lh-body-sm) var(--ic-font-sans);
 }
 
 /* Textarea variant of .input */
@@ -127,14 +127,14 @@ textarea.input {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ic-space-3);
+  gap: var(--ic-space-2);
   width: 100%;
-  height: 40px;
-  padding: 0 var(--ic-space-3) 0 var(--ic-space-4);
+  height: 32px;
+  padding: 0 var(--ic-space-2) 0 var(--ic-space-3);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--ic-radius-sm);
-  font: var(--type-body);
+  font: var(--type-body-sm);
   color: var(--color-text);
   text-align: left;
   cursor: pointer;
@@ -488,7 +488,7 @@ textarea.input {
   box-shadow: var(--ic-shadow-sm);
   transition: transform var(--ic-duration-base) var(--ic-ease);
 }
-.switch-input:checked ~ .switch-track             { background: var(--color-brand); }
+.switch-input:checked ~ .switch-track             { background: var(--color-accent); }
 .switch-input:checked ~ .switch-track::after      { transform: translateX(16px); }
 .switch-input:focus-visible ~ .switch-track       { box-shadow: 0 0 0 3px var(--color-accent-subtle); }
 .switch-input:disabled                            { cursor: not-allowed; }
@@ -554,7 +554,7 @@ textarea.input {
 /* States */
 .checkbox:hover .checkbox-box                  { border-color: var(--color-text-muted); }
 .checkbox-input:checked ~ .checkbox-box,
-.checkbox-input:indeterminate ~ .checkbox-box  { background: var(--color-brand); border-color: var(--color-brand); }
+.checkbox-input:indeterminate ~ .checkbox-box  { background: var(--color-accent); border-color: var(--color-accent); }
 .checkbox-input:checked ~ .checkbox-box .checkbox-mark:not(.checkbox-mark-dash),
 .checkbox-input:indeterminate ~ .checkbox-box .checkbox-mark-dash { opacity: 1; }
 .checkbox-input:focus-visible ~ .checkbox-box  { box-shadow: 0 0 0 3px var(--color-accent-subtle); }
@@ -624,7 +624,7 @@ textarea.input {
 
 /* States */
 .radio:hover .radio-circle                     { border-color: var(--color-text-muted); }
-.radio-input:checked ~ .radio-circle           { background: var(--color-brand); border-color: var(--color-brand); }
+.radio-input:checked ~ .radio-circle           { background: var(--color-accent); border-color: var(--color-accent); }
 .radio-input:checked ~ .radio-circle::after    { transform: translate(-50%, -50%) scale(1); }
 .radio-input:focus-visible ~ .radio-circle     { box-shadow: 0 0 0 3px var(--color-accent-subtle); }
 .radio-input:disabled ~ .radio-circle,
