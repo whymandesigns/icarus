@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>designmd — prototypes</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    .stack { display: flex; flex-direction: column; gap: var(--ic-space-3); }
+    .links { display: grid; gap: var(--ic-space-3); margin-top: var(--ic-space-5); }
+    a.card { text-decoration: none; color: inherit; display: block; transition: background var(--ic-duration-fast) var(--ic-ease); }
+    a.card:hover { background: var(--color-surface-muted); }
+    .arrow { float: right; color: var(--color-text-subtle); }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header style="margin-bottom: var(--ic-space-7)">
+      <h1 class="h1">designmd</h1>
+      <p class="body-sm">Prototypes built on the Icarus design system.</p>
+    </header>
+
+    <section class="links">
+      <a class="card" href="./example.html">
+        <h3 class="card-title">System showcase <span class="arrow">→</span></h3>
+        <p class="card-body">Swatches, type scale, components, theme toggle.</p>
+      </a>
+      <a class="card" href="./feature-a/">
+        <h3 class="card-title">Feature A — Team members <span class="arrow">→</span></h3>
+        <p class="card-body">Member list, invite form, search.</p>
+      </a>
+    </section>
+  </main>
+</body>
+</html>

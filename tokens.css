@@ -1,0 +1,230 @@
+/* Icarus Design Tokens
+ * Single source of truth for color, type, space, radii, shadows, motion.
+ * Pierce shadow DOM via CSS custom properties — components read these directly.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ================================================================
+     COLOR — PRIMITIVE PALETTE (from Figma: Mobile-App / Color Palette)
+     ================================================================ */
+
+  /* Neutral */
+  --ic-palette-white: #FFFFFF;
+  --ic-palette-black: #000000;
+
+  /* Gray */
+  --ic-palette-gray-100: #FCFCFC;
+  --ic-palette-gray-150: #F0F1F3;
+  --ic-palette-gray-200: #E0E1E5;
+  --ic-palette-gray-300: #CCCDD3;
+  --ic-palette-gray-400: #B3B5BC;
+  --ic-palette-gray-500: #999BA4;
+  --ic-palette-gray-600: #84888E;
+  --ic-palette-gray-700: #5F636A;
+  --ic-palette-gray-800: #3D4149;
+  --ic-palette-gray-900: #24272D;
+
+  /* Zinc */
+  --ic-palette-zinc-100: #D1D2D3;
+  --ic-palette-zinc-200: #949597;
+  --ic-palette-zinc-300: #636466;
+  --ic-palette-zinc-400: #484A4C;
+  --ic-palette-zinc-500: #343536;
+  --ic-palette-zinc-600: #282829;
+  --ic-palette-zinc-700: #1E1E1F;
+  --ic-palette-zinc-800: #141415;
+  --ic-palette-zinc-900: #0A0A0A;
+
+  /* Graphite (Operationalize brand) */
+  --ic-palette-graphite-100: #E0E3EA;
+  --ic-palette-graphite-150: #CDD1DC;
+  --ic-palette-graphite-200: #B3B9C8;
+  --ic-palette-graphite-300: #8F96AA;
+  --ic-palette-graphite-400: #6A7389;
+  --ic-palette-graphite-500: #455065;
+  --ic-palette-graphite-600: #3A4457;
+  --ic-palette-graphite-700: #303A4A;
+  --ic-palette-graphite-800: #262D3D;
+  --ic-palette-graphite-900: #191E28;
+
+  /* Red */
+  --ic-palette-red-100: #FBEDF1;
+  --ic-palette-red-150: #F5D8E0;
+  --ic-palette-red-200: #F0B8C4;
+  --ic-palette-red-300: #E5637D;
+  --ic-palette-red-400: #DA3F62;
+  --ic-palette-red-500: #D42551;
+  --ic-palette-red-600: #A81D41;
+  --ic-palette-red-700: #7D1530;
+  --ic-palette-red-800: #5C0F24;
+  --ic-palette-red-900: #3D0A18;
+
+  /* Yellow */
+  --ic-palette-yellow-100: #FFF5E3;
+  --ic-palette-yellow-150: #F8E7C8;
+  --ic-palette-yellow-200: #F2D9A6;
+  --ic-palette-yellow-300: #EDCA7E;
+  --ic-palette-yellow-400: #E9B340;
+  --ic-palette-yellow-500: #E59C01;
+  --ic-palette-yellow-600: #C08301;
+  --ic-palette-yellow-700: #9A6A01;
+  --ic-palette-yellow-800: #704D01;
+  --ic-palette-yellow-900: #4A3301;
+
+  /* Orange */
+  --ic-palette-orange-100: #FFF0E6;
+  --ic-palette-orange-150: #FFDFC7;
+  --ic-palette-orange-200: #FFCBA3;
+  --ic-palette-orange-300: #F5C07A;
+  --ic-palette-orange-400: #F58E42;
+  --ic-palette-orange-500: #F07018;
+  --ic-palette-orange-600: #C05F0E;
+  --ic-palette-orange-700: #964A0A;
+  --ic-palette-orange-800: #6E3607;
+  --ic-palette-orange-900: #482404;
+
+  /* Green */
+  --ic-palette-green-100: #EAFBF5;
+  --ic-palette-green-150: #D7F3E9;
+  --ic-palette-green-200: #A8E6D0;
+  --ic-palette-green-300: #66D4AB;
+  --ic-palette-green-400: #33D097;
+  --ic-palette-green-500: #00CC83;
+  --ic-palette-green-600: #03B080;
+  --ic-palette-green-700: #05947C;
+  --ic-palette-green-800: #046B5A;
+  --ic-palette-green-900: #034539;
+
+  /* Cyan */
+  --ic-palette-cyan-100: #E6F6FE;
+  --ic-palette-cyan-150: #C8EBFD;
+  --ic-palette-cyan-200: #A1DDFB;
+  --ic-palette-cyan-300: #6ECAF5;
+  --ic-palette-cyan-400: #45B9F2;
+  --ic-palette-cyan-500: #25A9EF;
+  --ic-palette-cyan-600: #1B8AC5;
+  --ic-palette-cyan-700: #136B9B;
+  --ic-palette-cyan-800: #0E5078;
+  --ic-palette-cyan-900: #07334C;
+
+  /* Blue */
+  --ic-palette-blue-100: #EDF1FD;
+  --ic-palette-blue-150: #D5DEFA;
+  --ic-palette-blue-200: #B0C1F5;
+  --ic-palette-blue-300: #7B9AEE;
+  --ic-palette-blue-400: #4A6FE0;
+  --ic-palette-blue-500: #204ECF;
+  --ic-palette-blue-600: #183A9E;
+  --ic-palette-blue-700: #0F256E;
+  --ic-palette-blue-800: #0A1A50;
+  --ic-palette-blue-900: #061035;
+
+  /* Purple */
+  --ic-palette-purple-100: #F1ECFD;
+  --ic-palette-purple-150: #DFD3F9;
+  --ic-palette-purple-200: #C9B5F4;
+  --ic-palette-purple-300: #A47DE2;
+  --ic-palette-purple-400: #8552D9;
+  --ic-palette-purple-500: #6727CF;
+  --ic-palette-purple-600: #5019A8;
+  --ic-palette-purple-700: #3A1280;
+  --ic-palette-purple-800: #280D5C;
+  --ic-palette-purple-900: #1A0840;
+
+
+  /* ---- Typography ---- */
+
+  --ic-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ic-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --ic-font-display: var(--ic-font-sans);
+
+  /* Size scale — Figma spec */
+  --ic-text-xxs:  0.6875rem;  /* 11px — Body Xxsmall */
+  --ic-text-xs:   0.75rem;    /* 12px — Body Xsmall */
+  --ic-text-sm:   0.8125rem;  /* 13px — Body Small */
+  --ic-text-base: 0.875rem;   /* 14px — Body Medium, H4 */
+  --ic-text-md:   1rem;       /* 16px — Body Large, H3 */
+  --ic-text-lg:   1.125rem;   /* 18px — utility (avatar initials, card titles) */
+  --ic-text-xl:   1.25rem;    /* 20px — H2 */
+  --ic-text-2xl:  1.75rem;    /* 28px — H1 */
+
+  /* Line heights — Figma spec (absolute, mirrors design intent) */
+  --ic-lh-h1:       2.625rem;  /* 42px */
+  --ic-lh-h2:       1.875rem;  /* 30px */
+  --ic-lh-h3:       1.5rem;    /* 24px */
+  --ic-lh-h4:       1.375rem;  /* 22px */
+  --ic-lh-body-lg:  1.5rem;    /* 24px */
+  --ic-lh-body-md:  1.375rem;  /* 22px */
+  --ic-lh-body-sm:  1.25rem;   /* 20px */
+  --ic-lh-body-xs:  1.125rem;  /* 18px */
+  --ic-lh-body-xxs: 1rem;      /* 16px */
+
+  --ic-leading-tight:   1.2;
+  --ic-leading-normal:  1.5;
+  --ic-leading-relaxed: 1.75;
+
+  --ic-weight-regular:  400;
+  --ic-weight-medium:   500;
+  --ic-weight-semibold: 600;
+  --ic-weight-bold:     700;
+
+  /* ---- Spacing (4px base) ---- */
+  --ic-space-0: 0;
+  --ic-space-1: 4px;
+  --ic-space-2: 8px;
+  --ic-space-3: 12px;
+  --ic-space-4: 16px;
+  --ic-space-5: 24px;
+  --ic-space-6: 32px;
+  --ic-space-7: 40px;
+  --ic-space-8: 48px;
+  --ic-space-10: 64px;
+  --ic-space-12: 80px;
+  --ic-space-16: 128px;
+
+  /* ---- Radii ---- */
+  --ic-radius-none: 0;
+  --ic-radius-sm: 4px;
+  --ic-radius-md: 8px;
+  --ic-radius-lg: 12px;
+  --ic-radius-xl: 16px;
+  --ic-radius-2xl: 24px;
+  --ic-radius-full: 9999px;
+
+  /* Numeric aliases — reach for these by px value */
+  --ic-radius-0:  var(--ic-radius-none);
+  --ic-radius-4:  var(--ic-radius-sm);
+  --ic-radius-8:  var(--ic-radius-md);
+  --ic-radius-12: var(--ic-radius-lg);
+
+  /* ---- Shadows ---- */
+  --ic-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ic-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --ic-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --ic-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10);
+  --ic-shadow-xl: 0 24px 56px rgba(0, 0, 0, 0.14);
+
+  /* ---- Z-index scale ---- */
+  --ic-z-base: 0;
+  --ic-z-dropdown: 100;
+  --ic-z-sticky: 200;
+  --ic-z-overlay: 800;
+  --ic-z-modal: 900;
+  --ic-z-toast: 1000;
+
+  /* ---- Motion ---- */
+  --ic-ease: cubic-bezier(0.2, 0, 0, 1);
+  --ic-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ic-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ic-duration-fast: 120ms;
+  --ic-duration-base: 200ms;
+  --ic-duration-slow: 320ms;
+
+  /* ---- Layout ---- */
+  --ic-container-sm: 640px;
+  --ic-container-md: 768px;
+  --ic-container-lg: 1024px;
+  --ic-container-xl: 1280px;
+}

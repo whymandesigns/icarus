@@ -1,0 +1,96 @@
+/* semantic.css — intent-named aliases over Icarus primitives.
+ * Prototypes and components reference these, NOT raw palette tokens.
+ * Swap a brand or theme by re-pointing aliases here — primitives never change.
+ */
+
+:root {
+  /* ---- Surfaces ---- */
+  --color-bg:             var(--ic-palette-gray-100);   /* page background */
+  --color-surface:        var(--ic-palette-white);      /* cards, panels */
+  --color-surface-muted:  var(--ic-palette-gray-150);   /* hover, subtle fills */
+  --color-surface-sunken: var(--ic-palette-gray-200);   /* wells, inset areas */
+
+  /* ---- Borders ---- */
+  --color-border:         var(--ic-palette-gray-200);
+  --color-border-strong:  var(--ic-palette-gray-300);
+  --color-border-focus:   var(--ic-palette-blue-500);
+
+  /* ---- Text ---- */
+  --color-text:           var(--ic-palette-graphite-900);
+  --color-text-muted:     var(--ic-palette-gray-700);
+  --color-text-subtle:    var(--ic-palette-gray-500);
+  --color-text-inverse:   var(--ic-palette-white);
+  --color-text-link:      var(--ic-palette-blue-500);
+
+  /* ---- Brand / primary action ---- */
+  --color-brand:          var(--ic-palette-green-500);
+  --color-brand-hover:    var(--ic-palette-green-600);
+  --color-brand-active:   var(--ic-palette-green-700);
+  --color-brand-subtle:   var(--ic-palette-green-100);
+
+  /* ---- Accent (interactive secondary, links) ---- */
+  --color-accent:         var(--ic-palette-blue-500);
+  --color-accent-hover:   var(--ic-palette-blue-600);
+  --color-accent-subtle:  var(--ic-palette-blue-100);
+
+  /* ---- Status ---- */
+  --color-success:        var(--ic-palette-green-500);
+  --color-success-subtle: var(--ic-palette-green-100);
+  --color-warning:        var(--ic-palette-yellow-500);
+  --color-warning-subtle: var(--ic-palette-yellow-100);
+  --color-danger:         var(--ic-palette-red-500);
+  --color-danger-hover:   var(--ic-palette-red-600);
+  --color-danger-subtle:  var(--ic-palette-red-100);
+  --color-info:           var(--ic-palette-cyan-500);
+  --color-info-subtle:    var(--ic-palette-cyan-100);
+
+  /* ---- Overlays ---- */
+  --color-overlay:        rgba(38, 45, 61, 0.5); /* graphite-900 @ 50% — for modal scrims */
+
+  /* ---- Type roles (size + line height paired) ---- */
+  --type-h1: var(--ic-weight-semibold) var(--ic-text-2xl)/var(--ic-lh-h1) var(--ic-font-sans);
+  --type-h2: var(--ic-weight-semibold) var(--ic-text-xl)/var(--ic-lh-h2) var(--ic-font-sans);
+  --type-h3: var(--ic-weight-semibold) var(--ic-text-md)/var(--ic-lh-h3) var(--ic-font-sans);
+  --type-h4: var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-h4) var(--ic-font-sans);
+  --type-body-lg:  var(--ic-weight-regular) var(--ic-text-md)/var(--ic-lh-body-lg) var(--ic-font-sans);
+  --type-body:     var(--ic-weight-regular) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans);
+  --type-body-sm:  var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-sans);
+  --type-caption:  var(--ic-weight-medium) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);
+  --type-mono:     var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-mono);
+}
+
+/* ---- Dark theme override ---- */
+[data-theme="dark"] {
+  --color-bg:             var(--ic-palette-zinc-900);
+  --color-surface:        var(--ic-palette-zinc-800);
+  --color-surface-muted:  var(--ic-palette-zinc-700);
+  --color-surface-sunken: var(--ic-palette-zinc-900);
+
+  --color-border:         var(--ic-palette-zinc-600);
+  --color-border-strong:  var(--ic-palette-zinc-500);
+
+  --color-text:           var(--ic-palette-gray-100);
+  --color-text-muted:     var(--ic-palette-gray-400);
+  --color-text-subtle:    var(--ic-palette-gray-600);
+  --color-text-inverse:   var(--ic-palette-zinc-900);
+
+  --color-brand:          var(--ic-palette-green-400);
+  --color-brand-hover:    var(--ic-palette-green-300);
+  --color-brand-active:   var(--ic-palette-green-200);
+  --color-brand-subtle:   var(--ic-palette-green-800);
+}
+
+/* ---- Reset + base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: var(--ic-container-lg);
+  margin: 0 auto;
+  padding: var(--ic-space-8) var(--ic-space-5);
+}

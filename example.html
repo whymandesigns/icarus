@@ -1,0 +1,1845 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icarus — Prototype</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    .stack { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+    .row   { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ic-space-5); }
+    .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: var(--ic-space-7); }
+    .swatch-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--ic-space-1); }
+    .swatch-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ic-space-2);
+      min-width: 0;
+    }
+    .swatch {
+      aspect-ratio: 1;
+      border-radius: var(--ic-radius-sm);
+      border: 1px solid var(--color-border);
+    }
+    .swatch-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .swatch-token {
+      font: var(--ic-weight-medium) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      color: var(--color-text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .swatch-hex {
+      font: var(--ic-weight-regular) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+    }
+
+    .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--ic-space-5); align-items: center; }
+    .ramp-name { font: var(--type-h4); color: var(--color-text); }
+
+    .radii-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      gap: var(--ic-space-4);
+    }
+    .radius-card {
+      display: flex; flex-direction: column; gap: var(--ic-space-2);
+      align-items: stretch;
+    }
+    .radius-shape {
+      aspect-ratio: 1;
+      background: var(--color-brand-subtle);
+      border: 1px solid var(--color-border);
+    }
+    .radius-token {
+      font: var(--ic-weight-medium) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      color: var(--color-text);
+    }
+    .radius-value {
+      font: var(--ic-weight-regular) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
+      color: var(--color-text-subtle);
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .ramp { grid-template-columns: 1fr; gap: var(--ic-space-2); }
+    }
+
+    /* ---- Top nav ---- */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: var(--ic-z-sticky);
+      display: flex;
+      gap: var(--ic-space-2);
+      padding: var(--ic-space-3) 0;
+      margin: 0 calc(-1 * var(--ic-space-5));
+      padding-left: var(--ic-space-5);
+      padding-right: var(--ic-space-5);
+      background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .topnav a {
+      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: var(--ic-space-2) var(--ic-space-3);
+      border-radius: var(--ic-radius-md);
+      transition: color var(--ic-duration-fast) var(--ic-ease),
+                  background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .topnav a:hover { color: var(--color-text); background: var(--color-surface-muted); }
+
+    /* Anchor offset so the sticky nav doesn't overlap section headings */
+    [id] { scroll-margin-top: var(--ic-space-8); }
+
+    /* Theme toggle — show sun in light mode, moon in dark mode */
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: inline-block; }
+
+    /* ---- Section heads ---- */
+    .section-head {
+      font: var(--type-h1);
+      color: var(--color-text);
+      margin: 0;
+      padding-bottom: var(--ic-space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+  </style>
+</head>
+<body>
+  <main class="page stack" style="gap: var(--ic-space-8)">
+
+    <header class="header">
+      <div>
+        <h1 class="h1">Icarus design system</h1>
+        <p class="body-sm">Vibe prototyping reference — tokens, semantics, components.</p>
+      </div>
+      <div class="row">
+        <span class="badge badge-info">v0.1</span>
+        <button class="btn btn-icon-only btn-ghost" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
+          <svg class="btn-icon theme-icon-sun"><use href="#i-sun"/></svg>
+          <svg class="btn-icon theme-icon-moon"><use href="#i-moon"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="topnav">
+      <a href="#foundations">Foundations</a>
+      <a href="#components">Components</a>
+      <a href="#templates">Templates</a>
+    </nav>
+
+    <section id="foundations" class="stack" style="gap: var(--ic-space-7)">
+      <h2 class="section-head">Foundations</h2>
+
+      <section class="stack" id="palette">
+        <div>
+          <h3 class="h3">Color palette</h3>
+          <p class="body-sm">All tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-palette-</code>.</p>
+        </div>
+        <div class="stack" id="palette-root" style="gap: var(--ic-space-5)"></div>
+      </section>
+
+      <section class="stack" id="radii">
+        <div>
+          <h3 class="h3">Radii</h3>
+          <p class="body-sm">Numeric aliases (<code style="font: var(--type-mono); color: var(--color-text-muted)">-0</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-4</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-8</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-12</code>) point to the same values as the t-shirt scale.</p>
+        </div>
+        <div class="radii-row" id="radii-root"></div>
+      </section>
+
+      <section class="stack" id="type">
+        <h3 class="h3">Type scale</h3>
+        <div class="card stack" style="gap: var(--ic-space-3)">
+          <h1 class="h1">H1 — Page titles (28/42)</h1>
+          <h2 class="h2">H2 — Section heads (20/30)</h2>
+          <h3 class="h3">H3 — Subheads (16/24)</h3>
+          <h4 class="h4">H4 — Small heads (14/22)</h4>
+          <p class="body">Body — the workhorse. Calm, readable, never decorative.</p>
+          <p class="body-sm">Body small — for secondary copy and metadata.</p>
+          <p class="caption">CAPTION — micro labels and timestamps.</p>
+        </div>
+      </section>
+    </section>
+
+    <section id="components" class="stack" style="gap: var(--ic-space-7)">
+      <h2 class="section-head">Components</h2>
+
+      <section class="stack" id="buttons">
+        <h3 class="h3">Buttons</h3>
+
+        <!-- Inline SVG icon set, referenced via <use> below -->
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <defs>
+            <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+            <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+            <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+            <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></symbol>
+            <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14"/></symbol>
+            <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+            <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+            <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+            <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"/></symbol>
+            <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+            <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+            <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+            <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+            <symbol id="i-bold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h7a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6zM6 12h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></symbol>
+            <symbol id="i-italic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4h-9M14 20H5M15 4 9 20"/></symbol>
+            <symbol id="i-list-bullet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></symbol>
+            <symbol id="i-list-ordered" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></symbol>
+            <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+            <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+            <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.81.01L6 21"/></symbol>
+            <symbol id="i-cycle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.18-6.84"/><path d="M21 3v6h-6"/></symbol>
+            <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+            <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+            <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+            <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+            <symbol id="i-org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M12 7v3M12 10H6v7M12 10h6v7"/></symbol>
+            <symbol id="i-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4 1 1.1 1 1.8V18h6v-1.5c0-.7.5-1.4 1-1.8A7 7 0 0 0 12 2z"/></symbol>
+            <symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+            <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></symbol>
+            <symbol id="i-more-vertical" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></symbol>
+            <symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></symbol>
+            <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+            <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></symbol>
+          </defs>
+        </svg>
+
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 64px">SM · 32</span>
+            <button class="btn btn-sm btn-primary">Primary</button>
+            <button class="btn btn-sm btn-secondary">Secondary</button>
+            <button class="btn btn-sm btn-ghost">Ghost</button>
+            <button class="btn btn-sm btn-danger">Delete</button>
+          </div>
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 64px">MD · 40</span>
+            <button class="btn btn-primary">Primary</button>
+            <button class="btn btn-secondary">Secondary</button>
+            <button class="btn btn-ghost">Ghost</button>
+            <button class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+
+        <p class="body-sm" style="margin-top: var(--ic-space-5)">With icons — drop an <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;svg class="btn-icon"&gt;</code> before or after the label.</p>
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Left icon</span>
+            <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New</button>
+            <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New project</button>
+            <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-download"/></svg>Download</button>
+          </div>
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Right icon</span>
+            <button class="btn btn-sm btn-secondary">Next<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+            <button class="btn btn-secondary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+            <button class="btn btn-primary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+          </div>
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Both</span>
+            <button class="btn btn-sm btn-secondary"><svg class="btn-icon"><use href="#i-check"/></svg>Apply<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+            <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-check"/></svg>Save changes<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+          </div>
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Icon only</span>
+            <button class="btn btn-icon-only btn-sm btn-secondary" aria-label="Close"><svg class="btn-icon"><use href="#i-x"/></svg></button>
+            <button class="btn btn-icon-only btn-secondary" aria-label="Close"><svg class="btn-icon"><use href="#i-x"/></svg></button>
+            <button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="btn-icon"><use href="#i-x"/></svg></button>
+            <button class="btn btn-icon-only btn-danger" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
+            <button class="btn btn-icon-only btn-primary" aria-label="Add"><svg class="btn-icon"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="inputs">
+        <h3 class="h3">Inputs</h3>
+        <p class="body-sm">Both <code style="font: var(--type-mono); color: var(--color-text-muted)">.field-label</code> (top) and <code style="font: var(--type-mono); color: var(--color-text-muted)">.field-hint</code> (bottom) are optional.</p>
+        <div class="stack" style="gap: var(--ic-space-5); max-width: 480px">
+
+          <label class="field">
+            <span class="field-label">SM · 32 — label only</span>
+            <input class="input input-sm" type="text" placeholder="Small input" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">MD · 40 — label + hint</span>
+            <input class="input" type="email" placeholder="you@example.com" />
+            <span class="field-hint">We'll never share your email.</span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Error hint</span>
+            <input class="input" type="text" placeholder="Username" value="ab" />
+            <span class="field-hint is-error">Must be at least 3 characters.</span>
+          </label>
+
+          <label class="field">
+            <input class="input" type="text" placeholder="No label, hint only" />
+            <span class="field-hint">Hint without a label is fine too.</span>
+          </label>
+
+          <!-- Select / dropdown input -->
+          <div class="field">
+            <span class="field-label">Select</span>
+            <div class="input-select">
+              <button class="input-select-trigger" aria-expanded="false" type="button">
+                <span class="input-select-value input-select-placeholder">Choose a plan…</span>
+                <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+              </button>
+              <div class="dropdown-menu" hidden>
+                <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Starter</button>
+                <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Team</button>
+                <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Enterprise</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Character count -->
+          <label class="field" data-char-limit="120">
+            <span class="field-label">Bio</span>
+            <textarea class="input" rows="3" maxlength="120" placeholder="Tell us about yourself…"></textarea>
+            <span class="field-hint field-hint-end">0 / 120</span>
+          </label>
+
+          <!-- Tag input -->
+          <div class="field">
+            <span class="field-label">Skills</span>
+            <div class="input-tags">
+              <span class="chip">React<button class="chip-remove" aria-label="Remove" type="button"><svg><use href="#i-x"/></svg></button></span>
+              <span class="chip">TypeScript<button class="chip-remove" aria-label="Remove" type="button"><svg><use href="#i-x"/></svg></button></span>
+              <input class="input-tags-input" type="text" placeholder="Type and press Enter…" />
+            </div>
+            <span class="field-hint">Press Enter to add. Backspace on empty removes the last tag.</span>
+          </div>
+
+          <!-- Rich text editor -->
+          <div class="field" data-editor-char-limit="250">
+            <span class="field-label">Description</span>
+            <div class="editor">
+              <div class="editor-toolbar">
+                <div class="input-select editor-toolbar-select">
+                  <button class="input-select-trigger" aria-expanded="false" type="button">
+                    <span class="input-select-value">Normal Text</span>
+                    <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+                  </button>
+                  <div class="dropdown-menu" hidden>
+                    <button class="dropdown-item" type="button" data-block="p">Normal Text</button>
+                    <button class="dropdown-item" type="button" data-block="h1">Heading 1</button>
+                    <button class="dropdown-item" type="button" data-block="h2">Heading 2</button>
+                    <button class="dropdown-item" type="button" data-block="h3">Heading 3</button>
+                  </div>
+                </div>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Bold" data-cmd="bold"><svg class="btn-icon"><use href="#i-bold"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Italic" data-cmd="italic"><svg class="btn-icon"><use href="#i-italic"/></svg></button>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Bulleted list" data-cmd="insertUnorderedList"><svg class="btn-icon"><use href="#i-list-bullet"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Numbered list" data-cmd="insertOrderedList"><svg class="btn-icon"><use href="#i-list-ordered"/></svg></button>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Inline code" data-cmd-code><svg class="btn-icon"><use href="#i-code"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Link" data-cmd-link><svg class="btn-icon"><use href="#i-link"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Image"><svg class="btn-icon"><use href="#i-image"/></svg></button>
+              </div>
+              <div class="editor-content" contenteditable="true" data-placeholder="Placeholder use for any hints. With any styles that can be used from the toolbar."></div>
+            </div>
+            <span class="field-hint editor-counter"><span class="editor-counter-text">250 characters left</span><svg class="editor-counter-ok"><use href="#i-check"/></svg></span>
+          </div>
+
+          <!-- Rich text editor — Error state -->
+          <div class="field" data-editor-char-limit="250">
+            <span class="field-label">Description (error state)</span>
+            <div class="editor is-error">
+              <div class="editor-toolbar">
+                <div class="input-select editor-toolbar-select">
+                  <button class="input-select-trigger" aria-expanded="false" type="button">
+                    <span class="input-select-value">Normal Text</span>
+                    <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+                  </button>
+                  <div class="dropdown-menu" hidden>
+                    <button class="dropdown-item" type="button" data-block="p">Normal Text</button>
+                    <button class="dropdown-item" type="button" data-block="h1">Heading 1</button>
+                    <button class="dropdown-item" type="button" data-block="h2">Heading 2</button>
+                    <button class="dropdown-item" type="button" data-block="h3">Heading 3</button>
+                  </div>
+                </div>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Bold" data-cmd="bold"><svg class="btn-icon"><use href="#i-bold"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Italic" data-cmd="italic"><svg class="btn-icon"><use href="#i-italic"/></svg></button>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Bulleted list" data-cmd="insertUnorderedList"><svg class="btn-icon"><use href="#i-list-bullet"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Numbered list" data-cmd="insertOrderedList"><svg class="btn-icon"><use href="#i-list-ordered"/></svg></button>
+                <span class="editor-toolbar-divider"></span>
+                <button class="editor-toolbar-btn" type="button" aria-label="Inline code" data-cmd-code><svg class="btn-icon"><use href="#i-code"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Link" data-cmd-link><svg class="btn-icon"><use href="#i-link"/></svg></button>
+                <button class="editor-toolbar-btn" type="button" aria-label="Image"><svg class="btn-icon"><use href="#i-image"/></svg></button>
+              </div>
+              <div class="editor-content" contenteditable="true">Write some cool stuff…</div>
+            </div>
+            <div class="field-hint-row">
+              <span class="field-hint is-error">Description is required.</span>
+              <span class="field-hint editor-counter"><span class="editor-counter-text">245 characters left</span><svg class="editor-counter-ok"><use href="#i-check"/></svg></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="stack" id="topbar">
+        <h3 class="h3">Top bar</h3>
+        <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar.</p>
+        <div style="border-radius: var(--ic-radius-sm); overflow: hidden; border: 1px solid var(--color-border)">
+          <header class="topbar">
+            <a class="topbar-brand" href="#">
+              <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
+            </a>
+            <div class="topbar-actions">
+              <div class="topbar-search">
+                <svg class="search-icon"><use href="#i-search"/></svg>
+                <input class="topbar-search-input" type="search" placeholder="Search Operationalize..." />
+              </div>
+              <button class="topbar-avatar" aria-label="Account">MV</button>
+            </div>
+          </header>
+        </div>
+      </section>
+
+      <section class="stack" id="sidenav-demo">
+        <h3 class="h3">Side navigation</h3>
+        <p class="body-sm">Two states — expanded (236px) and compact (62px). Click the chevron at the edge to toggle.</p>
+
+        <div style="height: 560px; width: fit-content; overflow: visible">
+          <aside class="sidenav">
+            <button class="sidenav-toggle" aria-label="Toggle navigation" type="button"><svg><use href="#i-chevron-left"/></svg></button>
+            <ul class="sidenav-list">
+              <li><a class="sidenav-item is-active" href="#"><svg class="sidenav-item-icon"><use href="#i-cycle"/></svg><span class="sidenav-item-label">Processes</span></a></li>
+              <li><a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-rocket"/></svg><span class="sidenav-item-label">Initiatives</span></a></li>
+              <li><a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-calendar"/></svg><span class="sidenav-item-label">RoB Meetings</span></a></li>
+              <li><a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-target"/></svg><span class="sidenav-item-label">OKRs</span></a></li>
+              <li><a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-users"/></svg><span class="sidenav-item-label">People</span></a></li>
+              <li><a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-org"/></svg><span class="sidenav-item-label">Team</span></a></li>
+            </ul>
+            <div class="sidenav-spacer"></div>
+            <div class="sidenav-footer">
+              <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span></a>
+              <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="stack" id="switches">
+        <h3 class="h3">Switches</h3>
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Enabled</span>
+            <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
+            <label class="switch"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></label>
+          </div>
+          <div class="row" style="align-items: center">
+            <span class="caption" style="width: 96px">Disabled</span>
+            <label class="switch"><input type="checkbox" class="switch-input" checked disabled /><span class="switch-track"></span></label>
+            <label class="switch"><input type="checkbox" class="switch-input" disabled /><span class="switch-track"></span></label>
+          </div>
+        </div>
+
+        <article class="card" style="max-width: 480px; margin-top: var(--ic-space-4)">
+          <div class="stack" style="gap: var(--ic-space-4)">
+            <div class="row" style="justify-content: space-between">
+              <div>
+                <p class="body" style="margin: 0">Email notifications</p>
+                <p class="body-sm" style="margin: 0">Send me a daily digest.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
+            </div>
+            <div class="row" style="justify-content: space-between">
+              <div>
+                <p class="body" style="margin: 0">Beta features</p>
+                <p class="body-sm" style="margin: 0">Try unreleased work-in-progress UI.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></label>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="stack" id="radios">
+        <h3 class="h3">Radios</h3>
+
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Enabled</span>
+            <label class="radio"><input type="radio" name="r1" class="radio-input" checked /><span class="radio-circle"></span></label>
+            <label class="radio"><input type="radio" name="r1" class="radio-input" /><span class="radio-circle"></span></label>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Disabled</span>
+            <label class="radio"><input type="radio" name="r2" class="radio-input" checked disabled /><span class="radio-circle"></span></label>
+            <label class="radio"><input type="radio" name="r2" class="radio-input" disabled /><span class="radio-circle"></span></label>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Error</span>
+            <label class="radio is-error"><input type="radio" name="r3" class="radio-input" checked /><span class="radio-circle"></span></label>
+            <label class="radio is-error"><input type="radio" name="r3" class="radio-input" /><span class="radio-circle"></span></label>
+          </div>
+        </div>
+
+        <article class="card" style="max-width: 480px; margin-top: var(--ic-space-4)">
+          <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Choose a plan</p>
+          <div class="stack" style="gap: var(--ic-space-3)">
+            <label class="radio"><input type="radio" name="plan" class="radio-input" checked /><span class="radio-circle"></span><span class="radio-label">Starter — free</span></label>
+            <label class="radio"><input type="radio" name="plan" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Team — $12/mo</span></label>
+            <label class="radio"><input type="radio" name="plan" class="radio-input" disabled /><span class="radio-circle"></span><span class="radio-label">Enterprise — contact us</span></label>
+          </div>
+
+          <div class="field" style="margin-top: var(--ic-space-5)">
+            <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Billing cycle</p>
+            <label class="radio is-error" style="margin-top: var(--ic-space-2)"><input type="radio" name="billing" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Annual</span></label>
+            <span class="field-hint is-error">Please choose a billing cycle.</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="stack" id="badges">
+        <h3 class="h3">Badges</h3>
+
+        <p class="body-sm" style="margin: 0">Status pills</p>
+        <div class="row">
+          <span class="chip">Default</span>
+          <span class="badge badge-success">Success</span>
+          <span class="badge badge-warning">Warning</span>
+          <span class="badge badge-danger">Danger</span>
+          <span class="badge badge-info">Info</span>
+        </div>
+
+        <p class="body-sm" style="margin: var(--ic-space-4) 0 0">Count badges</p>
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+            <span class="caption" style="width: 96px">Primary</span>
+            <span class="count-badge count-badge-lg">1</span>
+            <span class="count-badge">1</span>
+            <span class="count-badge count-badge-sm">1</span>
+            <span class="count-badge count-badge-lg">99+</span>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+            <span class="caption" style="width: 96px">Secondary</span>
+            <span class="count-badge count-badge-secondary count-badge-lg">1</span>
+            <span class="count-badge count-badge-secondary">1</span>
+            <span class="count-badge count-badge-secondary count-badge-sm">1</span>
+            <span class="count-badge count-badge-secondary count-badge-lg">99+</span>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-4); margin-top: var(--ic-space-2)">
+            <span class="caption" style="width: 96px">In context</span>
+            <button class="btn btn-icon-only btn-ghost" aria-label="Notifications" style="position: relative">
+              <svg class="btn-icon"><use href="#i-bell"/></svg>
+              <span class="count-badge count-badge-sm" style="position: absolute; top: 6px; right: 6px">3</span>
+            </button>
+            <button class="btn btn-secondary" style="position: relative">
+              Inbox
+              <span class="count-badge">12</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="checkboxes">
+        <h3 class="h3">Checkboxes</h3>
+
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Enabled</span>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+            <span class="caption">checked · unchecked · indeterminate</span>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Disabled</span>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <span class="caption" style="width: 96px">Error</span>
+            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+          </div>
+        </div>
+
+        <article class="card" style="max-width: 480px; margin-top: var(--ic-space-4)">
+          <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Notify me about</p>
+          <div class="stack" style="gap: var(--ic-space-3)">
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Product updates</span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Team activity (some channels)</span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Weekly digest</span></label>
+            <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Marketing (paused)</span></label>
+          </div>
+
+          <div class="field" style="margin-top: var(--ic-space-5)">
+            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">I agree to the terms</span></label>
+            <span class="field-hint is-error">You must agree to continue.</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="stack" id="tags">
+        <h3 class="h3">Tags</h3>
+        <p class="body-sm">Status markers — solid filled chip or dot indicator. 8 statuses each.</p>
+
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="row" style="align-items: center; gap: var(--ic-space-3)">
+            <span class="caption" style="width: 96px">Solid</span>
+            <span class="tag tag-positive">Label</span>
+            <span class="tag tag-negative">Label</span>
+            <span class="tag tag-warning">Label</span>
+            <span class="tag tag-dark">Label</span>
+            <span class="tag tag-blue-light">Label</span>
+            <span class="tag tag-blue">Label</span>
+            <span class="tag tag-blue-dark">Label</span>
+            <span class="tag tag-light">Label</span>
+          </div>
+          <div class="row" style="align-items: center; gap: var(--ic-space-3)">
+            <span class="caption" style="width: 96px">Indicator</span>
+            <span class="tag tag-indicator tag-positive">Label</span>
+            <span class="tag tag-indicator tag-negative">Label</span>
+            <span class="tag tag-indicator tag-warning">Label</span>
+            <span class="tag tag-indicator tag-dark">Label</span>
+            <span class="tag tag-indicator tag-blue-light">Label</span>
+            <span class="tag tag-indicator tag-blue">Label</span>
+            <span class="tag tag-indicator tag-blue-dark">Label</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="dropdowns">
+        <h3 class="h3">Dropdown menus</h3>
+        <p class="body-sm">The open panel — items compose icon, label, description, avatar, selected state, or removable chips.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--ic-space-5); align-items: start">
+
+          <!-- 1. Default -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">Default</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">Label</button>
+              <button class="dropdown-item">Label</button>
+              <button class="dropdown-item">Label</button>
+              <button class="dropdown-item">Label</button>
+            </div>
+          </div>
+
+          <!-- 2. With Icon -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With icon</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item"><svg class="dropdown-item-icon"><use href="#i-folder"/></svg>Projects</button>
+              <button class="dropdown-item"><svg class="dropdown-item-icon"><use href="#i-user"/></svg>People</button>
+              <button class="dropdown-item"><svg class="dropdown-item-icon"><use href="#i-bell"/></svg>Notifications</button>
+              <button class="dropdown-item"><svg class="dropdown-item-icon"><use href="#i-settings"/></svg>Settings</button>
+            </div>
+          </div>
+
+          <!-- 3. With Description -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With description</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Starter</span>
+                  <span class="dropdown-item-description">Free for everyone</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Team</span>
+                  <span class="dropdown-item-description">$12 per user / month</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Enterprise</span>
+                  <span class="dropdown-item-description">Contact for pricing</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. With Icon + Description -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">Icon + description</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <svg class="dropdown-item-icon"><use href="#i-folder"/></svg>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Projects</span>
+                  <span class="dropdown-item-description">All active workspaces</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <svg class="dropdown-item-icon"><use href="#i-bell"/></svg>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Notifications</span>
+                  <span class="dropdown-item-description">3 unread</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <svg class="dropdown-item-icon"><use href="#i-settings"/></svg>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Settings</span>
+                  <span class="dropdown-item-description">Account, billing, team</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. With Avatar -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With avatar</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-brand); background: var(--color-brand-subtle)">MV</span>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Matthew Vella</span>
+                  <span class="dropdown-item-description">matthew@spark-code.com</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-info); background: var(--color-info-subtle)">AS</span>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Anna Schmidt</span>
+                  <span class="dropdown-item-description">anna@example.com</span>
+                </div>
+              </button>
+              <button class="dropdown-item">
+                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-warning); background: var(--color-warning-subtle)">JP</span>
+                <div class="dropdown-item-text">
+                  <span class="dropdown-item-label">Jordan Park</span>
+                  <span class="dropdown-item-description">jordan@example.com</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. Has a Selected Option -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">Selected</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Label</button>
+              <button class="dropdown-item is-selected"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Selected</button>
+              <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Label</button>
+              <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Label</button>
+            </div>
+          </div>
+
+          <!-- 7. With Switches -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With switches</span>
+            <div class="dropdown-menu">
+              <label class="dropdown-item">
+                <span class="dropdown-item-text"><span class="dropdown-item-label">Compact mode</span></span>
+                <span class="switch" style="margin-left: auto"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></span>
+              </label>
+              <label class="dropdown-item">
+                <span class="dropdown-item-text"><span class="dropdown-item-label">Show grid lines</span></span>
+                <span class="switch" style="margin-left: auto"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></span>
+              </label>
+              <label class="dropdown-item">
+                <span class="dropdown-item-text"><span class="dropdown-item-label">Auto-save</span></span>
+                <span class="switch" style="margin-left: auto"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></span>
+              </label>
+              <label class="dropdown-item">
+                <span class="dropdown-item-text">
+                  <span class="dropdown-item-label">Beta features</span>
+                  <span class="dropdown-item-description">Unreleased work-in-progress UI</span>
+                </span>
+                <span class="switch" style="margin-left: auto"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 8. With Tags (multi-select) -->
+          <div class="stack" style="gap: var(--ic-space-2); grid-column: span 2">
+            <span class="caption">With tags (multi-select)</span>
+            <div class="dropdown-menu">
+              <span class="dropdown-menu-label">Optional Label</span>
+              <div class="dropdown-chips">
+                <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
+                <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
+                <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="stack" id="modals">
+        <h3 class="h3">Modal</h3>
+        <p class="body-sm">Overlay + centered panel. 5 desktop sizes. Click any size to open. Escape, overlay click, or Cancel closes.</p>
+
+        <div class="row">
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-xs">XS · 328</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-sm">SM · 520</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-md">MD · 650</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-lg">LG · 800</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-xl">XL · 1200</button>
+        </div>
+
+        <!-- Modal instances -->
+        <div class="modal-overlay" id="modal-xs" hidden>
+          <div class="modal modal-xs">
+            <header class="modal-header">
+              <h2 class="modal-title">Delete project?</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">This action cannot be undone. All associated data will be permanently removed.</div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-danger" type="button">Delete</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-sm" hidden>
+          <div class="modal modal-sm">
+            <header class="modal-header">
+              <h2 class="modal-title">Invite a teammate</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <label class="field">
+                <span class="field-label">Email</span>
+                <input class="input" type="email" placeholder="name@company.com" />
+              </label>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Send invite</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-md" hidden>
+          <div class="modal modal-md">
+            <header class="modal-header">
+              <h2 class="modal-title">New process</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4)">
+                <label class="field">
+                  <span class="field-label">Name</span>
+                  <input class="input" type="text" placeholder="Onboarding" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Owner</span>
+                  <div class="input-select">
+                    <button class="input-select-trigger" aria-expanded="false" type="button">
+                      <span class="input-select-value input-select-placeholder">Choose owner…</span>
+                      <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+                    </button>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Create</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-lg" hidden>
+          <div class="modal modal-lg">
+            <header class="modal-header">
+              <h2 class="modal-title">Edit OKR</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4)">
+                <label class="field">
+                  <span class="field-label">Objective</span>
+                  <input class="input" type="text" value="Increase activation rate by 25%" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Description</span>
+                  <textarea class="input" rows="3">Drive new-user activation through onboarding improvements and product-led growth experiments.</textarea>
+                </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--ic-space-4)">
+                  <label class="field">
+                    <span class="field-label">Owner</span>
+                    <input class="input" type="text" value="Anna Schmidt" />
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Cycle</span>
+                    <input class="input" type="text" value="Q4 2026" />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Save changes</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-xl" hidden>
+          <div class="modal modal-xl">
+            <header class="modal-header">
+              <h2 class="modal-title">Review changes</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <p class="body-sm" style="margin: 0 0 var(--ic-space-3)">12 items updated since the last review.</p>
+              <div class="stack" style="gap: var(--ic-space-2)">
+                <div class="list-row"><div><p class="list-row-title">Onboarding process</p><p class="list-row-meta">Renamed · 2h ago</p></div><span class="tag tag-indicator tag-positive">Approved</span></div>
+                <div class="list-row"><div><p class="list-row-title">Q4 Planning</p><p class="list-row-meta">3 steps added · yesterday</p></div><span class="tag tag-indicator tag-warning">Pending</span></div>
+                <div class="list-row"><div><p class="list-row-title">Vendor Onboarding</p><p class="list-row-meta">Archived · 3 days ago</p></div><span class="tag tag-indicator tag-negative">Rejected</span></div>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Close</button>
+              <button class="btn btn-primary" type="button">Approve all</button>
+            </footer>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="drawers">
+        <h3 class="h3">Drawer</h3>
+        <p class="body-sm">Right-anchored side panel. 6 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes.</p>
+
+        <div class="row">
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-narrow">Narrow · 440</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-regular">Regular · 560</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-medium">Medium · 640</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-wide">Wide · 960</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-ultra">Ultra · 1180</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="drawer-full">Full</button>
+        </div>
+
+        <!-- Narrow: filters panel -->
+        <div class="drawer-overlay" id="drawer-narrow" hidden>
+          <aside class="drawer drawer-narrow">
+            <header class="modal-header">
+              <h2 class="modal-title">Filters</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-3)">
+                <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Active</span></label>
+                <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">In progress</span></label>
+                <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Completed</span></label>
+                <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Failed</span></label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Clear</button>
+              <button class="btn btn-primary" type="button">Apply</button>
+            </footer>
+          </aside>
+        </div>
+
+        <!-- Regular: new initiative form -->
+        <div class="drawer-overlay" id="drawer-regular" hidden>
+          <aside class="drawer drawer-regular">
+            <header class="modal-header">
+              <h2 class="modal-title">New initiative</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4)">
+                <label class="field">
+                  <span class="field-label">Name</span>
+                  <input class="input" type="text" placeholder="Migrate billing infra" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Description</span>
+                  <textarea class="input" rows="3" placeholder="What problem are you solving?"></textarea>
+                </label>
+                <label class="field">
+                  <span class="field-label">Quarter</span>
+                  <input class="input" type="text" placeholder="Q4 2026" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Owner</span>
+                  <input class="input" type="text" placeholder="Choose owner…" />
+                </label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Create initiative</button>
+            </footer>
+          </aside>
+        </div>
+
+        <!-- Medium: edit OKR -->
+        <div class="drawer-overlay" id="drawer-medium" hidden>
+          <aside class="drawer drawer-medium">
+            <header class="modal-header">
+              <h2 class="modal-title">Edit OKR</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4)">
+                <label class="field">
+                  <span class="field-label">Objective</span>
+                  <input class="input" type="text" value="Increase activation rate by 25%" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Description</span>
+                  <textarea class="input" rows="3">Drive new-user activation through onboarding improvements.</textarea>
+                </label>
+                <p class="caption" style="margin: var(--ic-space-2) 0 0">Key results</p>
+                <div class="list-row"><div><p class="list-row-title">Time-to-first-value &lt; 5 min</p><p class="list-row-meta">Current: 7m 30s</p></div><span class="tag tag-indicator tag-warning">At risk</span></div>
+                <div class="list-row"><div><p class="list-row-title">Activation rate ≥ 65%</p><p class="list-row-meta">Current: 58%</p></div><span class="tag tag-indicator tag-positive">On track</span></div>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Save changes</button>
+            </footer>
+          </aside>
+        </div>
+
+        <!-- Wide: process details -->
+        <div class="drawer-overlay" id="drawer-wide" hidden>
+          <aside class="drawer drawer-wide">
+            <header class="modal-header">
+              <h2 class="modal-title">Process details</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--ic-space-5)">
+                <div>
+                  <p class="body" style="margin: 0 0 var(--ic-space-2); font-weight: var(--ic-weight-medium)">Onboarding</p>
+                  <p class="body-sm" style="margin: 0 0 var(--ic-space-4)">14 steps · Owner: Matthew Vella</p>
+                  <div class="stack" style="gap: var(--ic-space-2)">
+                    <div class="list-row"><div><p class="list-row-title">Step 1 — Welcome email</p><p class="list-row-meta">Automatic · 0 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                    <div class="list-row"><div><p class="list-row-title">Step 2 — Account setup</p><p class="list-row-meta">Manual · 5 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                    <div class="list-row"><div><p class="list-row-title">Step 3 — Team invite</p><p class="list-row-meta">Manual · 10 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                  </div>
+                </div>
+                <aside>
+                  <p class="caption" style="margin: 0 0 var(--ic-space-2)">Stats</p>
+                  <div class="stack" style="gap: var(--ic-space-3)">
+                    <div class="stat-card"><p class="stat-card-label">Runs this month</p><p class="stat-card-value">128</p></div>
+                    <div class="stat-card"><p class="stat-card-label">Avg duration</p><p class="stat-card-value">42m</p></div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Close</button>
+              <button class="btn btn-primary" type="button">Edit process</button>
+            </footer>
+          </aside>
+        </div>
+
+        <!-- Ultra Wide: activity log -->
+        <div class="drawer-overlay" id="drawer-ultra" hidden>
+          <aside class="drawer drawer-ultra">
+            <header class="modal-header">
+              <h2 class="modal-title">Activity log</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <p class="body-sm" style="margin: 0 0 var(--ic-space-3)">All workspace activity over the last 24 hours.</p>
+              <div class="stack" style="gap: var(--ic-space-2)">
+                <div class="list-row"><div><p class="list-row-title">Onboarding process — renamed</p><p class="list-row-meta">Matthew Vella · 2h ago</p></div><span class="tag tag-indicator tag-blue">Updated</span></div>
+                <div class="list-row"><div><p class="list-row-title">Q4 Planning — 3 steps added</p><p class="list-row-meta">Anna Schmidt · 4h ago</p></div><span class="tag tag-indicator tag-positive">Created</span></div>
+                <div class="list-row"><div><p class="list-row-title">Vendor Onboarding — archived</p><p class="list-row-meta">Jordan Park · 6h ago</p></div><span class="tag tag-indicator tag-dark">Archived</span></div>
+                <div class="list-row"><div><p class="list-row-title">Performance Review — 2 KRs updated</p><p class="list-row-meta">Rita Kowalski · 8h ago</p></div><span class="tag tag-indicator tag-blue">Updated</span></div>
+                <div class="list-row"><div><p class="list-row-title">Q4 OKR draft published</p><p class="list-row-meta">Anna Schmidt · 12h ago</p></div><span class="tag tag-indicator tag-positive">Created</span></div>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Close</button>
+              <button class="btn btn-primary" type="button">Export log</button>
+            </footer>
+          </aside>
+        </div>
+
+        <!-- Full: mobile-style full-screen drawer -->
+        <div class="drawer-overlay" id="drawer-full" hidden>
+          <aside class="drawer drawer-full">
+            <header class="modal-header">
+              <h2 class="modal-title">Quick add</h2>
+              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
+                <label class="field">
+                  <span class="field-label">What's this for?</span>
+                  <input class="input" type="text" placeholder="Title…" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Notes</span>
+                  <textarea class="input" rows="4" placeholder="Optional context…"></textarea>
+                </label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Add</button>
+            </footer>
+          </aside>
+        </div>
+      </section>
+
+      <section class="stack" id="page-heads">
+        <h3 class="h3">Page heads</h3>
+        <p class="body-sm">Top-of-page header — title (optional count + subtitle) on the left, actions on the right.</p>
+
+        <div class="stack" style="gap: var(--ic-space-7)">
+
+          <!-- Variant 1: Title only -->
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title only</span>
+            <div class="page-head" style="margin-bottom: 0">
+              <div class="page-head-main">
+                <div class="page-head-title">
+                  <h1 class="page-head-heading">Heading Large</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variant 2: Title + count -->
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + count</span>
+            <div class="page-head" style="margin-bottom: 0">
+              <div class="page-head-main">
+                <div class="page-head-title">
+                  <h1 class="page-head-heading">Heading Large</h1>
+                  <span class="page-head-count">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variant 3: Title + count + actions + overflow (Figma reference) -->
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + count + actions</span>
+            <div class="page-head" style="margin-bottom: 0">
+              <div class="page-head-main">
+                <div class="page-head-title">
+                  <h1 class="page-head-heading">Heading Large</h1>
+                  <span class="page-head-count">1</span>
+                </div>
+              </div>
+              <div class="page-head-actions">
+                <button class="btn btn-sm btn-secondary">Button</button>
+                <button class="btn btn-sm btn-primary">Button</button>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
+                  <div class="dropdown-menu dropdown-menu-end" hidden>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-pencil"/></svg>Edit</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-copy"/></svg>Duplicate</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-archive"/></svg>Archive</button>
+                    <button class="dropdown-item dropdown-item-danger" type="button"><svg class="dropdown-item-icon"><use href="#i-trash"/></svg>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variant 4: Title + subtitle + actions -->
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + subtitle + actions</span>
+            <div class="page-head" style="margin-bottom: 0">
+              <div class="page-head-main">
+                <div class="page-head-title">
+                  <h1 class="page-head-heading">Processes</h1>
+                  <span class="page-head-count">12</span>
+                </div>
+                <p class="page-head-subtitle">Manage workflows across teams.</p>
+              </div>
+              <div class="page-head-actions">
+                <button class="btn btn-sm btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
+                <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New process</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="stack" id="cards">
+        <h3 class="h3">Cards</h3>
+        <div class="grid-2">
+          <article class="card">
+            <h3 class="card-title">Sign in</h3>
+            <p class="card-body" style="margin-bottom: var(--ic-space-5)">Welcome back to Operationalize.</p>
+            <form class="stack">
+              <label class="field">
+                <span class="field-label">Email</span>
+                <input class="input" type="email" placeholder="you@example.com" />
+              </label>
+              <label class="field">
+                <span class="field-label">Password</span>
+                <input class="input" type="password" placeholder="••••••••" />
+              </label>
+              <div class="row" style="margin-top: var(--ic-space-2)">
+                <button class="btn btn-primary" type="submit">Continue</button>
+                <button class="btn btn-ghost" type="button">Forgot password?</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <h3 class="card-title">Status</h3>
+            <p class="card-body" style="margin-bottom: var(--ic-space-5)">Workflow run status across environments.</p>
+            <div class="stack" style="gap: var(--ic-space-3)">
+              <div class="row" style="justify-content: space-between">
+                <span class="body">Production deploy</span>
+                <span class="badge badge-success">Healthy</span>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <span class="body">Staging migration</span>
+                <span class="badge badge-warning">Pending</span>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <span class="body">Canary cohort</span>
+                <span class="badge badge-danger">Failed</span>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <span class="body">Beta features</span>
+                <span class="badge badge-info">3 new</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section id="templates" class="stack" style="gap: var(--ic-space-7)">
+      <h2 class="section-head">Templates</h2>
+
+      <section class="stack" id="template-app-shell">
+        <div>
+          <h3 class="h3">App shell — Processes</h3>
+          <p class="body-sm">Topbar + sidebar + main page composing a complete view. Toggle the sidebar to see compact mode.</p>
+        </div>
+
+        <div class="template-frame">
+
+          <!-- Topbar -->
+          <header class="topbar">
+            <a class="topbar-brand" href="#">
+              <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
+            </a>
+            <div class="topbar-actions">
+              <div class="topbar-search">
+                <svg class="search-icon"><use href="#i-search"/></svg>
+                <input class="topbar-search-input" type="search" placeholder="Search Operationalize..." />
+              </div>
+              <button class="topbar-avatar" aria-label="Account" type="button">MV</button>
+            </div>
+          </header>
+
+          <!-- Sidenav + Main -->
+          <div class="app-shell">
+            <aside class="sidenav">
+              <button class="sidenav-toggle" aria-label="Toggle navigation" type="button"><svg><use href="#i-chevron-left"/></svg></button>
+              <ul class="sidenav-list">
+                <li><a class="sidenav-item is-active" href="#" data-page="processes"><svg class="sidenav-item-icon"><use href="#i-cycle"/></svg><span class="sidenav-item-label">Processes</span></a></li>
+                <li><a class="sidenav-item" href="#" data-page="initiatives"><svg class="sidenav-item-icon"><use href="#i-rocket"/></svg><span class="sidenav-item-label">Initiatives</span></a></li>
+                <li><a class="sidenav-item" href="#" data-page="rob-meetings"><svg class="sidenav-item-icon"><use href="#i-calendar"/></svg><span class="sidenav-item-label">RoB Meetings</span></a></li>
+                <li><a class="sidenav-item" href="#" data-page="okrs"><svg class="sidenav-item-icon"><use href="#i-target"/></svg><span class="sidenav-item-label">OKRs</span></a></li>
+                <li><a class="sidenav-item" href="#" data-page="people"><svg class="sidenav-item-icon"><use href="#i-users"/></svg><span class="sidenav-item-label">People</span></a></li>
+                <li><a class="sidenav-item" href="#" data-page="team"><svg class="sidenav-item-icon"><use href="#i-org"/></svg><span class="sidenav-item-label">Team</span></a></li>
+              </ul>
+              <div class="sidenav-spacer"></div>
+              <div class="sidenav-footer">
+                <a class="sidenav-item" href="#" data-page="admin"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span></a>
+                <a class="sidenav-item" href="#" data-page="learning"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></a>
+              </div>
+            </aside>
+
+            <main class="app-shell-main" style="padding: var(--ic-space-7)">
+
+              <!-- PROCESSES -->
+              <section class="page-view" data-page="processes">
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">Processes</h1>
+                      <span class="page-head-count">12</span>
+                    </div>
+                    <p class="page-head-subtitle">Manage workflows across teams.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
+                    <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New process</button>
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
+                      <div class="dropdown-menu dropdown-menu-end" hidden>
+                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-pencil"/></svg>Rename</button>
+                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-copy"/></svg>Duplicate</button>
+                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-archive"/></svg>Archive</button>
+                        <button class="dropdown-item dropdown-item-danger" type="button"><svg class="dropdown-item-icon"><use href="#i-trash"/></svg>Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--ic-space-4); margin-bottom: var(--ic-space-7)">
+                  <div class="stat-card"><p class="stat-card-label">Active</p><p class="stat-card-value">12</p></div>
+                  <div class="stat-card"><p class="stat-card-label">In progress</p><p class="stat-card-value">5</p></div>
+                  <div class="stat-card"><p class="stat-card-label">Completed</p><p class="stat-card-value">38</p></div>
+                  <div class="stat-card"><p class="stat-card-label">Failed</p><p class="stat-card-value" style="color: var(--color-danger)">2</p></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--ic-space-3)">
+                  <h3 class="h3" style="margin: 0">Recent</h3>
+                  <a href="#" class="body-sm" style="color: var(--color-text-link); text-decoration: none">View all →</a>
+                </div>
+                <div class="stack" style="gap: var(--ic-space-2)">
+                  <div class="list-row"><div><p class="list-row-title">Onboarding</p><p class="list-row-meta">Last updated 2h ago · 14 steps</p></div><span class="tag tag-indicator tag-positive">Running</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Q4 Planning</p><p class="list-row-meta">Last updated yesterday · 8 steps</p></div><span class="tag tag-indicator tag-warning">Waiting</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Performance Review</p><p class="list-row-meta">Last updated 3 days ago · 12 steps</p></div><span class="tag tag-indicator tag-positive">Running</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Vendor Onboarding</p><p class="list-row-meta">Last updated 1 week ago · 6 steps</p></div><span class="tag tag-indicator tag-negative">Stopped</span></div>
+                </div>
+              </section>
+
+              <!-- INITIATIVES -->
+              <section class="page-view" data-page="initiatives" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">Initiatives</h1>
+                      <span class="page-head-count">4</span>
+                    </div>
+                    <p class="page-head-subtitle">Launching new strategic projects.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New initiative</button>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--ic-space-4)">
+                  <article class="card">
+                    <h3 class="card-title">Migrate billing infra</h3>
+                    <p class="card-body">Move billing from Stripe legacy to the new platform.</p>
+                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-positive">On track</span><span class="caption">Q4 2026</span></div>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">Redesign onboarding</h3>
+                    <p class="card-body">Streamline the first-run experience for new workspaces.</p>
+                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-warning">At risk</span><span class="caption">Q4 2026</span></div>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">SSO integrations</h3>
+                    <p class="card-body">Add Okta + Azure AD support for enterprise accounts.</p>
+                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-positive">On track</span><span class="caption">Q1 2027</span></div>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">EU data residency</h3>
+                    <p class="card-body">Stand up infrastructure in Frankfurt + Dublin regions.</p>
+                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-blue">Planning</span><span class="caption">Q2 2027</span></div>
+                  </article>
+                </div>
+              </section>
+
+              <!-- ROB MEETINGS -->
+              <section class="page-view" data-page="rob-meetings" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">RoB Meetings</h1>
+                      <span class="page-head-count">8</span>
+                    </div>
+                    <p class="page-head-subtitle">Recurring business reviews.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
+                    <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>Schedule</button>
+                  </div>
+                </div>
+                <div class="stack" style="gap: var(--ic-space-2)">
+                  <div class="list-row"><div><p class="list-row-title">Engineering Weekly</p><p class="list-row-meta">Mondays · 10:00 AM · 12 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Leadership Sync</p><p class="list-row-meta">Tuesdays · 9:00 AM · 6 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Product Review</p><p class="list-row-meta">Thursdays · 2:00 PM · 18 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
+                  <div class="list-row"><div><p class="list-row-title">QBR — Q4 2026</p><p class="list-row-meta">Quarterly · Jan 14 · 24 attendees</p></div><span class="tag tag-indicator tag-warning">Upcoming</span></div>
+                  <div class="list-row"><div><p class="list-row-title">Board Update</p><p class="list-row-meta">Monthly · Last met 12 days ago</p></div><span class="tag tag-indicator tag-blue">Scheduled</span></div>
+                </div>
+              </section>
+
+              <!-- OKRS -->
+              <section class="page-view" data-page="okrs" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">OKRs</h1>
+                      <span class="page-head-count">6</span>
+                    </div>
+                    <p class="page-head-subtitle">Quarterly objectives & key results.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New OKR</button>
+                  </div>
+                </div>
+                <div class="stack" style="gap: var(--ic-space-3)">
+                  <div class="card">
+                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Increase activation rate by 25%</p>
+                    <p class="body-sm" style="margin: 2px 0 0">Owner: Anna Schmidt · Q4 2026</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 68%; height: 100%; background: var(--color-brand)"></div></div>
+                    <p class="caption" style="margin-top: var(--ic-space-2)">68% complete</p>
+                  </div>
+                  <div class="card">
+                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Reduce p95 latency to under 200ms</p>
+                    <p class="body-sm" style="margin: 2px 0 0">Owner: Jordan Park · Q4 2026</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 42%; height: 100%; background: var(--color-warning)"></div></div>
+                    <p class="caption" style="margin-top: var(--ic-space-2)">42% complete</p>
+                  </div>
+                  <div class="card">
+                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Ship 3 enterprise integrations</p>
+                    <p class="body-sm" style="margin: 2px 0 0">Owner: Rita Kowalski · Q4 2026</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 92%; height: 100%; background: var(--color-brand)"></div></div>
+                    <p class="caption" style="margin-top: var(--ic-space-2)">92% complete · Almost done</p>
+                  </div>
+                </div>
+              </section>
+
+              <!-- PEOPLE -->
+              <section class="page-view" data-page="people" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">People</h1>
+                      <span class="page-head-count">24</span>
+                    </div>
+                    <p class="page-head-subtitle">Team members & roles.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
+                    <button class="btn btn-sm btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>Invite people</button>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--ic-space-3)">
+                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-brand-subtle); color: var(--color-brand)">MV</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Matthew Vella</p><p class="body-sm" style="margin: 0">Engineering · Owner</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-info-subtle); color: var(--color-info)">AS</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Anna Schmidt</p><p class="body-sm" style="margin: 0">Product · Admin</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-warning-subtle); color: var(--color-warning)">JP</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Jordan Park</p><p class="body-sm" style="margin: 0">Engineering · Member</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-success-subtle); color: var(--color-success)">RK</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Rita Kowalski</p><p class="body-sm" style="margin: 0">Sales · Member</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-danger-subtle); color: var(--color-danger)">DT</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Dimitri Tanaka</p><p class="body-sm" style="margin: 0">Design · Member</p></div></article>
+                </div>
+              </section>
+
+              <!-- TEAM -->
+              <section class="page-view" data-page="team" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">Team</h1>
+                    </div>
+                    <p class="page-head-subtitle">Org structure & reporting lines.</p>
+                  </div>
+                  <div class="page-head-actions">
+                    <button class="btn btn-sm btn-primary">Edit org chart</button>
+                  </div>
+                </div>
+                <div class="card" style="text-align: center; padding: var(--ic-space-9) var(--ic-space-5)">
+                  <svg style="width: 48px; height: 48px; color: var(--color-text-subtle); margin-bottom: var(--ic-space-3)"><use href="#i-org"/></svg>
+                  <h3 class="h3" style="margin: 0 0 var(--ic-space-2)">No org chart yet</h3>
+                  <p class="body-sm" style="margin: 0 0 var(--ic-space-4); color: var(--color-text-muted)">Start by mapping your reporting structure.</p>
+                  <button class="btn btn-primary">Get started</button>
+                </div>
+              </section>
+
+              <!-- ADMIN SETTINGS -->
+              <section class="page-view" data-page="admin" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">Admin Settings</h1>
+                    </div>
+                    <p class="page-head-subtitle">Workspace configuration.</p>
+                  </div>
+                </div>
+                <div class="stack" style="gap: var(--ic-space-4); max-width: 640px">
+                  <article class="card">
+                    <h3 class="card-title">Workspace</h3>
+                    <p class="card-body">Operationalize HQ · 24 members</p>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">Billing</h3>
+                    <p class="card-body">Team plan · Renews March 2027 · <a href="#" style="color: var(--color-text-link); text-decoration: none">Manage →</a></p>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">Security</h3>
+                    <p class="card-body">SSO enforced · 2FA required for admins</p>
+                  </article>
+                  <article class="card">
+                    <h3 class="card-title">Integrations</h3>
+                    <p class="card-body">3 connected · Slack, GitHub, Jira</p>
+                  </article>
+                </div>
+              </section>
+
+              <!-- LEARNING HUB -->
+              <section class="page-view" data-page="learning" hidden>
+                <div class="page-head">
+                  <div class="page-head-main">
+                    <div class="page-head-title">
+                      <h1 class="page-head-heading">Learning Hub</h1>
+                    </div>
+                    <p class="page-head-subtitle">Guides, playbooks, and references.</p>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--ic-space-4)">
+                  <article class="card">
+                    <span class="badge badge-info">Guide</span>
+                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Getting started with Processes</h3>
+                    <p class="card-body">5 min read</p>
+                  </article>
+                  <article class="card">
+                    <span class="badge badge-info">Guide</span>
+                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Writing effective OKRs</h3>
+                    <p class="card-body">8 min read</p>
+                  </article>
+                  <article class="card">
+                    <span class="badge badge-success">Playbook</span>
+                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Running a RoB cadence</h3>
+                    <p class="card-body">12 min read</p>
+                  </article>
+                  <article class="card">
+                    <span class="badge badge-warning">New</span>
+                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Designing initiative reviews</h3>
+                    <p class="card-body">6 min read</p>
+                  </article>
+                </div>
+              </section>
+
+            </main>
+          </div>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <script>
+    const ramps = [
+      { name: 'Neutral',  tokens: ['white', 'black'] },
+      { name: 'Gray',     prefix: 'gray',     shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Zinc',     prefix: 'zinc',     shades: [100,200,300,400,500,600,700,800,900] },
+      { name: 'Graphite', prefix: 'graphite', shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Red',      prefix: 'red',      shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Orange',   prefix: 'orange',   shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Yellow',   prefix: 'yellow',   shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Green',    prefix: 'green',    shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Cyan',     prefix: 'cyan',     shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Blue',     prefix: 'blue',     shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Purple',   prefix: 'purple',   shades: [100,150,200,300,400,500,600,700,800,900] },
+    ];
+
+    // Apply indeterminate state to checkboxes marked with data-indeterminate
+    document.querySelectorAll('input[type=checkbox][data-indeterminate]').forEach(cb => {
+      cb.indeterminate = true;
+    });
+
+    // Modal + Drawer — open via [data-modal-open="id"], close via [data-modal-close], overlay click, or Escape.
+    // Selector covers both .modal-overlay and .drawer-overlay so a single handler runs both components.
+    (function wireOverlays() {
+      const OVERLAY_SELECTOR = '.modal-overlay, .drawer-overlay';
+      const close = (overlay) => { if (overlay) overlay.hidden = true; };
+      document.querySelectorAll('[data-modal-open]').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          document.getElementById(trigger.dataset.modalOpen)?.removeAttribute('hidden');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('[data-modal-close]');
+        if (closeBtn) { close(closeBtn.closest(OVERLAY_SELECTOR)); return; }
+        const overlay = e.target.closest(OVERLAY_SELECTOR);
+        if (overlay && e.target === overlay) close(overlay);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        document.querySelectorAll(`${OVERLAY_SELECTOR}`).forEach(o => { if (!o.hidden) close(o); });
+      });
+    })();
+
+    // Single-select dropdowns — any menu whose items carry a .dropdown-item-check slot
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+      if (!menu.querySelector('.dropdown-item-check')) return;
+      const items = menu.querySelectorAll('.dropdown-item');
+      items.forEach(item => item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('is-selected'));
+        item.classList.add('is-selected');
+      }));
+    });
+
+    // Select (dropdown input) — toggle menu, sync chosen value into the trigger
+    document.querySelectorAll('.input-select').forEach(sel => {
+      const trigger = sel.querySelector('.input-select-trigger');
+      const menu = sel.querySelector('.dropdown-menu');
+      const value = sel.querySelector('.input-select-value');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!open));
+        menu.hidden = open;
+      });
+
+      menu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          // Item text without the check icon
+          const label = (item.textContent || '').trim();
+          value.textContent = label;
+          value.classList.remove('input-select-placeholder');
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+        });
+      });
+    });
+
+    // Close any open select when clicking outside
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.input-select').forEach(sel => {
+        if (sel.contains(e.target)) return;
+        sel.querySelector('.input-select-trigger')?.setAttribute('aria-expanded', 'false');
+        const menu = sel.querySelector('.dropdown-menu');
+        if (menu) menu.hidden = true;
+      });
+    });
+
+    // Generic .dropdown — pairs .dropdown-trigger with .dropdown-menu
+    document.querySelectorAll('.dropdown').forEach(d => {
+      const trigger = d.querySelector('.dropdown-trigger');
+      const menu = d.querySelector('.dropdown-menu');
+      if (!trigger || !menu) return;
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!open));
+        menu.hidden = open;
+      });
+      // Item click closes the menu
+      menu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+        });
+      });
+    });
+    // Close any open generic dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if (d.contains(e.target)) return;
+        const trigger = d.querySelector('.dropdown-trigger');
+        const menu = d.querySelector('.dropdown-menu');
+        trigger?.setAttribute('aria-expanded', 'false');
+        if (menu) menu.hidden = true;
+      });
+    });
+
+    // Character counters — .field[data-char-limit] with one .field-hint as the readout
+    document.querySelectorAll('.field[data-char-limit]').forEach(field => {
+      const max = parseInt(field.dataset.charLimit, 10);
+      const input = field.querySelector('.input');
+      const counter = field.querySelector('.field-hint');
+      if (!input || !counter) return;
+      const update = () => {
+        const n = input.value.length;
+        counter.textContent = `${n} / ${max}`;
+        counter.classList.toggle('is-error', n >= max);
+      };
+      input.addEventListener('input', update);
+      update();
+    });
+
+    // Side navigation — toggle compact/expanded
+    document.querySelectorAll('.sidenav-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.sidenav').classList.toggle('is-compact');
+      });
+    });
+
+    // Side navigation routing (template only) — clicking an item shows the matching .page-view
+    document.querySelectorAll('#template-app-shell .sidenav-item[data-page]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const name = link.dataset.page;
+        const shell = link.closest('#template-app-shell');
+        // Toggle active class across all items in this template
+        shell.querySelectorAll('.sidenav-item').forEach(i => i.classList.remove('is-active'));
+        link.classList.add('is-active');
+        // Show only the matching page-view
+        shell.querySelectorAll('.page-view').forEach(p => {
+          p.hidden = p.dataset.page !== name;
+        });
+        // Scroll the main area to top so the new page-head is visible
+        shell.querySelector('.app-shell-main')?.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    });
+
+    // Rich text editors — toolbar commands + heading select + character counter
+    document.querySelectorAll('.editor').forEach(editor => {
+      const content = editor.querySelector('.editor-content');
+
+      // Generic execCommand buttons (bold, italic, lists)
+      editor.querySelectorAll('[data-cmd]').forEach(btn => {
+        btn.addEventListener('mousedown', e => e.preventDefault()); // keep selection
+        btn.addEventListener('click', () => {
+          content.focus();
+          document.execCommand(btn.dataset.cmd, false, null);
+        });
+      });
+
+      // Inline code — wraps selection in <code>
+      editor.querySelectorAll('[data-cmd-code]').forEach(btn => {
+        btn.addEventListener('mousedown', e => e.preventDefault());
+        btn.addEventListener('click', () => {
+          content.focus();
+          const sel = window.getSelection();
+          if (!sel.rangeCount) return;
+          const text = sel.toString();
+          if (!text) return;
+          document.execCommand('insertHTML', false, `<code>${text}</code>`);
+        });
+      });
+
+      // Link prompt
+      editor.querySelectorAll('[data-cmd-link]').forEach(btn => {
+        btn.addEventListener('mousedown', e => e.preventDefault());
+        btn.addEventListener('click', () => {
+          const url = prompt('Enter URL');
+          if (!url) return;
+          content.focus();
+          document.execCommand('createLink', false, url);
+        });
+      });
+
+      // Heading select — formatBlock
+      editor.querySelectorAll('.editor-toolbar-select .dropdown-item[data-block]').forEach(item => {
+        item.addEventListener('click', () => {
+          content.focus();
+          document.execCommand('formatBlock', false, item.dataset.block);
+        });
+      });
+    });
+
+    // Editor character counters — count plain text, update sibling .editor-counter
+    document.querySelectorAll('.field[data-editor-char-limit]').forEach(field => {
+      const max = parseInt(field.dataset.editorCharLimit, 10);
+      const content = field.querySelector('.editor-content');
+      const text = field.querySelector('.editor-counter-text');
+      const tick = field.querySelector('.editor-counter-ok');
+      if (!content || !text) return;
+      const update = () => {
+        const len = content.textContent.length;
+        const left = max - len;
+        text.textContent = `${left} character${left === 1 ? '' : 's'} left`;
+        const valid = left >= 0;
+        text.parentElement.classList.toggle('is-error', !valid);
+        if (tick) tick.style.opacity = (len > 0 && valid) ? '1' : '0';
+      };
+      content.addEventListener('input', update);
+      update();
+    });
+
+    // Universal chip remove — clicking .chip-remove removes its parent .chip
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip-remove');
+      if (btn) btn.closest('.chip')?.remove();
+    });
+
+    // Tag inputs — Enter to add, Backspace on empty to remove last
+    document.querySelectorAll('.input-tags').forEach(wrap => {
+      const input = wrap.querySelector('.input-tags-input');
+
+      const addTag = (text) => {
+        const t = text.trim();
+        if (!t) return;
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.innerHTML = `${t}<button class="chip-remove" aria-label="Remove" type="button"><svg><use href="#i-x"/></svg></button>`;
+        input.before(chip);
+      };
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && input.value.trim()) {
+          e.preventDefault();
+          addTag(input.value);
+          input.value = '';
+        } else if (e.key === 'Backspace' && !input.value) {
+          const chips = wrap.querySelectorAll('.chip');
+          chips[chips.length - 1]?.remove();
+        }
+      });
+
+      // Click anywhere in the wrap focuses the text input
+      wrap.addEventListener('click', (e) => {
+        if (e.target === wrap) input.focus();
+      });
+    });
+
+    const css = getComputedStyle(document.documentElement);
+    const root = document.getElementById('palette-root');
+
+    const swatch = (token) => {
+      const hex = css.getPropertyValue(token).trim().toUpperCase();
+      // Drop "--ic-palette-{ramp}-" so the label is just the shade ("100", "white").
+      // Full token shows on hover via the title attribute.
+      const short = token.replace(/^--ic-palette-([a-z]+-)?/, '');
+      return `
+        <div class="swatch-card" title="${token}">
+          <div class="swatch" style="background: var(${token})"></div>
+          <div class="swatch-label">
+            <code class="swatch-token">${short}</code>
+            <code class="swatch-hex">${hex}</code>
+          </div>
+        </div>`;
+    };
+
+    // Radii
+    const radii = ['none','sm','md','lg','xl'].map(k => `--ic-radius-${k}`);
+    const radiiRoot = document.getElementById('radii-root');
+    radii.forEach(token => {
+      const value = css.getPropertyValue(token).trim();
+      const display = token === '--ic-radius-full' ? 'pill' : value;
+      const card = document.createElement('div');
+      card.className = 'radius-card';
+      card.innerHTML = `
+        <div class="radius-shape" style="border-radius: var(${token})"></div>
+        <code class="radius-token">${token.replace('--ic-radius-', '')}</code>
+        <code class="radius-value">${display}</code>
+      `;
+      radiiRoot.appendChild(card);
+    });
+
+    ramps.forEach(ramp => {
+      const tokens = ramp.tokens
+        ? ramp.tokens.map(t => `--ic-palette-${t}`)
+        : ramp.shades.map(s => `--ic-palette-${ramp.prefix}-${s}`);
+      const row = document.createElement('div');
+      row.className = 'ramp';
+      row.innerHTML = `
+        <div class="ramp-name">${ramp.name}</div>
+        <div class="swatch-row">${tokens.map(swatch).join('')}</div>
+      `;
+      root.appendChild(row);
+    });
+  </script>
+</body>
+</html>
