@@ -633,6 +633,90 @@
         </div>
       </section>
 
+      <section class="stack" id="alerts">
+        <div>
+          <h3 class="h3">Alerts</h3>
+          <p class="body-sm">Page-level message that sits inline beneath the page head — not a floating toast. Horizontal block with icon · message · optional CTAs · optional close. Four variants: <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-danger</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-warning</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-success</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-info</code>. Omit <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-close</code> for persistent alerts.</p>
+        </div>
+        <div class="stack" style="gap: var(--ic-space-3)">
+          <div class="alert alert-danger" role="alert">
+            <i class="ph ph-warning-octagon alert-icon"></i>
+            <p class="alert-message">This is a critical warning alert.</p>
+            <div class="alert-actions">
+              <button class="btn btn-xs btn-primary">Action</button>
+              <button class="btn btn-xs btn-secondary">Dismiss</button>
+            </div>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="alert alert-warning" role="alert">
+            <i class="ph ph-warning alert-icon"></i>
+            <p class="alert-message">This is a warning alert.</p>
+            <div class="alert-actions">
+              <button class="btn btn-xs btn-primary">Action</button>
+              <button class="btn btn-xs btn-secondary">Dismiss</button>
+            </div>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="alert alert-success" role="alert">
+            <i class="ph ph-check-circle alert-icon"></i>
+            <p class="alert-message">This is a success alert.</p>
+            <div class="alert-actions">
+              <button class="btn btn-xs btn-primary">Action</button>
+              <button class="btn btn-xs btn-secondary">Dismiss</button>
+            </div>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="alert alert-info" role="alert">
+            <i class="ph ph-info alert-icon"></i>
+            <p class="alert-message">This is an info alert.</p>
+            <div class="alert-actions">
+              <button class="btn btn-xs btn-primary">Action</button>
+              <button class="btn btn-xs btn-secondary">Dismiss</button>
+            </div>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+
+          <p class="body-sm" style="margin-top: var(--ic-space-3); color: var(--color-text-muted)">Without CTAs · without close (persistent) · single CTA only</p>
+          <div class="alert alert-info" role="alert">
+            <i class="ph ph-info alert-icon"></i>
+            <p class="alert-message">Heads up — your trial expires in 5 days.</p>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="alert alert-success" role="status">
+            <i class="ph ph-check-circle alert-icon"></i>
+            <p class="alert-message">Backup completed successfully. This message will stay until the next backup runs.</p>
+          </div>
+          <div class="alert alert-warning" role="alert">
+            <i class="ph ph-warning alert-icon"></i>
+            <p class="alert-message">An older version of this document is open elsewhere.</p>
+            <div class="alert-actions">
+              <button class="btn btn-xs btn-primary">Reload</button>
+            </div>
+            <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+
+          <p class="body-sm" style="margin-top: var(--ic-space-3); color: var(--color-text-muted)">In context — sitting directly beneath a page head</p>
+          <div class="card" style="padding: var(--ic-space-5)">
+            <div class="page-head" style="margin-bottom: var(--ic-space-4)">
+              <div class="page-head-main">
+                <div class="page-head-title">
+                  <h1 class="page-head-heading">Billing</h1>
+                </div>
+                <p class="page-head-subtitle">Plan, invoices and payment methods.</p>
+              </div>
+            </div>
+            <div class="alert alert-warning" role="alert">
+              <i class="ph ph-warning alert-icon"></i>
+              <p class="alert-message">Your payment method expires next month. Update it to keep service running.</p>
+              <div class="alert-actions">
+                <button class="btn btn-xs btn-primary">Update card</button>
+              </div>
+              <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="stack" id="checkboxes">
         <h3 class="h3">Checkboxes</h3>
 
@@ -1221,8 +1305,8 @@
                 </div>
               </div>
               <div class="page-head-actions">
-                <button class="btn btn-secondary">Button</button>
-                <button class="btn btn-primary">Button</button>
+                <button class="btn btn-secondary">Export as CSV</button>
+                <button class="btn btn-primary">Create new</button>
                 <div class="dropdown">
                   <button class="btn btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
                   <div class="dropdown-menu dropdown-menu-end" hidden>
@@ -1247,13 +1331,50 @@
                 </div>
                 <p class="page-head-subtitle">Manage workflows across teams.</p>
               </div>
-              <div class="page-head-actions">
-                <button class="btn btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
-                <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New process</button>
+              <div class="page-head-actions" data-cta-source="page-head-primary">
+                <button class="btn btn-secondary">Export as CSV</button>
+                <button class="btn btn-primary">Create new</button>
               </div>
             </div>
           </div>
 
+        </div>
+      </section>
+
+      <section class="stack" id="tabs">
+        <div>
+          <h3 class="h3">Tabs</h3>
+          <p class="body-sm">Horizontal trigger strip with a hairline border and a 2px accent indicator under the active tab. Pair with <code style="font: var(--type-mono); color: var(--color-text-muted)">role="tabpanel"</code> via <code style="font: var(--type-mono); color: var(--color-text-muted)">aria-controls</code> for interactive content switching.</p>
+        </div>
+
+        <span class="caption" style="display: block">Standalone</span>
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
+          <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
+          <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
+          <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-5)">With panels</span>
+        <div>
+          <div class="tabs" role="tablist">
+            <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Members</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Settings</button>
+          </div>
+          <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--ic-space-5)">
+            <p class="body">A summary of recent activity and key metrics for this workspace.</p>
+          </div>
+          <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--ic-space-5)" hidden>
+            <p class="body">Audit log of recent changes across all members.</p>
+          </div>
+          <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--ic-space-5)" hidden>
+            <p class="body">12 members have access to this workspace.</p>
+          </div>
+          <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
+            <p class="body">Workspace name, billing, integrations and permissions.</p>
+          </div>
         </div>
       </section>
 
@@ -1722,9 +1843,7 @@
                     </div>
                     <p class="page-head-subtitle">Manage workflows across teams.</p>
                   </div>
-                  <div class="page-head-actions">
-                    <button class="btn btn-secondary"><svg class="btn-icon"><use href="#i-filter"/></svg>Filter</button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New process</button>
+                  <div class="page-head-actions" data-cta-link="page-head-primary">
                     <div class="dropdown">
                       <button class="btn btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
                       <div class="dropdown-menu dropdown-menu-end" hidden>
@@ -1991,6 +2110,18 @@
       cb.indeterminate = true;
     });
 
+    // CTA linking — clone <button class="btn"> children from a [data-cta-source]
+    // master into every [data-cta-link] target with the same id. Lets the demo
+    // page-head act as the source of truth for action labels everywhere they
+    // appear (e.g. template-app-shell page-heads).
+    document.querySelectorAll('[data-cta-link]').forEach(target => {
+      const id = target.dataset.ctaLink;
+      const source = document.querySelector(`[data-cta-source="${id}"]`);
+      if (!source) return;
+      const clones = [...source.querySelectorAll(':scope > .btn')].map(b => b.cloneNode(true));
+      target.prepend(...clones);
+    });
+
     // Modal + Drawer — open via [data-modal-open="id"], close via [data-modal-close], overlay click, or Escape.
     // Selector covers both .modal-overlay and .drawer-overlay so a single handler runs both components.
     (function wireOverlays() {
@@ -2230,6 +2361,32 @@
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.chip-remove');
       if (btn) btn.closest('.chip')?.remove();
+    });
+
+    // Alert dismiss — clicking .alert-close removes its parent .alert
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.alert-close');
+      if (btn) btn.closest('.alert')?.remove();
+    });
+
+    // Tabs — click to activate. If a tab declares aria-controls, also toggle
+    // the matching tabpanel's visibility.
+    document.querySelectorAll('.tabs').forEach(tablist => {
+      const tabs = [...tablist.querySelectorAll('.tab')];
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => {
+            const on = t === tab;
+            t.classList.toggle('is-active', on);
+            t.setAttribute('aria-selected', String(on));
+            const panelId = t.getAttribute('aria-controls');
+            if (panelId) {
+              const panel = document.getElementById(panelId);
+              if (panel) panel.hidden = !on;
+            }
+          });
+        });
+      });
     });
 
     // Tag inputs — Enter to add, Backspace on empty to remove last
