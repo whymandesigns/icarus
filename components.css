@@ -493,6 +493,65 @@ textarea.input {
 .cell-dot.is-warning { background: var(--color-warning); }
 .cell-dot.is-danger  { background: var(--color-danger); }
 
+/* ---------- Alert ----------
+ * Horizontal block with: icon · message · optional CTAs · optional close button.
+ *
+ *   <div class="alert alert-danger" role="alert">
+ *     <i class="ph ph-warning-octagon alert-icon"></i>
+ *     <p class="alert-message">Something went wrong.</p>
+ *     <div class="alert-actions">              optional — drop if no CTAs
+ *       <button class="btn btn-xs btn-primary">Retry</button>
+ *       <button class="btn btn-xs btn-secondary">Dismiss</button>
+ *     </div>
+ *     <button class="alert-close" aria-label="Close"><i class="ph ph-x"></i></button>
+ *   </div>
+ *
+ * Variants: .alert-danger · .alert-warning · .alert-success · .alert-info
+ * Omit the .alert-close button for persistent alerts.
+ */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-3);
+  min-height: 56px;
+  padding: var(--ic-space-4);
+  border-radius: var(--ic-radius-md);
+  border: 1px solid transparent;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font: var(--type-body-sm);
+}
+.alert-icon    { font-size: 16px; flex-shrink: 0; }
+.alert-message { flex: 1; min-width: 0; margin: 0; }
+.alert-actions { display: inline-flex; gap: var(--ic-space-2); flex-shrink: 0; }
+.alert-close {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  border-radius: var(--ic-radius-sm);
+  flex-shrink: 0;
+  transition: background var(--ic-duration-fast) var(--ic-ease), color var(--ic-duration-fast) var(--ic-ease);
+}
+.alert-close:hover { background: color-mix(in srgb, currentColor 10%, transparent); color: var(--color-text); }
+.alert-close .ph { font-size: 14px; }
+
+/* Variants — soft tinted background + matching border in the variant hue. */
+.alert-danger  { background: var(--color-danger-subtle);  border-color: color-mix(in srgb, var(--color-danger) 22%, transparent); }
+.alert-danger  .alert-icon { color: var(--color-danger); }
+.alert-warning { background: var(--color-warning-subtle); border-color: color-mix(in srgb, var(--color-warning) 32%, transparent); }
+.alert-warning .alert-icon { color: var(--color-warning); }
+.alert-success { background: var(--color-success-subtle); border-color: color-mix(in srgb, var(--color-success) 22%, transparent); }
+.alert-success .alert-icon { color: var(--color-success); }
+.alert-info    { background: var(--color-accent-subtle);  border-color: color-mix(in srgb, var(--color-accent) 22%, transparent); }
+.alert-info    .alert-icon { color: var(--color-accent); }
+
 /* ---------- Badge ---------- */
 .badge {
   display: inline-flex; align-items: center;
@@ -1216,6 +1275,47 @@ textarea.input {
 .list-row:hover { background: var(--color-surface-muted); }
 .list-row-title  { font: var(--type-body); font-weight: var(--ic-weight-medium); color: var(--color-text); margin: 0; }
 .list-row-meta   { font: var(--type-body-sm); color: var(--color-text-muted); margin: 2px 0 0; }
+
+/* ---------- Tabs ----------
+ * Horizontal tab strip with a hairline border underneath and a 2px accent
+ * indicator under the active tab. Triggers are buttons; pair with
+ * `<div role="tabpanel">` panels via aria-controls + matching ids.
+ *
+ *   <div class="tabs" role="tablist">
+ *     <button class="tab is-active" role="tab" aria-selected="true" aria-controls="p-1" id="t-1" type="button">Overview</button>
+ *     <button class="tab" role="tab" aria-selected="false" aria-controls="p-2" id="t-2" type="button">Activity</button>
+ *   </div>
+ *   <div role="tabpanel" id="p-1" aria-labelledby="t-1">…</div>
+ *   <div role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>…</div>
+ */
+.tabs {
+  display: flex;
+  gap: var(--ic-space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+.tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 0 0 var(--ic-space-1);
+  margin-bottom: -1px;
+  cursor: pointer;
+  font: var(--ic-weight-semibold) var(--ic-text-sm)/1.25 var(--ic-font-sans);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color var(--ic-duration-fast) var(--ic-ease),
+              border-color var(--ic-duration-fast) var(--ic-ease);
+}
+.tab:hover { color: var(--color-text); }
+.tab.is-active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+.tab:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--ic-radius-sm);
+}
 
 /* ---------- Top bar ----------
  * Dark application chrome. 56px tall, graphite-800 background.
