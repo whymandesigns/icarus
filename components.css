@@ -343,6 +343,156 @@ textarea.input {
 .card-title { font: var(--type-h3); margin: 0 0 var(--ic-space-2); color: var(--color-text); }
 .card-body  { font: var(--type-body); color: var(--color-text-muted); margin: 0; }
 
+/* ---------- Table ----------
+ * Base: semantic <table>/<thead>/<tbody>/<tr>/<th>/<td>. Left-aligned, no grid lines,
+ * subtle bottom border on the header row.
+ *
+ *   <table class="table table-wide">
+ *     <thead><tr>
+ *       <th><button class="th-sort">Name<svg .../></button></th>
+ *       <th>Status</th>
+ *     </tr></thead>
+ *     <tbody>
+ *       <tr><td>…</td><td>…</td></tr>
+ *     </tbody>
+ *   </table>
+ *
+ * Modifier:
+ *   .table-wide — tall rows (80px) + zebra striping; for content-heavy lists.
+ *
+ * Cell-content helpers (compose inside <td>):
+ *   .cell-title  — title + small subtype label
+ *   .cell-user   — avatar + name + role
+ *   .cell-meta   — small title + caption row (optional icon)
+ *   .cell-actions— right-aligned action buttons (kebab etc.)
+ */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--type-body-sm);
+  color: var(--color-text);
+  text-align: left;
+}
+.table thead th {
+  padding: var(--ic-space-3) var(--ic-space-4);
+  font: var(--ic-weight-regular) var(--ic-text-sm)/1 var(--ic-font-sans);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.table tbody td {
+  padding: var(--ic-space-3) var(--ic-space-4);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Wide variant — generous row height with zebra striping. */
+.table-wide tbody td { padding: var(--ic-space-5) var(--ic-space-4); }
+.table-wide tbody tr:nth-child(even) td { background: var(--color-surface-muted); }
+
+/* Scroll container — wraps a .table to enable both axes of scrolling.
+ * Sticky header keeps column labels visible while scrolling vertically. */
+.table-scroll {
+  overflow: auto;
+  max-height: 480px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-sm);
+}
+.table-scroll .table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 1;
+}
+
+/* Sortable header — button-styled span with an arrow icon */
+.th-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ic-space-1);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+.th-sort .ph { font-size: 12px; color: var(--color-text-subtle); }
+.th-sort:hover { color: var(--color-text); }
+.th-sort:hover .ph { color: var(--color-text-muted); }
+
+/* Right-aligned utility for action cells */
+.cell-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--ic-space-2); }
+
+/* Title + sub-label stack — bold title, small muted type below.
+ * Wrap with .cell-title-row to add an expand/collapse toggle for tree tables. */
+.cell-title { display: flex; flex-direction: column; gap: var(--ic-space-1); min-width: 0; }
+.cell-title-text { font: var(--ic-weight-medium) var(--ic-text-base)/1.3 var(--ic-font-sans); color: var(--color-text); }
+.cell-title-sub  { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-sans); color: var(--color-text-muted); }
+.cell-title-row  { display: flex; align-items: center; gap: var(--ic-space-2); }
+
+/* Nested row hierarchy — drive indentation off data-level on the <tr>. */
+.table tbody tr[data-level="1"] .cell-title-row { padding-left: var(--ic-space-5); }
+.table tbody tr[data-level="2"] .cell-title-row { padding-left: calc(var(--ic-space-5) * 2); }
+
+/* Expand/collapse caret + a same-sized spacer for leaf rows so titles align across levels. */
+.row-toggle {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  border-radius: var(--ic-radius-sm);
+  flex-shrink: 0;
+  transition: background var(--ic-duration-fast) var(--ic-ease), color var(--ic-duration-fast) var(--ic-ease);
+}
+.row-toggle:hover { background: var(--color-surface-muted); color: var(--color-text); }
+.row-toggle .ph { font-size: 14px; transition: transform var(--ic-duration-fast) var(--ic-ease); }
+.row-toggle[aria-expanded="true"] .ph { transform: rotate(90deg); }
+.row-toggle-spacer { display: inline-block; width: 20px; height: 20px; flex-shrink: 0; }
+
+/* User cell — circular avatar + name + role */
+.cell-user { display: flex; align-items: center; gap: var(--ic-space-3); min-width: 0; }
+.cell-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-surface-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--ic-weight-medium) var(--ic-text-xs)/1 var(--ic-font-sans);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.cell-user-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cell-user-name { font: var(--ic-weight-medium) var(--ic-text-sm)/1.2 var(--ic-font-sans); color: var(--color-text); }
+.cell-user-role { font: var(--type-caption); color: var(--color-text-muted); }
+
+/* Meta cell — body text with optional caption row underneath */
+.cell-meta { display: flex; flex-direction: column; gap: var(--ic-space-1); }
+.cell-meta-title { font: var(--type-body-sm); color: var(--color-text); }
+.cell-meta-sub   { font: var(--type-caption); color: var(--color-text-muted); display: inline-flex; align-items: center; gap: var(--ic-space-1); }
+.cell-meta-sub .ph { font-size: 12px; color: var(--color-text-subtle); }
+
+/* Health dot — small colored circle used inline in a cell */
+.cell-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-success);
+}
+.cell-dot.is-warning { background: var(--color-warning); }
+.cell-dot.is-danger  { background: var(--color-danger); }
+
 /* ---------- Badge ---------- */
 .badge {
   display: inline-flex; align-items: center;
@@ -821,13 +971,14 @@ textarea.input {
 .sidenav-item {
   display: flex;
   align-items: center;
-  gap: var(--ic-space-3);
+  gap: var(--ic-space-2);
   height: 36px;
   padding: 0 var(--ic-space-3);
   border-radius: var(--ic-radius-sm);
   font: var(--type-body);
   color: var(--color-text-muted);
   text-decoration: none;
+  text-align: left;
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -865,6 +1016,26 @@ textarea.input {
   height: 16px;
   color: var(--color-text-muted);
   flex-shrink: 0;
+  transition: transform var(--ic-duration-fast) var(--ic-ease);
+}
+
+/* Nested group — a parent item that expands to reveal child items. */
+.sidenav-group { display: contents; }
+.sidenav-group-trigger[aria-expanded="true"] .sidenav-item-chevron { transform: rotate(180deg); }
+.sidenav-sublist {
+  list-style: none;
+  margin: 0;
+  /* Indent so subitem labels line up with the parent label (icon + gap). */
+  padding: 0 0 0 calc(var(--ic-space-2) + 18px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+.sidenav-group-trigger[aria-expanded="false"] + .sidenav-sublist { display: none; }
+.sidenav-subitem {
+  height: 32px;
+  font: var(--type-body-sm);
 }
 
 /* Compact state — icon-only square buttons, labels hidden */
@@ -876,6 +1047,7 @@ textarea.input {
 }
 .sidenav.is-compact .sidenav-item-label,
 .sidenav.is-compact .sidenav-item-chevron { display: none; }
+.sidenav.is-compact .sidenav-sublist { display: none; }
 
 .sidenav-spacer { flex: 1; }
 .sidenav-footer {
