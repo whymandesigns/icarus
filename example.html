@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <style>
     .stack { display: flex; flex-direction: column; gap: var(--ic-space-4); }
     .row   { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
@@ -117,6 +118,35 @@
       padding-bottom: var(--ic-space-3);
       border-bottom: 1px solid var(--color-border);
     }
+
+    /* ---- Iconography grid ---- */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: var(--ic-space-3);
+    }
+    .icon-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ic-space-2);
+      padding: var(--ic-space-4) var(--ic-space-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-sm);
+      background: var(--color-surface);
+      transition: border-color var(--ic-duration-fast) var(--ic-ease),
+                  background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .icon-card:hover { border-color: var(--color-border-strong); background: var(--color-surface-muted); }
+    .icon-card .ph { font-size: 24px; color: var(--color-text); }
+    .icon-card-name {
+      font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      color: var(--color-text-subtle);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -171,6 +201,43 @@
           <p class="body">Body — the workhorse. Calm, readable, never decorative.</p>
           <p class="body-sm">Body small — for secondary copy and metadata.</p>
           <p class="caption">CAPTION — micro labels and timestamps.</p>
+        </div>
+      </section>
+
+      <section class="stack" id="iconography">
+        <div>
+          <h3 class="h3">Iconography</h3>
+          <p class="body-sm">Icons from the <a href="https://phosphoricons.com" target="_blank" rel="noreferrer" style="color: var(--color-text-link)">Phosphor</a> icon pack (regular weight). Reference with <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;i class="ph ph-{name}"&gt;&lt;/i&gt;</code>.</p>
+        </div>
+        <div class="icon-grid">
+          <div class="icon-card"><i class="ph ph-house"></i><span class="icon-card-name">house</span></div>
+          <div class="icon-card"><i class="ph ph-user"></i><span class="icon-card-name">user</span></div>
+          <div class="icon-card"><i class="ph ph-users"></i><span class="icon-card-name">users</span></div>
+          <div class="icon-card"><i class="ph ph-gear"></i><span class="icon-card-name">gear</span></div>
+          <div class="icon-card"><i class="ph ph-magnifying-glass"></i><span class="icon-card-name">magnifying-glass</span></div>
+          <div class="icon-card"><i class="ph ph-bell"></i><span class="icon-card-name">bell</span></div>
+          <div class="icon-card"><i class="ph ph-envelope"></i><span class="icon-card-name">envelope</span></div>
+          <div class="icon-card"><i class="ph ph-calendar"></i><span class="icon-card-name">calendar</span></div>
+          <div class="icon-card"><i class="ph ph-chat-circle"></i><span class="icon-card-name">chat-circle</span></div>
+          <div class="icon-card"><i class="ph ph-folder"></i><span class="icon-card-name">folder</span></div>
+          <div class="icon-card"><i class="ph ph-file"></i><span class="icon-card-name">file</span></div>
+          <div class="icon-card"><i class="ph ph-image"></i><span class="icon-card-name">image</span></div>
+          <div class="icon-card"><i class="ph ph-plus"></i><span class="icon-card-name">plus</span></div>
+          <div class="icon-card"><i class="ph ph-x"></i><span class="icon-card-name">x</span></div>
+          <div class="icon-card"><i class="ph ph-check"></i><span class="icon-card-name">check</span></div>
+          <div class="icon-card"><i class="ph ph-trash"></i><span class="icon-card-name">trash</span></div>
+          <div class="icon-card"><i class="ph ph-pencil-simple"></i><span class="icon-card-name">pencil-simple</span></div>
+          <div class="icon-card"><i class="ph ph-copy"></i><span class="icon-card-name">copy</span></div>
+          <div class="icon-card"><i class="ph ph-arrow-right"></i><span class="icon-card-name">arrow-right</span></div>
+          <div class="icon-card"><i class="ph ph-caret-down"></i><span class="icon-card-name">caret-down</span></div>
+          <div class="icon-card"><i class="ph ph-heart"></i><span class="icon-card-name">heart</span></div>
+          <div class="icon-card"><i class="ph ph-star"></i><span class="icon-card-name">star</span></div>
+          <div class="icon-card"><i class="ph ph-eye"></i><span class="icon-card-name">eye</span></div>
+          <div class="icon-card"><i class="ph ph-lock"></i><span class="icon-card-name">lock</span></div>
+          <div class="icon-card"><i class="ph ph-info"></i><span class="icon-card-name">info</span></div>
+          <div class="icon-card"><i class="ph ph-warning"></i><span class="icon-card-name">warning</span></div>
+          <div class="icon-card"><i class="ph ph-lightning"></i><span class="icon-card-name">lightning</span></div>
+          <div class="icon-card"><i class="ph ph-rocket"></i><span class="icon-card-name">rocket</span></div>
         </div>
       </section>
     </section>
@@ -438,8 +505,15 @@
             </ul>
             <div class="sidenav-spacer"></div>
             <div class="sidenav-footer">
-              <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span></a>
-              <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></a>
+              <div class="sidenav-group">
+                <button class="sidenav-item sidenav-group-trigger" type="button" aria-expanded="true"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></button>
+                <ul class="sidenav-sublist">
+                  <li><a class="sidenav-item sidenav-subitem" href="#"><span class="sidenav-item-label">Permissions</span></a></li>
+                  <li><a class="sidenav-item sidenav-subitem" href="#"><span class="sidenav-item-label">Settings</span></a></li>
+                  <li><a class="sidenav-item sidenav-subitem" href="#"><span class="sidenav-item-label">Integrations</span></a></li>
+                </ul>
+              </div>
+              <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span></a>
             </div>
           </aside>
         </div>
@@ -1229,6 +1303,360 @@
           </article>
         </div>
       </section>
+
+      <section class="stack" id="tables">
+        <div>
+          <h3 class="h3">Tables</h3>
+          <p class="body-sm">Wide variant — tall rows, zebra striping, no grid lines. Built on semantic <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table&gt;</code> with cell-content helpers (<code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-title</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-user</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-meta</code>) for repeating patterns.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="table table-wide">
+            <thead>
+              <tr>
+                <th><button class="th-sort" type="button">Name</button></th>
+                <th><button class="th-sort" type="button">Status</button></th>
+                <th><button class="th-sort" type="button">Health</button></th>
+                <th><button class="th-sort" type="button">Accountability</button></th>
+                <th><button class="th-sort" type="button">Roadmap</button></th>
+                <th><button class="th-sort" type="button">RoB</button></th>
+                <th style="text-align: right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-level="0">
+                <td>
+                  <div class="cell-title-row">
+                    <button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Marketing Consulting</span>
+                      <span class="cell-title-sub">Initiative</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Opportunity Assessment</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">MS</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Maria Santos</span>
+                      <span class="cell-user-role">Marketing Manager</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Sep 8, 2024</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Paid Media Plan Review</span>
+                    <span class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="1">
+                <td>
+                  <div class="cell-title-row">
+                    <button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Brand refresh</span>
+                      <span class="cell-title-sub">Project</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">In progress</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">MS</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Maria Santos</span>
+                      <span class="cell-user-role">Marketing Manager</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Q4 2024</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Brand sync</span>
+                    <span class="cell-meta-sub"><span class="tag tag-light">Weekly on Monday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="2">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Logo update</span>
+                      <span class="cell-title-sub">Task</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">In progress</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">LW</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Liam Wong</span>
+                      <span class="cell-user-role">Designer</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Nov 15, 2024</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="2">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Style guide</span>
+                      <span class="cell-title-sub">Task</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Not started</span></td>
+                <td><span class="cell-dot is-warning" aria-label="At risk"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">LW</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Liam Wong</span>
+                      <span class="cell-user-role">Designer</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Dec 1, 2024</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="1">
+                <td>
+                  <div class="cell-title-row">
+                    <button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Campaign planning</span>
+                      <span class="cell-title-sub">Project</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">MS</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Maria Santos</span>
+                      <span class="cell-user-role">Marketing Manager</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Q1 2025</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="2">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Q3 launch playbook</span>
+                      <span class="cell-title-sub">Task</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">MS</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Maria Santos</span>
+                      <span class="cell-user-role">Marketing Manager</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Feb 12, 2025</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="0">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Enhance Usability for Customer Success</span>
+                      <span class="cell-title-sub">Initiative</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Opportunity Assessment</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">JR</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Juan Ramirez</span>
+                      <span class="cell-user-role">Sales Director</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Sep 28, 2024</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Paid Media Plan Review</span>
+                    <span class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="0">
+                <td>
+                  <div class="cell-title-row">
+                    <button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Cost optimization</span>
+                      <span class="cell-title-sub">Initiative</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">OD</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Olivia Doe</span>
+                      <span class="cell-user-role">Finance specialist</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Q1 2026</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Cost optimization monthly</span>
+                    <span class="cell-meta-sub"><span class="tag tag-light">Monthly on Thursday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="1">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">License audit</span>
+                      <span class="cell-title-sub">Project</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">OD</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Olivia Doe</span>
+                      <span class="cell-user-role">Finance specialist</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Mar 1, 2026</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="1">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Vendor consolidation</span>
+                      <span class="cell-title-sub">Project</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot" aria-label="On track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">OD</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Olivia Doe</span>
+                      <span class="cell-user-role">Finance specialist</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Apr 15, 2026</div></td>
+                <td><div class="cell-meta-sub">—</div></td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="0">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Sustainability Initiatives</span>
+                      <span class="cell-title-sub">Initiative</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">Planning</span></td>
+                <td><span class="cell-dot is-warning" aria-label="At risk"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">HA</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Henrik Andersson</span>
+                      <span class="cell-user-role">Operations Lead</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Q2 2026</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Sustainability sync</span>
+                    <span class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Nov 12 · 10:00am · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Weekly on Tuesday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+              <tr data-level="0">
+                <td>
+                  <div class="cell-title-row">
+                    <span class="row-toggle-spacer"></span>
+                    <div class="cell-title">
+                      <span class="cell-title-text">Customer Onboarding Revamp</span>
+                      <span class="cell-title-sub">Initiative</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="tag tag-light">In progress</span></td>
+                <td><span class="cell-dot is-danger" aria-label="Off track"></span></td>
+                <td>
+                  <div class="cell-user">
+                    <span class="cell-avatar">AK</span>
+                    <div class="cell-user-meta">
+                      <span class="cell-user-name">Aisha Khan</span>
+                      <span class="cell-user-role">Finance Analyst</span>
+                    </div>
+                  </div>
+                </td>
+                <td><div class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Aug 29, 2024</div></td>
+                <td>
+                  <div class="cell-meta">
+                    <span class="cell-meta-title">Onboarding review</span>
+                    <span class="cell-meta-sub"><i class="ph ph-calendar-blank"></i>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                  </div>
+                </td>
+                <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><i class="ph ph-dots-three-vertical" style="font-size: 16px"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
     <section id="templates" class="stack" style="gap: var(--ic-space-7)">
@@ -1270,8 +1698,15 @@
               </ul>
               <div class="sidenav-spacer"></div>
               <div class="sidenav-footer">
-                <a class="sidenav-item" href="#" data-page="admin"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span></a>
-                <a class="sidenav-item" href="#" data-page="learning"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></a>
+                <div class="sidenav-group">
+                  <button class="sidenav-item sidenav-group-trigger" type="button" aria-expanded="true"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></button>
+                  <ul class="sidenav-sublist">
+                    <li><a class="sidenav-item sidenav-subitem" href="#" data-page="admin"><span class="sidenav-item-label">Permissions</span></a></li>
+                    <li><a class="sidenav-item sidenav-subitem" href="#" data-page="admin"><span class="sidenav-item-label">Settings</span></a></li>
+                    <li><a class="sidenav-item sidenav-subitem" href="#" data-page="admin"><span class="sidenav-item-label">Integrations</span></a></li>
+                  </ul>
+                </div>
+                <a class="sidenav-item" href="#" data-page="learning"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span></a>
               </div>
             </aside>
 
@@ -1673,6 +2108,38 @@
     document.querySelectorAll('.sidenav-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
         btn.closest('.sidenav').classList.toggle('is-compact');
+      });
+    });
+
+    // Side navigation — expand/collapse nested groups
+    document.querySelectorAll('.sidenav-group-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const open = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!open));
+      });
+    });
+
+    // Tree tables — expand/collapse nested rows. Visibility derives from the
+    // stack of currently collapsed ancestor levels, so a deeply collapsed
+    // branch stays hidden even when an outer ancestor is re-expanded.
+    document.querySelectorAll('.table tbody').forEach(tbody => {
+      if (!tbody.querySelector('.row-toggle')) return;
+      const refresh = () => {
+        const collapsedAt = [];
+        [...tbody.children].forEach(row => {
+          const lvl = parseInt(row.dataset.level || '0', 10);
+          while (collapsedAt.length && collapsedAt[collapsedAt.length - 1] >= lvl) collapsedAt.pop();
+          row.hidden = collapsedAt.length > 0;
+          const t = row.querySelector('.row-toggle');
+          if (t && t.getAttribute('aria-expanded') === 'false') collapsedAt.push(lvl);
+        });
+      };
+      tbody.querySelectorAll('.row-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const open = btn.getAttribute('aria-expanded') !== 'false';
+          btn.setAttribute('aria-expanded', String(!open));
+          refresh();
+        });
       });
     });
 
