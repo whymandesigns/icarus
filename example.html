@@ -119,6 +119,47 @@
       border-bottom: 1px solid var(--color-border);
     }
 
+    /* Inline table of contents — auto-built per major section */
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ic-space-2);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .toc a {
+      display: inline-flex;
+      align-items: center;
+      font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
+      color: var(--color-text-muted);
+      padding: var(--ic-space-2) var(--ic-space-3);
+      border-radius: var(--ic-radius-md);
+      background: var(--color-surface-muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: background var(--ic-duration-fast) var(--ic-ease),
+                  color var(--ic-duration-fast) var(--ic-ease),
+                  border-color var(--ic-duration-fast) var(--ic-ease);
+    }
+    .toc a:hover {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border-color: var(--color-border);
+    }
+
+    /* Subsection rhythm — each h3 section inside a major group sits above a
+       thin top border + extra padding, except the one that follows a TOC. */
+    section[id] section.stack[id] {
+      padding-top: var(--ic-space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .toc + section.stack[id],
+    section[id] > section.stack[id]:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+
     /* ---- Iconography grid ---- */
     .icon-grid {
       display: grid;
@@ -174,6 +215,7 @@
 
     <section id="foundations" class="stack" style="gap: var(--ic-space-7)">
       <h2 class="section-head">Foundations</h2>
+      <nav class="toc" data-toc-for="foundations" aria-label="Foundations contents"></nav>
 
       <section class="stack" id="palette">
         <div>
@@ -244,6 +286,7 @@
 
     <section id="components" class="stack" style="gap: var(--ic-space-7)">
       <h2 class="section-head">Components</h2>
+      <nav class="toc" data-toc-for="components" aria-label="Components contents"></nav>
 
       <section class="stack" id="buttons">
         <h3 class="h3">Buttons</h3>
@@ -1378,6 +1421,24 @@
         </div>
       </section>
 
+      <section class="stack" id="tooltips">
+        <div>
+          <h3 class="h3">Tooltips</h3>
+          <p class="body-sm">CSS-only tooltip on any element via <code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip="…"</code>. Default placement is top; override with <code style="font: var(--type-mono); color: var(--color-text-muted)">data-placement="bottom"</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">left</code>, or <code style="font: var(--type-mono); color: var(--color-text-muted)">right</code>. Reveals on hover and keyboard focus.</p>
+        </div>
+        <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-7) var(--ic-space-3); justify-content: flex-start">
+          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on top" data-placement="top">Top</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on bottom" data-placement="bottom">Bottom</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the left side" data-placement="left">Left</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the right side" data-placement="right">Right</button>
+          <span style="border-left: 1px solid var(--color-border); height: 24px; margin: 0 var(--ic-space-2)"></span>
+          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Edit" aria-label="Edit"><svg class="btn-icon"><use href="#i-pencil"/></svg></button>
+          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Duplicate" aria-label="Duplicate"><svg class="btn-icon"><use href="#i-copy"/></svg></button>
+          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Archive" aria-label="Archive"><svg class="btn-icon"><use href="#i-archive"/></svg></button>
+          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Delete" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
+        </div>
+      </section>
+
       <section class="stack" id="cards">
         <h3 class="h3">Cards</h3>
         <div class="grid-2">
@@ -1782,6 +1843,7 @@
 
     <section id="templates" class="stack" style="gap: var(--ic-space-7)">
       <h2 class="section-head">Templates</h2>
+      <nav class="toc" data-toc-for="templates" aria-label="Templates contents"></nav>
 
       <section class="stack" id="template-app-shell">
         <div>
@@ -2108,6 +2170,21 @@
     // Apply indeterminate state to checkboxes marked with data-indeterminate
     document.querySelectorAll('input[type=checkbox][data-indeterminate]').forEach(cb => {
       cb.indeterminate = true;
+    });
+
+    // Inline TOC — build a per-section list of links from each <section id>'s h3.
+    document.querySelectorAll('.toc[data-toc-for]').forEach(nav => {
+      const parent = document.getElementById(nav.dataset.tocFor);
+      if (!parent) return;
+      const items = parent.querySelectorAll(':scope > section[id]');
+      items.forEach(sec => {
+        const heading = sec.querySelector('h3.h3');
+        if (!heading) return;
+        const a = document.createElement('a');
+        a.href = '#' + sec.id;
+        a.textContent = heading.textContent.trim();
+        nav.appendChild(a);
+      });
     });
 
     // CTA linking — clone <button class="btn"> children from a [data-cta-source]

@@ -1317,6 +1317,55 @@ textarea.input {
   border-radius: var(--ic-radius-sm);
 }
 
+/* ---------- Tooltip ----------
+ * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
+ * is top; override with [data-placement="bottom"|"left"|"right"].
+ *
+ *   <button class="btn" data-tooltip="Copied!" data-placement="bottom">Copy</button>
+ *
+ * Renders via ::after so no extra DOM. Reveals on :hover and :focus-visible.
+ */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: var(--ic-palette-graphite-900);
+  color: var(--color-text-inverse);
+  padding: var(--ic-space-1) var(--ic-space-2);
+  border-radius: var(--ic-radius-sm);
+  font: var(--type-caption);
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: var(--ic-z-toast);
+  transition: opacity var(--ic-duration-fast) var(--ic-ease) 80ms;
+  /* Default placement: top */
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after { opacity: 1; }
+
+[data-tooltip][data-placement="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + 6px);
+}
+[data-tooltip][data-placement="left"]::after {
+  bottom: auto;
+  top: 50%;
+  right: calc(100% + 6px);
+  left: auto;
+  transform: translateY(-50%);
+}
+[data-tooltip][data-placement="right"]::after {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translateY(-50%);
+}
+
 /* ---------- Top bar ----------
  * Dark application chrome. 56px tall, graphite-800 background.
  * Brand on left, search in middle, avatar on right.
