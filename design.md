@@ -149,54 +149,97 @@ Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
 
 ## 6. Components
 
-All component CSS lives in `components.css` and references **semantic tokens only**. Snippets below are HTML-only — paste them into prototypes.
+All component CSS lives in `components.css` and references **semantic tokens only**. The shortcode table below is the quick-reference index of every component — drop the root class (or attribute) into prototype markup and the styles apply.
 
-### Button
+### Shortcode reference
+
+| Component | Root | Variants / parts |
+|---|---|---|
+| Buttons | `.btn` | `.btn-primary` · `.btn-secondary` · `.btn-ghost` · `.btn-danger` · `.btn-xs` · `.btn-icon-only` |
+| Inputs | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` |
+| Select | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
+| Tag input | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
+| Top bar | `.topbar` | `.topbar-brand` · `.topbar-search` · `.topbar-avatar` |
+| Side navigation | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact` |
+| Switches | `.switch` | `.switch-input` · `.switch-track` |
+| Radios | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
+| Checkboxes | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
+| Badges | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info` |
+| Tags | `.tag` | `.tag-positive` · `.tag-negative` · `.tag-warning` · `.tag-light` · `.tag-dark` · `.tag-blue` · `.tag-indicator` |
+| Count badge | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
+| Alerts | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
+| Dropdown menu | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` |
+| Modal | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
+| Drawer | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
+| Page heads | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-count` · `.page-head-subtitle` · `.page-head-actions` |
+| Tabs | `.tabs` + `.tab` | `.is-active` · `role="tablist"` / `role="tab"` / `aria-controls` / `[role="tabpanel"]` |
+| Tooltips | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) |
+| Cards | `.card` | `.card-title` · `.card-body` |
+| Tables | `.table` | `.table-wide` · `.table-scroll` · `.th-sort` · `.cell-title` · `.cell-user` · `.cell-avatar` · `.cell-user-meta` · `.cell-meta` · `.cell-meta-sub` · `.cell-dot` (`.is-warning` / `.is-danger`) · `.cell-actions` |
+| Icons | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
+| Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
+| Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
+
+### Rules of thumb
+
+- **Compose, don't override.** Stack variants on the root class (`<button class="btn btn-xs btn-primary">`). Don't write new CSS in a feature file — if a variant is missing, add it to `components.css` and re-inline.
+- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--ic-space-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
+- **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, tag inputs, character counters) get their behavior from the `<script>` block in `example.html`. When you build a new prototype, copy that whole block — the handlers are delegated and idempotent, so they activate on any markup that uses the right classes / data attributes.
+- **Page structure:** wrap content in `<main class="page">` to get the 1024px max-width centered layout.
+
+### Common snippets
 
 ```html
+<!-- Button -->
 <button class="btn btn-primary">Continue</button>
 <button class="btn btn-secondary">Cancel</button>
 <button class="btn btn-ghost">Skip</button>
 <button class="btn btn-danger">Delete</button>
-```
 
-### Field + Input
-
-```html
+<!-- Field + Input -->
 <label class="field">
   <span class="field-label">Email</span>
   <input class="input" type="email" placeholder="you@example.com" />
+  <span class="field-hint">We'll never share your email.</span>
 </label>
-```
 
-### Card
-
-```html
+<!-- Card -->
 <article class="card">
   <h3 class="card-title">Title</h3>
   <p class="card-body">Body text.</p>
 </article>
-```
 
-### Badge
-
-```html
-<span class="badge">Default</span>
+<!-- Badge -->
 <span class="badge badge-success">Active</span>
-<span class="badge badge-warning">Pending</span>
-<span class="badge badge-danger">Failed</span>
-<span class="badge badge-info">New</span>
-```
 
-### Type helpers
+<!-- Alert -->
+<div class="alert alert-warning" role="alert">
+  <i class="ph ph-warning alert-icon"></i>
+  <p class="alert-message">Your trial expires in 5 days.</p>
+  <div class="alert-actions">
+    <button class="btn btn-xs btn-primary">Upgrade</button>
+  </div>
+  <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+</div>
 
-```html
+<!-- Tabs -->
+<div class="tabs" role="tablist">
+  <button class="tab is-active" role="tab" aria-selected="true" aria-controls="p-1" id="t-1" type="button">Overview</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p-2" id="t-2" type="button">Activity</button>
+</div>
+<div role="tabpanel" id="p-1" aria-labelledby="t-1">…</div>
+<div role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>…</div>
+
+<!-- Tooltip -->
+<button class="btn btn-secondary" data-tooltip="Save your changes" data-placement="top">Save</button>
+
+<!-- Type helpers -->
 <h1 class="h1">Page title</h1>
-<h2 class="h2">Section</h2>
 <p class="body">Body copy.</p>
-<p class="body-sm">Secondary copy.</p>
 <span class="caption">Caption</span>
 ```
+
+For the full inventory with every modifier and live demos, open `example.html` — it's the source of truth for what's available and how each component composes.
 
 ---
 
@@ -212,6 +255,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 <body>
   <main class="page">
@@ -262,6 +306,7 @@ Create `features/feature-c.html` linking to the sibling system:
   <link rel="stylesheet" href="../designmd/tokens.css" />
   <link rel="stylesheet" href="../designmd/semantic.css" />
   <link rel="stylesheet" href="../designmd/components.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 <body>
   <!-- prototype markup -->
