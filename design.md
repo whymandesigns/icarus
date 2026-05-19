@@ -286,15 +286,29 @@ Development/
 │   └── example.html             ← system showcase (uses local ./ links)
 │
 └── features/                    ← prototypes → dropped onto Netlify
-    ├── feature-a.html           ← single-file prototype
-    └── feature-b.html           ← single-file prototype
+    ├── feature-a/
+    │   └── index.html           ← single-file prototype
+    └── feature-b/
+        └── index.html           ← single-file prototype
 ```
 
 `designmd/` is the stable source of truth that gets pushed to GitHub. `features/` is a separate, fast-moving sandbox of single HTML files. The two folders are **siblings** — `features/` is not a subfolder of `designmd/`, so the design-system repo isn't polluted with prototype churn.
 
+> **Rule — every feature follows `features/feature-name/index.html`.**
+>
+> The path has three fixed levels:
+>
+> 1. **`features/`** — the parent folder. It lives as a sibling of `designmd/` and is always present. If it doesn't exist yet, create it on first use.
+> 2. **`feature-name/`** — a folder *inside* `features/`, named after the feature in kebab-case (e.g. `billing-portal/`, `slide-integration/`). One folder per feature, never reused.
+> 3. **`index.html`** — the working file. Always called exactly `index.html` — never `feature-name.html` or anything else.
+>
+> Full example: `features/billing-portal/index.html`.
+>
+> This keeps URLs clean (`/billing-portal/` instead of `/billing-portal.html`), lets each feature ship its own colocated assets later if needed, and matches the structure of the existing `integrations/` and `slide-integration/` prototypes.
+
 ### Building a new prototype
 
-Create `features/feature-c.html` linking to the sibling system:
+Create `features/feature-c/index.html` linking to the sibling system:
 
 ```html
 <!doctype html>
@@ -322,7 +336,7 @@ Iterate locally — open via `file://` or a small static server. Relative paths 
 When you're ready to deploy, from the `designmd/` folder run:
 
 ```bash
-python3 inline.py ../features/feature-c.html
+python3 inline.py ../features/feature-c/index.html
 ```
 
 The script reads `tokens.css` / `semantic.css` / `components.css` / `assets/logo.svg` from `designmd/` (where it lives) and bakes them into the target HTML at whatever path you point it at. The file becomes self-contained (~88 KB for a full prototype).
@@ -335,14 +349,14 @@ The script is **idempotent** — running it on an already-inlined file detects t
 
 ```bash
 cd designmd
-python3 inline.py ../features/*.html
+python3 inline.py ../features/*/index.html
 ```
 
 Every prototype is back in sync with the latest system CSS. No external CDN, no broken links, no manual swap.
 
 ### Two iteration modes
 
-- **Iterating on a prototype** (the common case): edit `features/feature-X.html` directly. CSS is already inlined — the `<style>` block sits at the top of the file, ignore it and edit the markup below.
+- **Iterating on a prototype** (the common case): edit `features/feature-X/index.html` directly. CSS is already inlined — the `<style>` block sits at the top of the file, ignore it and edit the markup below.
 - **Iterating on the design system** (less common): edit `designmd/tokens.css` / `semantic.css` / `components.css` and reload `designmd/example.html` (uses local `./` links for instant feedback). When stable, push to GitHub and run `inline.py` across every prototype to bake the changes in.
 
 ### Why this approach over CDN-linked HTML
