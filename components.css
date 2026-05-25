@@ -652,6 +652,88 @@ textarea.input {
   border-color: var(--color-danger);
 }
 
+/* ---------- Avatar ----------
+ * Squarish identity badge (4px corner radius). Three content types share
+ * the same root — the markup inside decides which renders:
+ *
+ *   Photo:     <span class="avatar avatar-md"><img src="…" alt="Jane"></span>
+ *   Initials:  <span class="avatar avatar-md">JD</span>
+ *   Team/co:   <span class="avatar avatar-md avatar-team"><i class="ph ph-buildings"></i></span>
+ *
+ * Sizes (default = avatar-md / 32px):
+ *   .avatar-xs   16px
+ *   .avatar-sm   24px
+ *   .avatar-md   32px (default)
+ *   .avatar-lg   40px
+ *   .avatar-xl   80px
+ *   .avatar-2xl 120px
+ *
+ * Interactive: render as <button> or <a> instead of <span> — picks up
+ * pointer cursor, hover dim and focus-visible ring automatically.
+ */
+.avatar {
+  --avatar-size: 32px;
+  --avatar-text: var(--ic-text-sm);
+  --avatar-icon: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--ic-radius-sm);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font: var(--ic-weight-semibold) var(--avatar-text)/1 var(--ic-font-sans);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.avatar-xs  { --avatar-size: 16px;  --avatar-text: var(--ic-text-xxs); --avatar-icon: 10px; }
+.avatar-sm  { --avatar-size: 24px;  --avatar-text: var(--ic-text-xs);  --avatar-icon: 14px; }
+.avatar-md  { --avatar-size: 32px;  --avatar-text: var(--ic-text-sm);  --avatar-icon: 16px; }
+.avatar-lg  { --avatar-size: 40px;  --avatar-text: var(--ic-text-base);--avatar-icon: 20px; }
+.avatar-xl  { --avatar-size: 80px;  --avatar-text: var(--ic-text-2xl); --avatar-icon: 36px; }
+.avatar-2xl { --avatar-size: 120px; --avatar-text: 42px;               --avatar-icon: 56px; }
+
+/* Photo content — image fills the avatar */
+.avatar > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Icon content — Phosphor or inline SVG, sized by --avatar-icon */
+.avatar > .ph { font-size: var(--avatar-icon); }
+.avatar > svg { width: var(--avatar-icon); height: var(--avatar-icon); }
+
+/* Team / company variant — same neutral fill as initials; icon is the
+ * differentiator from people avatars. */
+.avatar-team {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+/* Interactive — applies when rendered as <button> or <a> */
+button.avatar,
+a.avatar {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter var(--ic-duration-fast) var(--ic-ease),
+              box-shadow var(--ic-duration-fast) var(--ic-ease);
+}
+button.avatar:hover,
+a.avatar:hover { filter: brightness(0.95); }
+button.avatar:focus-visible,
+a.avatar:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* ---------- Switch ----------
  * Usage:
  *   <label class="switch">
@@ -1366,6 +1448,86 @@ textarea.input {
   transform: translateY(-50%);
 }
 
+/* ---------- Toast ----------
+ * Floating notification anchored to the top-right corner. Spawn via the
+ * global `toast(...)` helper (see example.html). Three behaviors —
+ *   persistent → no auto-dismiss, shows close button
+ *   timed      → auto-dismisses after `timeout` ms (default 5000)
+ *   action     → shows an action button + close button
+ *
+ * Five color variants:
+ *   .toast-neutral · .toast-error · .toast-warning · .toast-success · .toast-info
+ *
+ *   <div class="toast-region" aria-live="polite"></div>     ← one per page
+ *   <div class="toast toast-success">
+ *     <i class="ph ph-check-circle toast-icon"></i>
+ *     <p class="toast-message">Saved.</p>
+ *     <button class="btn btn-xs btn-secondary toast-action">Undo</button>
+ *     <button class="toast-close" aria-label="Close"><i class="ph ph-x"></i></button>
+ *   </div>
+ */
+.toast-region {
+  position: fixed;
+  top: var(--ic-space-4);
+  right: var(--ic-space-4);
+  z-index: var(--ic-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ic-space-2);
+  max-width: 380px;
+  pointer-events: none;
+}
+.toast {
+  --toast-accent: var(--color-border-strong);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ic-space-3);
+  padding: var(--ic-space-3) var(--ic-space-4);
+  border-radius: var(--ic-radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font: var(--type-body-sm);
+  box-shadow: var(--ic-shadow-md);
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 380px;
+  transition: opacity var(--ic-duration-base) var(--ic-ease),
+              transform var(--ic-duration-base) var(--ic-ease);
+}
+.toast.is-entering { opacity: 0; transform: translateX(20%); }
+.toast.is-leaving  { opacity: 0; transform: translateX(20%); }
+
+.toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); margin-top: 1px; }
+.toast-message { flex: 1; min-width: 0; margin: 0; line-height: 1.4; }
+.toast-action { flex-shrink: 0; align-self: center; }
+.toast-close {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  border-radius: var(--ic-radius-sm);
+  flex-shrink: 0;
+  align-self: center;
+  transition: color var(--ic-duration-fast) var(--ic-ease);
+}
+.toast-close:hover { color: var(--color-text); }
+.toast-close .ph { font-size: 14px; }
+
+/* Color variants — set --toast-accent, icon color follows */
+.toast-neutral { --toast-accent: var(--color-border-strong); }
+.toast-neutral .toast-icon { color: var(--color-text-muted); }
+.toast-error   { --toast-accent: var(--color-danger);  background: var(--color-danger-subtle); }
+.toast-warning { --toast-accent: var(--color-warning); background: var(--color-warning-subtle); }
+.toast-success { --toast-accent: var(--color-success); background: var(--color-success-subtle); }
+.toast-info    { --toast-accent: var(--color-accent);  background: var(--color-accent-subtle); }
+
 /* ---------- Top bar ----------
  * Dark application chrome. 56px tall, graphite-800 background.
  * Brand on left, search in middle, avatar on right.
@@ -1505,10 +1667,19 @@ textarea.input {
 .dropdown-item:disabled,
 .dropdown-item[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
 
+/* Hairline divider inside a menu — render as <hr class="dropdown-divider"> */
+.dropdown-divider {
+  height: 1px;
+  margin: var(--ic-space-1) 0;
+  background: var(--color-border);
+  border: 0;
+}
+
 /* Optional pieces inside an item */
 .dropdown-item-icon {
   width: 16px;
   height: 16px;
+  font-size: 16px; /* sizes Phosphor <i> icons; harmless for inline SVG */
   flex-shrink: 0;
   color: var(--color-text-muted);
 }

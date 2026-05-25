@@ -676,6 +676,50 @@
         </div>
       </section>
 
+      <section class="stack" id="avatars">
+        <div>
+          <h3 class="h3">Avatars</h3>
+          <p class="body-sm">Squarish identity badge (4px corner radius) in six sizes and three content types. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
+        </div>
+
+        <span class="caption" style="display: block">Photo — &lt;img&gt; child</span>
+        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+          <span class="avatar avatar-xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+          <span class="avatar avatar-sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+          <span class="avatar avatar-md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+          <span class="avatar avatar-lg"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+          <span class="avatar avatar-xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+          <span class="avatar avatar-2xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Initials — 1–2 letters of text</span>
+        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+          <span class="avatar avatar-xs">JD</span>
+          <span class="avatar avatar-sm">JD</span>
+          <span class="avatar avatar-md">JD</span>
+          <span class="avatar avatar-lg">JD</span>
+          <span class="avatar avatar-xl">JD</span>
+          <span class="avatar avatar-2xl">JD</span>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Team / company — icon child (<code style="font: var(--type-mono); color: var(--color-text-muted)">.avatar-team</code> is a semantic hook; visual differentiation is the icon itself)</span>
+        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+          <span class="avatar avatar-xs avatar-team"><i class="ph ph-buildings"></i></span>
+          <span class="avatar avatar-sm avatar-team"><i class="ph ph-buildings"></i></span>
+          <span class="avatar avatar-md avatar-team"><i class="ph ph-buildings"></i></span>
+          <span class="avatar avatar-lg avatar-team"><i class="ph ph-buildings"></i></span>
+          <span class="avatar avatar-xl avatar-team"><i class="ph ph-buildings"></i></span>
+          <span class="avatar avatar-2xl avatar-team"><i class="ph ph-buildings"></i></span>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Interactive — render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code></span>
+        <div class="row" style="gap: var(--ic-space-3); align-items: center">
+          <button class="avatar avatar-md" type="button" aria-label="Open profile">JD</button>
+          <a class="avatar avatar-md" href="#avatars" aria-label="View team"><i class="ph ph-users-three"></i></a>
+          <button class="avatar avatar-lg" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
+        </div>
+      </section>
+
       <section class="stack" id="alerts">
         <div>
           <h3 class="h3">Alerts</h3>
@@ -756,6 +800,60 @@
               </div>
               <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="toasts">
+        <div>
+          <h3 class="h3">Toasts</h3>
+          <p class="body-sm">Floating notifications anchored to the top-right of the viewport. Five color variants (<code style="font: var(--type-mono); color: var(--color-text-muted)">.toast-neutral</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.toast-error</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.toast-warning</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.toast-success</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.toast-info</code>) × three behaviors: persistent (close button only), timed (auto-dismiss), action (CTA + close). Spawn via the global <code style="font: var(--type-mono); color: var(--color-text-muted)">toast({ … })</code> helper or render the markup directly.</p>
+        </div>
+
+        <span class="caption" style="display: block">Spawn — color variants (timed, 4s)</span>
+        <div class="row" style="gap: var(--ic-space-2)">
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'neutral', message: 'New comment on Q4 plan.' })">Neutral</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'error', message: 'Failed to save changes. Check your connection.' })">Error</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'warning', message: 'You have unsaved changes.' })">Warning</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'success', message: 'Document saved.' })">Success</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'info', message: 'A new version is available.' })">Info</button>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Spawn — behaviors</span>
+        <div class="row" style="gap: var(--ic-space-2)">
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'success', behavior: 'timed', message: 'Auto-dismisses after 4 seconds.', timeout: 4000 })">Timed</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'warning', behavior: 'persistent', message: 'Stays until you dismiss it.' })">Persistent</button>
+          <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'neutral', behavior: 'action', message: 'Item moved to archive.', action: { label: 'Undo' } })">Action</button>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Static reference — color variants (rendered inline so you can see all five at once)</span>
+        <div class="stack" style="gap: var(--ic-space-3); max-width: 380px">
+          <div class="toast toast-neutral">
+            <i class="ph ph-info toast-icon"></i>
+            <p class="toast-message">New comment on Q4 plan.</p>
+            <button class="toast-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="toast toast-error">
+            <i class="ph ph-warning-octagon toast-icon"></i>
+            <p class="toast-message">Failed to save changes. Check your connection.</p>
+            <button class="toast-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="toast toast-warning">
+            <i class="ph ph-warning toast-icon"></i>
+            <p class="toast-message">You have unsaved changes.</p>
+            <button class="toast-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="toast toast-success">
+            <i class="ph ph-check-circle toast-icon"></i>
+            <p class="toast-message">Document saved.</p>
+            <button class="btn btn-xs btn-secondary toast-action">Undo</button>
+            <button class="toast-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+          </div>
+          <div class="toast toast-info">
+            <i class="ph ph-info toast-icon"></i>
+            <p class="toast-message">A new version is available.</p>
+            <button class="btn btn-xs btn-secondary toast-action">Reload</button>
+            <button class="toast-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
           </div>
         </div>
       </section>
@@ -914,21 +1012,21 @@
             <span class="caption">With avatar</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">
-                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-brand); background: var(--color-brand-subtle)">MV</span>
+                <span class="avatar avatar-md">MV</span>
                 <div class="dropdown-item-text">
                   <span class="dropdown-item-label">Matthew Vella</span>
                   <span class="dropdown-item-description">matthew@spark-code.com</span>
                 </div>
               </button>
               <button class="dropdown-item">
-                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-info); background: var(--color-info-subtle)">AS</span>
+                <span class="avatar avatar-md">AS</span>
                 <div class="dropdown-item-text">
                   <span class="dropdown-item-label">Anna Schmidt</span>
                   <span class="dropdown-item-description">anna@example.com</span>
                 </div>
               </button>
               <button class="dropdown-item">
-                <span class="dropdown-item-avatar" style="display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans); color: var(--color-warning); background: var(--color-warning-subtle)">JP</span>
+                <span class="avatar avatar-md">JP</span>
                 <div class="dropdown-item-text">
                   <span class="dropdown-item-label">Jordan Park</span>
                   <span class="dropdown-item-description">jordan@example.com</span>
@@ -1863,7 +1961,17 @@
                 <svg class="search-icon"><use href="#i-search"/></svg>
                 <input class="topbar-search-input" type="search" placeholder="Search Operationalize..." />
               </div>
-              <button class="topbar-avatar" aria-label="Account" type="button">MV</button>
+              <div class="dropdown">
+                <button class="topbar-avatar dropdown-trigger" aria-label="Account" aria-expanded="false" type="button">MV</button>
+                <div class="dropdown-menu dropdown-menu-end" hidden>
+                  <button class="dropdown-item" type="button">My profile</button>
+                  <button class="dropdown-item" type="button">Feedback</button>
+                  <button class="dropdown-item" type="button">Career map</button>
+                  <button class="dropdown-item" type="button">Recognitions</button>
+                  <hr class="dropdown-divider" />
+                  <button class="dropdown-item" type="button">Sign out</button>
+                </div>
+              </div>
             </div>
           </header>
 
@@ -2171,6 +2279,52 @@
     document.querySelectorAll('input[type=checkbox][data-indeterminate]').forEach(cb => {
       cb.indeterminate = true;
     });
+
+    // Toast — global helper that spawns a notification in the top-right region.
+    //   toast({ variant: 'success', message: 'Saved.' })
+    //   toast({ variant: 'error', message: '…', behavior: 'persistent' })
+    //   toast({ variant: 'neutral', message: '…', behavior: 'action', action: { label: 'Undo', onClick: () => {…} } })
+    window.toast = function toast({ variant = 'neutral', message = '', behavior = 'timed', timeout = 4000, action, icon } = {}) {
+      let region = document.querySelector('.toast-region');
+      if (!region) {
+        region = document.createElement('div');
+        region.className = 'toast-region';
+        region.setAttribute('aria-live', 'polite');
+        region.setAttribute('aria-atomic', 'false');
+        document.body.appendChild(region);
+      }
+      const defaultIcon = { neutral: 'info', info: 'info', success: 'check-circle', warning: 'warning', error: 'warning-octagon' }[variant] || 'info';
+      const el = document.createElement('div');
+      el.className = `toast toast-${variant} is-entering`;
+      el.setAttribute('role', variant === 'error' ? 'alert' : 'status');
+      const actionHTML = behavior === 'action' && action ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
+      const closeHTML  = behavior !== 'timed' ? `<button type="button" class="toast-close" aria-label="Close"><i class="ph ph-x"></i></button>` : '';
+      el.innerHTML = `<i class="ph ph-${icon || defaultIcon} toast-icon"></i><p class="toast-message"></p>${actionHTML}${closeHTML}`;
+      el.querySelector('.toast-message').textContent = message;
+      region.appendChild(el);
+      // Trigger entrance transition on next frame
+      requestAnimationFrame(() => el.classList.remove('is-entering'));
+
+      const dismiss = () => {
+        if (!el.isConnected) return;
+        el.classList.add('is-leaving');
+        const cleanup = () => el.remove();
+        el.addEventListener('transitionend', cleanup, { once: true });
+        setTimeout(cleanup, 400); // fallback if transitionend doesn't fire
+      };
+
+      el.querySelector('.toast-close')?.addEventListener('click', dismiss);
+      if (behavior === 'action' && action) {
+        el.querySelector('.toast-action').addEventListener('click', () => {
+          try { action.onClick?.(); } catch (e) { /* swallow */ }
+          dismiss();
+        });
+      }
+      if (behavior === 'timed') {
+        setTimeout(dismiss, timeout);
+      }
+      return { dismiss };
+    };
 
     // Inline TOC — build a per-section list of links from each <section id>'s h3.
     document.querySelectorAll('.toc[data-toc-for]').forEach(nav => {
