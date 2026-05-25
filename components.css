@@ -472,6 +472,11 @@ textarea.input {
   flex-shrink: 0;
   text-transform: uppercase;
 }
+/* Size variants — for compact rows and comment threads */
+.cell-avatar-xs { width: 18px; height: 18px; font-size: 9px; }
+.cell-avatar-sm { width: 24px; height: 24px; font-size: 10px; }
+/* Colored variant — use with inline style="background:..." for per-person tint */
+.cell-avatar-color { color: #FFFFFF; font-weight: var(--ic-weight-semibold); }
 .cell-user-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .cell-user-name { font: var(--ic-weight-medium) var(--ic-text-sm)/1.2 var(--ic-font-sans); color: var(--color-text); }
 .cell-user-role { font: var(--type-caption); color: var(--color-text-muted); }
@@ -579,6 +584,7 @@ textarea.input {
   gap: var(--ic-space-1);
   height: 16px;
   padding: 0 var(--ic-space-2);
+  border: 0;
   border-radius: var(--ic-radius-sm);
   font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
   background: var(--tag-color);
@@ -595,9 +601,9 @@ textarea.input {
 .tag-blue-dark  { --tag-color: var(--ic-palette-blue-700); }
 .tag-light      { --tag-color: var(--ic-palette-gray-200);    --tag-text: var(--color-text); }
 
-/* Indicator style — colored dot + text, ghost-button hover affordance */
+/* Indicator style — colored dot + text on a muted gray pill */
 .tag-indicator {
-  background: transparent;
+  background: var(--color-surface-muted);
   color: var(--color-text);
   padding: var(--ic-space-1) var(--ic-space-2);
   height: auto;
@@ -606,7 +612,7 @@ textarea.input {
   cursor: pointer;
   transition: background var(--ic-duration-fast) var(--ic-ease);
 }
-.tag-indicator:hover { background: var(--color-surface-muted); }
+.tag-indicator:hover { background: var(--ic-palette-gray-200); }
 .tag-indicator::before {
   content: '';
   width: 8px;
@@ -1614,7 +1620,9 @@ a.avatar:focus-visible {
   display: inline-flex; align-items: center; justify-content: center;
   font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans);
   color: var(--ic-palette-graphite-800);
+  text-decoration: none;
 }
+.topbar-avatar:hover { background: var(--ic-palette-gray-400, #CBD5E1); color: var(--ic-palette-graphite-900); }
 .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 720px) {
