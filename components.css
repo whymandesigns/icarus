@@ -1809,3 +1809,18 @@ a.avatar:focus-visible {
 .body    { font: var(--type-body);    color: var(--color-text); }
 .body-sm { font: var(--type-body-sm); color: var(--color-text-muted); }
 .caption { font: var(--type-caption); color: var(--color-text-subtle); }
+
+/* ---------- Layout helpers ----------
+ * Tiny flex/grid primitives used across prototypes. `.page` lives in
+ * semantic.css (it's the content max-width wrapper). The three below are
+ * the everyday building blocks for stacking content vertically (`.stack`),
+ * placing items in a wrapping row (`.row`), or a two-column grid that
+ * collapses on narrow viewports (`.grid-2`).
+ */
+.stack  { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+.row    { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ic-space-5); }
+
+@media (max-width: 720px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
