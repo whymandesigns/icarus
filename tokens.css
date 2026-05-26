@@ -97,17 +97,11 @@
   --ic-palette-green-800: #046B5A;
   --ic-palette-green-900: #034539;
 
-  /* Cyan */
-  --ic-palette-cyan-100: #E6F6FE;
-  --ic-palette-cyan-150: #C8EBFD;
-  --ic-palette-cyan-200: #A1DDFB;
-  --ic-palette-cyan-300: #6ECAF5;
-  --ic-palette-cyan-400: #45B9F2;
+  /* Cyan — single shade. Pending removal: components currently using
+     cyan-500 (.tag-blue-light, .badge-info text, --color-info) will
+     migrate to a blue shade in the next pass, after which the ramp goes
+     away entirely. */
   --ic-palette-cyan-500: #25A9EF;
-  --ic-palette-cyan-600: #1B8AC5;
-  --ic-palette-cyan-700: #136B9B;
-  --ic-palette-cyan-800: #0E5078;
-  --ic-palette-cyan-900: #07334C;
 
   /* Blue */
   --ic-palette-blue-100: #EDF1FD;

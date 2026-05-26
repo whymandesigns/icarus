@@ -42,7 +42,10 @@
   --color-danger-hover:   var(--ic-palette-red-600);
   --color-danger-subtle:  var(--ic-palette-red-100);
   --color-info:           var(--ic-palette-cyan-500);
-  --color-info-subtle:    var(--ic-palette-cyan-100);
+  /* --color-info-subtle is en route to blue. cyan-100 was retired in the
+     palette cleanup; backed by blue-100 until --color-info itself moves
+     to blue, at which point the cyan-500 reference above also goes. */
+  --color-info-subtle:    var(--ic-palette-blue-100);
 
   /* ---- Overlays ---- */
   --color-overlay:        rgba(38, 45, 61, 0.5); /* graphite-900 @ 50% — for modal scrims */

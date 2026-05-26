@@ -12,6 +12,14 @@ What it does:
 - Works in-place: edits the file. Idempotent — running it twice re-inlines the
   latest CSS without ballooning the file.
 
+What it deliberately does NOT touch:
+- The Phosphor icons CDN link (`https://unpkg.com/@phosphor-icons/web/...`).
+  This is the one allowed remote dependency in inlined prototypes — features that
+  use `<i class="ph ph-…">` icons keep them by loading Phosphor from unpkg.
+- Any additional inline `<style>` blocks in the prototype (e.g. one-off layout
+  styles a feature needs). Only the design-system block bounded by the
+  `/* === tokens.css === */` marker is replaced; everything else survives.
+
 Workflow:
 - Prototypes can use either form:
   1. `<link rel="stylesheet" href="./tokens.css" />`  ← source form, easy to edit

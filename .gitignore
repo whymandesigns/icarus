@@ -1,2 +1,8 @@
 .DS_Store
 .claude/
+
+# Local dev convenience — symlink to the sibling features folder so
+# index.html's "./features/..." links work inside the worktree preview.
+# Recreate locally with:
+#   ln -s ../features ./features
+/features
