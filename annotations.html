@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Annotation devtools — designmd</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="./devtools.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <style>
+    .doc-back {
+      display: inline-flex; align-items: center; gap: var(--ic-space-2);
+      font: var(--type-body-sm); color: var(--color-text-muted);
+      text-decoration: none; margin-bottom: var(--ic-space-4);
+    }
+    .doc-back:hover { color: var(--color-text); }
+
+    .doc-hero {
+      padding: var(--ic-space-6) 0 var(--ic-space-7);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--ic-space-7);
+    }
+    .doc-hero h1 { margin: 0 0 var(--ic-space-3); }
+    .doc-hero p  { font: var(--type-body-lg); color: var(--color-text-muted); margin: 0; max-width: 60ch; }
+
+    .doc-section { margin-bottom: var(--ic-space-7); }
+    .doc-section h2 { margin: 0 0 var(--ic-space-3); }
+    .doc-section p  { color: var(--color-text-muted); }
+    .doc-section p > code,
+    .doc-section li > code {
+      font: var(--type-mono); font-size: 12px;
+      background: var(--color-surface-muted);
+      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      color: var(--color-text);
+    }
+
+    .doc-steps { padding-left: var(--ic-space-5); }
+    .doc-steps li { margin-bottom: var(--ic-space-3); color: var(--color-text); }
+    .doc-steps li strong { display: block; margin-bottom: 2px; }
+    .doc-steps li span   { color: var(--color-text-muted); font: var(--type-body-sm); }
+
+    .doc-code-wrap { position: relative; margin: var(--ic-space-4) 0; }
+    .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
+    .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
+    .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code {
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-4);
+      font: var(--type-mono); font-size: 13px;
+      color: var(--color-text);
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.6;
+    }
+    .doc-code .arrow { color: var(--color-accent); }
+    .doc-code-copy {
+      position: absolute;
+      top: var(--ic-space-2);
+      right: var(--ic-space-2);
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 4px 10px;
+      border-radius: var(--ic-radius-sm);
+      font: var(--type-body-sm); font-weight: 500;
+      cursor: pointer;
+      transition: background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .doc-code-copy:hover { background: var(--color-surface-muted); }
+    .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
+    .doc-code-copy i { font-size: 13px; }
+
+    .doc-callout {
+      display: flex; gap: var(--ic-space-3);
+      padding: var(--ic-space-4);
+      background: var(--color-info-subtle);
+      border: 1px solid var(--color-info);
+      border-radius: var(--ic-radius-md);
+      color: var(--color-text);
+    }
+    .doc-callout i { color: var(--color-info); font-size: 20px; flex-shrink: 0; }
+    .doc-callout p { margin: 0; font: var(--type-body-sm); }
+
+    /* Mock illustration of the toolbar + a pinned annotation */
+    .mock {
+      position: relative;
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      height: 260px;
+      overflow: hidden;
+      margin: var(--ic-space-4) 0;
+    }
+    .mock-page {
+      position: absolute; inset: var(--ic-space-5);
+      background: var(--color-surface);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-sm);
+      padding: var(--ic-space-4);
+      display: flex; flex-direction: column; gap: var(--ic-space-3);
+    }
+    .mock-page .mock-h {
+      width: 110px; height: 14px;
+      background: var(--color-text); opacity: 0.85;
+      border-radius: 3px;
+    }
+    .mock-page .mock-row {
+      width: 60%; height: 8px;
+      background: var(--color-border-strong); border-radius: 3px;
+    }
+    .mock-page .mock-row.wide { width: 80%; }
+
+    .mock-btn {
+      align-self: flex-start;
+      padding: 6px 12px;
+      background: var(--color-brand);
+      color: var(--ic-palette-white);
+      font: var(--type-body-sm); font-weight: 500;
+      border-radius: var(--ic-radius-sm);
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      position: relative;
+    }
+    .mock-pin {
+      position: absolute;
+      top: -8px; right: -8px;
+      width: 18px; height: 18px;
+      background: var(--color-accent);
+      color: var(--ic-palette-white);
+      border-radius: 50%;
+      font: 600 10px/1 var(--ic-font-sans);
+      display: grid; place-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .mock-popover {
+      position: absolute;
+      bottom: 60px; left: 130px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-xl);
+      padding: var(--ic-space-3);
+      width: 220px;
+    }
+    .mock-popover .mock-meta { font: var(--type-body-sm); margin-bottom: 4px; }
+    .mock-popover .mock-meta code { font: var(--type-mono); font-size: 11px; background: var(--color-surface-muted); padding: 1px 4px; border-radius: 3px; }
+    .mock-popover .mock-ta {
+      width: 100%; height: 38px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-sm);
+      padding: 6px 8px;
+      font: var(--type-body-sm);
+      color: var(--color-text);
+      background: var(--color-surface);
+      box-sizing: border-box;
+    }
+
+    .mock-toolbar {
+      position: absolute;
+      bottom: var(--ic-space-4); right: var(--ic-space-4);
+      display: flex; gap: 6px; align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-1) var(--ic-space-2);
+      box-shadow: var(--ic-shadow-lg);
+      font: var(--type-body-sm);
+    }
+    .mock-toolbar .btn-mini {
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-sm);
+      padding: 4px 10px;
+      color: var(--color-text);
+    }
+    .mock-toolbar .btn-mini.is-on {
+      background: var(--color-accent);
+      color: var(--ic-palette-white);
+      border-color: var(--color-accent);
+    }
+    .mock-toolbar .mini-count {
+      font: var(--type-caption);
+      color: var(--color-text-muted);
+      padding: 0 var(--ic-space-2);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="doc-back" href="./index.html"><i class="ph ph-arrow-left"></i>designmd</a>
+
+    <header class="doc-hero">
+      <h1 class="h1">Annotation devtools</h1>
+      <p>An in-page batch annotation overlay for iterating on prototypes with a coding agent. Click multiple UI elements, leave a note on each, then copy a single structured payload to paste into your agent — far less round-tripping than one tweak per message.</p>
+    </header>
+
+    <section class="doc-section">
+      <h2 class="h2">Enable it</h2>
+      <p>Append <code>?notes=1</code> to any prototype URL. The toolbar appears bottom-right; without the flag the prototype renders clean.</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><i class="ph ph-copy"></i><span>Copy</span></button>
+        <div class="doc-code">http://localhost:4174/api-token-management/<span class="arrow">?notes=1</span></div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">How it works</h2>
+      <div class="mock" aria-hidden="true">
+        <div class="mock-page">
+          <div class="mock-h"></div>
+          <div class="mock-row wide"></div>
+          <div class="mock-row"></div>
+          <div class="mock-btn">
+            Create token
+            <span class="mock-pin">1</span>
+          </div>
+        </div>
+        <div class="mock-popover">
+          <div class="mock-meta"><strong>button</strong> <code>.btn-primary</code></div>
+          <div class="mock-ta">Move to far left of header</div>
+        </div>
+        <div class="mock-toolbar">
+          <span class="btn-mini is-on">Stop</span>
+          <span class="mini-count">1 pending</span>
+          <span class="btn-mini">Copy batch</span>
+          <span class="btn-mini">Clear</span>
+        </div>
+      </div>
+
+      <ol class="doc-steps">
+        <li>
+          <strong>Click Inspect.</strong>
+          <span>Cursor becomes a crosshair. Hover outlines elements the way DevTools does.</span>
+        </li>
+        <li>
+          <strong>Click an element.</strong>
+          <span>A numbered pin marks the spot and a popover opens with the element's tag, its shortest selector, and a textarea.</span>
+        </li>
+        <li>
+          <strong>Type a note → Enter.</strong>
+          <span>Saves the annotation. Shift+Enter for a newline. Esc cancels the current popover.</span>
+        </li>
+        <li>
+          <strong>Repeat for as many elements as you want.</strong>
+          <span>The counter ticks up. Pins stay on the page so you can see what's already queued.</span>
+        </li>
+        <li>
+          <strong>Hit Copy batch.</strong>
+          <span>One structured payload lands on your clipboard. Paste it as a single message to your agent — every change gets executed in one pass.</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Example payload</h2>
+      <p>Three queued annotations produce this clipboard text:</p>
+      <div class="doc-code-wrap">
+        <div class="doc-code">1. &lt;button&gt;  .btn-primary  "Create token"
+   <span class="arrow">→</span> Move to far left of header
+
+2. &lt;div&gt;  .alert-info  "Treat tokens like passwords."
+   <span class="arrow">→</span> Change icon to a key glyph
+
+3. &lt;span&gt;  .tab.is-active  "API tokens"
+   <span class="arrow">→</span> Underline should be 3px, not 2px</div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Selector strategy</h2>
+      <p>Selectors prefer the shortest readable form. The picker walks this order until it lands on something unique:</p>
+      <ol class="doc-steps">
+        <li><strong><code>#id</code></strong><span>If the element has an id, that wins.</span></li>
+        <li><strong>Unique class</strong><span>The first class on the element that selects only one node on the page.</span></li>
+        <li><strong><code>tag.class</code></strong><span>If a single class isn't unique, combine with the tag.</span></li>
+        <li><strong>Parent path</strong><span>Climb to a parent and prepend its selector to disambiguate.</span></li>
+      </ol>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Notes that don't survive</h2>
+      <div class="doc-callout">
+        <i class="ph ph-info"></i>
+        <p>Annotations clear on reload. The tool is meant for short batches you copy out immediately — not a persistent backlog. If you reload before hitting Copy batch, your queue is gone.</p>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Where it lives</h2>
+      <p>The CSS lives in <code>devtools.css</code>, auto-inlined alongside the three-layer chain (but not part of it — see <code>design.md §7</code>). The JS is part of the universal handler block in <code>example.html</code>; copying that block into a new prototype brings the annotation tool with it.</p>
+      <p>Adding the tool to existing prototypes is two steps:</p>
+      <ol class="doc-steps">
+        <li><strong>Re-run inline.py.</strong><span>From <code>designmd/</code>: <code>python3 inline.py ../features/&lt;name&gt;/index.html</code>. Picks up <code>devtools.css</code> automatically.</span></li>
+        <li><strong>Copy the JS block from example.html.</strong><span>Replace the prototype's existing <code>&lt;script&gt;</code> block (or append the annotation IIFE alongside the others).</span></li>
+      </ol>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Try it</h2>
+      <p>The same toolbar runs on this page — hit Inspect and click anything you like.</p>
+    </section>
+
+  </main>
+
+  <!-- The annotation tool itself — runs on this very page so you can try it live. -->
+  <script>
+    (function annotationTool() {
+      if (!new URLSearchParams(location.search).has('notes')) return;
+      const STATE = { annotations: [], inspecting: false };
+      const bar = document.createElement('div');
+      bar.className = 'annot-toolbar';
+      bar.innerHTML = `
+        <button id="annot-inspect" type="button">Inspect</button>
+        <span class="annot-count" id="annot-count">0 pending</span>
+        <button id="annot-copy" type="button" disabled>Copy batch</button>
+        <button id="annot-clear" type="button" disabled>Clear</button>
+      `;
+      document.body.appendChild(bar);
+      const inspectBtn = bar.querySelector('#annot-inspect');
+      const countEl    = bar.querySelector('#annot-count');
+      const copyBtn    = bar.querySelector('#annot-copy');
+      const clearBtn   = bar.querySelector('#annot-clear');
+      const updateUI = () => {
+        const n = STATE.annotations.length;
+        countEl.textContent = `${n} pending`;
+        copyBtn.disabled  = n === 0;
+        clearBtn.disabled = n === 0;
+        inspectBtn.classList.toggle('is-active', STATE.inspecting);
+        inspectBtn.textContent = STATE.inspecting ? 'Stop' : 'Inspect';
+      };
+      function bestSelector(el) {
+        if (el.id) return `#${el.id}`;
+        const classes = [...el.classList].filter(c => !c.startsWith('annot-'));
+        for (const c of classes) {
+          if (document.querySelectorAll(`.${c}`).length === 1) return `.${c}`;
+        }
+        const tag = el.tagName.toLowerCase();
+        if (classes.length) {
+          const sel = `${tag}.${classes[0]}`;
+          if (document.querySelectorAll(sel).length === 1) return sel;
+        }
+        if (el.parentElement) return `${bestSelector(el.parentElement)} > ${tag}${classes[0] ? '.' + classes[0] : ''}`;
+        return tag;
+      }
+      const startInspect = () => { STATE.inspecting = true; document.body.classList.add('annot-mode'); updateUI(); };
+      const stopInspect  = () => { STATE.inspecting = false; document.body.classList.remove('annot-mode'); updateUI(); };
+      inspectBtn.addEventListener('click', () => STATE.inspecting ? stopInspect() : startInspect());
+      document.addEventListener('click', (e) => {
+        if (!STATE.inspecting) return;
+        if (bar.contains(e.target)) return;
+        if (e.target.closest('.annot-popover, .annot-pin')) return;
+        e.preventDefault(); e.stopPropagation();
+        openPopover(e.target);
+      }, true);
+      function openPopover(el) {
+        document.querySelectorAll('.annot-popover').forEach(p => p.remove());
+        const sel = bestSelector(el);
+        const tag = el.tagName.toLowerCase();
+        const text = (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+        const rect = el.getBoundingClientRect();
+        const pop = document.createElement('div');
+        pop.className = 'annot-popover';
+        pop.innerHTML = `
+          <div class="annot-popover-meta"><strong>${tag}</strong> <code>${sel}</code></div>
+          ${text ? `<div class="annot-popover-text">"${text}${text.length === 60 ? '…' : ''}"</div>` : ''}
+          <textarea placeholder="What should change?"></textarea>
+          <div class="annot-popover-hint">Enter to save · Shift+Enter for newline · Esc to cancel</div>
+        `;
+        const left = Math.min(rect.left + window.scrollX, window.innerWidth + window.scrollX - 296);
+        const top  = rect.bottom + window.scrollY + 6;
+        pop.style.left = Math.max(8, left) + 'px';
+        pop.style.top  = top + 'px';
+        document.body.appendChild(pop);
+        const ta = pop.querySelector('textarea');
+        ta.focus();
+        const save = () => {
+          const note = ta.value.trim();
+          if (!note) { pop.remove(); return; }
+          STATE.annotations.push({ selector: sel, tag, text, note });
+          addPin(el, STATE.annotations.length);
+          pop.remove();
+          updateUI();
+        };
+        ta.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); save(); }
+          else if (ev.key === 'Escape') { ev.preventDefault(); pop.remove(); }
+        });
+      }
+      function addPin(el, n) {
+        const r = el.getBoundingClientRect();
+        const pin = document.createElement('div');
+        pin.className = 'annot-pin';
+        pin.textContent = n;
+        pin.style.left = (r.left + window.scrollX - 6) + 'px';
+        pin.style.top  = (r.top + window.scrollY - 6) + 'px';
+        document.body.appendChild(pin);
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && STATE.inspecting && !document.querySelector('.annot-popover')) stopInspect();
+      });
+      copyBtn.addEventListener('click', async () => {
+        const out = STATE.annotations.map((a, i) => {
+          const head = `${i + 1}. <${a.tag}>  ${a.selector}${a.text ? `  "${a.text}"` : ''}`;
+          return `${head}\n   → ${a.note}`;
+        }).join('\n\n');
+        try { await navigator.clipboard.writeText(out); } catch (_) {}
+        copyBtn.textContent = 'Copied ✓';
+        setTimeout(() => copyBtn.textContent = 'Copy batch', 1400);
+      });
+      clearBtn.addEventListener('click', () => {
+        STATE.annotations = [];
+        document.querySelectorAll('.annot-pin').forEach(p => p.remove());
+        updateUI();
+      });
+      updateUI();
+    })();
+
+    // Copy-to-clipboard for the page's .doc-code blocks
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.parentElement.querySelector('.doc-code');
+        const text = code.textContent;
+        try { await navigator.clipboard.writeText(text); } catch (_) {}
+        btn.classList.add('is-copied');
+        btn.querySelector('i').className = 'ph ph-check';
+        btn.querySelector('span').textContent = 'Copied';
+        setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.querySelector('i').className = 'ph ph-copy';
+          btn.querySelector('span').textContent = 'Copy';
+        }, 1500);
+      });
+    });
+
+    // Clicking the code block itself also copies — works with or without an
+    // explicit Copy button. Skipped if the user is mid-text-selection.
+    document.querySelectorAll('.doc-code-wrap > .doc-code').forEach(code => {
+      code.addEventListener('click', async () => {
+        if (window.getSelection().toString()) return;
+        const btn = code.parentElement.querySelector('[data-copy]');
+        if (btn) { btn.click(); return; }
+        // No button — copy silently with a brief flash on the block itself.
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        code.classList.add('is-flash');
+        setTimeout(() => code.classList.remove('is-flash'), 600);
+      });
+    });
+  </script>
+</body>
+</html>
