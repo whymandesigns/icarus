@@ -1,0 +1,113 @@
+/* devtools.css — author/dev tooling only.
+ *
+ * This file is auto-inlined into every prototype alongside the three-layer
+ * design system (tokens.css → semantic.css → components.css), but it is
+ * explicitly NOT part of that layer chain — nothing here is a user-facing
+ * UI primitive. Everything is dormant until the matching trigger fires
+ * (e.g. ?notes=1 in the URL for the annotation tool).
+ *
+ * Rules of thumb:
+ * - Reach for this file when adding something authors/devs use to *build*
+ *   prototypes (annotation overlays, grid debug toggles, coachmark editors,
+ *   responsive frame previewers).
+ * - Anything end users see (buttons, cards, alerts, status colors) belongs
+ *   in components.css.
+ * - Keep selectors namespaced (`.annot-*`, `.grid-debug-*`, …) so they
+ *   can't collide with feature CSS.
+ */
+
+/* ---------- Annotation tool ----------
+ * In-page batch annotation overlay. Enable on any prototype by appending
+ * ?notes=1 to the URL. The matching JS lives in the example.html script
+ * block (delegated handlers — copy that whole block into every prototype).
+ *
+ * Usage flow:
+ *   1. Click "Inspect" → cursor becomes crosshair, hovering outlines elements.
+ *   2. Click an element → numbered pin + popover with a textarea opens.
+ *   3. Type the note, Enter to save (Shift+Enter for newline, Esc cancels).
+ *   4. Repeat. "Copy batch" puts all notes onto the clipboard as one payload.
+ *   5. Paste back to your coding agent to execute all changes in a single turn.
+ *
+ * Notes clear on reload (no persistence). Selectors use the shortest readable
+ * form (#id > unique class > tag.class > parent path).
+ */
+.annot-toolbar {
+  position: fixed; bottom: 16px; right: 16px;
+  z-index: 99999;
+  display: flex; gap: 6px; align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-md);
+  padding: var(--ic-space-1) var(--ic-space-2);
+  box-shadow: var(--ic-shadow-lg);
+  font: var(--type-body-sm);
+}
+.annot-toolbar button {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 4px 10px;
+  border-radius: var(--ic-radius-sm);
+  cursor: pointer;
+  font: inherit;
+}
+.annot-toolbar button:disabled { opacity: 0.4; cursor: default; }
+.annot-toolbar button.is-active {
+  background: var(--color-accent);
+  color: var(--ic-palette-white);
+  border-color: var(--color-accent);
+}
+.annot-toolbar .annot-count {
+  padding: 0 var(--ic-space-2);
+  color: var(--color-text-muted);
+  font: var(--type-caption);
+}
+.annot-mode,
+.annot-mode * { cursor: crosshair !important; }
+.annot-mode *:hover {
+  outline: 2px solid var(--color-accent) !important;
+  outline-offset: -2px;
+}
+.annot-pin {
+  position: absolute;
+  z-index: 99998;
+  width: 20px; height: 20px;
+  background: var(--color-accent);
+  color: var(--ic-palette-white);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font: 600 11px/1 var(--ic-font-sans);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  pointer-events: none;
+}
+.annot-popover {
+  position: absolute;
+  z-index: 100000;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-md);
+  padding: var(--ic-space-3);
+  box-shadow: var(--ic-shadow-xl);
+  width: 280px;
+  font: var(--type-body-sm);
+}
+.annot-popover textarea {
+  width: 100%;
+  min-height: 64px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-sm);
+  padding: 6px 8px;
+  font: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.annot-popover-meta { margin-bottom: 6px; }
+.annot-popover-meta code {
+  font: var(--type-mono);
+  font-size: 11px;
+  background: var(--color-surface-muted);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.annot-popover-text { color: var(--color-text-muted); font-size: 11px; margin: 4px 0 6px; }
+.annot-popover-hint { color: var(--color-text-subtle); font-size: 11px; margin-top: 4px; }

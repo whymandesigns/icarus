@@ -36,6 +36,7 @@ Three layers. Don't skip them.
   - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--ic-palette-graphite-800)` because it's the one place a raw palette reference is intentional.
 - **Status colors are scarce.** Red/yellow/green only signal state — never decoration. (Note: green also doubles as the primary CTA color, which is why CTA placement is so disciplined.)
 - **Motion is functional.** `--ic-duration-fast` (120ms) for state, `--ic-duration-base` (200ms) for entry/exit. Nothing decorative.
+- **Every new prototype ships with the annotation tool wired up.** When scaffolding `features/<name>/index.html`, you MUST copy the `example.html` `<script>` block — that includes the `?notes=1` annotation IIFE alongside the universal handlers (modals, drawers, dropdowns, tabs, toasts, …). The matching CSS comes for free via `devtools.css` (inlined by `inline.py`). Skipping this leaves the prototype without batch annotation, which is the canonical way to iterate visually with an LLM. No exceptions — even a one-screen demo gets it.
 
 ---
 
@@ -186,6 +187,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | Icons | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
+| Annotation tool | `.annot-toolbar` | Append `?notes=1` to any prototype URL. Click "Inspect", click elements to queue notes, "Copy batch" → paste payload to your agent. Notes clear on reload. CSS lives in `devtools.css` (auto-inlined, but not part of the three-layer chain); JS is in the `example.html` script block (copy it with the rest of the delegated handlers). |
 
 ### Rules of thumb
 
@@ -262,6 +264,7 @@ Development/
 │   ├── tokens.css               ← primitives
 │   ├── semantic.css             ← aliases + reset
 │   ├── components.css           ← all component CSS
+│   ├── devtools.css             ← author tooling (annotation, debug overlays) — NOT in the layer chain
 │   ├── design.md                ← this file (LLM context + reference)
 │   ├── assets/
 │   │   └── logo.svg
@@ -349,6 +352,23 @@ python3 inline.py ../features/*/index.html
 
 Every prototype is back in sync with the latest system CSS. No external CDN, no broken links, no manual swap.
 
+### Preview server setup (Claude Code / IDE preview panel)
+
+The preview panel runs the dev servers defined in `.claude/launch.json` — one for `designmd/` (port 4173) and one for `features/` (port 4174). The features server must use an **absolute path**, not `../features`:
+
+```json
+{
+  "name": "features",
+  "runtimeExecutable": "npx",
+  "runtimeArgs": ["-y", "serve", "/absolute/path/to/icarus/features", "-l", "4174"],
+  "port": 4174
+}
+```
+
+Why: when the project is checked out via a git worktree (which Claude Code does for isolated sessions), the worktree's cwd is *not* a sibling of `icarus/features/`, so a relative `../features` resolves to a non-existent folder and the preview 404s. The absolute path stays correct regardless of worktree location.
+
+The HTML inside each prototype is unaffected by this — the `<link rel="stylesheet" href="../../designmd/…">` tags resolve correctly under both the preview server and standalone `file://` use, and an inlined prototype has no dependencies at all.
+
 ### Two iteration modes
 
 - **Iterating on a prototype** (the common case): edit `features/feature-X/index.html` directly. CSS is already inlined — the `<style>` block sits at the top of the file, ignore it and edit the markup below.
@@ -390,3 +410,4 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
 > - Icons: `<i class="ph ph-{name}"></i>` (Phosphor regular weight). Inter font already loaded via `tokens.css`.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
+> - **Annotation tool is mandatory.** That same `<script>` block also includes the `?notes=1` annotation IIFE — copy the WHOLE block; do not strip out the annotation function. Append `?notes=1` to the prototype URL to enable the in-page batch annotation toolbar. The matching CSS lives in `devtools.css` and is auto-inlined by `inline.py`, so no extra `<link>` tag is needed.
