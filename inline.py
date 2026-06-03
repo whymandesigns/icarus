@@ -40,11 +40,15 @@ def read(name):
         return f.read()
 
 def build_style_block():
+    # The three-layer chain (tokens → semantic → components) is followed by
+    # devtools.css — auto-inlined for convenience but explicitly NOT part of
+    # the layer chain. See design.md §7 and devtools.css's own header for why.
     return (
         '<style>\n'
         '    /* === tokens.css === */\n' + read('tokens.css') + '\n'
         '    /* === semantic.css === */\n' + read('semantic.css') + '\n'
         '    /* === components.css === */\n' + read('components.css') + '\n'
+        '    /* === devtools.css === */\n' + read('devtools.css') + '\n'
         '  </style>'
     )
 

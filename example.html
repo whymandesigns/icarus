@@ -2649,6 +2649,147 @@
       });
     });
 
+    // === Annotation tool — append ?notes=1 to the URL to enable ====================
+    // In-page batch annotation overlay. Lets you click multiple UI elements,
+    // queue notes, then "Copy batch" to paste a single grouped payload into
+    // your coding agent. Notes clear on reload. CSS lives in components.css
+    // (`.annot-toolbar`, `.annot-pin`, `.annot-popover`, `.annot-mode`).
+    (function annotationTool() {
+      if (!new URLSearchParams(location.search).has('notes')) return;
+
+      const STATE = { annotations: [], inspecting: false };
+
+      const bar = document.createElement('div');
+      bar.className = 'annot-toolbar';
+      bar.innerHTML = `
+        <button id="annot-inspect" type="button">Inspect</button>
+        <span class="annot-count" id="annot-count">0 pending</span>
+        <button id="annot-copy" type="button" disabled>Copy batch</button>
+        <button id="annot-clear" type="button" disabled>Clear</button>
+      `;
+      document.body.appendChild(bar);
+
+      const inspectBtn = bar.querySelector('#annot-inspect');
+      const countEl    = bar.querySelector('#annot-count');
+      const copyBtn    = bar.querySelector('#annot-copy');
+      const clearBtn   = bar.querySelector('#annot-clear');
+
+      const updateUI = () => {
+        const n = STATE.annotations.length;
+        countEl.textContent = `${n} pending`;
+        copyBtn.disabled  = n === 0;
+        clearBtn.disabled = n === 0;
+        inspectBtn.classList.toggle('is-active', STATE.inspecting);
+        inspectBtn.textContent = STATE.inspecting ? 'Stop' : 'Inspect';
+      };
+
+      // Shortest readable selector: prefer #id, then a unique class, then tag.class,
+      // climbing to a parent if needed to disambiguate.
+      function bestSelector(el) {
+        if (el.id) return `#${el.id}`;
+        const classes = [...el.classList].filter(c => !c.startsWith('annot-'));
+        for (const c of classes) {
+          if (document.querySelectorAll(`.${c}`).length === 1) return `.${c}`;
+        }
+        const tag = el.tagName.toLowerCase();
+        if (classes.length) {
+          const sel = `${tag}.${classes[0]}`;
+          if (document.querySelectorAll(sel).length === 1) return sel;
+        }
+        if (el.parentElement) {
+          return `${bestSelector(el.parentElement)} > ${tag}${classes[0] ? '.' + classes[0] : ''}`;
+        }
+        return tag;
+      }
+
+      const startInspect = () => { STATE.inspecting = true; document.body.classList.add('annot-mode'); updateUI(); };
+      const stopInspect  = () => { STATE.inspecting = false; document.body.classList.remove('annot-mode'); updateUI(); };
+
+      inspectBtn.addEventListener('click', () => STATE.inspecting ? stopInspect() : startInspect());
+
+      // Capture-phase click so we intercept before app handlers (drawers, tabs, etc.)
+      document.addEventListener('click', (e) => {
+        if (!STATE.inspecting) return;
+        if (bar.contains(e.target)) return;
+        if (e.target.closest('.annot-popover, .annot-pin')) return;
+        e.preventDefault(); e.stopPropagation();
+        openPopover(e.target);
+      }, true);
+
+      function openPopover(el) {
+        document.querySelectorAll('.annot-popover').forEach(p => p.remove());
+
+        const sel = bestSelector(el);
+        const tag = el.tagName.toLowerCase();
+        const text = (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+
+        const rect = el.getBoundingClientRect();
+        const pop = document.createElement('div');
+        pop.className = 'annot-popover';
+        pop.innerHTML = `
+          <div class="annot-popover-meta"><strong>${tag}</strong> <code>${sel}</code></div>
+          ${text ? `<div class="annot-popover-text">"${text}${text.length === 60 ? '…' : ''}"</div>` : ''}
+          <textarea placeholder="What should change?"></textarea>
+          <div class="annot-popover-hint">Enter to save · Shift+Enter for newline · Esc to cancel</div>
+        `;
+        const left = Math.min(rect.left + window.scrollX, window.innerWidth + window.scrollX - 296);
+        const top  = rect.bottom + window.scrollY + 6;
+        pop.style.left = Math.max(8, left) + 'px';
+        pop.style.top  = top + 'px';
+        document.body.appendChild(pop);
+
+        const ta = pop.querySelector('textarea');
+        ta.focus();
+
+        const save = () => {
+          const note = ta.value.trim();
+          if (!note) { pop.remove(); return; }
+          STATE.annotations.push({ selector: sel, tag, text, note });
+          addPin(el, STATE.annotations.length);
+          pop.remove();
+          updateUI();
+        };
+
+        ta.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); save(); }
+          else if (ev.key === 'Escape') { ev.preventDefault(); pop.remove(); }
+        });
+      }
+
+      function addPin(el, n) {
+        const r = el.getBoundingClientRect();
+        const pin = document.createElement('div');
+        pin.className = 'annot-pin';
+        pin.textContent = n;
+        pin.style.left = (r.left + window.scrollX - 6) + 'px';
+        pin.style.top  = (r.top + window.scrollY - 6) + 'px';
+        document.body.appendChild(pin);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && STATE.inspecting && !document.querySelector('.annot-popover')) stopInspect();
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        const out = STATE.annotations.map((a, i) => {
+          const head = `${i + 1}. <${a.tag}>  ${a.selector}${a.text ? `  "${a.text}"` : ''}`;
+          return `${head}\n   → ${a.note}`;
+        }).join('\n\n');
+        try { await navigator.clipboard.writeText(out); }
+        catch (_) { /* fall through */ }
+        copyBtn.textContent = 'Copied ✓';
+        setTimeout(() => copyBtn.textContent = 'Copy batch', 1400);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        STATE.annotations = [];
+        document.querySelectorAll('.annot-pin').forEach(p => p.remove());
+        updateUI();
+      });
+
+      updateUI();
+    })();
+
     const css = getComputedStyle(document.documentElement);
     const root = document.getElementById('palette-root');
 

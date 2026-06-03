@@ -1824,3 +1824,37 @@ a.avatar:focus-visible {
 @media (max-width: 720px) {
   .grid-2 { grid-template-columns: 1fr; }
 }
+
+/* ---------- Drawer parts ----------
+ * Mirrors the .modal-header/.modal-body/.modal-footer pattern, since drawers
+ * use the same three-section layout. (The drawer container itself lives above
+ * in the Modal/Drawer section.)
+ */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ic-space-3);
+  padding: var(--ic-space-5);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.drawer-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--ic-space-5);
+  font: var(--type-body);
+  color: var(--color-text);
+}
+.drawer-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ic-space-2);
+  padding: var(--ic-space-4) var(--ic-space-5);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+/* The annotation tool's CSS lives in devtools.css — author tooling, not a
+ * user-facing UI primitive. See design.md §7 for the four-file inline order. */
