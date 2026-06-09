@@ -159,32 +159,34 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 ### Shortcode reference
 
+> **Pointing at a component.** Every row below links to a live demo at `example.html#<id>`. To tell a teammate "use this component", share that URL — or click the **`#`** anchor next to any heading in the live showcase to copy the link in one go. The id format is stable: `#buttons`, `#alerts`, `#toasts`, etc.
+
 | Component | Root | Variants / parts |
 |---|---|---|
-| Buttons | `.btn` | `.btn-primary` · `.btn-secondary` · `.btn-ghost` · `.btn-danger` · `.btn-xs` · `.btn-icon-only` |
-| Inputs | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` |
-| Select | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
-| Tag input | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
-| Top bar | `.topbar` | `.topbar-brand` · `.topbar-search` · `.topbar-avatar` |
-| Side navigation | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact` |
-| Switches | `.switch` | `.switch-input` · `.switch-track` |
-| Radios | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
-| Checkboxes | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
-| Badges | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info` |
-| Tags | `.tag` | `.tag-positive` · `.tag-negative` · `.tag-warning` · `.tag-light` · `.tag-dark` · `.tag-blue` · `.tag-indicator` |
-| Count badge | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
-| Avatars | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<i class="ph ph-…">`. |
-| Alerts | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
-| Toasts | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
-| Dropdown menu | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` |
-| Modal | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
-| Drawer | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
-| Page heads | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-count` · `.page-head-subtitle` · `.page-head-actions` |
-| Tabs | `.tabs` + `.tab` | `.is-active` · `role="tablist"` / `role="tab"` / `aria-controls` / `[role="tabpanel"]` |
-| Tooltips | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) |
-| Cards | `.card` | `.card-title` · `.card-body` |
-| Tables | `.table` | `.table-wide` · `.table-scroll` · `.th-sort` · `.cell-title` · `.cell-user` · `.cell-avatar` · `.cell-user-meta` · `.cell-meta` · `.cell-meta-sub` · `.cell-dot` (`.is-warning` / `.is-danger`) · `.cell-actions` |
-| Icons | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
+| [Buttons](./example.html#buttons) | `.btn` | `.btn-primary` · `.btn-secondary` · `.btn-ghost` · `.btn-danger` · `.btn-xs` · `.btn-icon-only` |
+| [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` |
+| [Select](./example.html#inputs) | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
+| [Tag input](./example.html#inputs) | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
+| [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-search` · `.topbar-avatar` |
+| [Side navigation](./example.html#sidenav-demo) | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact` |
+| [Switches](./example.html#switches) | `.switch` | `.switch-input` · `.switch-track` |
+| [Radios](./example.html#radios) | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
+| [Checkboxes](./example.html#checkboxes) | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
+| [Badges](./example.html#badges) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info` |
+| [Tags](./example.html#tags) | `.tag` | `.tag-positive` · `.tag-negative` · `.tag-warning` · `.tag-light` · `.tag-dark` · `.tag-blue` · `.tag-indicator` |
+| [Count badge](./example.html#badges) | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
+| [Avatars](./example.html#avatars) | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<i class="ph ph-…">`. |
+| [Alerts](./example.html#alerts) | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
+| [Toasts](./example.html#toasts) | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
+| [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` · `.dropdown-divider` |
+| [Modal](./example.html#modals) | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
+| [Drawer](./example.html#drawers) | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
+| [Page heads](./example.html#page-heads) | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-count` · `.page-head-subtitle` · `.page-head-actions` |
+| [Tabs](./example.html#tabs) | `.tabs` + `.tab` | `.is-active` · `role="tablist"` / `role="tab"` / `aria-controls` / `[role="tabpanel"]` |
+| [Tooltips](./example.html#tooltips) | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) |
+| [Cards](./example.html#cards) | `.card` | `.card-title` · `.card-body` |
+| [Tables](./example.html#tables) | `.table` | `.table-wide` · `.table-scroll` · `.th-sort` · `.cell-title` · `.cell-user` · `.cell-avatar` · `.cell-user-meta` · `.cell-meta` · `.cell-meta-sub` · `.cell-dot` (`.is-warning` / `.is-danger`) · `.cell-actions` |
+| [Icons](./example.html#iconography) | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Annotation tool | `.annot-toolbar` | Append `?notes=1` to any prototype URL. Click "Inspect", click elements to queue notes, "Copy batch" → paste payload to your agent. Notes clear on reload. CSS lives in `devtools.css` (auto-inlined, but not part of the three-layer chain); JS is in the `example.html` script block (copy it with the rest of the delegated handlers). |
