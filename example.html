@@ -159,6 +159,34 @@
       border-top: 0;
     }
 
+    /* Heading anchor — hover-revealed "#" next to every section heading.
+       Clicking copies a direct link to the section, so reviewers can point
+       at "use this component" by sharing the URL. */
+    .heading-anchor {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin-left: var(--ic-space-2);
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      color: var(--color-text-subtle);
+      border-radius: var(--ic-radius-sm);
+      opacity: 0;
+      transition: opacity var(--ic-duration-fast) var(--ic-ease),
+                  color var(--ic-duration-fast) var(--ic-ease),
+                  background var(--ic-duration-fast) var(--ic-ease);
+      font: var(--ic-weight-regular) var(--ic-text-base)/1 var(--ic-font-mono);
+      vertical-align: middle;
+    }
+    .h3:hover .heading-anchor,
+    .section-head:hover .heading-anchor,
+    .heading-anchor:focus-visible { opacity: 1; }
+    .heading-anchor:hover { color: var(--color-text); background: var(--color-surface-muted); }
+
     /* ---- Iconography grid ---- */
     .icon-grid {
       display: grid;
@@ -369,11 +397,8 @@
           </div>
           <div class="row" style="align-items: center">
             <span class="caption" style="width: 96px">Icon only</span>
-            <button class="btn btn-icon-only btn-xs btn-secondary" aria-label="Close"><svg class="btn-icon"><use href="#i-x"/></svg></button>
-            <button class="btn btn-icon-only btn-secondary" aria-label="Close"><svg class="btn-icon"><use href="#i-x"/></svg></button>
             <button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="btn-icon"><use href="#i-x"/></svg></button>
             <button class="btn btn-icon-only btn-danger" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
-            <button class="btn btn-icon-only btn-primary" aria-label="Add"><svg class="btn-icon"><use href="#i-plus"/></svg></button>
           </div>
         </div>
       </section>
@@ -1034,6 +1059,25 @@
             </div>
           </div>
 
+          <!-- 5b. With Avatar — compact (name only, 24px avatar) -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With avatar — compact</span>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">
+                <span class="avatar avatar-sm">MV</span>
+                <span class="dropdown-item-label">Matthew Vella</span>
+              </button>
+              <button class="dropdown-item">
+                <span class="avatar avatar-sm">AS</span>
+                <span class="dropdown-item-label">Anna Schmidt</span>
+              </button>
+              <button class="dropdown-item">
+                <span class="avatar avatar-sm">JP</span>
+                <span class="dropdown-item-label">Jordan Park</span>
+              </button>
+            </div>
+          </div>
+
           <!-- 6. Has a Selected Option -->
           <div class="stack" style="gap: var(--ic-space-2)">
             <span class="caption">Selected</span>
@@ -1428,7 +1472,7 @@
               <div class="page-head-main">
                 <div class="page-head-title">
                   <h1 class="page-head-heading">Heading Large</h1>
-                  <span class="page-head-count">1</span>
+                  <span class="count-badge count-badge-lg count-badge-secondary">1</span>
                 </div>
               </div>
             </div>
@@ -1441,7 +1485,7 @@
               <div class="page-head-main">
                 <div class="page-head-title">
                   <h1 class="page-head-heading">Heading Large</h1>
-                  <span class="page-head-count">1</span>
+                  <span class="count-badge count-badge-lg count-badge-secondary">1</span>
                 </div>
               </div>
               <div class="page-head-actions">
@@ -1467,7 +1511,7 @@
               <div class="page-head-main">
                 <div class="page-head-title">
                   <h1 class="page-head-heading">Processes</h1>
-                  <span class="page-head-count">12</span>
+                  <span class="count-badge count-badge-lg count-badge-secondary">12</span>
                 </div>
                 <p class="page-head-subtitle">Manage workflows across teams.</p>
               </div>
@@ -2008,7 +2052,7 @@
                   <div class="page-head-main">
                     <div class="page-head-title">
                       <h1 class="page-head-heading">Processes</h1>
-                      <span class="page-head-count">12</span>
+                      <span class="count-badge count-badge-lg count-badge-secondary">12</span>
                     </div>
                     <p class="page-head-subtitle">Manage workflows across teams.</p>
                   </div>
@@ -2050,7 +2094,7 @@
                   <div class="page-head-main">
                     <div class="page-head-title">
                       <h1 class="page-head-heading">Initiatives</h1>
-                      <span class="page-head-count">4</span>
+                      <span class="count-badge count-badge-lg count-badge-secondary">4</span>
                     </div>
                     <p class="page-head-subtitle">Launching new strategic projects.</p>
                   </div>
@@ -2088,7 +2132,7 @@
                   <div class="page-head-main">
                     <div class="page-head-title">
                       <h1 class="page-head-heading">RoB Meetings</h1>
-                      <span class="page-head-count">8</span>
+                      <span class="count-badge count-badge-lg count-badge-secondary">8</span>
                     </div>
                     <p class="page-head-subtitle">Recurring business reviews.</p>
                   </div>
@@ -2112,7 +2156,7 @@
                   <div class="page-head-main">
                     <div class="page-head-title">
                       <h1 class="page-head-heading">OKRs</h1>
-                      <span class="page-head-count">6</span>
+                      <span class="count-badge count-badge-lg count-badge-secondary">6</span>
                     </div>
                     <p class="page-head-subtitle">Quarterly objectives & key results.</p>
                   </div>
@@ -2148,7 +2192,7 @@
                   <div class="page-head-main">
                     <div class="page-head-title">
                       <h1 class="page-head-heading">People</h1>
-                      <span class="page-head-count">24</span>
+                      <span class="count-badge count-badge-lg count-badge-secondary">24</span>
                     </div>
                     <p class="page-head-subtitle">Team members & roles.</p>
                   </div>
@@ -2324,6 +2368,32 @@
       }
       return { dismiss };
     };
+
+    // Heading anchors — inject a hover-revealed "#" button next to every
+    // section heading. Clicking copies a direct link to that section so a
+    // reviewer can point at "use this component" by sharing the URL.
+    document.querySelectorAll('section[id] > h3.h3, section[id] > div > h3.h3, h2.section-head').forEach(heading => {
+      const section = heading.closest('section[id]');
+      if (!section) return;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'heading-anchor';
+      btn.textContent = '#';
+      btn.title = 'Copy link to this section';
+      btn.setAttribute('aria-label', `Copy link to ${heading.textContent.trim()}`);
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const url = `${window.location.origin}${window.location.pathname}#${section.id}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          if (window.toast) toast({ variant: 'success', message: `Link copied — ${section.id}`, timeout: 2400 });
+        } catch {
+          if (window.toast) toast({ variant: 'error', message: 'Copy failed — select the URL bar instead' });
+        }
+        history.replaceState(null, '', `#${section.id}`);
+      });
+      heading.appendChild(btn);
+    });
 
     // Inline TOC — build a per-section list of links from each <section id>'s h3.
     document.querySelectorAll('.toc[data-toc-for]').forEach(nav => {
