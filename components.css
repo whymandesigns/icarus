@@ -202,8 +202,8 @@ textarea.input {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ic-space-1);
-  min-height: 40px;
-  padding: 4px var(--ic-space-2);
+  min-height: 32px;
+  padding: 2px var(--ic-space-2);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--ic-radius-sm);
@@ -211,6 +211,8 @@ textarea.input {
   transition: border-color var(--ic-duration-fast) var(--ic-ease),
               box-shadow var(--ic-duration-fast) var(--ic-ease);
 }
+/* Chips inside the tag input shrink to fit the 32px row */
+.input-tags .chip { height: 24px; }
 .input-tags:focus-within {
   border-color: var(--color-border-focus);
   box-shadow: 0 0 0 3px var(--color-accent-subtle);
@@ -218,12 +220,12 @@ textarea.input {
 .input-tags-input {
   flex: 1;
   min-width: 80px;
-  height: 28px;
+  height: 24px;
   padding: 0 var(--ic-space-1);
   border: 0;
   outline: 0;
   background: transparent;
-  font: var(--type-body);
+  font: var(--type-body-sm);
   color: var(--color-text);
 }
 .input-tags-input::placeholder { color: var(--color-text-subtle); }
@@ -949,6 +951,91 @@ a.avatar:focus-visible {
   border-color: var(--color-danger);
 }
 
+/* ---------- Slider ----------
+ * Native <input type="range"> in a flex row. The filled-track portion is a
+ * gradient driven by --slider-progress, kept in sync by the script block in
+ * example.html (also syncs value readouts / number fields).
+ *
+ *   <div class="slider">
+ *     <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Volume" />
+ *   </div>
+ *
+ * Variants compose via optional siblings around the range input:
+ *   icons        <i class="ph ph-minus slider-icon"></i> … <i class="ph ph-plus slider-icon"></i>
+ *   labels       <span class="slider-label">Zoom Out</span> (pairs with icons)
+ *   min/max      <span class="slider-value">0</span> … <span class="slider-value">100</span>
+ *   current      <output class="slider-value" data-slider-output></output>  ← JS-synced
+ *   input        <input class="input input-xs slider-field" type="number" />  ← JS-synced both ways
+ */
+.slider {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-3);
+  width: 100%;
+}
+.slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  height: 24px; /* generous touch target around the 2px track */
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+/* Track — filled portion dark, remainder light, split at --slider-progress */
+.slider-input::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: var(--ic-radius-full);
+  background: linear-gradient(to right,
+    var(--color-accent) var(--slider-progress, 50%),
+    var(--color-border-strong) var(--slider-progress, 50%));
+}
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -7px; /* centers the 16px thumb on the 2px track */
+  border: 0;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-accent);
+  transition: box-shadow var(--ic-duration-fast) var(--ic-ease);
+}
+.slider-input::-webkit-slider-thumb:hover { box-shadow: 0 0 0 4px var(--color-accent-subtle); }
+.slider-input:focus-visible { outline: none; }
+.slider-input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--color-accent-subtle); }
+/* Firefox */
+.slider-input::-moz-range-track {
+  height: 2px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-border-strong);
+}
+.slider-input::-moz-range-progress {
+  height: 2px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-accent);
+}
+.slider-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-accent);
+  transition: box-shadow var(--ic-duration-fast) var(--ic-ease);
+}
+.slider-input::-moz-range-thumb:hover { box-shadow: 0 0 0 4px var(--color-accent-subtle); }
+.slider-input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px var(--color-accent-subtle); }
+.slider-input:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* Side adornments */
+.slider-icon  { font-size: 16px; color: var(--ic-palette-graphite-500); flex-shrink: 0; }
+.slider-label { font: var(--ic-weight-regular) var(--ic-text-xs)/1.5 var(--ic-font-sans); color: var(--ic-palette-graphite-500); flex-shrink: 0; white-space: nowrap; }
+.slider-value { font: var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans); color: var(--ic-palette-graphite-500); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+/* Number field variant — fixed compact width, no spinners */
+.slider-field { width: 56px; text-align: center; -moz-appearance: textfield; appearance: textfield; flex-shrink: 0; }
+.slider-field::-webkit-outer-spin-button,
+.slider-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
 /* ---------- Modal ----------
  * Overlay + centered panel with header / body / footer. Sizes: xs/sm/md/lg/xl.
  *
@@ -1265,11 +1352,62 @@ a.avatar:focus-visible {
   overflow: auto;
 }
 
+/* ---------- Breadcrumbs ----------
+ * Path trail — usually the first row inside a page head, but works standalone.
+ * Parent crumbs are blue links (underline on hover); the current page is plain
+ * text and not interactive. Chevron separators come from the ::after on each
+ * non-last item, so markup stays flat:
+ *
+ *   <nav class="breadcrumbs" aria-label="Breadcrumb">
+ *     <a class="breadcrumb" href="#">Processes</a>
+ *     <a class="breadcrumb" href="#">Onboarding</a>
+ *     <span class="breadcrumb is-current" aria-current="page">Review step</span>
+ *   </nav>
+ */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-1);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ic-space-1);
+  font: var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans);
+  color: var(--color-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* Chevron separator after every crumb except the last */
+.breadcrumb:not(:last-child)::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: var(--color-text-subtle);
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>') center / contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>') center / contain no-repeat;
+}
+/* Current page — plain text, no link affordance */
+.breadcrumb.is-current {
+  color: var(--color-text);
+  cursor: default;
+}
+
 /* ---------- Page head ----------
- * Page-level header. Title (+ optional count + subtitle) on the left, actions on the right.
+ * Page-level header. Title (+ optional breadcrumbs + count + subtitle) on
+ * the left, actions on the right. Breadcrumbs, when present, are the first
+ * row inside .page-head-main, above the title.
  *
  *   <div class="page-head">
  *     <div class="page-head-main">
+ *       <nav class="breadcrumbs" aria-label="Breadcrumb">          ← optional
+ *         <a class="breadcrumb" href="#">Processes</a>
+ *         <span class="breadcrumb is-current" aria-current="page">Onboarding</span>
+ *       </nav>
  *       <div class="page-head-title">
  *         <h1 class="page-head-heading">Processes</h1>
  *         <span class="count-badge count-badge-lg count-badge-secondary">12</span>
@@ -1292,6 +1430,8 @@ a.avatar:focus-visible {
   margin-bottom: var(--ic-space-6);
 }
 .page-head-main { min-width: 0; }
+/* Breadcrumbs as the first row of a page head — small gap above the title */
+.page-head-main > .breadcrumbs { margin-bottom: var(--ic-space-2); }
 .page-head-title {
   display: flex;
   align-items: center;
@@ -1414,9 +1554,18 @@ a.avatar:focus-visible {
  * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
  * is top; override with [data-placement="bottom"|"left"|"right"].
  *
- *   <button class="btn" data-tooltip="Copied!" data-placement="bottom">Copy</button>
+ * Two styles:
+ *   Compact (default) — dark pill, caption text, single line. For icon
+ *     buttons and short labels.
+ *   Regular — add [data-tooltip-style="regular"]. White surface, 13/20 body
+ *     text that wraps (max 240px), soft shadow, caret pointing at the
+ *     trigger. For longer explanatory copy.
  *
- * Renders via ::after so no extra DOM. Reveals on :hover and :focus-visible.
+ *   <button class="btn" data-tooltip="Copied!" data-placement="bottom">Copy</button>
+ *   <button class="btn" data-tooltip="Longer explanation…" data-tooltip-style="regular">Help</button>
+ *
+ * Renders via ::after (+ ::before for the regular caret) so no extra DOM.
+ * Reveals on :hover and :focus-visible.
  */
 [data-tooltip] { position: relative; }
 [data-tooltip]::after {
@@ -1457,6 +1606,77 @@ a.avatar:focus-visible {
   top: 50%;
   left: calc(100% + 6px);
   transform: translateY(-50%);
+}
+
+/* Regular style — white surface, wrapping body text, caret.
+ * Shadow matches Figma "Shadows/Level 4" (two centered layers). */
+[data-tooltip][data-tooltip-style="regular"]::after {
+  background: var(--color-surface);
+  color: var(--ic-palette-graphite-500);
+  font: var(--type-body-sm);
+  padding: var(--ic-space-4);
+  border-radius: var(--ic-radius-sm);
+  white-space: normal;
+  width: max-content;
+  max-width: 240px;
+  text-align: left;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.24), 0 0 32px rgba(0, 0, 0, 0.12);
+  bottom: calc(100% + 12px);
+}
+/* Caret — rotated square; its shadowed half pokes out from under the bubble
+ * (::after paints above ::before, hiding the inner half). */
+[data-tooltip][data-tooltip-style="regular"]::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--color-surface);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.24);
+  pointer-events: none;
+  opacity: 0;
+  z-index: var(--ic-z-toast);
+  transition: opacity var(--ic-duration-fast) var(--ic-ease) 80ms;
+  /* Default placement: top */
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+[data-tooltip][data-tooltip-style="regular"]:hover::before,
+[data-tooltip][data-tooltip-style="regular"]:focus-visible::before { opacity: 1; }
+
+[data-tooltip][data-tooltip-style="regular"][data-placement="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + 12px);
+}
+[data-tooltip][data-tooltip-style="regular"][data-placement="bottom"]::before {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+[data-tooltip][data-tooltip-style="regular"][data-placement="left"]::after {
+  bottom: auto;
+  top: 50%;
+  right: calc(100% + 12px);
+  left: auto;
+  transform: translateY(-50%);
+}
+[data-tooltip][data-tooltip-style="regular"][data-placement="left"]::before {
+  bottom: auto;
+  top: 50%;
+  right: calc(100% + 8px);
+  left: auto;
+  transform: translateY(-50%) rotate(45deg);
+}
+[data-tooltip][data-tooltip-style="regular"][data-placement="right"]::after {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 12px);
+  transform: translateY(-50%);
+}
+[data-tooltip][data-tooltip-style="regular"][data-placement="right"]::before {
+  bottom: auto;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%) rotate(45deg);
 }
 
 /* ---------- Toast ----------

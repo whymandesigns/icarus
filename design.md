@@ -172,6 +172,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Switches](./example.html#switches) | `.switch` | `.switch-input` · `.switch-track` |
 | [Radios](./example.html#radios) | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
 | [Checkboxes](./example.html#checkboxes) | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
+| [Sliders](./example.html#sliders) | `.slider` + `.slider-input` | Native `<input type="range">`. Optional siblings: `.slider-icon` (Phosphor) · `.slider-label` · `.slider-value` (static min/max) · `<output data-slider-output>` (live readout) · `.slider-field` on an `.input.input-xs` number field (two-way sync). Track fill + sync handled by the example.html script block. |
 | [Badges](./example.html#badges) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info` |
 | [Tags](./example.html#tags) | `.tag` | `.tag-positive` · `.tag-negative` · `.tag-warning` · `.tag-light` · `.tag-dark` · `.tag-blue` · `.tag-indicator` |
 | [Count badge](./example.html#badges) | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
@@ -181,9 +182,10 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` · `.dropdown-divider` |
 | [Modal](./example.html#modals) | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
 | [Drawer](./example.html#drawers) | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
-| [Page heads](./example.html#page-heads) | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-subtitle` · `.page-head-actions` · count next to the heading uses `.count-badge .count-badge-lg .count-badge-secondary` |
+| [Breadcrumbs](./example.html#breadcrumbs) | `.breadcrumbs` + `.breadcrumb` | Parent crumbs are `<a class="breadcrumb">` (blue, underline on hover); current page is `<span class="breadcrumb is-current" aria-current="page">` (plain text). Chevron separators render automatically. Usually the first row inside a page head; works standalone. |
+| [Page heads](./example.html#page-heads) | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-subtitle` · `.page-head-actions` · count next to the heading uses `.count-badge .count-badge-lg .count-badge-secondary` · optional `.breadcrumbs` as the first row inside `.page-head-main` |
 | [Tabs](./example.html#tabs) | `.tabs` + `.tab` | `.is-active` · `role="tablist"` / `role="tab"` / `aria-controls` / `[role="tabpanel"]` |
-| [Tooltips](./example.html#tooltips) | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) |
+| [Tooltips](./example.html#tooltips) | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) · `[data-tooltip-style="regular"]` for the white wrapping variant with caret (compact dark pill is the default) |
 | [Cards](./example.html#cards) | `.card` | `.card-title` · `.card-body` |
 | [Tables](./example.html#tables) | `.table` | `.table-wide` · `.table-scroll` · `.th-sort` · `.cell-title` · `.cell-user` · `.cell-avatar` · `.cell-user-meta` · `.cell-meta` · `.cell-meta-sub` · `.cell-dot` (`.is-warning` / `.is-danger`) · `.cell-actions` |
 | [Icons](./example.html#iconography) | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |

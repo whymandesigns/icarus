@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="./devtools.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <style>
     /* .stack, .row, .grid-2 live in components.css (Layout helpers section).
@@ -74,23 +75,27 @@
       .ramp { grid-template-columns: 1fr; gap: var(--ic-space-2); }
     }
 
-    /* ---- Top nav ---- */
+    /* ---- Top nav — full-width sticky bar at the viewport top ---- */
     .topnav {
       position: sticky;
       top: 0;
       z-index: var(--ic-z-sticky);
-      display: flex;
-      gap: var(--ic-space-2);
-      padding: var(--ic-space-3) 0;
-      margin: 0 calc(-1 * var(--ic-space-5));
-      padding-left: var(--ic-space-5);
-      padding-right: var(--ic-space-5);
+      padding: var(--ic-space-2) var(--ic-space-5);
       background: color-mix(in srgb, var(--color-bg) 88%, transparent);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--color-border);
     }
-    .topnav a {
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ic-space-4);
+      max-width: var(--ic-container-lg);
+      margin: 0 auto;
+    }
+    .topnav-links { display: flex; gap: var(--ic-space-2); }
+    .topnav-links a {
       font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
       color: var(--color-text-muted);
       text-decoration: none;
@@ -99,10 +104,11 @@
       transition: color var(--ic-duration-fast) var(--ic-ease),
                   background var(--ic-duration-fast) var(--ic-ease);
     }
-    .topnav a:hover { color: var(--color-text); background: var(--color-surface-muted); }
+    .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
+    .topnav-actions { display: flex; gap: var(--ic-space-2); align-items: center; }
 
     /* Anchor offset so the sticky nav doesn't overlap section headings */
-    [id] { scroll-margin-top: var(--ic-space-8); }
+    [id] { scroll-margin-top: calc(var(--ic-space-7) + var(--ic-space-4)); }
 
     /* Theme toggle — show sun in light mode, moon in dark mode */
     .theme-icon-moon { display: none; }
@@ -215,9 +221,95 @@
       max-width: 100%;
       white-space: nowrap;
     }
+
+    /* ---- Page-level sidebar TOC ----
+       Fixed-position vertical nav showing all sections + subsections, with
+       scroll-spy highlighting the current section. Hides on viewports too
+       narrow to spare ~240px of side gutter. */
+    .page-toc {
+      position: fixed;
+      /* Sits below the sticky topnav (~56px) plus a small gap. */
+      top: var(--ic-space-10);
+      right: var(--ic-space-5);
+      width: 220px;
+      max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-5));
+      overflow-y: auto;
+      z-index: var(--ic-z-sticky);
+      padding: var(--ic-space-3) 0;
+    }
+    .page-toc-section { margin-bottom: var(--ic-space-4); }
+    .page-toc-section:last-child { margin-bottom: 0; }
+    .page-toc-section-label {
+      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      padding: 0 var(--ic-space-3);
+      margin-bottom: var(--ic-space-2);
+    }
+    .page-toc-item {
+      display: block;
+      padding: var(--ic-space-1) var(--ic-space-3);
+      font: var(--type-body-sm);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color var(--ic-duration-fast) var(--ic-ease),
+                  border-color var(--ic-duration-fast) var(--ic-ease);
+    }
+    .page-toc-item:hover { color: var(--color-text); }
+    .page-toc-item.is-active {
+      color: var(--color-accent);
+      border-left-color: var(--color-accent);
+    }
+    /* Hamburger toggle — lives inline in the header row next to the theme
+       switch. Hidden on wide viewports where the sidebar is always visible. */
+    .page-toc-toggle { display: none; }
+    .page-toc-toggle .ph { font-size: 18px; }
+
+    @media (max-width: 1320px) {
+      /* Show toggle inline in header; hide the always-visible sidebar and
+         convert it into a slide-out floating panel. Toggle gets a higher
+         stacking context so it stays clickable when the panel overlaps it. */
+      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--ic-z-sticky) + 1); }
+      .page-toc {
+        /* Floating panel sits below the sticky topnav with a small gap. */
+        top: var(--ic-space-10);
+        right: var(--ic-space-3);
+        max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-3));
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--ic-radius-md);
+        box-shadow: var(--ic-shadow-lg);
+        padding: var(--ic-space-4) 0;
+        transform: translateX(calc(100% + var(--ic-space-5)));
+        transition: transform var(--ic-duration-base) var(--ic-ease);
+      }
+      .page-toc.is-open { transform: translateX(0); }
+    }
   </style>
 </head>
 <body>
+  <aside class="page-toc" id="page-toc" aria-label="Table of contents"></aside>
+
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-links">
+        <a href="#foundations">Foundations</a>
+        <a href="#components">Components</a>
+        <a href="#templates">Templates</a>
+      </div>
+      <div class="topnav-actions">
+        <span class="badge badge-info">v0.1</span>
+        <button class="btn btn-icon-only btn-ghost" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
+          <svg class="btn-icon theme-icon-sun"><use href="#i-sun"/></svg>
+          <svg class="btn-icon theme-icon-moon"><use href="#i-moon"/></svg>
+        </button>
+        <button class="btn btn-icon-only btn-ghost page-toc-toggle" type="button" aria-label="Open table of contents" aria-controls="page-toc" aria-expanded="false"><i class="ph ph-list"></i></button>
+      </div>
+    </div>
+  </nav>
+
   <main class="page stack" style="gap: var(--ic-space-8)">
 
     <header class="header">
@@ -225,20 +317,7 @@
         <h1 class="h1">Icarus design system</h1>
         <p class="body-sm">Vibe prototyping reference — tokens, semantics, components.</p>
       </div>
-      <div class="row">
-        <span class="badge badge-info">v0.1</span>
-        <button class="btn btn-icon-only btn-ghost" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
-          <svg class="btn-icon theme-icon-sun"><use href="#i-sun"/></svg>
-          <svg class="btn-icon theme-icon-moon"><use href="#i-moon"/></svg>
-        </button>
-      </div>
     </header>
-
-    <nav class="topnav">
-      <a href="#foundations">Foundations</a>
-      <a href="#components">Components</a>
-      <a href="#templates">Templates</a>
-    </nav>
 
     <section id="foundations" class="stack" style="gap: var(--ic-space-7)">
       <h2 class="section-head">Foundations</h2>
@@ -656,6 +735,54 @@
             <span class="field-hint is-error">Please choose a billing cycle.</span>
           </div>
         </article>
+      </section>
+
+      <section class="stack" id="sliders">
+        <div>
+          <h3 class="h3">Sliders</h3>
+          <p class="body-sm">Native <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;input type="range"&gt;</code> in a <code style="font: var(--type-mono); color: var(--color-text-muted)">.slider</code> row. Variants compose via optional siblings: icons, labels, min/max values, a live value readout (<code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;output data-slider-output&gt;</code>), or a two-way-synced number field (<code style="font: var(--type-mono); color: var(--color-text-muted)">.slider-field</code>).</p>
+        </div>
+
+        <div class="stack" style="gap: var(--ic-space-5); max-width: 480px">
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Plain</span>
+            <div class="slider">
+              <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Value" />
+            </div>
+          </div>
+
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Min / max values</span>
+            <div class="slider">
+              <span class="slider-value">0</span>
+              <input class="slider-input" type="range" min="0" max="100" value="40" aria-label="Value" />
+              <span class="slider-value">100</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Current value — drag to update</span>
+            <div class="slider">
+              <input class="slider-input" type="range" min="0" max="100" value="19" aria-label="Value" />
+              <output class="slider-value" data-slider-output>19</output>
+            </div>
+          </div>
+
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">With input — synced both ways</span>
+            <div class="slider">
+              <input class="slider-input" type="range" min="0" max="100" value="20" aria-label="Value" />
+              <input class="input input-xs slider-field" type="number" min="0" max="100" value="20" aria-label="Value" />
+            </div>
+          </div>
+
+          <div>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Disabled</span>
+            <div class="slider">
+              <input class="slider-input" type="range" min="0" max="100" value="60" aria-label="Value" disabled />
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="stack" id="badges">
@@ -1447,68 +1574,63 @@
         </div>
       </section>
 
+      <section class="stack" id="breadcrumbs">
+        <div>
+          <h3 class="h3">Breadcrumbs</h3>
+          <p class="body-sm">Path trail — usually the first row inside a page head, but works standalone. Parent crumbs are links (<code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a class="breadcrumb"&gt;</code>, underline on hover); the current page is a <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span class="breadcrumb is-current"&gt;</code> with <code style="font: var(--type-mono); color: var(--color-text-muted)">aria-current="page"</code>. Chevrons render automatically between items.</p>
+        </div>
+
+        <span class="caption" style="display: block">Standalone</span>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a class="breadcrumb" href="#breadcrumbs">Processes</a>
+          <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
+          <a class="breadcrumb" href="#breadcrumbs">Steps</a>
+          <span class="breadcrumb is-current" aria-current="page">Review step</span>
+        </nav>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Two levels</span>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a class="breadcrumb" href="#breadcrumbs">Initiatives</a>
+          <span class="breadcrumb is-current" aria-current="page">Marketing Consulting</span>
+        </nav>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">In context — first row of a page head</span>
+        <div class="card" style="padding: var(--ic-space-5)">
+          <nav class="breadcrumbs" aria-label="Breadcrumb" style="margin-bottom: var(--ic-space-3)">
+            <a class="breadcrumb" href="#breadcrumbs">Processes</a>
+            <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
+            <span class="breadcrumb is-current" aria-current="page">Review step</span>
+          </nav>
+          <div class="page-head" style="margin-bottom: 0">
+            <div class="page-head-main">
+              <div class="page-head-title">
+                <h1 class="page-head-heading">Review step</h1>
+                <span class="count-badge count-badge-lg count-badge-secondary">3</span>
+              </div>
+              <p class="page-head-subtitle">Final approval before the workflow goes live.</p>
+            </div>
+            <div class="page-head-actions">
+              <button class="btn btn-secondary">Export as CSV</button>
+              <button class="btn btn-primary">Create new</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="stack" id="page-heads">
         <h3 class="h3">Page heads</h3>
-        <p class="body-sm">Top-of-page header — title (optional count + subtitle) on the left, actions on the right.</p>
+        <p class="body-sm">Top-of-page header — title (optional breadcrumbs + count + subtitle) on the left, actions on the right. Breadcrumbs, when present, sit as the first row above the title.</p>
 
         <div class="stack" style="gap: var(--ic-space-7)">
 
-          <!-- Variant 1: Title only -->
           <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title only</span>
+            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Breadcrumbs + title + subtitle + actions</span>
             <div class="page-head" style="margin-bottom: 0">
               <div class="page-head-main">
-                <div class="page-head-title">
-                  <h1 class="page-head-heading">Heading Large</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Variant 2: Title + count -->
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + count</span>
-            <div class="page-head" style="margin-bottom: 0">
-              <div class="page-head-main">
-                <div class="page-head-title">
-                  <h1 class="page-head-heading">Heading Large</h1>
-                  <span class="count-badge count-badge-lg count-badge-secondary">1</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Variant 3: Title + count + actions + overflow (Figma reference) -->
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + count + actions</span>
-            <div class="page-head" style="margin-bottom: 0">
-              <div class="page-head-main">
-                <div class="page-head-title">
-                  <h1 class="page-head-heading">Heading Large</h1>
-                  <span class="count-badge count-badge-lg count-badge-secondary">1</span>
-                </div>
-              </div>
-              <div class="page-head-actions">
-                <button class="btn btn-secondary">Export as CSV</button>
-                <button class="btn btn-primary">Create new</button>
-                <div class="dropdown">
-                  <button class="btn btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
-                  <div class="dropdown-menu dropdown-menu-end" hidden>
-                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-pencil"/></svg>Edit</button>
-                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-copy"/></svg>Duplicate</button>
-                    <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-archive"/></svg>Archive</button>
-                    <button class="dropdown-item dropdown-item-danger" type="button"><svg class="dropdown-item-icon"><use href="#i-trash"/></svg>Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Variant 4: Title + subtitle + actions -->
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Title + subtitle + actions</span>
-            <div class="page-head" style="margin-bottom: 0">
-              <div class="page-head-main">
+                <nav class="breadcrumbs" aria-label="Breadcrumb">
+                  <a class="breadcrumb" href="#page-heads">Workspace</a>
+                  <span class="breadcrumb is-current" aria-current="page">Processes</span>
+                </nav>
                 <div class="page-head-title">
                   <h1 class="page-head-heading">Processes</h1>
                   <span class="count-badge count-badge-lg count-badge-secondary">12</span>
@@ -1565,8 +1687,10 @@
       <section class="stack" id="tooltips">
         <div>
           <h3 class="h3">Tooltips</h3>
-          <p class="body-sm">CSS-only tooltip on any element via <code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip="…"</code>. Default placement is top; override with <code style="font: var(--type-mono); color: var(--color-text-muted)">data-placement="bottom"</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">left</code>, or <code style="font: var(--type-mono); color: var(--color-text-muted)">right</code>. Reveals on hover and keyboard focus.</p>
+          <p class="body-sm">CSS-only tooltip on any element via <code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip="…"</code>. Default placement is top; override with <code style="font: var(--type-mono); color: var(--color-text-muted)">data-placement="bottom"</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">left</code>, or <code style="font: var(--type-mono); color: var(--color-text-muted)">right</code>. Two styles: compact (default, dark pill for short labels) and regular (<code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip-style="regular"</code> — white surface, wrapping body text, caret). Reveals on hover and keyboard focus.</p>
         </div>
+
+        <span class="caption" style="display: block">Compact (default) — dark pill, single line</span>
         <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-7) var(--ic-space-3); justify-content: flex-start">
           <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on top" data-placement="top">Top</button>
           <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on bottom" data-placement="bottom">Bottom</button>
@@ -1577,6 +1701,14 @@
           <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Duplicate" aria-label="Duplicate"><svg class="btn-icon"><use href="#i-copy"/></svg></button>
           <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Archive" aria-label="Archive"><svg class="btn-icon"><use href="#i-archive"/></svg></button>
           <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Delete" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Regular — white surface, wrapping body text, caret</span>
+        <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-8) var(--ic-space-3); justify-content: flex-start">
+          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="top">Top</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="bottom">Bottom</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="left">Left</button>
+          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="right">Right</button>
         </div>
       </section>
 
@@ -2299,6 +2431,102 @@
           </div>
         </div>
       </section>
+
+      <section class="stack" id="template-form">
+        <div>
+          <h3 class="h3">Form — New process</h3>
+          <p class="body-sm">Input fields composed into a complete create flow — paired fields on a grid, select, tag input, character counter, radio group, switch rows, a slider, and a single primary CTA per the color-role rule.</p>
+        </div>
+
+        <article class="card" style="max-width: 640px; padding: var(--ic-space-6)">
+          <div style="margin-bottom: var(--ic-space-6)">
+            <h2 class="h2">New process</h2>
+            <p class="body-sm" style="margin: var(--ic-space-1) 0 0">Define the workflow, owners and review cadence.</p>
+          </div>
+
+          <form class="stack" style="gap: var(--ic-space-4)" onsubmit="return false">
+
+            <div class="grid-2">
+              <label class="field">
+                <span class="field-label">Process name</span>
+                <input class="input" type="text" placeholder="e.g. Quarterly OKR review" />
+              </label>
+              <label class="field">
+                <span class="field-label">Owner</span>
+                <input class="input" type="text" placeholder="Search people…" />
+              </label>
+            </div>
+
+            <div class="field">
+              <span class="field-label">Team</span>
+              <div class="input-select">
+                <button class="input-select-trigger" aria-expanded="false" type="button">
+                  <span class="input-select-value input-select-placeholder">Choose a team…</span>
+                  <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+                </button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Engineering</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Product</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Operations</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field-label">Tags</span>
+              <div class="input-tags">
+                <span class="chip">Quarterly<button class="chip-remove" aria-label="Remove" type="button"><svg><use href="#i-x"/></svg></button></span>
+                <input class="input-tags-input" type="text" placeholder="Add tag…" />
+              </div>
+              <span class="field-hint">Press Enter to add. Backspace on empty removes the last tag.</span>
+            </div>
+
+            <label class="field" data-char-limit="200">
+              <span class="field-label">Description</span>
+              <textarea class="input" rows="3" maxlength="200" placeholder="What does this process cover?"></textarea>
+              <span class="field-hint field-hint-end">0 / 200</span>
+            </label>
+
+            <div class="field">
+              <span class="field-label">Review cadence — weeks between reviews</span>
+              <div class="slider">
+                <input class="slider-input" type="range" min="1" max="12" value="4" aria-label="Weeks between reviews" />
+                <output class="slider-value" data-slider-output>4</output>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field-label">Visibility</span>
+              <label class="radio"><input type="radio" name="tf-visibility" class="radio-input" checked /><span class="radio-circle"></span><span class="radio-label">Private — owners only</span></label>
+              <label class="radio"><input type="radio" name="tf-visibility" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Team — anyone on the team</span></label>
+              <label class="radio"><input type="radio" name="tf-visibility" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Organization — everyone</span></label>
+            </div>
+
+            <div class="stack" style="gap: var(--ic-space-4); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
+              <div class="row" style="justify-content: space-between">
+                <div>
+                  <p class="body" style="margin: 0">Notify owners</p>
+                  <p class="body-sm" style="margin: 0">Email when a review is due.</p>
+                </div>
+                <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
+              </div>
+              <div class="row" style="justify-content: space-between">
+                <div>
+                  <p class="body" style="margin: 0">Post to Slack</p>
+                  <p class="body-sm" style="margin: 0">Share updates in the team channel.</p>
+                </div>
+                <label class="switch"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></label>
+              </div>
+            </div>
+
+            <div class="row" style="justify-content: flex-end; gap: var(--ic-space-2); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
+              <button class="btn btn-secondary" type="button">Cancel</button>
+              <button class="btn btn-primary" type="submit">Create process</button>
+            </div>
+
+          </form>
+        </article>
+      </section>
     </section>
 
   </main>
@@ -2321,6 +2549,30 @@
     // Apply indeterminate state to checkboxes marked with data-indeterminate
     document.querySelectorAll('input[type=checkbox][data-indeterminate]').forEach(cb => {
       cb.indeterminate = true;
+    });
+
+    // Sliders — keep the filled-track gradient in sync with the value, plus
+    // any live readout (<output data-slider-output>) or number field
+    // (.slider-field, synced both ways).
+    document.querySelectorAll('.slider').forEach(slider => {
+      const range = slider.querySelector('.slider-input');
+      if (!range) return;
+      const out   = slider.querySelector('[data-slider-output]');
+      const field = slider.querySelector('.slider-field');
+      const update = () => {
+        const min = parseFloat(range.min) || 0;
+        const max = parseFloat(range.max) || 100;
+        const pct = ((range.value - min) / (max - min)) * 100;
+        range.style.setProperty('--slider-progress', pct + '%');
+        if (out) out.textContent = range.value;
+        if (field && field.value !== range.value) field.value = range.value;
+      };
+      range.addEventListener('input', update);
+      if (field) field.addEventListener('input', () => {
+        const v = parseFloat(field.value);
+        if (!Number.isNaN(v)) { range.value = v; update(); }
+      });
+      update();
     });
 
     // Toast — global helper that spawns a notification in the top-right region.
@@ -2394,6 +2646,72 @@
       });
       heading.appendChild(btn);
     });
+
+    // Sidebar TOC — fixed vertical nav listing every section + subsection,
+    // with scroll-spy highlighting the section currently in view.
+    (function buildSidebarToc() {
+      const container = document.querySelector('.page-toc');
+      if (!container) return;
+      document.querySelectorAll('main > section[id]').forEach(top => {
+        const sectionWrap = document.createElement('div');
+        sectionWrap.className = 'page-toc-section';
+        const label = document.createElement('div');
+        label.className = 'page-toc-section-label';
+        const topHeading = top.querySelector('h2.section-head');
+        // Strip the trailing "#" injected by the heading-anchor button
+        label.textContent = (topHeading?.firstChild?.textContent || top.id).trim();
+        sectionWrap.appendChild(label);
+        top.querySelectorAll(':scope > section[id]').forEach(sub => {
+          const heading = sub.querySelector('h3.h3');
+          if (!heading) return;
+          const a = document.createElement('a');
+          a.className = 'page-toc-item';
+          a.href = '#' + sub.id;
+          a.dataset.tocTarget = sub.id;
+          a.textContent = (heading.firstChild?.textContent || sub.id).trim();
+          sectionWrap.appendChild(a);
+        });
+        container.appendChild(sectionWrap);
+      });
+      // Scroll-spy: highlight item whose section is most prominent in viewport
+      const items = container.querySelectorAll('.page-toc-item');
+      const idToItem = new Map([...items].map(i => [i.dataset.tocTarget, i]));
+      const setActive = id => {
+        items.forEach(i => i.classList.toggle('is-active', i.dataset.tocTarget === id));
+      };
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(e => e.isIntersecting);
+        if (visible.length === 0) return;
+        // Pick the one closest to the top of the viewport
+        visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        setActive(visible[0].target.id);
+      }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+      document.querySelectorAll('main > section[id] > section[id]').forEach(sec => observer.observe(sec));
+
+      // Hamburger toggle (narrow viewports). Opens panel, closes on outside
+      // click or after a TOC item is clicked.
+      const toggle = document.querySelector('.page-toc-toggle');
+      const panel = document.querySelector('.page-toc');
+      if (toggle && panel) {
+        const setOpen = open => {
+          panel.classList.toggle('is-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+          toggle.setAttribute('aria-label', open ? 'Close table of contents' : 'Open table of contents');
+        };
+        toggle.addEventListener('click', e => {
+          e.stopPropagation();
+          setOpen(!panel.classList.contains('is-open'));
+        });
+        document.addEventListener('click', e => {
+          if (!panel.classList.contains('is-open')) return;
+          if (panel.contains(e.target) || toggle.contains(e.target)) return;
+          setOpen(false);
+        });
+        panel.addEventListener('click', e => {
+          if (e.target.closest('.page-toc-item')) setOpen(false);
+        });
+      }
+    })();
 
     // Inline TOC — build a per-section list of links from each <section id>'s h3.
     document.querySelectorAll('.toc[data-toc-for]').forEach(nav => {
@@ -2906,6 +3224,147 @@
       `;
       root.appendChild(row);
     });
+
+    // === Annotation tool — append ?notes=1 to the URL to enable ====================
+    // In-page batch annotation overlay. Lets you click multiple UI elements,
+    // queue notes, then "Copy batch" to paste a single grouped payload into
+    // your coding agent. Notes clear on reload. CSS lives in devtools.css
+    // (`.annot-toolbar`, `.annot-pin`, `.annot-popover`, `.annot-mode`).
+    (function annotationTool() {
+      if (!new URLSearchParams(location.search).has('notes')) return;
+
+      const STATE = { annotations: [], inspecting: false };
+
+      const bar = document.createElement('div');
+      bar.className = 'annot-toolbar';
+      bar.innerHTML = `
+        <button id="annot-inspect" type="button">Inspect</button>
+        <span class="annot-count" id="annot-count">0 pending</span>
+        <button id="annot-copy" type="button" disabled>Copy batch</button>
+        <button id="annot-clear" type="button" disabled>Clear</button>
+      `;
+      document.body.appendChild(bar);
+
+      const inspectBtn = bar.querySelector('#annot-inspect');
+      const countEl    = bar.querySelector('#annot-count');
+      const copyBtn    = bar.querySelector('#annot-copy');
+      const clearBtn   = bar.querySelector('#annot-clear');
+
+      const updateUI = () => {
+        const n = STATE.annotations.length;
+        countEl.textContent = `${n} pending`;
+        copyBtn.disabled  = n === 0;
+        clearBtn.disabled = n === 0;
+        inspectBtn.classList.toggle('is-active', STATE.inspecting);
+        inspectBtn.textContent = STATE.inspecting ? 'Stop' : 'Inspect';
+      };
+
+      // Shortest readable selector: prefer #id, then a unique class, then tag.class,
+      // climbing to a parent if needed to disambiguate.
+      function bestSelector(el) {
+        if (el.id) return `#${el.id}`;
+        const classes = [...el.classList].filter(c => !c.startsWith('annot-'));
+        for (const c of classes) {
+          if (document.querySelectorAll(`.${c}`).length === 1) return `.${c}`;
+        }
+        const tag = el.tagName.toLowerCase();
+        if (classes.length) {
+          const sel = `${tag}.${classes[0]}`;
+          if (document.querySelectorAll(sel).length === 1) return sel;
+        }
+        if (el.parentElement) {
+          return `${bestSelector(el.parentElement)} > ${tag}${classes[0] ? '.' + classes[0] : ''}`;
+        }
+        return tag;
+      }
+
+      const startInspect = () => { STATE.inspecting = true; document.body.classList.add('annot-mode'); updateUI(); };
+      const stopInspect  = () => { STATE.inspecting = false; document.body.classList.remove('annot-mode'); updateUI(); };
+
+      inspectBtn.addEventListener('click', () => STATE.inspecting ? stopInspect() : startInspect());
+
+      // Capture-phase click so we intercept before app handlers (drawers, tabs, etc.)
+      document.addEventListener('click', (e) => {
+        if (!STATE.inspecting) return;
+        if (bar.contains(e.target)) return;
+        if (e.target.closest('.annot-popover, .annot-pin')) return;
+        e.preventDefault(); e.stopPropagation();
+        openPopover(e.target);
+      }, true);
+
+      function openPopover(el) {
+        document.querySelectorAll('.annot-popover').forEach(p => p.remove());
+
+        const sel = bestSelector(el);
+        const tag = el.tagName.toLowerCase();
+        const text = (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+
+        const rect = el.getBoundingClientRect();
+        const pop = document.createElement('div');
+        pop.className = 'annot-popover';
+        pop.innerHTML = `
+          <div class="annot-popover-meta"><strong>${tag}</strong> <code>${sel}</code></div>
+          ${text ? `<div class="annot-popover-text">"${text}${text.length === 60 ? '…' : ''}"</div>` : ''}
+          <textarea placeholder="What should change?"></textarea>
+          <div class="annot-popover-hint">Enter to save · Shift+Enter for newline · Esc to cancel</div>
+        `;
+        const left = Math.min(rect.left + window.scrollX, window.innerWidth + window.scrollX - 296);
+        const top  = rect.bottom + window.scrollY + 6;
+        pop.style.left = Math.max(8, left) + 'px';
+        pop.style.top  = top + 'px';
+        document.body.appendChild(pop);
+
+        const ta = pop.querySelector('textarea');
+        ta.focus();
+
+        const save = () => {
+          const note = ta.value.trim();
+          if (!note) { pop.remove(); return; }
+          STATE.annotations.push({ selector: sel, tag, text, note });
+          addPin(el, STATE.annotations.length);
+          pop.remove();
+          updateUI();
+        };
+
+        ta.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); save(); }
+          else if (ev.key === 'Escape') { ev.preventDefault(); pop.remove(); }
+        });
+      }
+
+      function addPin(el, n) {
+        const r = el.getBoundingClientRect();
+        const pin = document.createElement('div');
+        pin.className = 'annot-pin';
+        pin.textContent = n;
+        pin.style.left = (r.left + window.scrollX - 6) + 'px';
+        pin.style.top  = (r.top + window.scrollY - 6) + 'px';
+        document.body.appendChild(pin);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && STATE.inspecting && !document.querySelector('.annot-popover')) stopInspect();
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        const out = STATE.annotations.map((a, i) => {
+          const head = `${i + 1}. <${a.tag}>  ${a.selector}${a.text ? `  "${a.text}"` : ''}`;
+          return `${head}\n   → ${a.note}`;
+        }).join('\n\n');
+        try { await navigator.clipboard.writeText(out); }
+        catch (_) { /* fall through */ }
+        copyBtn.textContent = 'Copied ✓';
+        setTimeout(() => copyBtn.textContent = 'Copy batch', 1400);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        STATE.annotations = [];
+        document.querySelectorAll('.annot-pin').forEach(p => p.remove());
+        updateUI();
+      });
+
+      updateUI();
+    })();
   </script>
 </body>
 </html>
