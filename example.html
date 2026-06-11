@@ -790,11 +790,20 @@
 
         <p class="body-sm" style="margin: 0">Status pills</p>
         <div class="row">
-          <span class="chip">Default</span>
+          <span class="badge">Default</span>
           <span class="badge badge-success">Success</span>
           <span class="badge badge-warning">Warning</span>
           <span class="badge badge-danger">Danger</span>
           <span class="badge badge-info">Info</span>
+        </div>
+
+        <p class="body-sm" style="margin: var(--ic-space-4) 0 0">Interactive pills — editable renders as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button class="badge"&gt;</code>; compose <code style="font: var(--type-mono); color: var(--color-text-muted)">.badge-icon</code> (left) and <code style="font: var(--type-mono); color: var(--color-text-muted)">.badge-remove</code> (right ×, click deletes)</p>
+        <div class="row">
+          <button class="badge badge-success" type="button"><i class="ph ph-check-circle badge-icon"></i>Active</button>
+          <button class="badge badge-warning" type="button">Pending</button>
+          <span class="badge badge-info"><i class="ph ph-info badge-icon"></i>New<button class="badge-remove" type="button" aria-label="Remove"><i class="ph ph-x"></i></button></span>
+          <span class="badge">Draft<button class="badge-remove" type="button" aria-label="Remove"><i class="ph ph-x"></i></button></span>
+          <span class="badge badge-danger"><i class="ph ph-warning-octagon badge-icon"></i>Blocked<button class="badge-remove" type="button" aria-label="Remove"><i class="ph ph-x"></i></button></span>
         </div>
 
         <p class="body-sm" style="margin: var(--ic-space-4) 0 0">Count badges</p>
@@ -2120,7 +2129,7 @@
 
       <section class="stack" id="template-app-shell">
         <div>
-          <h3 class="h3">App shell — Processes</h3>
+          <h3 class="h3">App shell UI</h3>
           <p class="body-sm">Topbar + sidebar + main page composing a complete view. Toggle the sidebar to see compact mode.</p>
         </div>
 
@@ -2502,6 +2511,12 @@
               <label class="radio"><input type="radio" name="tf-visibility" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Organization — everyone</span></label>
             </div>
 
+            <!-- Optional-metadata affordance — ghost button, icon left. Reuse
+                 this pattern for any "add more" action (links, owners, fields…). -->
+            <div class="row">
+              <button class="btn btn-ghost" type="button"><svg class="btn-icon"><use href="#i-plus"/></svg>Add resources</button>
+            </div>
+
             <div class="stack" style="gap: var(--ic-space-4); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
               <div class="row" style="justify-content: space-between">
                 <div>
@@ -2723,7 +2738,8 @@
         if (!heading) return;
         const a = document.createElement('a');
         a.href = '#' + sec.id;
-        a.textContent = heading.textContent.trim();
+        // First text node only — skips the injected heading-anchor "#" button
+        a.textContent = (heading.firstChild?.textContent || heading.textContent).trim();
         nav.appendChild(a);
       });
     });
@@ -2985,6 +3001,12 @@
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.alert-close');
       if (btn) btn.closest('.alert')?.remove();
+    });
+
+    // Badge remove — clicking .badge-remove deletes its parent pill
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.badge-remove');
+      if (btn) btn.closest('.badge')?.remove();
     });
 
     // Tabs — click to activate. If a tab declares aria-controls, also toggle
