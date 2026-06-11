@@ -574,19 +574,69 @@ textarea.input {
 .alert-info    { background: var(--color-accent-subtle);  border-color: color-mix(in srgb, var(--color-accent) 22%, transparent); }
 .alert-info    .alert-icon { color: var(--color-accent); }
 
-/* ---------- Badge ---------- */
+/* ---------- Badge ----------
+ * Status pill. Read-only as <span>; interactive (editable) as <button> —
+ * picks up pointer cursor, hover dim, and focus ring automatically.
+ * Optional parts compose inside any variant:
+ *
+ *   <span class="badge badge-success">Active</span>                          read-only
+ *   <button class="badge badge-warning" type="button">Pending</button>       editable
+ *   <span class="badge badge-info"><i class="ph ph-info badge-icon"></i>New</span>          icon left
+ *   <span class="badge">Draft<button class="badge-remove" aria-label="Remove"><i class="ph ph-x"></i></button></span>   deletable
+ */
 .badge {
   display: inline-flex; align-items: center;
+  gap: var(--ic-space-1);
   font: var(--type-caption);
   padding: var(--ic-space-1) var(--ic-space-2);
   border-radius: var(--ic-radius-full);
-  background: var(--color-surface-muted);
+  /* Neutral follows the variant recipe: {hue}-100 fill + {hue}-150 stroke */
+  background: var(--ic-palette-gray-100);
   color: var(--color-text-muted);
+  border: 1px solid var(--ic-palette-gray-150);
 }
-.badge-success { background: var(--color-success-subtle); color: var(--color-success); }
-.badge-warning { background: var(--color-warning-subtle); color: var(--color-warning); }
-.badge-danger  { background: var(--color-danger-subtle);  color: var(--color-danger); }
-.badge-info    { background: var(--color-info-subtle);    color: var(--color-info); }
+.badge-success { background: var(--color-success-subtle); color: var(--ic-palette-green-700); border-color: var(--ic-palette-green-150); }
+.badge-warning { background: var(--color-warning-subtle); color: var(--ic-palette-yellow-700); border-color: var(--ic-palette-yellow-150); }
+.badge-danger  { background: var(--color-danger-subtle);  color: var(--color-danger); border-color: var(--ic-palette-red-150); }
+.badge-info    { background: var(--color-info-subtle);    color: var(--ic-palette-blue-500); border-color: var(--ic-palette-blue-150); }
+
+/* Editable — same pill rendered as a <button>. Deletable pills (those that
+ * contain a .badge-remove) get the same hover so all interactive pills react. */
+button.badge,
+.badge:has(.badge-remove) {
+  cursor: pointer;
+  transition: filter var(--ic-duration-fast) var(--ic-ease);
+}
+button.badge:hover,
+.badge:has(.badge-remove):hover { filter: brightness(0.96); }
+button.badge:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Leading icon — Phosphor <i> or inline svg */
+.badge-icon { font-size: 12px; width: 12px; height: 12px; flex-shrink: 0; }
+
+/* Trailing remove × — clicking deletes the pill (delegated handler) */
+.badge-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-right: -2px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--ic-radius-full);
+  opacity: 0.65;
+  transition: opacity var(--ic-duration-fast) var(--ic-ease),
+              background var(--ic-duration-fast) var(--ic-ease);
+}
+.badge-remove:hover { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
+.badge-remove .ph { font-size: 10px; }
 
 /* ---------- Tag ----------
  * Status marker — distinct from .badge (soft pill). Two styles share one color hook (--tag-color):
@@ -616,6 +666,14 @@ textarea.input {
 .tag-blue       { --tag-color: var(--ic-palette-blue-500); }
 .tag-blue-dark  { --tag-color: var(--ic-palette-blue-700); }
 .tag-light      { --tag-color: var(--ic-palette-gray-200);    --tag-text: var(--color-text); }
+
+/* Solid tags are interactive (click swaps status via a dropdown) — subtle
+ * hover dim signals it. Indicator style has its own hover below. */
+.tag:not(.tag-indicator) {
+  cursor: pointer;
+  transition: filter var(--ic-duration-fast) var(--ic-ease);
+}
+.tag:not(.tag-indicator):hover { filter: brightness(0.92); }
 
 /* Indicator style — colored dot + text, ghost-button hover affordance */
 .tag-indicator {
@@ -1128,7 +1186,6 @@ a.avatar:focus-visible {
   justify-content: flex-end;
   gap: var(--ic-space-2);
   padding: var(--ic-space-4) var(--ic-space-5);
-  border-top: 1px solid var(--color-border);
 }
 
 /* Mobile — buttons stack full width */
