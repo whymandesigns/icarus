@@ -72,7 +72,9 @@
   background: transparent;
   color: var(--color-accent);
 }
-.btn-ghost:hover { background: var(--color-accent-subtle); color: var(--color-accent); }
+/* Hover keeps the background transparent (clickable area unchanged) and
+ * signals interactivity with an underline instead. */
+.btn-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .btn-danger {
   background: var(--color-danger);
@@ -1734,6 +1736,32 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   top: 50%;
   left: calc(100% + 8px);
   transform: translateY(-50%) rotate(45deg);
+}
+
+/* ---------- Loaders ----------
+ * Chase spinner — the Operationalize logo mark (24 segments) fading in
+ * sequence. Copy the <svg class="chase …" viewBox="0 0 22 32"> block from
+ * example.html#loaders; per-segment delays are computed by the small JS
+ * snippet in the script block (i/n stagger), so markup carries no timing.
+ *
+ *   <svg class="chase size-md" viewBox="0 0 22 32">…24 paths…</svg>      counter-clockwise, blue
+ *   <svg class="chase-cw size-md" viewBox="0 0 22 32">…same paths…</svg> clockwise, graphite + blue flash
+ *
+ * Sizes: .size-sm 24px · .size-md 32px · .size-lg 48px
+ */
+.chase, .chase-cw { display: block; height: auto; }
+.chase path, .chase-cw path { fill: currentColor; }
+.chase { color: var(--color-accent); }
+.chase path { animation: ic-chase-fade 1.1s linear infinite; }
+.chase-cw { color: var(--ic-palette-graphite-300); }
+.chase-cw path { animation: ic-chase-fade-cw 1.1s linear infinite; }
+.chase.size-sm, .chase-cw.size-sm { width: 24px; }
+.chase.size-md, .chase-cw.size-md { width: 32px; }
+.chase.size-lg, .chase-cw.size-lg { width: 48px; }
+@keyframes ic-chase-fade { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; } }
+@keyframes ic-chase-fade-cw { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; color: var(--color-accent); } }
+@media (prefers-reduced-motion: reduce) {
+  .chase path, .chase-cw path { animation: none; opacity: 0.55; }
 }
 
 /* ---------- Toast ----------
