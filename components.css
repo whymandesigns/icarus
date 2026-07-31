@@ -110,6 +110,41 @@
   font: var(--ic-weight-regular) var(--ic-text-xs)/var(--ic-lh-body-sm) var(--ic-font-sans);
 }
 
+/* Input with an inset icon (left or right). The icon is decorative
+ * (pointer-events pass through to the field); the input gets extra padding
+ * on that side to make room.
+ *
+ *   <div class="input-icon input-icon-left">
+ *     <i class="ph ph-calendar-blank input-icon-glyph"></i>
+ *     <input class="input" type="text" />
+ *   </div>
+ *   <div class="input-icon input-icon-right">
+ *     <input class="input" type="search" />
+ *     <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+ *   </div>
+ */
+.input-icon { position: relative; }
+.input-icon > .input { display: block; width: 100%; }
+.input-icon-glyph {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+.input-icon-left  .input-icon-glyph { left: var(--ic-space-3); }
+.input-icon-left  .input { padding-left: calc(var(--ic-space-3) + 16px + var(--ic-space-2)); }
+.input-icon-right .input-icon-glyph { right: var(--ic-space-3); }
+.input-icon-right .input { padding-right: calc(var(--ic-space-3) + 16px + var(--ic-space-2)); }
+/* Match glyph inset to the tighter padding on the xs size */
+.input-icon-left  .input-xs.input,
+.input-icon-left  .input-xs { padding-left: calc(var(--ic-space-2) + 16px + var(--ic-space-1)); }
+.input-icon-left:has(.input-xs) .input-icon-glyph { left: var(--ic-space-2); }
+.input-icon-right .input-xs { padding-right: calc(var(--ic-space-2) + 16px + var(--ic-space-1)); }
+.input-icon-right:has(.input-xs) .input-icon-glyph { right: var(--ic-space-2); }
+
 /* Textarea variant of .input */
 textarea.input {
   height: auto;
@@ -1484,7 +1519,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   align-items: end;
   justify-content: space-between;
   gap: var(--ic-space-5);
-  padding-bottom: var(--ic-space-5);
+  padding-bottom: var(--ic-space-3);
   border-bottom: 1px solid var(--ic-palette-gray-150);
   margin-bottom: var(--ic-space-6);
 }
@@ -2024,6 +2059,26 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   color: var(--color-text-muted);
   line-height: 1.3;
 }
+
+/* Profile card at the top of an account menu — avatar + name + role.
+ *   <div class="dropdown-header">
+ *     <span class="avatar avatar-md">…</span>
+ *     <div class="dropdown-item-text">
+ *       <span class="dropdown-item-label">Name</span>
+ *       <span class="dropdown-item-description">Role</span>
+ *     </div>
+ *   </div>
+ */
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-3);
+  padding: var(--ic-space-2) var(--ic-space-3) var(--ic-space-3);
+}
+.dropdown-header .dropdown-item-label { font-weight: var(--ic-weight-semibold); white-space: nowrap; }
+
+/* Trailing count/badge inside a dropdown item — pushed to the right edge */
+.dropdown-item-count { margin-left: auto; flex-shrink: 0; }
 
 /* Selected state — leading check + semibold label */
 .dropdown-item-check {

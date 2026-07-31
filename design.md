@@ -164,7 +164,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | Component | Root | Variants / parts |
 |---|---|---|
 | [Buttons](./example.html#buttons) | `.btn` | `.btn-primary` · `.btn-secondary` · `.btn-ghost` · `.btn-danger` · `.btn-xs` · `.btn-icon-only` |
-| [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` |
+| [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` · `.input-icon` wrapper (`.input-icon-left` / `.input-icon-right`) with a `.input-icon-glyph` for an inset icon |
 | [Select](./example.html#inputs) | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
 | [Tag input](./example.html#inputs) | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
 | [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-search` · `.topbar-avatar` |
@@ -180,7 +180,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Alerts](./example.html#alerts) | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
 | [Toasts](./example.html#toasts) | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
 | [Loaders](./example.html#loaders) | `.chase` / `.chase-cw` | Chase spinner — the logo mark's 24 segments fading in sequence. `.chase` counter-clockwise (blue) · `.chase-cw` clockwise (graphite + blue flash). Sizes `.size-sm` 24 · `.size-md` 32 · `.size-lg` 48. Copy the `<svg viewBox="0 0 22 32">` block from example.html#loaders; segment delays come from the script block. Respects `prefers-reduced-motion`. |
-| [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` · `.dropdown-divider` |
+| [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` · `.dropdown-divider` · `.dropdown-header` (profile card: avatar + name + role) · `.dropdown-item-count` (trailing badge). Account menu demoed at [#topbar](./example.html#topbar). |
 | [Modal](./example.html#modals) | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
 | [Drawer](./example.html#drawers) | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
 | [Breadcrumbs](./example.html#breadcrumbs) | `.breadcrumbs` + `.breadcrumb` | Parent crumbs are `<a class="breadcrumb">` (blue, underline on hover); current page is `<span class="breadcrumb is-current" aria-current="page">` (plain text). Chevron separators render automatically. Usually the first row inside a page head; works standalone. |
