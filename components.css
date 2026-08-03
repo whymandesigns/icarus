@@ -1644,6 +1644,69 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-radius: var(--ic-radius-sm);
 }
 
+/* ---------- Stepper ----------
+ * Horizontal step indicator for wizards / multi-step flows. Numbered 24px
+ * circles + labels, joined by caret separators. The current step's circle is
+ * filled with the accent; all others are outlined.
+ *
+ *   <ol class="stepper">
+ *     <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Details</span></li>
+ *     <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+ *     <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Review</span></li>
+ *   </ol>
+ */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-1);
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stepper-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ic-space-2);
+}
+.stepper-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: var(--ic-radius-full);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--ic-palette-graphite-500);
+  font: var(--ic-weight-semibold) var(--ic-text-xs)/1 var(--ic-font-sans);
+}
+.stepper-label {
+  font: var(--ic-weight-semibold) var(--ic-text-xxs)/1.3 var(--ic-font-sans);
+  color: var(--ic-palette-graphite-500);
+  white-space: nowrap;
+}
+/* Current step — filled accent circle, white number */
+.stepper-step.is-current .stepper-num {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+/* Completed step (optional) — same accent fill with a check instead of a number */
+.stepper-step.is-complete .stepper-num {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+.stepper-sep {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text-subtle);
+}
+.stepper-sep .ph { font-size: 16px; }
+
 /* ---------- Tooltip ----------
  * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
  * is top; override with [data-placement="bottom"|"left"|"right"].

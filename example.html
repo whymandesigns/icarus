@@ -631,6 +631,35 @@
         </div>
       </section>
 
+      <section class="stack" id="stepper">
+        <div>
+          <h3 class="h3">Stepper</h3>
+          <p class="body-sm">Horizontal step indicator for wizards / multi-step flows. Numbered circles + labels joined by carets; the current step's circle is filled with the accent. Mark done steps with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-complete</code> (check) and the active one with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-current</code>.</p>
+        </div>
+
+        <span class="caption" style="display: block">Current on step 1 (matches the component)</span>
+        <ol class="stepper">
+          <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
+        </ol>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In progress — steps 1–2 complete, on step 3</span>
+        <ol class="stepper">
+          <li class="stepper-step is-complete"><span class="stepper-num"><i class="ph ph-check"></i></span><span class="stepper-label">Account</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step is-complete"><span class="stepper-num"><i class="ph ph-check"></i></span><span class="stepper-label">Workspace</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
+        </ol>
+      </section>
+
       <section class="stack" id="topbar">
         <h3 class="h3">Top bar</h3>
         <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar.</p>
@@ -655,7 +684,7 @@
                     </div>
                   </div>
                   <button class="dropdown-item" type="button">My Profile</button>
-                  <button class="dropdown-item" type="button">Peer Feedback<span class="count-badge count-badge-sm dropdown-item-count">2</span></button>
+                  <button class="dropdown-item" type="button">Peer Feedback<span class="count-badge dropdown-item-count">2</span></button>
                   <button class="dropdown-item" type="button">Reviews</button>
                   <hr class="dropdown-divider" />
                   <button class="dropdown-item" type="button">Career Map</button>
