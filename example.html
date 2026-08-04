@@ -505,6 +505,22 @@
           </label>
 
           <label class="field">
+            <span class="field-label">Icon left</span>
+            <div class="input-icon input-icon-left">
+              <i class="ph ph-calendar-blank input-icon-glyph"></i>
+              <input class="input" type="text" value="Jun 15, 2026" />
+            </div>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Icon right</span>
+            <div class="input-icon input-icon-right">
+              <input class="input" type="search" placeholder="Search…" />
+              <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+            </div>
+          </label>
+
+          <label class="field">
             <input class="input" type="text" placeholder="No label, hint only" />
             <span class="field-hint">Hint without a label is fine too.</span>
           </label>
@@ -615,11 +631,40 @@
         </div>
       </section>
 
+      <section class="stack" id="stepper">
+        <div>
+          <h3 class="h3">Stepper</h3>
+          <p class="body-sm">Horizontal step indicator for wizards / multi-step flows. Numbered circles + labels joined by carets; the current step's circle is filled with the accent. Mark done steps with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-complete</code> (check) and the active one with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-current</code>.</p>
+        </div>
+
+        <span class="caption" style="display: block">Current on step 1 (matches the component)</span>
+        <ol class="stepper">
+          <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
+        </ol>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In progress — steps 1–2 complete, on step 3</span>
+        <ol class="stepper">
+          <li class="stepper-step is-complete"><span class="stepper-num"><i class="ph ph-check"></i></span><span class="stepper-label">Account</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step is-complete"><span class="stepper-num"><i class="ph ph-check"></i></span><span class="stepper-label">Workspace</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
+          <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
+        </ol>
+      </section>
+
       <section class="stack" id="topbar">
         <h3 class="h3">Top bar</h3>
         <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar.</p>
-        <div style="border-radius: var(--ic-radius-sm); overflow: hidden; border: 1px solid var(--color-border)">
-          <header class="topbar">
+        <div style="border-radius: var(--ic-radius-sm); border: 1px solid var(--color-border)">
+          <header class="topbar" style="border-radius: var(--ic-radius-sm)">
             <a class="topbar-brand" href="#">
               <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
             </a>
@@ -628,7 +673,27 @@
                 <svg class="search-icon"><use href="#i-search"/></svg>
                 <input class="topbar-search-input" type="search" placeholder="Search Operationalize..." />
               </div>
-              <button class="topbar-avatar" aria-label="Account">MV</button>
+              <div class="dropdown">
+                <button class="topbar-avatar dropdown-trigger" aria-label="Account" aria-expanded="false" type="button">MV</button>
+                <div class="dropdown-menu dropdown-menu-end" hidden>
+                  <div class="dropdown-header">
+                    <span class="avatar avatar-md"><img src="https://i.pravatar.cc/64?img=12" alt="" /></span>
+                    <div class="dropdown-item-text">
+                      <span class="dropdown-item-label">John Appleseed</span>
+                      <span class="dropdown-item-description">CEO</span>
+                    </div>
+                  </div>
+                  <button class="dropdown-item" type="button">My Profile</button>
+                  <button class="dropdown-item" type="button">Peer Feedback<span class="count-badge dropdown-item-count">2</span></button>
+                  <button class="dropdown-item" type="button">Reviews</button>
+                  <hr class="dropdown-divider" />
+                  <button class="dropdown-item" type="button">Career Map</button>
+                  <button class="dropdown-item" type="button">Recognitions</button>
+                  <button class="dropdown-item" type="button">Time Off</button>
+                  <hr class="dropdown-divider" />
+                  <button class="dropdown-item" type="button">Sign Out</button>
+                </div>
+              </div>
             </div>
           </header>
         </div>
@@ -652,7 +717,7 @@
             <div class="sidenav-spacer"></div>
             <div class="sidenav-footer">
               <div class="sidenav-group">
-                <button class="sidenav-item sidenav-group-trigger" type="button" aria-expanded="true"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></button>
+                <button class="sidenav-item sidenav-group-trigger" type="button" aria-expanded="false"><svg class="sidenav-item-icon"><use href="#i-settings"/></svg><span class="sidenav-item-label">Admin Settings</span><svg class="sidenav-item-chevron"><use href="#i-chevron-down"/></svg></button>
                 <ul class="sidenav-sublist">
                   <li><a class="sidenav-item sidenav-subitem" href="#"><span class="sidenav-item-label">Permissions</span></a></li>
                   <li><a class="sidenav-item sidenav-subitem" href="#"><span class="sidenav-item-label">Settings</span></a></li>
