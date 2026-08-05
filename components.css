@@ -552,6 +552,348 @@ textarea.input {
 .cell-dot.is-warning { background: var(--color-warning); }
 .cell-dot.is-danger  { background: var(--color-danger); }
 
+/* ---------- Table · Sheet variant ----------
+ * Airtable/Linear-style editable spreadsheet. Grid lines on every cell,
+ * sticky header + sticky "#" gutter, compact rows, and a generic per-cell
+ * state machine reused by six cell primitives. Toggle against .table-wide:
+ * both are <table class="table …"> so a prototype can swap the modifier.
+ *
+ *   <div class="table-scroll">
+ *     <table class="table table-sheet" data-sheet>
+ *       <thead><tr>
+ *         <th class="sheet-gutter">#</th>
+ *         <th class="sheet-col" data-col="name"><button class="th-sort">Name</button><span class="th-tools">…</span></th>
+ *         …
+ *       </tr></thead>
+ *       <tbody>
+ *         <tr data-level="0">
+ *           <td class="sheet-gutter"><span class="sheet-rownum">1</span></td>
+ *           <td class="sheet-cell" data-type="text" data-variant="name" tabindex="-1"> … </td>
+ *           …
+ *         </tr>
+ *       </tbody>
+ *     </table>
+ *   </div>
+ *
+ * Cell state = classes on the <td class="sheet-cell">:
+ *   (default) · .is-empty · :hover · .is-selected · .is-editing ·
+ *   .is-saving · .is-saved · .is-error · .is-readonly · .is-skeleton
+ * Behaviour (select / edit / commit / cancel / arrow-nav / save sim) is
+ * driven by the [data-sheet] JS module; see design.md §Sheet.
+ */
+.table-sheet {
+  border-collapse: separate;
+  border-spacing: 0;
+  font: var(--type-body-sm);
+  table-layout: fixed;
+}
+.table-sheet thead th {
+  padding: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
+  color: var(--color-text-muted);
+  vertical-align: middle;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.table-sheet thead th:last-child { border-right: 0; }
+.table-sheet tbody td {
+  padding: 0;
+  height: 28px;
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  vertical-align: middle;
+  white-space: nowrap;
+  background: var(--color-surface);
+}
+.table-sheet tbody td:last-child { border-right: 0; }
+.table-sheet tbody tr:last-child td { border-bottom: 0; }
+
+/* Header cell inner — label + hover tools (menu, resize) */
+.sheet-col-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-2);
+  padding: 0 var(--ic-space-3);
+  height: 34px;
+  position: relative;
+}
+.sheet-col .th-sort { flex: 1; min-width: 0; }
+.sheet-col .th-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity var(--ic-duration-fast) var(--ic-ease);
+}
+.sheet-col:hover .th-tools,
+.sheet-col.is-sorted .th-tools,
+.sheet-col.is-filtered .th-tools { opacity: 1; }
+.th-menu {
+  width: 20px; height: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; padding: 0; cursor: pointer;
+  color: var(--color-text-subtle); border-radius: var(--ic-radius-sm);
+}
+.th-menu:hover { background: var(--color-surface-muted); color: var(--color-text); }
+.th-menu .ph { font-size: 13px; }
+/* Sort direction arrow */
+.sheet-col .th-sort .th-arrow { font-size: 11px; opacity: 0; }
+.sheet-col.is-sorted .th-sort { color: var(--color-text); }
+.sheet-col.is-sorted .th-sort .th-arrow { opacity: 1; }
+.sheet-col.is-desc .th-sort .th-arrow { transform: rotate(180deg); }
+/* Filtered marker */
+.sheet-col.is-filtered .sheet-col-inner::after {
+  content: ""; width: 6px; height: 6px; border-radius: var(--ic-radius-full);
+  background: var(--color-accent); flex-shrink: 0;
+}
+/* Column resize handle */
+.th-resize {
+  position: absolute; top: 0; right: -3px; width: 6px; height: 100%;
+  cursor: col-resize; z-index: 1;
+}
+.th-resize::after {
+  content: ""; position: absolute; top: 6px; bottom: 6px; left: 2px; width: 2px;
+  background: transparent; border-radius: 1px;
+}
+.th-resize:hover::after, .th-resize.is-dragging::after { background: var(--color-border-focus); }
+
+/* Sticky gutter — row number column, pinned on horizontal scroll */
+.sheet-gutter {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  width: 44px;
+  text-align: center;
+  color: var(--color-text-subtle);
+  font: var(--ic-weight-regular) var(--ic-text-xs)/1 var(--ic-font-sans);
+  background: var(--color-surface-muted);
+}
+/* Keep the gutter its own gray-150 region even under row hover / selection
+ * (specificity 0,3,1 beats the hover/selected row rules at 0,2,3). */
+.table-scroll .table.table-sheet .sheet-gutter { background: var(--color-surface-muted); }
+.table-sheet thead .sheet-gutter { z-index: 4; }
+/* Stacking order inside a .table-scroll wrapper. The base rule
+ * `.table-scroll .table thead th { z-index: 1 }` (specificity 0,2,2) would
+ * otherwise flatten every header to z-index 1 — collapsing the header/gutter
+ * layering and letting later-in-DOM headers paint over the pinned `#`. These
+ * scroll-scoped rules (specificity 0,3,2) win and set the true order:
+ * header `#` (5) > other headers (4) > body gutter (3) > body cells (auto). */
+.table-scroll .table.table-sheet thead th { z-index: 4; }
+.table-scroll .table.table-sheet thead .sheet-gutter,
+.table-scroll .table.table-sheet thead .sheet-toggle { z-index: 5; }
+.sheet-rownum { display: inline-block; }
+
+/* Expand/collapse toggle column — pinned directly after the # gutter (left = its
+ * 44px width). Holds a caret on parent rows and a collapse/expand-all control in
+ * the header. It carries the pinned-region separator on its right edge. */
+.sheet-toggle {
+  position: sticky;
+  left: 44px;
+  z-index: 3;
+  width: 30px;
+  text-align: center;
+  background: var(--color-surface-muted);
+  box-shadow: inset -1px 0 0 var(--color-border);
+}
+/* Keep the toggle column gray-150 too, even under row hover / selection. */
+.table-scroll .table.table-sheet .sheet-toggle { background: var(--color-surface-muted); }
+.table-sheet thead .sheet-toggle { z-index: 4; }
+.sheet-toggle .row-toggle { margin: 0 auto; }
+/* Collapse / expand-all control — two stacked carets (⌄ over ⌃) */
+.sheet-collapse-all {
+  width: 20px; height: 20px; margin: 0 auto;
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  background: transparent; border: 0; padding: 0; cursor: pointer;
+  color: var(--color-text-subtle); border-radius: var(--ic-radius-sm);
+}
+.sheet-collapse-all:hover { background: var(--color-surface-muted); color: var(--color-text); }
+.sheet-collapse-all .ph { font-size: 9px; line-height: 0.55; }
+
+/* ---- Row states ---- */
+.table-sheet tbody tr:hover td { background: var(--color-surface-muted); }
+.table-sheet tbody tr.is-selected td { background: var(--color-accent-subtle); }
+.table-sheet tbody tr.is-selected .sheet-gutter { color: var(--color-text); }
+/* blue left rail on the first data cell of a selected row */
+.table-sheet tbody tr.is-selected td.sheet-cell:first-of-type { box-shadow: inset 2px 0 0 var(--color-border-focus); }
+
+/* Range selection (T13) — rectangular multi-cell highlight, no per-cell ring */
+.table-sheet tbody td.sheet-cell.is-range { background: var(--color-accent-subtle); }
+.table-sheet tbody tr.is-selected td.sheet-cell.is-range { background: var(--color-accent-subtle); }
+
+/* ---- Generic cell wrapper + state machine ---- */
+.sheet-cell {
+  position: relative;
+  cursor: default;
+  outline: none;
+  transition: box-shadow var(--ic-duration-fast) var(--ic-ease);
+}
+.sheet-cell-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-2);
+  padding: 0 var(--ic-space-3);
+  min-height: 28px;
+  overflow: hidden;
+}
+.sheet-cell[data-align="center"] .sheet-cell-inner { justify-content: center; }
+/* Selected / focused cell — inset blue ring drawn over grid lines */
+.table-sheet tbody td.sheet-cell.is-selected {
+  box-shadow: inset 0 0 0 2px var(--color-border-focus);
+  background: var(--color-surface);
+  z-index: 1;
+}
+.table-sheet tbody tr.is-selected td.sheet-cell.is-selected { background: var(--color-surface); }
+/* Editing — clean white field, stronger ring */
+.table-sheet tbody td.sheet-cell.is-editing {
+  box-shadow: inset 0 0 0 2px var(--color-border-focus);
+  background: var(--color-surface);
+  z-index: 2;
+  white-space: normal;
+}
+/* Empty — faint add affordance, revealed on hover/selection */
+.sheet-cell.is-empty .sheet-empty {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-text-subtle);
+  opacity: 0;
+  transition: opacity var(--ic-duration-fast) var(--ic-ease);
+}
+.sheet-cell.is-empty:hover .sheet-empty,
+.sheet-cell.is-empty.is-selected .sheet-empty { opacity: 1; }
+.sheet-empty .ph { font-size: 14px; }
+/* Saving / saved / error affordances (top-right corner marker) */
+.sheet-cell .sheet-status {
+  position: absolute; top: 3px; right: 4px;
+  width: 12px; height: 12px;
+  display: none; align-items: center; justify-content: center;
+  font-size: 11px; line-height: 1;
+}
+.sheet-cell.is-saving .sheet-status,
+.sheet-cell.is-saved  .sheet-status,
+.sheet-cell.is-error  .sheet-status { display: inline-flex; }
+.sheet-cell.is-saving .sheet-status { color: var(--color-text-subtle); }
+.sheet-cell.is-saved  .sheet-status { color: var(--color-success); }
+.sheet-cell.is-error  .sheet-status { color: var(--color-danger); }
+.sheet-cell.is-saving .sheet-status .ph { animation: sheet-spin 0.6s linear infinite; }
+.table-sheet tbody td.sheet-cell.is-error {
+  box-shadow: inset 0 0 0 2px var(--color-danger);
+}
+.sheet-cell.is-error .sheet-error-msg {
+  position: absolute; left: 0; top: calc(100% - 1px); z-index: 5;
+  background: var(--color-danger); color: var(--color-text-inverse);
+  font: var(--ic-weight-regular) var(--ic-text-xs)/1.3 var(--ic-font-sans);
+  padding: 2px var(--ic-space-2); border-radius: 0 0 var(--ic-radius-sm) var(--ic-radius-sm);
+  white-space: nowrap;
+}
+/* Read-only / disabled */
+.sheet-cell.is-readonly { cursor: not-allowed; }
+.sheet-cell.is-readonly .sheet-cell-inner { color: var(--color-text-subtle); }
+/* Loading skeleton */
+.sheet-cell.is-skeleton .sheet-cell-inner::before {
+  content: ""; height: 10px; width: 60%; border-radius: var(--ic-radius-full);
+  background: linear-gradient(90deg, var(--color-surface-muted) 25%, var(--color-surface-sunken) 37%, var(--color-surface-muted) 63%);
+  background-size: 400% 100%;
+  animation: sheet-shimmer 1.4s ease infinite;
+}
+@keyframes sheet-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+@keyframes sheet-spin { to { transform: rotate(360deg); } }
+
+/* ---- Inline editors (text input + popover), injected by the JS module ---- */
+.sheet-input {
+  width: 100%; border: 0; outline: none; background: transparent;
+  font: inherit; color: var(--color-text); padding: 0;
+  resize: none; line-height: 1.4;
+}
+.sheet-pop {
+  position: absolute; z-index: var(--ic-z-overlay);
+  min-width: 200px; max-width: 320px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-md);
+  box-shadow: var(--ic-shadow-md, 0 8px 24px rgba(0,0,0,0.12));
+  padding: var(--ic-space-2);
+}
+.sheet-pop-search {
+  width: 100%; box-sizing: border-box; margin-bottom: var(--ic-space-2);
+  padding: var(--ic-space-2) var(--ic-space-3);
+  border: 1px solid var(--color-border); border-radius: var(--ic-radius-sm);
+  font: var(--type-body-sm); color: var(--color-text); background: var(--color-surface);
+  outline: none;
+}
+.sheet-pop-search:focus { border-color: var(--color-border-focus); }
+.sheet-pop-list { max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 1px; }
+.sheet-opt {
+  display: flex; align-items: center; gap: var(--ic-space-2);
+  width: 100%; text-align: left;
+  padding: var(--ic-space-2) var(--ic-space-3);
+  background: transparent; border: 0; border-radius: var(--ic-radius-sm);
+  font: var(--type-body-sm); color: var(--color-text); cursor: pointer;
+}
+.sheet-opt:hover, .sheet-opt.is-active { background: var(--color-surface-muted); }
+.sheet-opt .ph-check { margin-left: auto; color: var(--color-accent); font-size: 14px; }
+.sheet-opt.is-empty-note { color: var(--color-text-subtle); cursor: default; }
+.sheet-opt.is-empty-note:hover { background: transparent; }
+
+/* ---- Cell primitives ---- */
+/* Text · Name variant — hierarchy (toggle/spacer + indent + add-child) */
+.sheet-tree { display: flex; align-items: center; gap: var(--ic-space-1); min-width: 0; flex: 1; }
+.sheet-cell[data-level="1"] .sheet-tree { padding-left: var(--ic-space-4); }
+.sheet-cell[data-level="2"] .sheet-tree { padding-left: calc(var(--ic-space-4) * 2); }
+.sheet-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sheet-cell[data-level="0"] .sheet-name { font-weight: var(--ic-weight-medium); }
+.sheet-addchild {
+  width: 20px; height: 20px; flex-shrink: 0; margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; padding: 0; cursor: pointer;
+  color: var(--color-text-subtle); border-radius: var(--ic-radius-sm);
+  opacity: 0; transition: opacity var(--ic-duration-fast) var(--ic-ease);
+}
+.sheet-cell:hover .sheet-addchild, .sheet-cell.is-selected .sheet-addchild { opacity: 1; }
+.sheet-addchild:hover { background: var(--color-surface-muted); color: var(--color-text); }
+.sheet-addchild .ph { font-size: 13px; }
+/* Text · Description variant — truncate with ellipsis */
+.sheet-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text); }
+.sheet-cell[data-variant="muted"] .sheet-text { color: var(--color-text-muted); }
+
+/* Person picker */
+.sheet-person { display: inline-flex; align-items: center; gap: var(--ic-space-2); min-width: 0; }
+.sheet-avatar {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-surface-sunken);
+  display: inline-flex; align-items: center; justify-content: center;
+  font: var(--ic-weight-medium) 9px/1 var(--ic-font-sans);
+  color: var(--color-text-muted); text-transform: uppercase;
+}
+.sheet-person-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Date · roadmap dot + rob time (reuses .cell-dot) */
+.sheet-date { display: inline-flex; align-items: center; gap: var(--ic-space-2); }
+
+/* Multi-select tags */
+.sheet-tags { display: inline-flex; align-items: center; gap: var(--ic-space-1); min-width: 0; overflow: hidden; }
+.sheet-tags-more { font: var(--ic-weight-medium) var(--ic-text-xs)/1 var(--ic-font-sans); color: var(--color-text-subtle); flex-shrink: 0; }
+
+/* Link / reference */
+.sheet-link {
+  display: inline-flex; align-items: center; gap: 4px; min-width: 0;
+  color: var(--color-text-link); text-decoration: none;
+}
+.sheet-link:hover { text-decoration: underline; }
+.sheet-link-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sheet-link .ph-arrow-square-out { font-size: 12px; flex-shrink: 0; }
+
+/* ---- Table-level empty + toolbar ---- */
+.sheet-empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--ic-space-3); padding: var(--ic-space-8);
+  color: var(--color-text-muted); text-align: center;
+}
+.sheet-empty-state .ph { font-size: 32px; color: var(--color-text-subtle); }
+
 /* ---------- Alert ----------
  * Horizontal block with: icon · message · optional CTAs · optional close button.
  *

@@ -1858,7 +1858,7 @@
       <section class="stack" id="tables">
         <div>
           <h3 class="h3">Tables</h3>
-          <p class="body-sm">Wide variant — tall rows, zebra striping, no grid lines. Built on semantic <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table&gt;</code> with cell-content helpers (<code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-title</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-user</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-meta</code>) for repeating patterns.</p>
+          <p class="body-sm">Wide variant — tall rows, zebra striping, no grid lines. Built on semantic <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table&gt;</code> with cell-content helpers (<code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-title</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-user</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-meta</code>) for repeating patterns. For a dense, editable spreadsheet grid on the same <code style="font: var(--type-mono); color: var(--color-text-muted)">.table</code> base, see the <a href="#sheet">Sheet</a> variant.</p>
         </div>
         <div class="table-scroll">
           <table class="table table-wide">
@@ -2208,6 +2208,29 @@
           </table>
         </div>
       </section>
+
+      <section class="stack" id="sheet">
+        <div>
+          <h3 class="h3">Sheet</h3>
+          <p class="body-sm">Editable spreadsheet variant of the table — grid lines, sticky header + <code style="font: var(--type-mono); color: var(--color-text-muted)">#</code> gutter, and every cell editable through one shared state machine. Same <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table class="table"&gt;</code> base as the wide variant, so a prototype can toggle <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-wide</code> ⇄ <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-sheet</code>. Six cell primitives: text (Name/Description), single-select (Status/Health), person, date (+ roadmap dot / RoB time), multi-select tags, link.</p>
+        </div>
+        <div class="table-scroll" style="max-height: 520px">
+          <table class="table table-sheet" data-sheet>
+            <thead><tr><th class="sheet-gutter">#</th><th class="sheet-col" data-col="name" style="width:220px"><span class="sheet-col-inner"><button class="th-sort" type="button">Name <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="description" style="width:210px"><span class="sheet-col-inner"><button class="th-sort" type="button">Description <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="status" style="width:180px"><span class="sheet-col-inner"><button class="th-sort" type="button">Status <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="health" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Health <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="accountability" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Accountability <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="roadmap" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">Roadmap <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="tags" style="width:200px"><span class="sheet-col-inner"><button class="th-sort" type="button">Tags <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="beneficiary" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Beneficiary function <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="rob" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">RoB Meetings <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="start" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Start date <i class="ph ph-arrow-up th-arrow"></i></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><i class="ph ph-dots-three"></i></button></span><span class="th-resize"></span></span></th></tr></thead>
+            <tbody>
+                            <tr data-level="0"><td class="sheet-gutter"><span class="sheet-rownum">1</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="0" data-value="Build Creator" tabindex="-1"><span class="sheet-tree"><button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to build the creator program." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Execution" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Maria Santos" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-empty-icon="ph-upload-simple" data-value="" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client,coaching" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="1"><td class="sheet-gutter"><span class="sheet-rownum">2</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="1" data-value="Write blog articles" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="Produce a minimum of four long-form posts per month." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Definition" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Maria Santos" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-warning" data-empty-icon="ph-upload-simple" data-value="April 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="1"><td class="sheet-gutter"><span class="sheet-rownum">3</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="1" data-value="Creator SEM" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="Develop a comprehensive SEM program for creators." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Idea" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="On track" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-empty-icon="ph-upload-simple" data-value="" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-value="" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="1"><td class="sheet-gutter"><span class="sheet-rownum">4</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="1" data-value="Build Creator Playbook" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to build the playbook." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Complete" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Maria Santos" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-danger" data-empty-icon="ph-upload-simple" data-value="Jan 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="0"><td class="sheet-gutter"><span class="sheet-rownum">5</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="0" data-value="Scalable Content Production" tabindex="-1"><span class="sheet-tree"><button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to scale content output." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Impact assessment" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="On track" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Alejandro Reyes" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-ontrack" data-empty-icon="ph-upload-simple" data-value="May 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="Coaching-business" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="1"><td class="sheet-gutter"><span class="sheet-rownum">6</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="1" data-value="Build Creator Playbook" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to build the playbook." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="On hold" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Alejandro Reyes" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-danger" data-empty-icon="ph-upload-simple" data-value="Jan 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="0"><td class="sheet-gutter"><span class="sheet-rownum">7</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="0" data-value="Global Talent Acquisition & Hiring" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative for hiring at scale." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Opportunity assessment" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="Off track" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Camilla Herrere" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-ontrack" data-empty-icon="ph-upload-simple" data-value="May 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-fail data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+              <tr data-level="0"><td class="sheet-gutter"><span class="sheet-rownum">8</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="0" data-value="AI Powered Creator Tools" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><i class="ph ph-plus"></i></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to ship AI tooling." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Execution" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Alejandro Reyes" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-danger" data-empty-icon="ph-upload-simple" data-value="Jan 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="body-sm" style="color: var(--color-text-muted)">Click a cell to select · click again or <kbd>Enter</kbd> to edit · <kbd>Esc</kbd> cancels · arrow keys / <kbd>Tab</kbd> move · <kbd>⌘/Ctrl</kbd>+<kbd>C</kbd> copies a <kbd>Shift</kbd>-drag range · empty cells reveal <code style="font: var(--type-mono); color: var(--color-text-muted)">+</code> · the header menu sorts, filters and resizes. Cells flash a saving → saved tick; row 7’s Beneficiary cell demos a save error with retry.</p>
+      </section>
     </section>
 
     <section id="templates" class="stack" style="gap: var(--ic-space-7)">
@@ -2285,34 +2308,20 @@
                     <p class="page-head-subtitle">Manage workflows across teams.</p>
                   </div>
                   <div class="page-head-actions" data-cta-link="page-head-primary">
-                    <div class="dropdown">
-                      <button class="btn btn-icon-only btn-ghost dropdown-trigger" aria-label="More" aria-expanded="false" type="button"><svg class="btn-icon"><use href="#i-more-vertical"/></svg></button>
-                      <div class="dropdown-menu dropdown-menu-end" hidden>
-                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-pencil"/></svg>Rename</button>
-                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-copy"/></svg>Duplicate</button>
-                        <button class="dropdown-item" type="button"><svg class="dropdown-item-icon"><use href="#i-archive"/></svg>Archive</button>
-                        <button class="dropdown-item dropdown-item-danger" type="button"><svg class="dropdown-item-icon"><use href="#i-trash"/></svg>Delete</button>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--ic-space-4); margin-bottom: var(--ic-space-7)">
-                  <div class="stat-card"><p class="stat-card-label">Active</p><p class="stat-card-value">12</p></div>
-                  <div class="stat-card"><p class="stat-card-label">In progress</p><p class="stat-card-value">5</p></div>
-                  <div class="stat-card"><p class="stat-card-label">Completed</p><p class="stat-card-value">38</p></div>
-                  <div class="stat-card"><p class="stat-card-label">Failed</p><p class="stat-card-value" style="color: var(--color-danger)">2</p></div>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--ic-space-3)">
-                  <h3 class="h3" style="margin: 0">Recent</h3>
-                  <a href="#" class="body-sm" style="color: var(--color-text-link); text-decoration: none">View all →</a>
-                </div>
-                <div class="stack" style="gap: var(--ic-space-2)">
-                  <div class="list-row"><div><p class="list-row-title">Onboarding</p><p class="list-row-meta">Last updated 2h ago · 14 steps</p></div><span class="tag tag-indicator tag-positive">Running</span></div>
-                  <div class="list-row"><div><p class="list-row-title">Q4 Planning</p><p class="list-row-meta">Last updated yesterday · 8 steps</p></div><span class="tag tag-indicator tag-warning">Waiting</span></div>
-                  <div class="list-row"><div><p class="list-row-title">Performance Review</p><p class="list-row-meta">Last updated 3 days ago · 12 steps</p></div><span class="tag tag-indicator tag-positive">Running</span></div>
-                  <div class="list-row"><div><p class="list-row-title">Vendor Onboarding</p><p class="list-row-meta">Last updated 1 week ago · 6 steps</p></div><span class="tag tag-indicator tag-negative">Stopped</span></div>
+                <div class="table-scroll">
+                  <table class="table table-wide">
+                    <thead><tr><th><button class="th-sort" type="button">Name</button></th><th>Status</th><th>Health</th><th>Owner</th><th>Roadmap</th></tr></thead>
+                    <tbody>
+                      <tr data-level="0"><td><div class="cell-title-row"><button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button><div class="cell-title"><span class="cell-title-text">Onboarding</span><span class="cell-title-sub">Process</span></div></div></td><td><span class="tag tag-blue">Execution</span></td><td><span class="tag tag-indicator tag-positive">On track</span></td><td><div class="cell-user"><span class="cell-avatar">MS</span><div class="cell-user-meta"><span class="cell-user-name">Maria Santos</span><span class="cell-user-role">Ops Lead</span></div></div></td><td>Jan 15, 2026</td></tr>
+                      <tr data-level="1"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Collect documents</span><span class="cell-title-sub">Step</span></div></div></td><td><span class="tag tag-light">Definition</span></td><td><span class="tag tag-indicator tag-warning">At Risk</span></td><td><div class="cell-user"><span class="cell-avatar">MS</span><div class="cell-user-meta"><span class="cell-user-name">Maria Santos</span><span class="cell-user-role">Ops Lead</span></div></div></td><td>Jan 2, 2026</td></tr>
+                      <tr data-level="1"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Provision accounts</span><span class="cell-title-sub">Step</span></div></div></td><td><span class="tag tag-blue">Execution</span></td><td><span class="tag tag-indicator tag-positive">On track</span></td><td><div class="cell-user"><span class="cell-avatar">PV</span><div class="cell-user-meta"><span class="cell-user-name">Pavel Vydra</span><span class="cell-user-role">IT Admin</span></div></div></td><td>Feb 10, 2026</td></tr>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Q4 Planning</span><span class="cell-title-sub">Process</span></div></div></td><td><span class="tag tag-blue-light">Impact assessment</span></td><td><span class="tag tag-indicator tag-warning">At Risk</span></td><td><div class="cell-user"><span class="cell-avatar">AR</span><div class="cell-user-meta"><span class="cell-user-name">Alejandro Reyes</span><span class="cell-user-role">PM</span></div></div></td><td>Mar 1, 2026</td></tr>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Performance Review</span><span class="cell-title-sub">Process</span></div></div></td><td><span class="tag tag-positive">Complete</span></td><td><span class="tag tag-indicator tag-positive">On track</span></td><td><div class="cell-user"><span class="cell-avatar">CH</span><div class="cell-user-meta"><span class="cell-user-name">Camilla Herrere</span><span class="cell-user-role">People Ops</span></div></div></td><td>Dec 1, 2026</td></tr>
+                    </tbody>
+                  </table>
                 </div>
               </section>
 
@@ -2330,27 +2339,16 @@
                     <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New initiative</button>
                   </div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--ic-space-4)">
-                  <article class="card">
-                    <h3 class="card-title">Migrate billing infra</h3>
-                    <p class="card-body">Move billing from Stripe legacy to the new platform.</p>
-                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-positive">On track</span><span class="caption">Q4 2026</span></div>
-                  </article>
-                  <article class="card">
-                    <h3 class="card-title">Redesign onboarding</h3>
-                    <p class="card-body">Streamline the first-run experience for new workspaces.</p>
-                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-warning">At risk</span><span class="caption">Q4 2026</span></div>
-                  </article>
-                  <article class="card">
-                    <h3 class="card-title">SSO integrations</h3>
-                    <p class="card-body">Add Okta + Azure AD support for enterprise accounts.</p>
-                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-positive">On track</span><span class="caption">Q1 2027</span></div>
-                  </article>
-                  <article class="card">
-                    <h3 class="card-title">EU data residency</h3>
-                    <p class="card-body">Stand up infrastructure in Frankfurt + Dublin regions.</p>
-                    <div class="row" style="margin-top: var(--ic-space-4); justify-content: space-between"><span class="tag tag-indicator tag-blue">Planning</span><span class="caption">Q2 2027</span></div>
-                  </article>
+                <div class="table-scroll">
+                  <table class="table table-wide">
+                    <thead><tr><th><button class="th-sort" type="button">Name</button></th><th>Status</th><th>Health</th><th>Owner</th><th>Roadmap</th></tr></thead>
+                    <tbody>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Migrate billing infra</span><span class="cell-title-sub">Move billing from Stripe legacy to the new platform.</span></div></div></td><td><span class="tag tag-blue">Execution</span></td><td><span class="tag tag-indicator tag-positive">On track</span></td><td><div class="cell-user"><span class="cell-avatar">MS</span><div class="cell-user-meta"><span class="cell-user-name">Maria Santos</span><span class="cell-user-role">Ops Lead</span></div></div></td><td>Q4 2026</td></tr>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">Redesign onboarding</span><span class="cell-title-sub">Streamline the first-run experience for new workspaces.</span></div></div></td><td><span class="tag tag-light">Definition</span></td><td><span class="tag tag-indicator tag-warning">At risk</span></td><td><div class="cell-user"><span class="cell-avatar">AR</span><div class="cell-user-meta"><span class="cell-user-name">Alejandro Reyes</span><span class="cell-user-role">Product Lead</span></div></div></td><td>Q4 2026</td></tr>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">SSO integrations</span><span class="cell-title-sub">Add Okta + Azure AD support for enterprise accounts.</span></div></div></td><td><span class="tag tag-blue">Execution</span></td><td><span class="tag tag-indicator tag-positive">On track</span></td><td><div class="cell-user"><span class="cell-avatar">PV</span><div class="cell-user-meta"><span class="cell-user-name">Pavel Vydra</span><span class="cell-user-role">IT Admin</span></div></div></td><td>Q1 2027</td></tr>
+                      <tr data-level="0"><td><div class="cell-title-row"><span class="row-toggle-spacer"></span><div class="cell-title"><span class="cell-title-text">EU data residency</span><span class="cell-title-sub">Stand up infrastructure in Frankfurt + Dublin regions.</span></div></div></td><td><span class="tag tag-blue-light">Impact assessment</span></td><td><span class="tag tag-indicator tag-warning">At risk</span></td><td><div class="cell-user"><span class="cell-avatar">CH</span><div class="cell-user-meta"><span class="cell-user-name">Camilla Herrere</span><span class="cell-user-role">Infra Lead</span></div></div></td><td>Q2 2027</td></tr>
+                    </tbody>
+                  </table>
                 </div>
               </section>
 
@@ -3156,6 +3154,555 @@
         if (e.target === wrap) input.focus();
       });
     });
+
+    // === Sheet — editable spreadsheet interactions ================================
+    // Self-contained, delegation-based module. Drop a `<table data-sheet>` into any
+    // prototype and this wires the generic cell state machine (select · edit ·
+    // commit · cancel · arrow-nav · optimistic save sim), the six cell-primitive
+    // editors, empty-add, add-child rows, and range-select + copy. No per-table
+    // config: everything is driven by data-* attributes on cells.
+    (function () {
+      const PEOPLE = ['Maria Santos', 'Pavel Vydra', 'Alejandro Reyes', 'Camilla Herrere', 'Nina Brandt', 'Tomas Weil', 'Priya Nair'];
+      const STATUS_OPTS = ['Idea', 'Definition', 'Execution', 'Complete', 'On hold', 'Impact assessment', 'Opportunity assessment'];
+      // Per-status solid-tag colour; anything unlisted stays neutral gray.
+      const STATUS_TAG = { 'Execution': 'tag-blue', 'Complete': 'tag-positive', 'Impact assessment': 'tag-blue-light' };
+      const statusTag = (label) => STATUS_TAG[label] || 'tag-light';
+      const HEALTH_OPTS = [
+        { label: 'On track', tone: '' },
+        { label: 'At Risk', tone: 'is-warning' },
+        { label: 'Off track', tone: 'is-danger' },
+      ];
+      const TAG_OPTS = ['marketing-client', 'coaching', 'Coaching-business', 'growth', 'ops', 'research'];
+      // Map a Health value to a solid tag variant (the fill colour is the indicator).
+      const healthTag = (label) => { const o = HEALTH_OPTS.find(h => h.label === label); return o && o.tone === 'is-warning' ? 'tag-warning' : o && o.tone === 'is-danger' ? 'tag-negative' : 'tag-positive'; };
+
+      const tables = document.querySelectorAll('table[data-sheet]');
+      if (!tables.length) return;
+      let openPop = null; // the single popover open across all sheets
+
+      const closePop = () => { if (openPop) { openPop.remove(); openPop = null; } };
+      const initials = (name) => name.split(/\s+/).map(w => w[0]).slice(0, 2).join('');
+
+      // ---- Optimistic save simulation: saving → saved → clear (or → error) ----
+      function simulateSave(cell) {
+        cell.classList.remove('is-saved', 'is-error');
+        cell.classList.add('is-saving');
+        setStatusIcon(cell, 'saving');
+        setTimeout(() => {
+          cell.classList.remove('is-saving');
+          if (cell.hasAttribute('data-fail')) {
+            cell.classList.add('is-error');
+            setStatusIcon(cell, 'error');
+            showError(cell, 'Couldn’t save — retry');
+          } else {
+            cell.classList.add('is-saved');
+            setStatusIcon(cell, 'saved');
+            setTimeout(() => { cell.classList.remove('is-saved'); setStatusIcon(cell, null); }, 1100);
+          }
+        }, 650);
+      }
+      function setStatusIcon(cell, kind) {
+        let el = cell.querySelector('.sheet-status');
+        if (!el) { el = document.createElement('span'); el.className = 'sheet-status'; cell.appendChild(el); }
+        const map = { saving: 'ph-circle-notch', saved: 'ph-check', error: 'ph-warning-circle' };
+        el.innerHTML = kind ? `<i class="ph ${map[kind]}"></i>` : '';
+      }
+      function showError(cell, msg) {
+        let el = cell.querySelector('.sheet-error-msg');
+        if (!el) { el = document.createElement('span'); el.className = 'sheet-error-msg'; cell.appendChild(el); }
+        el.textContent = msg;
+      }
+      function clearError(cell) {
+        cell.classList.remove('is-error');
+        cell.querySelector('.sheet-error-msg')?.remove();
+        setStatusIcon(cell, null);
+      }
+
+      // ---- Value rendering per primitive ----
+      function renderValue(cell, value) {
+        const type = cell.dataset.type;
+        const variant = cell.dataset.variant || '';
+        const inner = cell.querySelector('.sheet-cell-inner');
+        const isEmpty = value == null || value === '' || (Array.isArray(value) && !value.length);
+        cell.classList.toggle('is-empty', isEmpty);
+
+        if (isEmpty) {
+          const icon = cell.dataset.emptyIcon || 'ph-plus';
+          if (type === 'text' && variant === 'name') {
+            const tree = cell.querySelector('.sheet-tree');
+            tree.querySelector('.sheet-name').innerHTML = `<span class="sheet-empty"><i class="ph ${icon}"></i></span>`;
+          } else {
+            inner.innerHTML = `<span class="sheet-empty"><i class="ph ${icon}"></i></span>`;
+          }
+          return;
+        }
+        if (type === 'text' && variant === 'name') {
+          const tree = cell.querySelector('.sheet-tree');
+          tree.querySelector('.sheet-name').textContent = value;
+          return;
+        }
+        if (type === 'text') {
+          inner.innerHTML = `<span class="sheet-text">${escapeHtml(value)}</span>`;
+          return;
+        }
+        if (type === 'select') {
+          if (variant === 'health') {
+            inner.innerHTML = `<span class="tag tag-indicator ${healthTag(value)}">${escapeHtml(value)}</span>`;
+          } else {
+            inner.innerHTML = `<span class="tag ${statusTag(value)}">${escapeHtml(value)}</span>`;
+          }
+          return;
+        }
+        if (type === 'person') {
+          // Avatar intentionally omitted in the cell (name only); it's kept in the picker.
+          inner.innerHTML = `<span class="sheet-person"><span class="sheet-person-name">${escapeHtml(value)}</span></span>`;
+          return;
+        }
+        if (type === 'date') {
+          const dot = cell.dataset.dot ? `<span class="cell-dot ${cell.dataset.dot}"></span>` : '';
+          inner.innerHTML = `<span class="sheet-date">${dot}${escapeHtml(value)}</span>`;
+          return;
+        }
+        if (type === 'tags') {
+          const tags = Array.isArray(value) ? value : String(value).split(',').map(s => s.trim()).filter(Boolean);
+          const shown = tags.slice(0, 2);
+          const more = tags.length - shown.length;
+          inner.innerHTML = `<span class="sheet-tags">${shown.map(t => `<span class="tag tag-light">${escapeHtml(t)}</span>`).join('')}${more > 0 ? `<span class="sheet-tags-more">+${more}</span>` : ''}</span>`;
+          cell._tags = tags;
+          return;
+        }
+        if (type === 'link') {
+          const label = cell.dataset.label || value;
+          inner.innerHTML = `<a class="sheet-link" href="${escapeAttr(value)}" target="_blank" rel="noopener"><span class="sheet-link-label">${escapeHtml(label)}</span><i class="ph ph-arrow-square-out"></i></a>`;
+          return;
+        }
+      }
+
+      function getValue(cell) {
+        if (cell.dataset.type === 'tags') return cell._tags || [];
+        return cell.dataset.value || '';
+      }
+      function setValue(cell, value) {
+        if (cell.dataset.type === 'tags') { cell._tags = value; cell.dataset.value = (value || []).join(','); }
+        else { cell.dataset.value = value == null ? '' : value; }
+        renderValue(cell, value);
+      }
+
+      // ---- Editors ----
+      function editCell(cell) {
+        if (cell.classList.contains('is-readonly')) return;
+        clearError(cell);
+        const type = cell.dataset.type;
+        if (type === 'text') return editText(cell);
+        if (type === 'select') return editSelect(cell);
+        if (type === 'person') return editPerson(cell);
+        if (type === 'date') return editDate(cell);
+        if (type === 'tags') return editTags(cell);
+        if (type === 'link') return editLink(cell);
+      }
+
+      function editText(cell) {
+        const variant = cell.dataset.variant || '';
+        const inner = cell.querySelector('.sheet-cell-inner');
+        cell.classList.add('is-editing');
+        const cur = getValue(cell);
+        if (variant === 'name') {
+          const nameEl = cell.querySelector('.sheet-name');
+          nameEl.innerHTML = `<input class="sheet-input" value="${escapeAttr(cur)}">`;
+          const input = nameEl.querySelector('.sheet-input');
+          input.value = cur; input.focus(); input.select();
+          bindTextInput(cell, input, cur, () => renderValue(cell, cur));
+          return;
+        }
+        const tag = variant === 'muted' ? 'textarea' : 'input';
+        const prev = inner.innerHTML;
+        inner.innerHTML = `<${tag} class="sheet-input"></${tag}>`;
+        const input = inner.querySelector('.sheet-input');
+        input.value = cur; input.focus(); input.select();
+        bindTextInput(cell, input, cur, () => renderValue(cell, cur));
+      }
+      function bindTextInput(cell, input, cur, restore) {
+        const commit = () => { const v = input.value.trim(); cell.classList.remove('is-editing'); setValue(cell, v); if (v !== cur) simulateSave(cell); select(cell); };
+        const cancel = () => { cell.classList.remove('is-editing'); restore(); select(cell); };
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commit(); }
+          else if (e.key === 'Escape') { e.preventDefault(); input.removeEventListener('blur', commit); cancel(); }
+          e.stopPropagation();
+        });
+        input.addEventListener('blur', commit);
+      }
+
+      function editSelect(cell) {
+        const variant = cell.dataset.variant || '';
+        const opts = variant === 'health' ? HEALTH_OPTS.map(o => o.label) : STATUS_OPTS;
+        popupList(cell, opts, getValue(cell), (val) => { setValue(cell, val); simulateSave(cell); }, {
+          renderOpt: variant === 'health'
+            ? (label) => `<span class="tag tag-indicator ${healthTag(label)}">${escapeHtml(label)}</span>`
+            : (label) => `<span class="tag ${statusTag(label)}">${escapeHtml(label)}</span>`,
+          search: false,
+        });
+      }
+
+      function editPerson(cell) {
+        popupList(cell, PEOPLE, getValue(cell), (val) => { setValue(cell, val); simulateSave(cell); }, {
+          search: true,
+          extra: [{ label: 'Unassign', clear: true }],
+          renderOpt: (name) => `<span class="sheet-avatar">${escapeHtml(initials(name))}</span>${escapeHtml(name)}`,
+          onClear: () => { setValue(cell, ''); simulateSave(cell); },
+        });
+      }
+
+      function editDate(cell) {
+        const withTime = cell.dataset.variant === 'time';
+        const pop = makePop(cell);
+        pop.innerHTML = `<input type="date" class="sheet-pop-search" style="margin-bottom:8px">${withTime ? '<input type="time" class="sheet-pop-search" style="margin-bottom:8px" value="18:00">' : ''}<div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Set</button><button class="btn btn-xs btn-ghost" data-clear>Clear</button></div>`;
+        const dateI = pop.querySelector('input[type=date]');
+        const timeI = pop.querySelector('input[type=time]');
+        pop.querySelector('[data-ok]').addEventListener('click', () => {
+          if (!dateI.value) return;
+          const d = new Date(dateI.value + 'T00:00:00');
+          let label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          if (withTime && timeI.value) {
+            const [h, m] = timeI.value.split(':').map(Number);
+            const ap = h >= 12 ? 'pm' : 'am'; const h12 = ((h + 11) % 12) + 1;
+            label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ` · ${h12}:${String(m).padStart(2, '0')}${ap}`;
+          }
+          setValue(cell, label); simulateSave(cell); closePop(); select(cell);
+        });
+        pop.querySelector('[data-clear]').addEventListener('click', () => { setValue(cell, ''); simulateSave(cell); closePop(); select(cell); });
+        dateI.focus();
+      }
+
+      function editTags(cell) {
+        const pop = makePop(cell);
+        const chosen = new Set(cell._tags || []);
+        const commit = () => { setValue(cell, Array.from(chosen)); simulateSave(cell); };
+        pop.innerHTML = `<input class="sheet-pop-search" placeholder="Search or create…"><div class="sheet-pop-list"></div>`;
+        const list = pop.querySelector('.sheet-pop-list');
+        const search = pop.querySelector('.sheet-pop-search');
+        const paint = (q = '') => {
+          const all = Array.from(new Set([...TAG_OPTS, ...chosen]));
+          const ql = q.toLowerCase();
+          const matches = all.filter(t => t.toLowerCase().includes(ql));
+          list.innerHTML = (matches.map(t => `<button class="sheet-opt" data-tag="${escapeAttr(t)}"><span class="tag tag-light">${escapeHtml(t)}</span>${chosen.has(t) ? '<i class="ph ph-check ph-check"></i>' : ''}</button>`).join(''))
+            || (q ? `<button class="sheet-opt" data-create="${escapeAttr(q)}"><i class="ph ph-plus"></i>&nbsp;Create “${escapeHtml(q)}”</button>` : '<span class="sheet-opt is-empty-note">No tags</span>');
+          if (q && !matches.some(t => t.toLowerCase() === ql)) list.insertAdjacentHTML('beforeend', `<button class="sheet-opt" data-create="${escapeAttr(q)}"><i class="ph ph-plus"></i>&nbsp;Create “${escapeHtml(q)}”</button>`);
+        };
+        paint();
+        search.addEventListener('input', () => paint(search.value));
+        search.addEventListener('keydown', (e) => { if (e.key === 'Enter' && search.value) { chosen.add(search.value.trim()); commit(); search.value = ''; paint(); } e.stopPropagation(); });
+        list.addEventListener('click', (e) => {
+          const btn = e.target.closest('.sheet-opt'); if (!btn) return;
+          if (btn.dataset.create) chosen.add(btn.dataset.create);
+          else if (btn.dataset.tag) { chosen.has(btn.dataset.tag) ? chosen.delete(btn.dataset.tag) : chosen.add(btn.dataset.tag); }
+          commit(); paint(search.value); search.focus();
+        });
+        search.focus();
+      }
+
+      function editLink(cell) {
+        const pop = makePop(cell);
+        pop.innerHTML = `<input class="sheet-pop-search" placeholder="Label" value="${escapeAttr(cell.dataset.label || '')}"><input class="sheet-pop-search" placeholder="https://…" value="${escapeAttr(getValue(cell))}"><div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Save</button></div>`;
+        const [labelI, urlI] = pop.querySelectorAll('.sheet-pop-search');
+        pop.querySelector('[data-ok]').addEventListener('click', () => {
+          const url = urlI.value.trim();
+          if (url && !/^https?:\/\/|^#|^\//.test(url)) { urlI.style.borderColor = 'var(--color-danger)'; showError(cell, 'Invalid URL'); return; }
+          cell.dataset.label = labelI.value.trim();
+          setValue(cell, url); if (url) simulateSave(cell); closePop(); select(cell);
+        });
+        labelI.focus();
+      }
+
+      // ---- Generic popover list (select / person) ----
+      function popupList(cell, options, current, onPick, opts = {}) {
+        const pop = makePop(cell);
+        const searchHtml = opts.search ? '<input class="sheet-pop-search" placeholder="Search…">' : '';
+        pop.innerHTML = `${searchHtml}<div class="sheet-pop-list"></div>`;
+        const list = pop.querySelector('.sheet-pop-list');
+        const render = (q = '') => {
+          const ql = q.toLowerCase();
+          const rows = options.filter(o => o.toLowerCase().includes(ql));
+          list.innerHTML = (rows.map(o => `<button class="sheet-opt${o === current ? ' is-active' : ''}" data-val="${escapeAttr(o)}">${opts.renderOpt ? opts.renderOpt(o) : escapeHtml(o)}${o === current ? '<i class="ph ph-check ph-check"></i>' : ''}</button>`).join('')
+            + (opts.extra || []).map(x => `<button class="sheet-opt" data-clear="1">${escapeHtml(x.label)}</button>`).join(''))
+            || '<span class="sheet-opt is-empty-note">No matches</span>';
+        };
+        render();
+        if (opts.search) { const s = pop.querySelector('.sheet-pop-search'); s.addEventListener('input', () => render(s.value)); s.addEventListener('keydown', e => e.stopPropagation()); s.focus(); }
+        list.addEventListener('click', (e) => {
+          const btn = e.target.closest('.sheet-opt'); if (!btn) return;
+          if (btn.dataset.clear) { opts.onClear && opts.onClear(); } else { onPick(btn.dataset.val); }
+          closePop(); select(cell);
+        });
+      }
+
+      function makePop(cell) {
+        closePop();
+        const pop = document.createElement('div');
+        pop.className = 'sheet-pop';
+        cell.appendChild(pop);
+        openPop = pop;
+        requestAnimationFrame(() => {
+          const r = pop.getBoundingClientRect();
+          if (r.bottom > window.innerHeight - 8) pop.style.bottom = '100%'; else pop.style.top = '100%';
+          if (r.right > window.innerWidth - 8) pop.style.right = '0';
+        });
+        return pop;
+      }
+
+      // ---- Selection + keyboard navigation ----
+      let anchor = null; // active cell for keyboard scope
+      function select(cell, opts = {}) {
+        if (!cell) return;
+        const table = cell.closest('table[data-sheet]');
+        clearRange(table);
+        table.querySelectorAll('.sheet-cell.is-selected').forEach(c => c.classList.remove('is-selected'));
+        table.querySelectorAll('tr.is-selected').forEach(r => r.classList.remove('is-selected'));
+        cell.classList.add('is-selected');
+        cell.closest('tr').classList.add('is-selected');
+        anchor = cell;
+        if (!opts.noScroll) cell.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+      function clearRange(table) { table.querySelectorAll('.sheet-cell.is-range').forEach(c => c.classList.remove('is-range')); }
+
+      function cellsOf(row) { return [...row.querySelectorAll('td.sheet-cell')]; }
+      function visibleRows(table) { return [...table.querySelectorAll('tbody tr')].filter(r => !r.hidden); }
+      function move(dRow, dCol, extend) {
+        if (!anchor) return;
+        const table = anchor.closest('table[data-sheet]');
+        const rows = visibleRows(table);
+        const row = anchor.closest('tr');
+        const rIdx = rows.indexOf(row);
+        const cells = cellsOf(row);
+        const cIdx = cells.indexOf(anchor);
+        if (dCol) { const next = cells[cIdx + dCol]; if (next) extend ? extendRange(next) : select(next); return; }
+        const nextRow = rows[rIdx + dRow];
+        if (!nextRow) return;
+        const nextCells = cellsOf(nextRow);
+        const target = nextCells[Math.min(cIdx, nextCells.length - 1)];
+        extend ? extendRange(target) : select(target);
+      }
+      function extendRange(to) {
+        const table = to.closest('table[data-sheet]');
+        clearRange(table);
+        const rows = visibleRows(table);
+        const aRow = anchor.closest('tr'), tRow = to.closest('tr');
+        const r1 = rows.indexOf(aRow), r2 = rows.indexOf(tRow);
+        const aCells = cellsOf(aRow), tCells = cellsOf(tRow);
+        const c1 = aCells.indexOf(anchor), c2 = tCells.indexOf(to);
+        const [rlo, rhi] = [Math.min(r1, r2), Math.max(r1, r2)];
+        const [clo, chi] = [Math.min(c1, c2), Math.max(c1, c2)];
+        for (let r = rlo; r <= rhi; r++) { const cs = cellsOf(rows[r]); for (let c = clo; c <= chi; c++) if (cs[c]) cs[c].classList.add('is-range'); }
+      }
+      function copyRange() {
+        if (!anchor) return;
+        const table = anchor.closest('table[data-sheet]');
+        const ranged = [...table.querySelectorAll('.sheet-cell.is-range, .sheet-cell.is-selected')];
+        const cells = ranged.length ? ranged : [anchor];
+        const byRow = new Map();
+        cells.forEach(c => { const tr = c.closest('tr'); if (!byRow.has(tr)) byRow.set(tr, []); byRow.get(tr).push(c); });
+        const tsv = [...byRow.values()].map(cs => cs.map(c => (c.innerText || '').trim().replace(/\s+/g, ' ')).join('\t')).join('\n');
+        navigator.clipboard?.writeText(tsv);
+        cells.forEach(c => { c.classList.add('is-saved'); setStatusIcon(c, 'saved'); setTimeout(() => { c.classList.remove('is-saved'); setStatusIcon(c, null); }, 500); });
+      }
+
+      // ---- Add child row (clone structure, clear values, bump level) ----
+      function addChild(cell) {
+        const row = cell.closest('tr');
+        const level = Math.min(2, (parseInt(row.dataset.level || '0', 10) + 1));
+        const clone = row.cloneNode(true);
+        clone.dataset.level = level;
+        clone.classList.remove('is-selected');
+        clone.querySelectorAll('.sheet-cell').forEach((c) => {
+          c.classList.remove('is-selected', 'is-range', 'is-editing', 'is-saving', 'is-saved', 'is-error');
+          c.querySelector('.sheet-status')?.remove();
+          c.querySelector('.sheet-error-msg')?.remove();
+          c._tags = null;
+          if (c.dataset.type === 'text' && c.dataset.variant === 'name') c.dataset.level = level;
+          setValue(c, c.dataset.type === 'tags' ? [] : '');
+        });
+        const table = cell.closest('table[data-sheet]');
+        // New child is a leaf → clear its toggle cell (drop any inherited caret).
+        const childToggleCell = clone.querySelector('td.sheet-toggle');
+        if (childToggleCell) childToggleCell.innerHTML = '';
+        // Parent may have been a leaf; give it a caret so it can collapse the child.
+        const parentToggleCell = row.querySelector('td.sheet-toggle');
+        if (parentToggleCell && !parentToggleCell.querySelector('.row-toggle')) {
+          parentToggleCell.innerHTML = '<button class="row-toggle" type="button" aria-expanded="true" aria-label="Toggle children"><i class="ph ph-caret-right"></i></button>';
+          bindToggle(parentToggleCell.querySelector('.row-toggle'), table);
+        }
+        row.after(clone);
+        renumber(table);
+        const firstEditable = clone.querySelector('.sheet-cell[data-type="text"][data-variant="name"]');
+        select(firstEditable); editCell(firstEditable);
+      }
+      function spacer() { const s = document.createElement('span'); s.className = 'row-toggle-spacer'; return s; }
+      function renumber(table) { let n = 1; visibleRows(table).forEach(r => { const g = r.querySelector('.sheet-rownum'); if (g) g.textContent = n++; }); }
+
+      // Recompute row visibility from the stack of collapsed ancestor levels.
+      function refreshTree(table) {
+        const tbody = table.querySelector('tbody');
+        const collapsedAt = [];
+        [...tbody.children].forEach(row => {
+          const lvl = parseInt(row.dataset.level || '0', 10);
+          while (collapsedAt.length && collapsedAt[collapsedAt.length - 1] >= lvl) collapsedAt.pop();
+          row.hidden = collapsedAt.length > 0;
+          const t = row.querySelector('.row-toggle');
+          if (t && t.getAttribute('aria-expanded') === 'false') collapsedAt.push(lvl);
+        });
+      }
+      function bindToggle(btn, table) {
+        btn.addEventListener('click', () => {
+          const open = btn.getAttribute('aria-expanded') !== 'false';
+          btn.setAttribute('aria-expanded', String(!open));
+          refreshTree(table);
+        });
+      }
+      // Split the expand/collapse caret out of the Name cell into a dedicated
+      // pinned column right after the `#` gutter, and add a collapse/expand-all
+      // control in its header. Purely structural — markup keeps the caret in the
+      // name cell and this relocates it, so any [data-sheet] table gets the column.
+      function buildToggleColumn(table) {
+        const headRow = table.querySelector('thead tr');
+        const headGutter = headRow.querySelector('.sheet-gutter');
+        if (headGutter && !headRow.querySelector('.sheet-toggle')) {
+          const th = document.createElement('th');
+          th.className = 'sheet-toggle';
+          th.innerHTML = '<button class="sheet-collapse-all" type="button" aria-label="Collapse or expand all rows"><i class="ph ph-caret-down"></i><i class="ph ph-caret-up"></i></button>';
+          headGutter.after(th);
+          th.querySelector('.sheet-collapse-all').addEventListener('click', () => {
+            const toggles = [...table.querySelectorAll('.row-toggle')];
+            const collapse = toggles.some(t => t.getAttribute('aria-expanded') !== 'false');
+            toggles.forEach(t => t.setAttribute('aria-expanded', String(!collapse)));
+            refreshTree(table);
+          });
+        }
+        table.querySelectorAll('tbody tr').forEach(row => {
+          const gut = row.querySelector('.sheet-gutter');
+          if (!gut || row.querySelector('td.sheet-toggle')) return;
+          const td = document.createElement('td');
+          td.className = 'sheet-toggle';
+          const toggle = row.querySelector('.row-toggle');
+          if (toggle) td.appendChild(toggle); // move it (its tree-module click handler moves with it)
+          gut.after(td);
+          row.querySelector('.row-toggle-spacer')?.remove(); // leaf rows: no lead needed in their own column
+        });
+      }
+
+      // ---- Wiring (delegated per table) ----
+      tables.forEach(table => {
+        buildToggleColumn(table);
+        table.querySelectorAll('td.sheet-cell').forEach(cell => {
+          if (cell.dataset.type === 'tags' && cell.dataset.value) cell._tags = cell.dataset.value.split(',').map(s => s.trim()).filter(Boolean);
+          if (!cell.querySelector('.sheet-cell-inner')) {
+            const inner = document.createElement('span'); inner.className = 'sheet-cell-inner';
+            while (cell.firstChild) inner.appendChild(cell.firstChild);
+            cell.appendChild(inner);
+          }
+          renderValue(cell, getValue(cell));
+        });
+
+        table.addEventListener('click', (e) => {
+          if (e.target.closest('.row-toggle')) return; // handled by the tree-table module
+          const add = e.target.closest('.sheet-addchild');
+          if (add) { e.stopPropagation(); addChild(add.closest('.sheet-cell')); return; }
+          const errCell = e.target.closest('.sheet-cell.is-error');
+          if (errCell && errCell === anchor) { errCell.removeAttribute('data-fail'); clearError(errCell); simulateSave(errCell); return; }
+          const link = e.target.closest('.sheet-link');
+          const cell = e.target.closest('td.sheet-cell');
+          if (!cell) return;
+          if (link && !cell.classList.contains('is-selected')) e.preventDefault(); // first click selects, doesn't navigate
+          if (cell.classList.contains('is-editing')) return;
+          if (cell === anchor) { editCell(cell); return; } // second click on the selected cell edits (incl. empty → add)
+          select(cell);
+          if (e.shiftKey) extendRange(cell);
+        });
+
+        table.addEventListener('dblclick', (e) => {
+          const cell = e.target.closest('td.sheet-cell');
+          if (cell) { select(cell); editCell(cell); }
+        });
+
+        table.addEventListener('keydown', (e) => {
+          if (!anchor || anchor.classList.contains('is-editing')) return;
+          const k = e.key;
+          if (k === 'ArrowDown') { e.preventDefault(); move(1, 0, e.shiftKey); }
+          else if (k === 'ArrowUp') { e.preventDefault(); move(-1, 0, e.shiftKey); }
+          else if (k === 'ArrowRight' || (k === 'Tab' && !e.shiftKey)) { e.preventDefault(); move(0, 1, e.shiftKey); }
+          else if (k === 'ArrowLeft' || (k === 'Tab' && e.shiftKey)) { e.preventDefault(); move(0, -1, e.shiftKey); }
+          else if (k === 'Enter') { e.preventDefault(); editCell(anchor); }
+          else if (k === 'Escape') { e.preventDefault(); anchor.classList.remove('is-selected'); anchor.closest('tr').classList.remove('is-selected'); clearRange(table); anchor = null; }
+          else if ((e.metaKey || e.ctrlKey) && (k === 'c' || k === 'C')) { e.preventDefault(); copyRange(); }
+          else if (k === 'Backspace' || k === 'Delete') { e.preventDefault(); if (!anchor.classList.contains('is-readonly')) { setValue(anchor, anchor.dataset.type === 'tags' ? [] : ''); simulateSave(anchor); } }
+        });
+
+        wireHeader(table);
+        table.setAttribute('tabindex', '0');
+      });
+
+      // ---- Header: sort (arrow + row reorder), column menu, filter chip (T12) ----
+      function wireHeader(table) {
+        const tbody = table.querySelector('tbody');
+        const colIndex = (th) => [...th.parentElement.children].indexOf(th);
+        function sortBy(th, dir) {
+          const idx = colIndex(th);
+          table.querySelectorAll('thead th').forEach(h => h.classList.remove('is-sorted', 'is-desc'));
+          th.classList.add('is-sorted'); if (dir === 'desc') th.classList.add('is-desc');
+          const rows = [...tbody.querySelectorAll('tr')];
+          rows.sort((a, b) => {
+            const av = (a.children[idx]?.innerText || '').trim().toLowerCase();
+            const bv = (b.children[idx]?.innerText || '').trim().toLowerCase();
+            return dir === 'desc' ? bv.localeCompare(av) : av.localeCompare(bv);
+          });
+          rows.forEach(r => tbody.appendChild(r));
+          renumber(table);
+        }
+        table.querySelectorAll('thead .th-sort').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const th = btn.closest('th');
+            const dir = th.classList.contains('is-sorted') && !th.classList.contains('is-desc') ? 'desc' : 'asc';
+            sortBy(th, dir);
+          });
+        });
+        table.querySelectorAll('thead .th-menu').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const th = btn.closest('th');
+            const pop = makePop(th);
+            pop.innerHTML = `<div class="sheet-pop-list">
+              <button class="sheet-opt" data-a="asc"><i class="ph ph-sort-ascending"></i>Sort ascending</button>
+              <button class="sheet-opt" data-a="desc"><i class="ph ph-sort-descending"></i>Sort descending</button>
+              <button class="sheet-opt" data-a="filter"><i class="ph ph-funnel"></i>Filter…</button>
+              <button class="sheet-opt" data-a="hide"><i class="ph ph-eye-slash"></i>Hide column</button></div>`;
+            pop.addEventListener('click', (ev) => {
+              const o = ev.target.closest('.sheet-opt'); if (!o) return;
+              if (o.dataset.a === 'asc') sortBy(th, 'asc');
+              else if (o.dataset.a === 'desc') sortBy(th, 'desc');
+              else if (o.dataset.a === 'filter') th.classList.toggle('is-filtered');
+              else if (o.dataset.a === 'hide') { const i = colIndex(th); table.querySelectorAll('tr').forEach(r => { if (r.children[i]) r.children[i].style.display = 'none'; }); }
+              closePop();
+            });
+          });
+        });
+        // column resize
+        table.querySelectorAll('thead .th-resize').forEach(handle => {
+          handle.addEventListener('mousedown', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const th = handle.closest('th'); const startX = e.clientX; const startW = th.offsetWidth;
+            handle.classList.add('is-dragging');
+            const onMove = (me) => { th.style.width = Math.max(64, startW + (me.clientX - startX)) + 'px'; };
+            const onUp = () => { handle.classList.remove('is-dragging'); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
+            document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+          });
+        });
+      }
+
+      document.addEventListener('mousedown', (e) => {
+        if (openPop && !e.target.closest('.sheet-pop') && !e.target.closest('.sheet-cell')) closePop();
+      });
+
+      function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+      function escapeAttr(s) { return escapeHtml(s).replace(/'/g, '&#39;'); }
+    })();
 
     // === Annotation tool — append ?notes=1 to the URL to enable ====================
     // In-page batch annotation overlay. Lets you click multiple UI elements,
