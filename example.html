@@ -213,6 +213,25 @@
     }
     .icon-card:hover { border-color: var(--color-border-strong); background: var(--color-surface-muted); }
     .icon-card .ph { font-size: 24px; color: var(--color-text); }
+    .pictogram-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--ic-space-3);
+    }
+    .pictogram-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ic-space-3);
+      padding: var(--ic-space-5) var(--ic-space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      background: var(--color-surface);
+    }
+    .pictogram-card-name {
+      font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      color: var(--color-text-subtle);
+    }
     .icon-card-name {
       font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono);
       color: var(--color-text-subtle);
@@ -386,6 +405,35 @@
           <div class="icon-card"><i class="ph ph-warning"></i><span class="icon-card-name">warning</span></div>
           <div class="icon-card"><i class="ph ph-lightning"></i><span class="icon-card-name">lightning</span></div>
           <div class="icon-card"><i class="ph ph-rocket"></i><span class="icon-card-name">rocket</span></div>
+        </div>
+      </section>
+
+      <section class="stack" id="pictograms">
+        <div>
+          <h3 class="h3">Pictograms</h3>
+          <p class="body-sm">Detailed 64×64 line-art illustrations for empty, error, success and info states — a richer counterpart to <a href="#iconography" style="color: var(--color-text-link)">Iconography</a>. Blue line-art over soft fills; recolour via the <code style="font: var(--type-mono); color: var(--color-text-muted)">color</code> property or add <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-muted</code>. Reference with <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span class="pictogram"&gt;&lt;svg&gt;…&lt;/svg&gt;&lt;/span&gt;</code>.</p>
+        </div>
+        <div class="pictogram-grid">
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path opacity="0.15" d="M63.5001 50.5167H0.500122V58.0691H63.5001V50.5167Z" fill="currentColor"/><path d="M64.0001 58.5692H9.15527e-05V5.43103H64.0001V58.5692ZM1.00009 57.5692H63.0001V6.43103H1.00009V57.5692Z" fill="currentColor"/><path d="M21.715 38.596L16.488 31.999L21.715 25.403L22.5 26.024L17.764 31.999L22.5 37.9749L21.715 38.596Z" fill="currentColor"/><path d="M41.995 38.6059L41.228 37.965L46.222 31.999L41.228 26.035L41.995 25.393L47.526 31.999L41.995 38.6059Z" fill="currentColor"/><path d="M36.5766 18.5093L26.4875 45.1359L27.423 45.4904L37.5122 18.8638L36.5766 18.5093Z" fill="currentColor"/><path d="M12.1574 13.6509C13.0894 13.6509 13.8449 12.8954 13.8449 11.9634C13.8449 11.0315 13.0894 10.2759 12.1574 10.2759C11.2255 10.2759 10.4699 11.0315 10.4699 11.9634C10.4699 12.8954 11.2255 13.6509 12.1574 13.6509Z" fill="currentColor"/><path d="M6.53243 13.6509C7.46441 13.6509 8.21993 12.8954 8.21993 11.9634C8.21993 11.0315 7.46441 10.2759 6.53243 10.2759C5.60045 10.2759 4.84493 11.0315 4.84493 11.9634C4.84493 12.8954 5.60045 13.6509 6.53243 13.6509Z" fill="currentColor"/><path d="M17.7824 13.6509C18.7144 13.6509 19.4699 12.8954 19.4699 11.9634C19.4699 11.0315 18.7144 10.2759 17.7824 10.2759C16.8504 10.2759 16.0949 11.0315 16.0949 11.9634C16.0949 12.8954 16.8504 13.6509 17.7824 13.6509Z" fill="currentColor"/></g></svg></span>
+            <span class="pictogram-card-name">development</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path opacity="0.15" d="M32 1L4.5 16.12V47.87L32 62.99L59.5 47.87V16.12L32 1ZM32 54C19.85 54 10 44.15 10 32C10 19.85 19.85 10 32 10C44.15 10 54 19.85 54 32C54 44.15 44.15 54 32 54Z" fill="currentColor"/><path d="M59.5 47.88V16.12L32 1L4.5 16.12V47.88L32 63L59.5 47.88Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M21 31L29 39L43 25" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">success</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M34.7366 6.05997L63.1211 55.28C64.1997 57.16 62.8514 59.5 60.6841 59.5H3.34582C1.15855 59.5 -0.219727 57.12 0.8789 55.22L29.2335 6.05997C30.4519 3.93997 33.5181 3.93997 34.7366 6.05997Z" stroke="currentColor" stroke-miterlimit="10"/><path opacity="0.15" d="M61.6729 54H2.29713L1.30837 55.72C0.469416 57.18 1.5181 59 3.20599 59H60.9139C62.5318 59 63.5406 57.25 62.7316 55.84L61.6729 54Z" fill="currentColor"/><path opacity="0.15" d="M34.407 42.5H29.573L26.1074 24.5H37.8627L34.407 42.5Z" fill="currentColor"/><path opacity="0.15" d="M31.99 54.5C34.4722 54.5 36.4844 52.4853 36.4844 50C36.4844 47.5147 34.4722 45.5 31.99 45.5C29.5078 45.5 27.4956 47.5147 27.4956 50C27.4956 52.4853 29.5078 54.5 31.99 54.5Z" fill="currentColor"/><path d="M34.407 42.5H29.573L26.1074 24.5H37.8627L34.407 42.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M31.99 54.5C34.4722 54.5 36.4844 52.4853 36.4844 50C36.4844 47.5147 34.4722 45.5 31.99 45.5C29.5078 45.5 27.4956 47.5147 27.4956 50C27.4956 52.4853 29.5078 54.5 31.99 54.5Z" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">incident</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path opacity="0.15" d="M27.42 36.5H22.58L19.12 18.5H30.88L27.42 36.5Z" fill="currentColor"/><path opacity="0.15" d="M25 48.5C27.4853 48.5 29.5 46.4853 29.5 44C29.5 41.5147 27.4853 39.5 25 39.5C22.5147 39.5 20.5 41.5147 20.5 44C20.5 46.4853 22.5147 48.5 25 48.5Z" fill="currentColor"/><path opacity="0.15" d="M50 58H1V63H50V58Z" fill="currentColor"/><path opacity="0.15" d="M39 1V12H50L39 1Z" fill="currentColor"/><path opacity="0.15" d="M50 51.5001L44.69 48.3101L43.5 49.5001L37.5 51.5001L50 58.0001V51.5001Z" fill="currentColor"/><path d="M27.42 36.5H22.58L19.12 18.5H30.88L27.42 36.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M25 48.5C27.4853 48.5 29.5 46.4853 29.5 44C29.5 41.5147 27.4853 39.5 25 39.5C22.5147 39.5 20.5 41.5147 20.5 44C20.5 46.4853 22.5147 48.5 25 48.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M50.5 29V12.5L38.5 0.5H0.5V63.5H50.5V42.5" stroke="currentColor" stroke-miterlimit="10"/><path d="M38.5 1V12.5H50" stroke="currentColor" stroke-miterlimit="10"/><path d="M58.5 26.5L39.5 45.5L37.5 51.5L43.5 49.5L62.5 30.5C63.6 29.4 63.6 27.6 62.5 26.5C61.4 25.4 59.6 25.4 58.5 26.5Z" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">document-error</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path opacity="0.15" d="M22 57H1V63H22V57Z" fill="currentColor"/><path opacity="0.15" d="M42 17H21V23H42V17Z" fill="currentColor"/><path opacity="0.15" d="M62 57H41V63H62V57Z" fill="currentColor"/><path d="M22.5 41.5H0.5V63.5H22.5V41.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M42.5 1.5H20.5V23.5H42.5V1.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M62.5 41.5H40.5V63.5H62.5V41.5Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M22 52.5H41" stroke="currentColor" stroke-miterlimit="10"/><path d="M20.5 23.5L10.5 41.5" stroke="currentColor" stroke-miterlimit="10"/><path d="M42.5 23.5L52.5 41.5" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">team</span>
+          </div>
         </div>
       </section>
     </section>
@@ -2209,6 +2257,147 @@
         </div>
       </section>
 
+      <section class="stack" id="toolbar">
+        <div>
+          <h3 class="h3">Toolbar</h3>
+          <p class="body-sm">Control strip above a table or list — search, filters, quick-filter selects, and a view switcher. Composes existing parts: <code style="font: var(--type-mono); color: var(--color-text-muted)">.input-icon</code> search, <code style="font: var(--type-mono); color: var(--color-text-muted)">.input-select</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.btn</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.segmented</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.checkbox</code>. Left cluster grows; <code style="font: var(--type-mono); color: var(--color-text-muted)">.toolbar-end</code> pins controls right.</p>
+        </div>
+        <div class="stack" style="gap: var(--ic-space-6)">
+
+          <!-- BAU page -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <p class="body-sm" style="color: var(--color-text-muted); margin: 0">BAU page — search · filters · query · quick-filter selects · sort · view toggle</p>
+            <div class="toolbar">
+              <div class="input-icon input-icon-left toolbar-search">
+                <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+                <input class="input" type="text" placeholder="Search by name, owner or function">
+              </div>
+              <button class="btn btn-secondary" type="button"><i class="ph ph-funnel"></i>Filters</button>
+              <button class="btn btn-secondary" type="button"><i class="ph ph-code"></i>Query</button>
+              <div class="toolbar-end">
+                <div class="input-select is-auto">
+                  <button class="input-select-trigger" aria-expanded="false" type="button"><i class="ph ph-gear"></i><span class="input-select-value">Status, Account</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                  <div class="dropdown-menu" hidden>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Status</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Account</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Owner</button>
+                  </div>
+                </div>
+                <div class="input-select is-auto">
+                  <button class="input-select-trigger" aria-expanded="false" type="button"><span class="input-select-value">Updated at</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                  <div class="dropdown-menu" hidden>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Updated at</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Created at</button>
+                    <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Name</button>
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-icon-only" type="button" aria-label="Sort direction"><i class="ph ph-arrow-down"></i></button>
+                <div class="segmented">
+                  <button class="segmented-item segmented-icon is-active" type="button" aria-label="Board view"><i class="ph ph-rows"></i></button>
+                  <button class="segmented-item segmented-icon" type="button" aria-label="List view"><i class="ph ph-list-dashes"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Initiative page -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <p class="body-sm" style="color: var(--color-text-muted); margin: 0">Initiative page — search · filters with count · period switcher</p>
+            <div class="toolbar">
+              <div class="input-icon input-icon-left toolbar-search">
+                <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+                <input class="input" type="text" placeholder="Search">
+              </div>
+              <button class="btn btn-secondary" type="button"><i class="ph ph-funnel"></i>Filters (3)</button>
+              <div class="toolbar-end">
+                <div class="segmented">
+                  <button class="segmented-item is-active" type="button">Schedule</button>
+                  <button class="segmented-item" type="button">Week</button>
+                  <button class="segmented-item" type="button">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OKR page -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <p class="body-sm" style="color: var(--color-text-muted); margin: 0">OKR page — wide search · filters</p>
+            <div class="toolbar">
+              <div class="input-icon input-icon-left toolbar-search" style="flex-basis: 480px">
+                <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+                <input class="input" type="text" placeholder="Search OKR by name, owner or team">
+              </div>
+              <div class="toolbar-end">
+                <button class="btn btn-secondary" type="button"><i class="ph ph-funnel"></i>Filters</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- People page -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <p class="body-sm" style="color: var(--color-text-muted); margin: 0">People page — search · quick-filter selects · reset</p>
+            <div class="toolbar">
+              <div class="input-icon input-icon-left toolbar-search" style="flex-basis: 200px">
+                <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+                <input class="input" type="text" placeholder="Search by name">
+              </div>
+              <div class="input-select is-auto">
+                <button class="input-select-trigger" aria-expanded="false" type="button"><span class="input-select-value input-select-placeholder">Team</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Marketing</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Engineering</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Operations</button>
+                </div>
+              </div>
+              <div class="input-select is-auto">
+                <button class="input-select-trigger" aria-expanded="false" type="button"><span class="input-select-value input-select-placeholder">Position</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Manager</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Individual contributor</button>
+                </div>
+              </div>
+              <div class="input-select is-auto">
+                <button class="input-select-trigger" aria-expanded="false" type="button"><span class="input-select-value input-select-placeholder">Location</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Remote</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>London</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Berlin</button>
+                </div>
+              </div>
+              <div class="input-select is-auto">
+                <button class="input-select-trigger" aria-expanded="false" type="button"><span class="input-select-value">Active members</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Active members</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>All members</button>
+                </div>
+              </div>
+              <button class="btn btn-icon-only btn-ghost" type="button" aria-label="Reset filters"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            </div>
+          </div>
+
+          <!-- Team page -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <p class="body-sm" style="color: var(--color-text-muted); margin: 0">Team page — org-unit select · inline toggle</p>
+            <div class="toolbar">
+              <div class="input-select is-auto" style="flex: 1 1 320px; max-width: 420px">
+                <button class="input-select-trigger" aria-expanded="false" type="button" style="min-width: 0"><span class="input-select-value input-select-placeholder">Select org unit</span><svg class="btn-icon"><use href="#i-chevron-down"/></svg></button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Marketing</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Engineering</button>
+                  <button class="dropdown-item" type="button"><svg class="dropdown-item-check"><use href="#i-check"/></svg>People &amp; Culture</button>
+                </div>
+              </div>
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox-input" />
+                <span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span>
+                <span class="checkbox-label">Show Deleted Org Units</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <section class="stack" id="sheet">
         <div>
           <h3 class="h3">Sheet</h3>
@@ -2917,6 +3106,16 @@
         sel.querySelector('.input-select-trigger')?.setAttribute('aria-expanded', 'false');
         const menu = sel.querySelector('.dropdown-menu');
         if (menu) menu.hidden = true;
+      });
+    });
+
+    // Segmented control — click selects one option within the group
+    document.querySelectorAll('.segmented').forEach(seg => {
+      seg.addEventListener('click', (e) => {
+        const item = e.target.closest('.segmented-item');
+        if (!item || !seg.contains(item)) return;
+        seg.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
+        item.classList.add('is-active');
       });
     });
 

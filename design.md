@@ -190,6 +190,8 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Tooltips](./example.html#tooltips) | `[data-tooltip="…"]` | `[data-placement="bottom\|left\|right"]` (default top) · `[data-tooltip-style="regular"]` for the white wrapping variant with caret (compact dark pill is the default) |
 | [Cards](./example.html#cards) | `.card` | `.card-title` · `.card-body` |
 | [Tables](./example.html#tables) | `.table` | `.table-wide` · `.table-scroll` · `.th-sort` · `.cell-title` · `.cell-user` · `.cell-avatar` · `.cell-user-meta` · `.cell-meta` · `.cell-meta-sub` · `.cell-dot` (`.is-warning` / `.is-danger`) · `.cell-actions` |
+| [Toolbar](./example.html#toolbar) | `.toolbar` | Control strip above a table/list. Parts: `.toolbar-search` (grow, wrap an `.input-icon`) · `.toolbar-end` (pin controls right) · `.toolbar-spacer`. Composes `.input-select.is-auto` (content-width quick-filters), `.btn`, `.segmented`, `.checkbox`. |
+| [Segmented](./example.html#toolbar) | `.segmented` | Bordered mutually-exclusive switcher. `.segmented-item` (`.is-active` = dark fill) · `.segmented-icon` for icon-only segments. Click handled by the delegated `.segmented` handler. |
 | [Sheet](./example.html#sheet) | `.table.table-sheet` + `data-sheet` | Editable-spreadsheet variant of `.table`. Structure: `.sheet-gutter` (row `#`) · `.sheet-toggle` (pinned expand/collapse column — the module hoists each row's `.row-toggle` here and adds a `.sheet-collapse-all` control in its header) · `.sheet-col` header (`.sheet-col-inner` · `.th-sort` · `.th-menu` · `.th-resize`) · `td.sheet-cell` per cell. Cell config via attrs: `data-type="text\|select\|person\|date\|tags\|link"`, `data-variant="name\|muted\|health\|time"`, `data-value`, `data-label` (link), `data-dot` (`is-warning`/`is-danger`), `data-empty-icon`, `data-fail` (demo save error). Cell states: `.is-empty` · `.is-selected` · `.is-editing` · `.is-saving` · `.is-saved` · `.is-error` · `.is-range` · `.is-readonly` · `.is-skeleton`. Behaviour is auto-wired by the `data-sheet` module in the `example.html` script block. |
 | [Icons](./example.html#iconography) | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
@@ -419,3 +421,19 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Icons: `<i class="ph ph-{name}"></i>` (Phosphor regular weight). Inter font already loaded via `tokens.css`.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
 > - **Annotation tool is mandatory.** That same `<script>` block also includes the `?notes=1` annotation IIFE — copy the WHOLE block; do not strip out the annotation function. Append `?notes=1` to the prototype URL to enable the in-page batch annotation toolbar. The matching CSS lives in `devtools.css` and is auto-inlined by `inline.py`, so no extra `<link>` tag is needed.
+
+## 9. Figma design — requirements & guidelines
+
+Claude increasingly drives the Figma design flow directly (reading frames, generating designs, and syncing them back through the Figma MCP). These are the house rules every Figma design must follow. Treat them the way the rest of this doc treats tokens: non-negotiable defaults, deviate only when a requirement explicitly says so.
+
+### Frame dimensions
+
+- **Width is always `1440px`.** Every frame added to a Figma file — screen, page, or full-view mockup — is authored at 1440px wide. This is the canonical desktop canvas; do not use 1280, 1512, or any other width unless a ticket names a specific breakpoint.
+- **Height varies with content, and `900px` is the default.** Reach for 900px first; grow the frame taller only when the content genuinely needs it (long lists, stacked sections). Keep the *above-the-fold* region within the first 900px so the primary content and CTA are visible without scrolling.
+
+| Property | Value |
+| --- | --- |
+| Frame width | **1440px** (fixed) |
+| Frame height | varies — **900px** default, taller as content requires |
+
+More Figma requirements (naming, layers, component usage, tokens/variables, hand-off) will be added to this section as the flow matures.
