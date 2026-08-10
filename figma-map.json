@@ -1,0 +1,765 @@
+{
+  "$schema": "./figma-map.schema.json",
+  "description": "Binding layer between the Icarus designmd HTML/CSS component library and the Figma component library. Phase 1: this map. Phase 2 (once the Figma library URL + Node toolchain are in place): generated Code Connect .figma.ts templates under ./figma/.",
+  "figmaLibrary": {
+    "name": "Product Library v2.0",
+    "fileKey": "0zTTN9YKOABPGLQ4NsyEW5",
+    "url": "https://www.figma.com/design/0zTTN9YKOABPGLQ4NsyEW5/Product-Library-v2.0",
+    "status": "discovered — 214 published components; matched below. propMaps + Code Connect templates pending (phase 2)."
+  },
+  "conventions": {
+    "designmd.root": "Primary CSS class (or attribute) that identifies the component in HTML.",
+    "designmd.snippet": "Canonical minimal markup — what Claude emits when building the feature in HTML/CSS.",
+    "figma.component": "Exact Figma component / component-set name in the published library.",
+    "figma.nodeId": "Component (set) node id, colon form (e.g. 1234:5678).",
+    "figma.propMap": "Maps Figma variant/property values -> designmd variant classes, e.g. {\"Variant\":{\"Primary\":\"btn-primary\"}}."
+  },
+  "components": [
+    {
+      "id": "buttons",
+      "name": "Button",
+      "designmd": {
+        "root": ".btn",
+        "shortcode": "example.html#buttons",
+        "variants": [
+          ".btn-primary",
+          ".btn-secondary",
+          ".btn-ghost",
+          ".btn-danger",
+          ".btn-xs",
+          ".btn-icon-only"
+        ],
+        "snippet": "<button class=\"btn btn-primary\">Label</button>"
+      },
+      "figma": {
+        "component": "Button",
+        "nodeId": "16828:7595",
+        "key": null,
+        "status": "mapped",
+        "note": "btn-icon-only → Button Icon (110:252)",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "inputs",
+      "name": "Input / Field",
+      "designmd": {
+        "root": ".field + .input",
+        "shortcode": "example.html#inputs",
+        "variants": [
+          ".field-label",
+          ".field-hint",
+          ".is-error",
+          ".input-xs",
+          ".input-icon"
+        ],
+        "snippet": "<label class=\"field\"><span class=\"field-label\">Label</span><input class=\"input\" placeholder=\"…\"></label>"
+      },
+      "figma": {
+        "component": "Input Field",
+        "nodeId": "18377:1525",
+        "key": null,
+        "status": "mapped",
+        "note": "Text area → Text Area Input (18295:63749)",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "inputs",
+      "name": "Select",
+      "designmd": {
+        "root": ".input-select",
+        "shortcode": "example.html#inputs",
+        "variants": [
+          ".input-select-trigger",
+          ".input-select-value",
+          ".is-auto"
+        ],
+        "snippet": "<div class=\"input-select\"><button class=\"input-select-trigger\"><span class=\"input-select-value\">Choose…</span></button></div>"
+      },
+      "figma": {
+        "component": "Dropdown",
+        "nodeId": "17921:38502",
+        "key": null,
+        "status": "mapped",
+        "note": "Confirm Figma 'Dropdown' is the select control (not the action menu)",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "inputs",
+      "name": "Tag input",
+      "designmd": {
+        "root": ".input-tags",
+        "shortcode": "example.html#inputs",
+        "variants": [
+          ".input-tags-input",
+          ".chip",
+          ".chip-remove"
+        ],
+        "snippet": "<div class=\"input-tags\"><span class=\"chip\">Tag</span><input class=\"input-tags-input\"></div>"
+      },
+      "figma": {
+        "component": "Tag input (inside Forms)",
+        "nodeId": "18533:7493",
+        "key": null,
+        "status": "mapped",
+        "note": "Lives inside the Forms component in Product Library v2.0 (node 18533:7493).",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "topbar",
+      "name": "Top bar",
+      "designmd": {
+        "root": ".topbar",
+        "shortcode": "example.html#topbar",
+        "variants": [
+          ".topbar-brand",
+          ".topbar-search",
+          ".topbar-avatar"
+        ],
+        "snippet": "<header class=\"topbar\">…</header>"
+      },
+      "figma": {
+        "component": null,
+        "nodeId": null,
+        "key": null,
+        "status": "skip",
+        "note": "Not present in Product Library v2.0 — skip.",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "sidenav-demo",
+      "name": "Side navigation",
+      "designmd": {
+        "root": ".sidenav",
+        "shortcode": "example.html#sidenav-demo",
+        "variants": [
+          ".sidenav-item",
+          ".sidenav-group",
+          ".sidenav-subitem",
+          ".is-compact"
+        ],
+        "snippet": "<nav class=\"sidenav\">…</nav>"
+      },
+      "figma": {
+        "component": "Sidebar",
+        "nodeId": "18907:17976",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "switches",
+      "name": "Switch",
+      "designmd": {
+        "root": ".switch",
+        "shortcode": "example.html#switches",
+        "variants": [
+          ".switch-input",
+          ".switch-track"
+        ],
+        "snippet": "<label class=\"switch\"><input class=\"switch-input\" type=\"checkbox\"><span class=\"switch-track\"></span></label>"
+      },
+      "figma": {
+        "component": "Switches",
+        "nodeId": "172:2265",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "radios",
+      "name": "Radio",
+      "designmd": {
+        "root": ".radio",
+        "shortcode": "example.html#radios",
+        "variants": [
+          ".radio-input",
+          ".radio-circle",
+          ".radio-label",
+          ".is-error"
+        ],
+        "snippet": "<label class=\"radio\"><input class=\"radio-input\" type=\"radio\"><span class=\"radio-circle\"></span></label>"
+      },
+      "figma": {
+        "component": "Radio",
+        "nodeId": "245:11055",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "checkboxes",
+      "name": "Checkbox",
+      "designmd": {
+        "root": ".checkbox",
+        "shortcode": "example.html#checkboxes",
+        "variants": [
+          ".checkbox-input",
+          ".checkbox-box",
+          ".checkbox-mark",
+          ".is-error"
+        ],
+        "snippet": "<label class=\"checkbox\"><input class=\"checkbox-input\" type=\"checkbox\"><span class=\"checkbox-box\"></span></label>"
+      },
+      "figma": {
+        "component": "Checkbox",
+        "nodeId": "245:11069",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "sliders",
+      "name": "Slider",
+      "designmd": {
+        "root": ".slider + .slider-input",
+        "shortcode": "example.html#sliders",
+        "variants": [
+          ".slider-icon",
+          ".slider-label",
+          ".slider-value",
+          ".slider-field"
+        ],
+        "snippet": "<div class=\"slider\"><input class=\"slider-input\" type=\"range\"></div>"
+      },
+      "figma": {
+        "component": "Slider",
+        "nodeId": "338:13828",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "tags",
+      "name": "Tag",
+      "designmd": {
+        "root": ".tag",
+        "shortcode": "example.html#tags",
+        "variants": [
+          ".tag-positive",
+          ".tag-negative",
+          ".tag-warning",
+          ".tag-light",
+          ".tag-dark",
+          ".tag-blue",
+          ".tag-blue-light",
+          ".tag-indicator"
+        ],
+        "snippet": "<span class=\"tag tag-positive\">Label</span>"
+      },
+      "figma": {
+        "component": "Tag Rectangle",
+        "nodeId": "261:11652",
+        "key": null,
+        "status": "mapped",
+        "note": "Solid rectangular; alts: Tag Filled 18164:1804 / Tag Outlined 665:14182",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "tags",
+      "name": "Status pill",
+      "designmd": {
+        "root": ".badge",
+        "shortcode": "example.html#tags",
+        "variants": [
+          ".badge-success",
+          ".badge-warning",
+          ".badge-danger",
+          ".badge-info",
+          ".badge-icon",
+          ".badge-remove"
+        ],
+        "snippet": "<span class=\"badge badge-success\">Active</span>"
+      },
+      "figma": {
+        "component": "Badge",
+        "nodeId": "60:45",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "badges",
+      "name": "Count badge",
+      "designmd": {
+        "root": ".count-badge",
+        "shortcode": "example.html#badges",
+        "variants": [
+          ".count-badge-sm",
+          ".count-badge-lg",
+          ".count-badge-secondary"
+        ],
+        "snippet": "<span class=\"count-badge\">3</span>"
+      },
+      "figma": {
+        "component": "Badge",
+        "nodeId": "60:45",
+        "key": null,
+        "status": "mapped",
+        "note": "Shared Badge component (Style/Size variants) — same node as Status pill.",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "avatars",
+      "name": "Avatar",
+      "designmd": {
+        "root": ".avatar",
+        "shortcode": "example.html#avatars",
+        "variants": [
+          ".avatar-xs",
+          ".avatar-sm",
+          ".avatar-md",
+          ".avatar-lg",
+          ".avatar-xl",
+          ".avatar-2xl",
+          ".avatar-team"
+        ],
+        "snippet": "<span class=\"avatar avatar-md\">MV</span>"
+      },
+      "figma": {
+        "component": "Avatar Core",
+        "nodeId": "17640:42034",
+        "key": null,
+        "status": "mapped",
+        "note": "team → Avatar Icon 463:15418 / talent → Avatar Talent 463:15416",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "alerts",
+      "name": "Alert",
+      "designmd": {
+        "root": ".alert",
+        "shortcode": "example.html#alerts",
+        "variants": [
+          ".alert-danger",
+          ".alert-warning",
+          ".alert-success",
+          ".alert-info",
+          ".alert-close"
+        ],
+        "snippet": "<div class=\"alert alert-info\"><i class=\"ph ph-info alert-icon\"></i><p class=\"alert-message\">…</p></div>"
+      },
+      "figma": {
+        "component": "Alert Block",
+        "nodeId": "13667:16196",
+        "key": null,
+        "status": "mapped",
+        "note": "Inline → Alert Inline 146:2482",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "toasts",
+      "name": "Toast",
+      "designmd": {
+        "root": ".toast-region + .toast",
+        "shortcode": "example.html#toasts",
+        "variants": [
+          ".toast-neutral",
+          ".toast-error",
+          ".toast-warning",
+          ".toast-success",
+          ".toast-info"
+        ],
+        "snippet": "<div class=\"toast toast-success\"><p class=\"toast-message\">Saved</p></div>"
+      },
+      "figma": {
+        "component": "Notification",
+        "nodeId": "16061:25761",
+        "key": null,
+        "status": "mapped",
+        "note": "Transient toast ≈ Notification — confirm",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "loaders",
+      "name": "Loader (chase)",
+      "designmd": {
+        "root": ".chase / .chase-cw",
+        "shortcode": "example.html#loaders",
+        "variants": [
+          ".size-sm",
+          ".size-md",
+          ".size-lg"
+        ],
+        "snippet": "<span class=\"chase size-md\"><svg viewBox=\"0 0 22 32\">…</svg></span>"
+      },
+      "figma": {
+        "component": "Spinner",
+        "nodeId": "9669:33974",
+        "key": null,
+        "status": "mapped",
+        "note": "Skeleton → Skeleton 9669:34027",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "dropdowns",
+      "name": "Dropdown menu",
+      "designmd": {
+        "root": ".dropdown",
+        "shortcode": "example.html#dropdowns",
+        "variants": [
+          ".dropdown-trigger",
+          ".dropdown-menu",
+          ".dropdown-item",
+          ".dropdown-item-danger",
+          ".dropdown-divider",
+          ".dropdown-header"
+        ],
+        "snippet": "<div class=\"dropdown\"><button class=\"dropdown-trigger\">…</button><div class=\"dropdown-menu\">…</div></div>"
+      },
+      "figma": {
+        "component": "Dropdown",
+        "nodeId": "17921:38502",
+        "key": null,
+        "status": "mapped",
+        "note": "Overlaps Select mapping; nested → Multilevel 17970:4459",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "modals",
+      "name": "Modal",
+      "designmd": {
+        "root": ".modal-overlay + .modal",
+        "shortcode": "example.html#modals",
+        "variants": [
+          ".modal-xs",
+          ".modal-sm",
+          ".modal-md",
+          ".modal-lg",
+          ".modal-xl"
+        ],
+        "snippet": "<div class=\"modal-overlay\"><div class=\"modal modal-md\">…</div></div>"
+      },
+      "figma": {
+        "component": "Regular Modal",
+        "nodeId": "12247:43855",
+        "key": null,
+        "status": "mapped",
+        "note": "Full screen → Full Screen Modal 12713:42200",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "drawers",
+      "name": "Drawer",
+      "designmd": {
+        "root": ".drawer-overlay + .drawer",
+        "shortcode": "example.html#drawers",
+        "variants": [
+          ".drawer-narrow",
+          ".drawer-regular",
+          ".drawer-medium",
+          ".drawer-wide",
+          ".drawer-ultra",
+          ".drawer-full"
+        ],
+        "snippet": "<div class=\"drawer-overlay\"><aside class=\"drawer drawer-medium\">…</aside></div>"
+      },
+      "figma": {
+        "component": "Drawer",
+        "nodeId": "12346:39116",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "designmd": {
+        "root": ".breadcrumbs + .breadcrumb",
+        "shortcode": "example.html#breadcrumbs",
+        "variants": [
+          ".is-current"
+        ],
+        "snippet": "<nav class=\"breadcrumbs\"><a class=\"breadcrumb\">Home</a><span class=\"breadcrumb is-current\">Page</span></nav>"
+      },
+      "figma": {
+        "component": "Breadcrumbs",
+        "nodeId": "122:2162",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "page-heads",
+      "name": "Page head",
+      "designmd": {
+        "root": ".page-head",
+        "shortcode": "example.html#page-heads",
+        "variants": [
+          ".page-head-main",
+          ".page-head-title",
+          ".page-head-heading",
+          ".page-head-subtitle",
+          ".page-head-actions"
+        ],
+        "snippet": "<div class=\"page-head\"><div class=\"page-head-main\"><div class=\"page-head-title\"><h1 class=\"page-head-heading\">Title</h1></div></div></div>"
+      },
+      "figma": {
+        "component": "Page Head",
+        "nodeId": "19751:12221",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "designmd": {
+        "root": ".tabs + .tab",
+        "shortcode": "example.html#tabs",
+        "variants": [
+          ".is-active"
+        ],
+        "snippet": "<div class=\"tabs\" role=\"tablist\"><button class=\"tab is-active\" role=\"tab\">One</button></div>"
+      },
+      "figma": {
+        "component": "Tabs",
+        "nodeId": "246:11213",
+        "key": null,
+        "status": "mapped",
+        "note": "Full-width → Tabs Full Width 14488:4136; vertical → Vertical Tabs 1405:15300",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "stepper",
+      "name": "Stepper",
+      "designmd": {
+        "root": ".stepper",
+        "shortcode": "example.html#stepper",
+        "variants": [
+          ".stepper-step",
+          ".is-current",
+          ".is-complete",
+          ".stepper-num",
+          ".stepper-label",
+          ".stepper-sep"
+        ],
+        "snippet": "<ol class=\"stepper\"><li class=\"stepper-step is-current\"><span class=\"stepper-num\">1</span><span class=\"stepper-label\">Step</span></li></ol>"
+      },
+      "figma": {
+        "component": "Stepper",
+        "nodeId": "180:3409",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "tooltips",
+      "name": "Tooltip",
+      "designmd": {
+        "root": "[data-tooltip]",
+        "shortcode": "example.html#tooltips",
+        "variants": [
+          "[data-placement]",
+          "[data-tooltip-style=\"regular\"]"
+        ],
+        "snippet": "<button data-tooltip=\"Hint\" data-placement=\"top\">?</button>"
+      },
+      "figma": {
+        "component": "Tooltip Compact",
+        "nodeId": "72:4",
+        "key": null,
+        "status": "mapped",
+        "note": "Regular variant → Tooltip Regular 78:141",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "cards",
+      "name": "Card",
+      "designmd": {
+        "root": ".card",
+        "shortcode": "example.html#cards",
+        "variants": [
+          ".card-title",
+          ".card-body"
+        ],
+        "snippet": "<article class=\"card\"><h3 class=\"card-title\">Title</h3><p class=\"card-body\">…</p></article>"
+      },
+      "figma": {
+        "component": "Container",
+        "nodeId": "139:2234",
+        "key": null,
+        "status": "mapped",
+        "note": "No dedicated Card; Container is closest — confirm",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "tables",
+      "name": "Table",
+      "designmd": {
+        "root": ".table",
+        "shortcode": "example.html#tables",
+        "variants": [
+          ".table-wide",
+          ".table-scroll",
+          ".th-sort",
+          ".cell-title",
+          ".cell-user",
+          ".cell-dot"
+        ],
+        "snippet": "<div class=\"table-scroll\"><table class=\"table table-wide\">…</table></div>"
+      },
+      "figma": {
+        "component": "Table Cell",
+        "nodeId": "15437:2754",
+        "key": null,
+        "status": "mapped",
+        "note": "Tables composed from .Table/X parts; Table Cell is the atomic unit",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "toolbar",
+      "name": "Toolbar",
+      "designmd": {
+        "root": ".toolbar",
+        "shortcode": "example.html#toolbar",
+        "variants": [
+          ".toolbar-search",
+          ".toolbar-end",
+          ".toolbar-spacer"
+        ],
+        "snippet": "<div class=\"toolbar\"><div class=\"input-icon input-icon-left toolbar-search\">…</div><div class=\"toolbar-end\">…</div></div>"
+      },
+      "figma": {
+        "component": "Toolbar",
+        "fileKey": "hMZ8Nw27ub8PaIgPa0fgJf",
+        "nodeId": "16080:28887",
+        "key": null,
+        "status": "mapped-external",
+        "note": "Not in Product Library — lives in the Operationalize file (16080:28887).",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "toolbar",
+      "name": "Segmented",
+      "designmd": {
+        "root": ".segmented",
+        "shortcode": "example.html#toolbar",
+        "variants": [
+          ".segmented-item",
+          ".is-active",
+          ".segmented-icon"
+        ],
+        "snippet": "<div class=\"segmented\"><button class=\"segmented-item is-active\">A</button><button class=\"segmented-item\">B</button></div>"
+      },
+      "figma": {
+        "component": "Button Group",
+        "nodeId": "137:2177",
+        "key": null,
+        "status": "mapped",
+        "note": "",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "sheet",
+      "name": "Sheet",
+      "designmd": {
+        "root": ".table.table-sheet",
+        "shortcode": "example.html#sheet",
+        "variants": [
+          ".sheet-gutter",
+          ".sheet-toggle",
+          ".sheet-col",
+          ".sheet-cell",
+          "data-sheet"
+        ],
+        "snippet": "<div class=\"table-scroll\"><table class=\"table table-sheet\" data-sheet>…</table></div>"
+      },
+      "figma": {
+        "component": null,
+        "nodeId": null,
+        "key": null,
+        "status": "no-component-yet",
+        "note": "Not a Figma component yet. Interim: assemble from Table parts (below). Candidate to add to the library.",
+        "parts": [
+          {
+            "name": "Table Cell",
+            "nodeId": "15437:2754"
+          },
+          {
+            "name": ".Table/X/Checkbox",
+            "nodeId": "15439:2678"
+          },
+          {
+            "name": ".Table/X/Status",
+            "nodeId": "15455:4458"
+          },
+          {
+            "name": ".Table/X/Tags",
+            "nodeId": "15960:11488"
+          }
+        ],
+        "propMap": {}
+      }
+    },
+    {
+      "id": "pictograms",
+      "name": "Pictogram",
+      "designmd": {
+        "root": ".pictogram",
+        "shortcode": "example.html#pictograms",
+        "variants": [
+          ".is-filled",
+          ".is-muted",
+          ".pg-fill",
+          ".pg-solid",
+          ".pg-bg"
+        ],
+        "snippet": "<span class=\"pictogram\"><svg viewBox=\"0 0 64 64\">…</svg></span>"
+      },
+      "figma": {
+        "component": "Pictograms (separate library file)",
+        "fileKey": "6UPpJrQbP02OqBjtGL6KTr",
+        "nodeId": null,
+        "status": "mapped-external",
+        "note": "Separate Pictograms file; values are COMPONENT_SET node ids in that file.",
+        "items": {
+          "development": "16:1689",
+          "success": "1158:1989",
+          "incident": "1153:780",
+          "document-error": "1158:1961",
+          "team": "1187:2168"
+        },
+        "propMap": {}
+      }
+    }
+  ]
+}

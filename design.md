@@ -437,3 +437,22 @@ Claude increasingly drives the Figma design flow directly (reading frames, gener
 | Frame height | varies — **900px** default, taller as content requires |
 
 More Figma requirements (naming, layers, component usage, tokens/variables, hand-off) will be added to this section as the flow matures.
+
+### Component binding — designmd ↔ Figma library (Code Connect)
+
+There are **two** component libraries for Icarus: this HTML/CSS one (`designmd/`) and a Figma component library. They must stay in lockstep so that when an approved feature moves from HTML into Figma, Claude drops the **real published Figma component** — never a hand-drawn or randomly generated approximation — and, in reverse, recreates a Figma frame with the correct designmd classes.
+
+The binding is stored in two artifacts:
+
+1. **`figma-map.json` (phase 1 — in repo now).** The authoritative pairing: for every component it records the designmd side (`root` class, `variants`, canonical `snippet`, shortcode URL) and the Figma side (`component` name, `nodeId`, `key`, and a `propMap` from Figma variant/property values → designmd variant classes). The Figma fields start as `pending-discovery` and are filled by reading the published library (`get_code_connect_suggestions` → `get_context_for_code_connect`).
+2. **Code Connect templates (phase 2 — `figma/*.figma.ts`).** Once the Figma library is published and a Node toolchain is available, each mapping is emitted as a `.figma.ts` template that returns the designmd HTML snippet, published via the Code Connect CLI so it also surfaces natively in Figma Dev Mode and the MCP. Generated from `figma-map.json`, not authored by hand.
+
+**Rules for using the binding**
+
+- **Mapped components come first — always.** Whenever a Figma flow is being built (a new frame, screen, or view), the mapped library component in `figma-map.json` is the default and must be used before anything else. The order of preference is: (1) a `mapped` / `mapped-external` component → instantiate it by `nodeId`; (2) a `composite` / `no-component-yet` entry → assemble from its listed `parts`; (3) only if neither exists, build from scratch — and flag it as a library gap. Never hand-draw or auto-generate an approximation of something that already has a mapping.
+
+- **Code → design (approved feature → Figma).** For every element in the HTML, look up its `root` class in `figma-map.json`, then instantiate the mapped Figma component by `nodeId` (via `use_figma`) and set its variants from `propMap`. If a class has a mapping, you MUST use that component — do not draw rectangles/text to fake it. If a class has **no** mapping yet, flag it (it's a gap to add to the library), don't silently improvise.
+- **Design → code (Figma frame → HTML).** Reverse-lookup by Figma component name/`nodeId` and emit the recorded `snippet` with the right variant classes.
+- **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `figma-map.json` entry in the same change; a component isn't "done" until both sides and the mapping exist.
+
+Frame dimensions from the section above (1440 × 900) still apply to whatever view the mapped components are assembled into.
