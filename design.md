@@ -172,11 +172,11 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Switches](./example.html#switches) | `.switch` | `.switch-input` · `.switch-track` |
 | [Radios](./example.html#radios) | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
 | [Checkboxes](./example.html#checkboxes) | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
-| [Sliders](./example.html#sliders) | `.slider` + `.slider-input` | Native `<input type="range">`. Optional siblings: `.slider-icon` (Phosphor) · `.slider-label` · `.slider-value` (static min/max) · `<output data-slider-output>` (live readout) · `.slider-field` on an `.input.input-xs` number field (two-way sync). Track fill + sync handled by the example.html script block. |
+| [Sliders](./example.html#sliders) | `.slider` + `.slider-input` | Native `<input type="range">`. Optional siblings: `.slider-icon` · `.slider-label` · `.slider-value` (static min/max) · `<output data-slider-output>` (live readout) · `.slider-field` on an `.input.input-xs` number field (two-way sync). Track fill + sync handled by the example.html script block. |
 | [Tags](./example.html#tags) | `.tag` | Solid + indicator: `.tag-positive` · `.tag-negative` · `.tag-warning` · `.tag-light` · `.tag-dark` · `.tag-blue` · `.tag-indicator` |
-| [Status pills](./example.html#tags) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info`. Interactive: render as `<button class="badge">` (editable); compose `.badge-icon` (leading Phosphor icon) and/or `.badge-remove` (trailing ×, click deletes the pill). Demoed under Tags. |
+| [Status pills](./example.html#tags) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info`. Interactive: render as `<button class="badge">` (editable); compose `.badge-icon` (leading icon) and/or `.badge-remove` (trailing ×, click deletes the pill). Demoed under Tags. |
 | [Count badges](./example.html#badges) | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
-| [Avatars](./example.html#avatars) | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<i class="ph ph-…">`. |
+| [Avatars](./example.html#avatars) | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<svg class="icon"><use href="#i-…"></svg>`. |
 | [Alerts](./example.html#alerts) | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
 | [Toasts](./example.html#toasts) | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
 | [Loaders](./example.html#loaders) | `.chase` / `.chase-cw` | Chase spinner — the logo mark's 24 segments fading in sequence. `.chase` counter-clockwise (blue) · `.chase-cw` clockwise (graphite + blue flash). Sizes `.size-sm` 24 · `.size-md` 32 · `.size-lg` 48. Copy the `<svg viewBox="0 0 22 32">` block from example.html#loaders; segment delays come from the script block. Respects `prefers-reduced-motion`. |
@@ -193,7 +193,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Toolbar](./example.html#toolbar) | `.toolbar` | Control strip above a table/list. Parts: `.toolbar-search` (grow, wrap an `.input-icon`) · `.toolbar-end` (pin controls right) · `.toolbar-spacer`. Composes `.input-select.is-auto` (content-width quick-filters), `.btn`, `.segmented`, `.checkbox`. |
 | [Segmented](./example.html#toolbar) | `.segmented` | Bordered mutually-exclusive switcher. `.segmented-item` (`.is-active` = dark fill) · `.segmented-icon` for icon-only segments. Click handled by the delegated `.segmented` handler. |
 | [Sheet](./example.html#sheet) | `.table.table-sheet` + `data-sheet` | Editable-spreadsheet variant of `.table`. Structure: `.sheet-gutter` (row `#`) · `.sheet-toggle` (pinned expand/collapse column — the module hoists each row's `.row-toggle` here and adds a `.sheet-collapse-all` control in its header) · `.sheet-col` header (`.sheet-col-inner` · `.th-sort` · `.th-menu` · `.th-resize`) · `td.sheet-cell` per cell. Cell config via attrs: `data-type="text\|select\|person\|date\|tags\|link"`, `data-variant="name\|muted\|health\|time"`, `data-value`, `data-label` (link), `data-dot` (`is-warning`/`is-danger`), `data-empty-icon`, `data-fail` (demo save error). Cell states: `.is-empty` · `.is-selected` · `.is-editing` · `.is-saving` · `.is-saved` · `.is-error` · `.is-range` · `.is-readonly` · `.is-skeleton`. Behaviour is auto-wired by the `data-sheet` module in the `example.html` script block. |
-| [Icons](./example.html#iconography) | `<i class="ph ph-{name}">` | Phosphor regular weight loaded via CDN |
+| [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). Sized in `em` (scales with `font-size`), colour follows `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Annotation tool | `.annot-toolbar` | Append `?notes=1` to any prototype URL. Click "Inspect", click elements to queue notes, "Copy batch" → paste payload to your agent. Notes clear on reload. CSS lives in `devtools.css` (auto-inlined, but not part of the three-layer chain); JS is in the `example.html` script block (copy it with the rest of the delegated handlers). |
@@ -233,12 +233,12 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 <!-- Alert -->
 <div class="alert alert-warning" role="alert">
-  <i class="ph ph-warning alert-icon"></i>
+  <svg class="icon alert-icon"><use href="#i-warning"></use></svg>
   <p class="alert-message">Your trial expires in 5 days.</p>
   <div class="alert-actions">
     <button class="btn btn-xs btn-primary">Upgrade</button>
   </div>
-  <button class="alert-close" type="button" aria-label="Close"><i class="ph ph-x"></i></button>
+  <button class="alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"></use></svg></button>
 </div>
 
 <!-- Tabs -->
@@ -304,7 +304,7 @@ Development/
 
 > **Rule — every feature prototype ships as a self-contained single file.**
 >
-> A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** (the only allowed remote reference is the Phosphor icons CDN if the prototype uses Phosphor icons).
+> A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** — including the custom icon sprite (`icons.svg`), which `inline.py` injects after `<body>`. (Phosphor has been retired; there is no remote icon CDN anymore.)
 >
 > Why: the deliverable for every prototype is one HTML file. It needs to render identically when dropped on Netlify, attached to an email, opened from `file://`, hosted from any static server, or shared as a download. Relative `../designmd/` links work locally but break the moment the file is moved — so the file is never shipped with those links live.
 >
@@ -326,7 +326,6 @@ Create `features/billing-portal/index.html` (or whatever your feature is named, 
   <link rel="stylesheet" href="../designmd/tokens.css" />
   <link rel="stylesheet" href="../designmd/semantic.css" />
   <link rel="stylesheet" href="../designmd/components.css" />
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 <body>
   <!-- prototype markup -->
@@ -399,16 +398,15 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 
 > Build an HTML prototype for the Icarus design system at `features/feature-name/index.html`. The system lives in a sibling `designmd/` folder.
 >
-> **Boilerplate** — link all three stylesheets plus the Phosphor icon CDN:
+> **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
 >
 > ```html
 > <link rel="stylesheet" href="../designmd/tokens.css" />
 > <link rel="stylesheet" href="../designmd/semantic.css" />
 > <link rel="stylesheet" href="../designmd/components.css" />
-> <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 > ```
 >
-> Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS into the file. The Phosphor link stays external — it's the one allowed remote dependency.
+> Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS **and the icon sprite** into the file. Result: zero external dependencies.
 >
 > **Rules:**
 > - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--ic-palette-*` directly.
@@ -418,7 +416,7 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Status colors (red/yellow/green) only signal state, never decoration.
 > - Type is the visual hierarchy. Avoid extra borders, dividers, or background fills.
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
-> - Icons: `<i class="ph ph-{name}"></i>` (Phosphor regular weight). Inter font already loaded via `tokens.css`.
+> - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Inter font already loaded via `tokens.css`.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
 > - **Annotation tool is mandatory.** That same `<script>` block also includes the `?notes=1` annotation IIFE — copy the WHOLE block; do not strip out the annotation function. Append `?notes=1` to the prototype URL to enable the in-page batch annotation toolbar. The matching CSS lives in `devtools.css` and is auto-inlined by `inline.py`, so no extra `<link>` tag is needed.
 
@@ -453,6 +451,7 @@ The binding is stored in two artifacts:
 
 - **Code → design (approved feature → Figma).** For every element in the HTML, look up its `root` class in `figma-map.json`, then instantiate the mapped Figma component by `nodeId` (via `use_figma`) and set its variants from `propMap`. If a class has a mapping, you MUST use that component — do not draw rectangles/text to fake it. If a class has **no** mapping yet, flag it (it's a gap to add to the library), don't silently improvise.
 - **Design → code (Figma frame → HTML).** Reverse-lookup by Figma component name/`nodeId` and emit the recorded `snippet` with the right variant classes.
+- **Icons come from the custom Figma pack — both sides.** designmd now ships the pack itself as an inline SVG sprite (`icons.svg`, generated by `tools/export_icons.py` from the Figma *Iconography* file); Phosphor is fully retired. HTML uses `<svg class="icon"><use href="#i-{slug}"></svg>`; Figma flows use the same pack via icon instance-swaps. Slugs match 1:1, so there is no name translation — `#i-{slug}` in HTML ↔ the `{slug}` component in Figma. New icons: add them to the Figma pack, re-run `export_icons.py`, and they appear in both places.
 - **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `figma-map.json` entry in the same change; a component isn't "done" until both sides and the mapping exist.
 
 Frame dimensions from the section above (1440 × 900) still apply to whatever view the mapped components are assembled into.

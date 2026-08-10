@@ -24,6 +24,10 @@
 
 /* Icons inside buttons. Place an <svg class="btn-icon" /> as a child. */
 .btn-icon { width: 14px; height: 14px; flex-shrink: 0; }
+/* Generic icon — <svg class="icon"><use href="#i-{name}"></svg> from the custom
+ * Figma icon sprite (designmd/icons.svg). Sized in em so font-size scales it,
+ * matching the icons' old font-based sizing; colour follows currentColor. */
+.icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: currentColor; }
 .btn-xs .btn-icon { width: 12px; height: 12px; }
 
 /* Icon-only button (no text) — fully rounded "pill" shape. */
@@ -577,9 +581,9 @@ textarea.input {
   font: inherit;
   color: inherit;
 }
-.th-sort .ph { font-size: 12px; color: var(--color-text-subtle); }
+.th-sort svg { font-size: 12px; color: var(--color-text-subtle); }
 .th-sort:hover { color: var(--color-text); }
-.th-sort:hover .ph { color: var(--color-text-muted); }
+.th-sort:hover svg { color: var(--color-text-muted); }
 
 /* Right-aligned utility for action cells */
 .cell-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--ic-space-2); }
@@ -612,8 +616,8 @@ textarea.input {
   transition: background var(--ic-duration-fast) var(--ic-ease), color var(--ic-duration-fast) var(--ic-ease);
 }
 .row-toggle:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.row-toggle .ph { font-size: 14px; transition: transform var(--ic-duration-fast) var(--ic-ease); }
-.row-toggle[aria-expanded="true"] .ph { transform: rotate(90deg); }
+.row-toggle svg { font-size: 14px; transition: transform var(--ic-duration-fast) var(--ic-ease); }
+.row-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
 .row-toggle-spacer { display: inline-block; width: 20px; height: 20px; flex-shrink: 0; }
 
 /* User cell — circular avatar + name + role */
@@ -639,7 +643,7 @@ textarea.input {
 .cell-meta { display: flex; flex-direction: column; gap: var(--ic-space-1); }
 .cell-meta-title { font: var(--type-body-sm); color: var(--color-text); }
 .cell-meta-sub   { font: var(--type-caption); color: var(--color-text-muted); display: inline-flex; align-items: center; gap: var(--ic-space-1); }
-.cell-meta-sub .ph { font-size: 12px; color: var(--color-text-subtle); }
+.cell-meta-sub svg { font-size: 12px; color: var(--color-text-subtle); }
 
 /* Health dot — small colored circle used inline in a cell */
 .cell-dot {
@@ -739,7 +743,7 @@ textarea.input {
   color: var(--color-text-subtle); border-radius: var(--ic-radius-sm);
 }
 .th-menu:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.th-menu .ph { font-size: 13px; }
+.th-menu svg { font-size: 13px; }
 /* Sort direction arrow */
 .sheet-col .th-sort .th-arrow { font-size: 11px; opacity: 0; }
 .sheet-col.is-sorted .th-sort { color: var(--color-text); }
@@ -811,7 +815,7 @@ textarea.input {
   color: var(--color-text-subtle); border-radius: var(--ic-radius-sm);
 }
 .sheet-collapse-all:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.sheet-collapse-all .ph { font-size: 9px; line-height: 0.55; }
+.sheet-collapse-all svg { font-size: 9px; line-height: 0.55; }
 
 /* ---- Row states ---- */
 .table-sheet tbody tr:hover td { background: var(--color-surface-muted); }
@@ -863,7 +867,7 @@ textarea.input {
 }
 .sheet-cell.is-empty:hover .sheet-empty,
 .sheet-cell.is-empty.is-selected .sheet-empty { opacity: 1; }
-.sheet-empty .ph { font-size: 14px; }
+.sheet-empty svg { font-size: 14px; }
 /* Saving / saved / error affordances (top-right corner marker) */
 .sheet-cell .sheet-status {
   position: absolute; top: 3px; right: 4px;
@@ -877,7 +881,7 @@ textarea.input {
 .sheet-cell.is-saving .sheet-status { color: var(--color-text-subtle); }
 .sheet-cell.is-saved  .sheet-status { color: var(--color-success); }
 .sheet-cell.is-error  .sheet-status { color: var(--color-danger); }
-.sheet-cell.is-saving .sheet-status .ph { animation: sheet-spin 0.6s linear infinite; }
+.sheet-cell.is-saving .sheet-status svg { animation: sheet-spin 0.6s linear infinite; }
 .table-sheet tbody td.sheet-cell.is-error {
   box-shadow: inset 0 0 0 2px var(--color-danger);
 }
@@ -933,7 +937,7 @@ textarea.input {
   font: var(--type-body-sm); color: var(--color-text); cursor: pointer;
 }
 .sheet-opt:hover, .sheet-opt.is-active { background: var(--color-surface-muted); }
-.sheet-opt .ph-check { margin-left: auto; color: var(--color-accent); font-size: 14px; }
+.sheet-opt svg.ph-check { margin-left: auto; color: var(--color-accent); font-size: 14px; }
 .sheet-opt.is-empty-note { color: var(--color-text-subtle); cursor: default; }
 .sheet-opt.is-empty-note:hover { background: transparent; }
 
@@ -953,7 +957,7 @@ textarea.input {
 }
 .sheet-cell:hover .sheet-addchild, .sheet-cell.is-selected .sheet-addchild { opacity: 1; }
 .sheet-addchild:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.sheet-addchild .ph { font-size: 13px; }
+.sheet-addchild svg { font-size: 13px; }
 /* Text · Description variant — truncate with ellipsis */
 .sheet-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text); }
 .sheet-cell[data-variant="muted"] .sheet-text { color: var(--color-text-muted); }
@@ -984,7 +988,7 @@ textarea.input {
 }
 .sheet-link:hover { text-decoration: underline; }
 .sheet-link-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sheet-link .ph-arrow-square-out { font-size: 12px; flex-shrink: 0; }
+.sheet-link svg { font-size: 12px; flex-shrink: 0; }
 
 /* ---- Table-level empty + toolbar ---- */
 .sheet-empty-state {
@@ -992,7 +996,7 @@ textarea.input {
   gap: var(--ic-space-3); padding: var(--ic-space-8);
   color: var(--color-text-muted); text-align: center;
 }
-.sheet-empty-state .ph { font-size: 32px; color: var(--color-text-subtle); }
+.sheet-empty-state svg { font-size: 32px; color: var(--color-text-subtle); }
 
 /* ---------- Alert ----------
  * Horizontal block with: icon · message · optional CTAs · optional close button.
@@ -1041,7 +1045,7 @@ textarea.input {
   transition: background var(--ic-duration-fast) var(--ic-ease), color var(--ic-duration-fast) var(--ic-ease);
 }
 .alert-close:hover { background: color-mix(in srgb, currentColor 10%, transparent); color: var(--color-text); }
-.alert-close .ph { font-size: 14px; }
+.alert-close svg { font-size: 14px; }
 
 /* Variants — soft tinted background + matching border in the variant hue. */
 .alert-danger  { background: var(--color-danger-subtle);  border-color: color-mix(in srgb, var(--color-danger) 22%, transparent); }
@@ -1115,7 +1119,7 @@ button.badge:focus-visible {
               background var(--ic-duration-fast) var(--ic-ease);
 }
 .badge-remove:hover { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
-.badge-remove .ph { font-size: 10px; }
+.badge-remove svg { font-size: 10px; }
 
 /* ---------- Tag ----------
  * Status marker — distinct from .badge (soft pill). Two styles share one color hook (--tag-color):
@@ -1265,7 +1269,7 @@ button.badge:focus-visible {
 }
 
 /* Icon content — Phosphor or inline SVG, sized by --avatar-icon */
-.avatar > .ph { font-size: var(--avatar-icon); }
+.avatar > svg { font-size: var(--avatar-icon); }
 .avatar > svg { width: var(--avatar-icon); height: var(--avatar-icon); }
 
 /* Team / company variant — same neutral fill as initials; icon is the
@@ -2147,7 +2151,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   flex-shrink: 0;
   color: var(--color-text-subtle);
 }
-.stepper-sep .ph { font-size: 16px; }
+.stepper-sep svg { font-size: 16px; }
 
 /* ---------- Tooltip ----------
  * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
@@ -2374,7 +2378,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   transition: color var(--ic-duration-fast) var(--ic-ease);
 }
 .toast-close:hover { color: var(--color-text); }
-.toast-close .ph { font-size: 14px; }
+.toast-close svg { font-size: 14px; }
 
 /* Color variants — set --toast-accent, icon color follows */
 .toast-neutral { --toast-accent: var(--color-border-strong); }
