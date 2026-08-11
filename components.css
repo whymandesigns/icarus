@@ -27,7 +27,9 @@
 /* Generic icon — <svg class="icon"><use href="#i-{name}"></svg> from the custom
  * Figma icon sprite (designmd/icons.svg). Sized in em so font-size scales it,
  * matching the icons' old font-based sizing; colour follows currentColor. */
-.icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: currentColor; color: var(--color-icon); }
+/* fill:none so stroke-based icons render as outlines; filled icons carry their
+ * own fill="currentColor" on the paths. Colour rides on currentColor. */
+.icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: none; color: var(--color-icon); }
 /* The pack ships two sizes only — 16 and 24 (see design.md §9). */
 .icon-16 { width: 16px; height: 16px; }
 .icon-24 { width: 24px; height: 24px; }
