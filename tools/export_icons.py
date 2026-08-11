@@ -31,6 +31,14 @@ BATCH = 80  # Figma allows many ids per images call; keep batches modest
 def die(msg):
     print(f"ERROR: {msg}", file=sys.stderr); sys.exit(1)
 
+# Slugs to skip — broken SVG extraction and/or unused. Excluded from both the
+# sprite and the index so re-running the export stays consistent.
+HIDDEN = {
+    "gift", "happy-emoji", "sad-emoji", "lengthen-paragraph-text", "lan",
+    "keyboard-key", "group-2", "group-2-1", "group-3", "mobile-monitoring",
+    "react-ai", "storage", "vr",
+}
+
 def api_get(url, token):
     req = urllib.request.Request(url, headers={"X-Figma-Token": token})
     with urllib.request.urlopen(req, timeout=60) as r:
@@ -63,8 +71,9 @@ def main():
         die("Set FIGMA_TOKEN (Figma personal access token) in your environment first.")
     man = json.loads(MANIFEST.read_text())
     file_key = man["fileKey"]
-    icons = man["icons"]
-    print(f"Exporting {len(icons)} icons from {file_key} …")
+    icons = [ic for ic in man["icons"] if ic["slug"] not in HIDDEN]
+    skipped = len(man["icons"]) - len(icons)
+    print(f"Exporting {len(icons)} icons from {file_key} ({skipped} hidden) …")
 
     # 1) resolve node -> svg url in batches
     node_url = {}

@@ -1,7 +1,7 @@
 {
  "source": "Figma \u00b7 Iconography (custom pack)",
  "fileKey": "TqaGgbpjGSUDf7qq153Isq",
- "count": 320,
+ "count": 307,
  "icons": [
   {
    "slug": "associated-org-unit-join",
@@ -156,36 +156,6 @@
   {
    "slug": "focus-group",
    "name": "Focus Group",
-   "section": "People, Faces, Profiles, Avatars, Groups",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "group-2",
-   "name": "Group 2",
-   "section": "People, Faces, Profiles, Avatars, Groups",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "group-2-1",
-   "name": "Group 2",
-   "section": "People, Faces, Profiles, Avatars, Groups",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "group-3",
-   "name": "Group 3",
-   "section": "People, Faces, Profiles, Avatars, Groups",
-   "viewBox": "0 0 16 16"
-  },
-  {
-   "slug": "sad-emoji",
-   "name": "Sad Emoji",
-   "section": "People, Faces, Profiles, Avatars, Groups",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "happy-emoji",
-   "name": "Happy Emoji",
    "section": "People, Faces, Profiles, Avatars, Groups",
    "viewBox": "0 0 24 24"
   },
@@ -426,12 +396,6 @@
   {
    "slug": "folder-misc",
    "name": "Folder Misc",
-   "section": "Misc",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "gift",
-   "name": "Gift",
    "section": "Misc",
    "viewBox": "0 0 24 24"
   },
@@ -840,12 +804,6 @@
   {
    "slug": "shorten-paragraph-text",
    "name": "Shorten Paragraph Text",
-   "section": "Interface Essentials",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "lengthen-paragraph-text",
-   "name": "Lengthen Paragraph Text",
    "section": "Interface Essentials",
    "viewBox": "0 0 24 24"
   },
@@ -1330,12 +1288,6 @@
    "viewBox": "0 0 24 24"
   },
   {
-   "slug": "vr",
-   "name": "VR",
-   "section": "Communication",
-   "viewBox": "0 0 24 24"
-  },
-  {
    "slug": "pie-chart",
    "name": "Pie Chart",
    "section": "Charts",
@@ -1756,12 +1708,6 @@
    "viewBox": "0 0 24 24"
   },
   {
-   "slug": "storage",
-   "name": "Storage",
-   "section": "Computing & Networks",
-   "viewBox": "0 0 24 24"
-  },
-  {
    "slug": "wifi",
    "name": "Wifi",
    "section": "Computing & Networks",
@@ -1770,18 +1716,6 @@
   {
    "slug": "data-warehouse",
    "name": "Data Warehouse",
-   "section": "Computing & Networks",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "keyboard-key",
-   "name": "Keyboard Key",
-   "section": "Computing & Networks",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "react-ai",
-   "name": "React AI",
    "section": "Computing & Networks",
    "viewBox": "0 0 24 24"
   },
@@ -1870,12 +1804,6 @@
    "viewBox": "0 0 24 24"
   },
   {
-   "slug": "lan",
-   "name": "LAN",
-   "section": "Computing & Networks",
-   "viewBox": "0 0 24 24"
-  },
-  {
    "slug": "network",
    "name": "Network",
    "section": "Computing & Networks",
@@ -1884,12 +1812,6 @@
   {
    "slug": "web-monitoring",
    "name": "Web Monitoring",
-   "section": "Computing & Networks",
-   "viewBox": "0 0 24 24"
-  },
-  {
-   "slug": "mobile-monitoring",
-   "name": "Mobile Monitoring",
    "section": "Computing & Networks",
    "viewBox": "0 0 24 24"
   },
