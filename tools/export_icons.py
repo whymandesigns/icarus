@@ -31,13 +31,9 @@ BATCH = 80  # Figma allows many ids per images call; keep batches modest
 def die(msg):
     print(f"ERROR: {msg}", file=sys.stderr); sys.exit(1)
 
-# Slugs to skip — broken SVG extraction and/or unused. Excluded from both the
-# sprite and the index so re-running the export stays consistent.
-HIDDEN = {
-    "gift", "happy-emoji", "sad-emoji", "lengthen-paragraph-text", "lan",
-    "keyboard-key", "group-2", "group-2-1", "group-3", "mobile-monitoring",
-    "react-ai", "storage", "vr",
-}
+# Slugs to skip on export (broken/unused). Currently none — the earlier batch
+# was restored after the stroke-icon fill fix. Add slugs here to exclude them.
+HIDDEN = set()
 
 def api_get(url, token):
     req = urllib.request.Request(url, headers={"X-Figma-Token": token})

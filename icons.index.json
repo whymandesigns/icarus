@@ -1,7 +1,7 @@
 {
  "source": "Figma \u00b7 Iconography (custom pack)",
  "fileKey": "TqaGgbpjGSUDf7qq153Isq",
- "count": 307,
+ "count": 320,
  "icons": [
   {
    "slug": "add-document",
@@ -760,6 +760,12 @@
    "viewBox": "0 0 24 24"
   },
   {
+   "slug": "gift",
+   "name": "Gift",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
    "slug": "globe",
    "name": "Globe",
    "section": "Location",
@@ -778,8 +784,32 @@
    "viewBox": "0 0 24 24"
   },
   {
+   "slug": "group-2",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "group-2-1",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "group-3",
+   "name": "Group 3",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 16 16"
+  },
+  {
    "slug": "guests",
    "name": "Guests",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "happy-emoji",
+   "name": "Happy Emoji",
    "section": "People, Faces, Profiles, Avatars, Groups",
    "viewBox": "0 0 24 24"
   },
@@ -874,9 +904,21 @@
    "viewBox": "0 0 24 24"
   },
   {
+   "slug": "keyboard-key",
+   "name": "Keyboard Key",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
    "slug": "keypad",
    "name": "Keypad",
    "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lan",
+   "name": "LAN",
+   "section": "Computing & Networks",
    "viewBox": "0 0 24 24"
   },
   {
@@ -913,6 +955,12 @@
    "slug": "length",
    "name": "Length",
    "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lengthen-paragraph-text",
+   "name": "Lengthen Paragraph Text",
+   "section": "Interface Essentials",
    "viewBox": "0 0 24 24"
   },
   {
@@ -1027,6 +1075,12 @@
    "slug": "mobile",
    "name": "Mobile",
    "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "mobile-monitoring",
+   "name": "Mobile Monitoring",
+   "section": "Computing & Networks",
    "viewBox": "0 0 24 24"
   },
   {
@@ -1360,6 +1414,12 @@
    "viewBox": "0 0 24 24"
   },
   {
+   "slug": "react-ai",
+   "name": "React AI",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
    "slug": "recognize",
    "name": "Recognize",
    "section": "Misc",
@@ -1417,6 +1477,12 @@
    "slug": "rotate",
    "name": "Rotate",
    "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sad-emoji",
+   "name": "Sad Emoji",
+   "section": "People, Faces, Profiles, Avatars, Groups",
    "viewBox": "0 0 24 24"
   },
   {
@@ -1555,6 +1621,12 @@
    "slug": "stop-solid",
    "name": "Stop Solid",
    "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "storage",
+   "name": "Storage",
+   "section": "Computing & Networks",
    "viewBox": "0 0 24 24"
   },
   {
@@ -1789,6 +1861,12 @@
    "slug": "view",
    "name": "View",
    "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "vr",
+   "name": "VR",
+   "section": "Communication",
    "viewBox": "0 0 24 24"
   },
   {
