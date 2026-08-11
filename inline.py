@@ -57,6 +57,14 @@ def build_inline_logo():
     # Apply the topbar-brand-logo class for sizing
     return logo.replace('<svg ', '<svg class="topbar-brand-logo" ', 1).replace('\n', '')
 
+SPRITE_OPEN = '<!-- === icons.svg === -->'
+SPRITE_CLOSE = '<!-- === /icons.svg === -->'
+
+def build_icon_sprite():
+    # The custom Figma icon sprite (designmd/icons.svg) — inlined so prototypes
+    # are fully self-contained. Referenced via <svg class="icon"><use href="#i-…"></svg>.
+    return SPRITE_OPEN + '\n' + read('icons.svg').strip() + '\n' + SPRITE_CLOSE
+
 # Pattern A: source form — optional comment block + 3 <link> tags
 LINK_PATTERN = re.compile(
     r'(<!--.*?-->\s*\n\s*)?'
@@ -75,6 +83,12 @@ STYLE_PATTERN = re.compile(
 # Image patterns
 IMG_PATTERN = re.compile(r'<img class="topbar-brand-logo"[^>]*src="[^"]*logo\.svg"[^>]*/?>')
 INLINE_LOGO_PATTERN = re.compile(r'<svg class="topbar-brand-logo"[^>]*>.*?</svg>', re.DOTALL)
+
+# Icon sprite — previously-injected block (idempotent refresh) + <body> anchor
+SPRITE_PATTERN = re.compile(re.escape(SPRITE_OPEN) + r'.*?' + re.escape(SPRITE_CLOSE), re.DOTALL)
+BODY_PATTERN = re.compile(r'(<body[^>]*>)')
+# Phosphor CDN link — no longer used; strip it if present
+PHOSPHOR_PATTERN = re.compile(r'\s*<link[^>]*@phosphor-icons[^>]*>\s*\n?')
 
 def inline(path):
     with open(path) as f:
@@ -99,12 +113,29 @@ def inline(path):
         html, m = IMG_PATTERN.subn(inline_logo, html)
         logo_status = f'inlined {m} logo img(s)' if m else 'no logo found'
 
+    # Phosphor CDN is retired — strip any leftover link
+    html, ph = PHOSPHOR_PATTERN.subn('\n', html)
+
+    # Icon sprite — refresh an existing injected block, else inject right after <body>
+    sprite = build_icon_sprite()
+    if SPRITE_PATTERN.search(html):
+        html, s = SPRITE_PATTERN.subn(lambda _: sprite, html)
+        sprite_status = f'refreshed icon sprite ({s} block)'
+    elif BODY_PATTERN.search(html):
+        html, s = BODY_PATTERN.subn(lambda mo: mo.group(1) + '\n  ' + sprite, html, count=1)
+        sprite_status = f'injected icon sprite after <body>'
+    else:
+        sprite_status = 'no <body> found — icon sprite NOT injected'
+    if ph:
+        sprite_status += f' · stripped {ph} Phosphor link(s)'
+
     with open(path, 'w') as f:
         f.write(html)
 
     size = os.path.getsize(path)
     print(f'  {css_status}')
     print(f'  {logo_status}')
+    print(f'  {sprite_status}')
     print(f'  final size: {size:,} bytes')
 
 def main():

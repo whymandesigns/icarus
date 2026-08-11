@@ -1,0 +1,1927 @@
+{
+ "source": "Figma \u00b7 Iconography (custom pack)",
+ "fileKey": "TqaGgbpjGSUDf7qq153Isq",
+ "count": 320,
+ "icons": [
+  {
+   "slug": "add-document",
+   "name": "Add Document",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "afternoon",
+   "name": "Afternoon",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "ai-smart-writing",
+   "name": "AI Smart Writing",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "archive",
+   "name": "Archive",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-down-minor",
+   "name": "Arrow Down Minor",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-long-down",
+   "name": "Arrow Long Down",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-long-left",
+   "name": "Arrow Long Left",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-long-right",
+   "name": "Arrow Long Right",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-long-up",
+   "name": "Arrow Long Up",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrow-up-minor",
+   "name": "Arrow Up Minor",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "arrows-select",
+   "name": "Arrows Select",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "associated-org-unit-join",
+   "name": "Associated Org Unit Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "associated-org-unit-leave",
+   "name": "Associated Org Unit Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "asterisk-solid",
+   "name": "Asterisk Solid",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "attachment",
+   "name": "Attachment",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "attendee",
+   "name": "Attendee",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "availability-full-time",
+   "name": "Availability Full Time",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "availability-part-time",
+   "name": "Availability Part Time",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "availability-unavailable",
+   "name": "Availability Unavailable",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "availability-unavailable-minor",
+   "name": "Availability Unavailable Minor",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "avatar",
+   "name": "Avatar",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "avg-weekly-hours",
+   "name": "Avg Weekly Hours",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "award",
+   "name": "Award",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "back",
+   "name": "Back",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "back-minor",
+   "name": "Back Minor",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "backspace",
+   "name": "Backspace",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "badge",
+   "name": "Badge",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "badge-star",
+   "name": "Badge Star",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 25 25"
+  },
+  {
+   "slug": "bar-chart",
+   "name": "Bar Chart",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bar-chart-2",
+   "name": "Bar Chart 2",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bar-chart-3",
+   "name": "Bar Chart 3",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bell",
+   "name": "Bell",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bell-off",
+   "name": "Bell Off",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bell-solid",
+   "name": "Bell Solid",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bidirectional",
+   "name": "Bidirectional",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "billing",
+   "name": "Billing",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "billing-2",
+   "name": "Billing 2",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "board-new",
+   "name": "Board New",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bold",
+   "name": "Bold",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bookmark",
+   "name": "Bookmark",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bookmark-solid",
+   "name": "Bookmark Solid",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bookmark-star-empty",
+   "name": "Bookmark Star Empty",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bookmark-star-full",
+   "name": "Bookmark Star Full",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "box",
+   "name": "Box",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "brochure",
+   "name": "Brochure",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bulb",
+   "name": "Bulb",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bullet-outline",
+   "name": "Bullet Outline",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "bullet-solid",
+   "name": "Bullet Solid",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "business-owner-join",
+   "name": "Business Owner Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "business-owner-leave",
+   "name": "Business Owner Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cake",
+   "name": "Cake",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "calendar",
+   "name": "Calendar",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "calendar-reminder",
+   "name": "Calendar Reminder",
+   "section": "Date & Time",
+   "viewBox": "0 0 25 24"
+  },
+  {
+   "slug": "call-missed",
+   "name": "Call Missed",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "candidates",
+   "name": "Candidates",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "career",
+   "name": "Career",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "ceo-founder",
+   "name": "CEO Founder",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "certificate",
+   "name": "Certificate",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chat",
+   "name": "Chat",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chat-bot",
+   "name": "Chat bot",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "check",
+   "name": "Check",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "check-minor",
+   "name": "Check Minor",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chef",
+   "name": "Chef",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chevron",
+   "name": "Chevron",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chevron-double",
+   "name": "Chevron Double",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "chevron-minor",
+   "name": "Chevron Minor",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "circuit",
+   "name": "Circuit",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "circuit-2",
+   "name": "Circuit 2",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "close",
+   "name": "Close",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "close-circle",
+   "name": "Close Circle",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "close-minor",
+   "name": "Close Minor",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cloud-connect",
+   "name": "Cloud Connect",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cloud-gaming",
+   "name": "Cloud Gaming",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cloud-layers",
+   "name": "Cloud Layers",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cloud-storage",
+   "name": "Cloud Storage",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "code-block",
+   "name": "Code Block",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "collapse",
+   "name": "Collapse",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "command-key",
+   "name": "Command Key",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "comment-add",
+   "name": "Comment Add",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "comment-ask",
+   "name": "Comment Ask",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "company",
+   "name": "Company",
+   "section": "Location",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "component",
+   "name": "Component",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "connectors",
+   "name": "Connectors",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "connectors-2",
+   "name": "Connectors 2",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "contracts",
+   "name": "Contracts",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "controls",
+   "name": "Controls",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "copy",
+   "name": "Copy",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cpu",
+   "name": "CPU",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cpu-2",
+   "name": "CPU 2",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "cpu-3",
+   "name": "CPU 3",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "critical",
+   "name": "Critical",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "critical-solid",
+   "name": "Critical Solid",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "dashboard",
+   "name": "Dashboard",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "data-warehouse",
+   "name": "Data Warehouse",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "desktop-monitoring",
+   "name": "Desktop Monitoring",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "device-monitoring",
+   "name": "Device Monitoring",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "devices",
+   "name": "Devices",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "dispute",
+   "name": "Dispute",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "done",
+   "name": "Done",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "done-solid",
+   "name": "Done Solid",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "donut-chart",
+   "name": "Donut Chart",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "download",
+   "name": "Download",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "download-document",
+   "name": "Download Document",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "drag",
+   "name": "Drag",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "drawer",
+   "name": "Drawer",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "education",
+   "name": "Education",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "email",
+   "name": "Email",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "enter",
+   "name": "Enter",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "estimated-delivery",
+   "name": "Estimated Delivery",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "evening",
+   "name": "Evening",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "exclamation",
+   "name": "Exclamation",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "exclamation-solid",
+   "name": "Exclamation Solid",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "exit",
+   "name": "Exit",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "expand",
+   "name": "Expand",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "eye",
+   "name": "Eye",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "eye-hide",
+   "name": "Eye Hide",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "filter",
+   "name": "Filter",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "flag",
+   "name": "Flag",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "flag-2",
+   "name": "Flag 2",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "flash",
+   "name": "Flash",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "focus-group",
+   "name": "Focus Group",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "folder",
+   "name": "Folder",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "folder-misc",
+   "name": "Folder Misc",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "font-size",
+   "name": "Font Size",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "fullscreen",
+   "name": "Fullscreen",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "function",
+   "name": "Function",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "gift",
+   "name": "Gift",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "globe",
+   "name": "Globe",
+   "section": "Location",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "grammar-check",
+   "name": "Grammar Check",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "grid",
+   "name": "Grid",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "group-2",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "group-2-1",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "group-3",
+   "name": "Group 3",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 16 16"
+  },
+  {
+   "slug": "guests",
+   "name": "Guests",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "happy-emoji",
+   "name": "Happy Emoji",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "heading",
+   "name": "Heading",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "heartbeat",
+   "name": "Heartbeat",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "help",
+   "name": "Help",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "home",
+   "name": "Home",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "hours-this-month",
+   "name": "Hours This Month",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "image",
+   "name": "Image",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "image-gallery",
+   "name": "Image Gallery",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "inbox",
+   "name": "Inbox",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "info",
+   "name": "Info",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "info-solid",
+   "name": "Info Solid",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "initiatives",
+   "name": "Initiatives",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "italic",
+   "name": "Italic",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "job-change",
+   "name": "Job Change",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "jobs",
+   "name": "Jobs",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "key-results",
+   "name": "Key Results",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "keyboard-key",
+   "name": "Keyboard Key",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "keypad",
+   "name": "Keypad",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lan",
+   "name": "LAN",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "language",
+   "name": "Language",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "layers",
+   "name": "Layers",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lead-org-unit-join",
+   "name": "Lead Org Unit Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lead-org-unit-leave",
+   "name": "Lead Org Unit Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "legal-info",
+   "name": "Legal Info",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "length",
+   "name": "Length",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lengthen-paragraph-text",
+   "name": "Lengthen Paragraph Text",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "link",
+   "name": "Link",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list",
+   "name": "List",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-2",
+   "name": "List 2",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-3",
+   "name": "List 3",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-4",
+   "name": "List 4",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-checkboxes",
+   "name": "List Checkboxes",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-ordered",
+   "name": "List Ordered",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "list-unordered",
+   "name": "List Unordered",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "location",
+   "name": "Location",
+   "section": "Location",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "lock",
+   "name": "Lock",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "manager-change",
+   "name": "Manager Change",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "memo",
+   "name": "Memo",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "mention",
+   "name": "Mention",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "message",
+   "name": "Message",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "microphone-off",
+   "name": "Microphone Off",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "microphone-on",
+   "name": "Microphone On",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "minus",
+   "name": "Minus",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "minus-minor",
+   "name": "Minus Minor",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "mobile",
+   "name": "Mobile",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "mobile-monitoring",
+   "name": "Mobile Monitoring",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "more",
+   "name": "More",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "morning",
+   "name": "Morning",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "multi",
+   "name": "Multi",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "narrow-tables-row",
+   "name": "Narrow Tables Row",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "network",
+   "name": "Network",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "new",
+   "name": "New",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "new-candidate",
+   "name": "New Candidate",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "night",
+   "name": "Night",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "numerical-analysis",
+   "name": "Numerical Analysis",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "okr",
+   "name": "OKR",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "org",
+   "name": "Org",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "org-chart",
+   "name": "Org Chart",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "org-chart-2",
+   "name": "Org Chart 2",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "org-chart-3",
+   "name": "Org Chart 3",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "org-unit",
+   "name": "Org Unit",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "overlap",
+   "name": "Overlap",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "overview",
+   "name": "Overview",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "owner-default",
+   "name": "Owner Default",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "owner-pending",
+   "name": "Owner Pending",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "page",
+   "name": "Page",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "page-2",
+   "name": "Page 2",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "participants",
+   "name": "Participants",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pause",
+   "name": "Pause",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pause-solid",
+   "name": "Pause Solid",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pencil",
+   "name": "Pencil",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "performance-2",
+   "name": "Performance 2",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "phone",
+   "name": "Phone",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "phone-down",
+   "name": "Phone Down",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pie-chart",
+   "name": "Pie Chart",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pin",
+   "name": "Pin",
+   "section": "Location",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pin-solid",
+   "name": "Pin Solid",
+   "section": "Location",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "placeholder",
+   "name": "Placeholder",
+   "section": "Placeholder",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "play",
+   "name": "Play",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "play-solid",
+   "name": "Play Solid",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "plus",
+   "name": "Plus",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "plus-minor",
+   "name": "Plus Minor",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "pod",
+   "name": "Pod",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "presenter",
+   "name": "Presenter",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "presenter-mode",
+   "name": "Presenter Mode",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "preview",
+   "name": "Preview",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "preview-1",
+   "name": "Preview",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "proceed",
+   "name": "Proceed",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "process",
+   "name": "Process",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "profile",
+   "name": "Profile",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project",
+   "name": "Project",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-discovery",
+   "name": "Project Discovery",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-discovery-2",
+   "name": "Project Discovery 2",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-discovery-3",
+   "name": "Project Discovery 3",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-implementation",
+   "name": "Project Implementation",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-implementation-2",
+   "name": "Project Implementation 2",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "project-implementation-3",
+   "name": "Project Implementation 3",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "quote",
+   "name": "Quote",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "rank-1",
+   "name": "Rank 1",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "rank-2",
+   "name": "Rank 2",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "rank-3",
+   "name": "Rank 3",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "react-ai",
+   "name": "React AI",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "recognize",
+   "name": "Recognize",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "record-solid",
+   "name": "Record Solid",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "referral",
+   "name": "Referral",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "referrals",
+   "name": "Referrals",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "removed-user",
+   "name": "Removed User",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "report",
+   "name": "Report",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "research",
+   "name": "Research",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "reset",
+   "name": "Reset",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "resources",
+   "name": "Resources",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "rotate",
+   "name": "Rotate",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sad-emoji",
+   "name": "Sad Emoji",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "search",
+   "name": "Search",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "search-box",
+   "name": "Search Box",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "security",
+   "name": "Security",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "send",
+   "name": "Send",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "services",
+   "name": "Services",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "settings",
+   "name": "Settings",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "settings-2",
+   "name": "Settings 2",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "share-screen",
+   "name": "Share Screen",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "shorten-paragraph-text",
+   "name": "Shorten Paragraph Text",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "single",
+   "name": "Single",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "skills",
+   "name": "Skills",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "skype",
+   "name": "Skype",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sleep",
+   "name": "Sleep",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sort",
+   "name": "Sort",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sound-off",
+   "name": "Sound Off",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sound-on",
+   "name": "Sound On",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "special-group",
+   "name": "Special Group",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "special-group-join",
+   "name": "Special Group Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "special-group-leave",
+   "name": "Special Group Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "star",
+   "name": "Star",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "star-solid",
+   "name": "Star Solid",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sticker",
+   "name": "Sticker",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "stop-solid",
+   "name": "Stop Solid",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "storage",
+   "name": "Storage",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "strategy",
+   "name": "Strategy",
+   "section": "Charts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "strikethrough",
+   "name": "Strikethrough",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "sub-arrow-right",
+   "name": "Sub Arrow Right",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "subfunction",
+   "name": "Subfunction",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "support",
+   "name": "Support",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "switch",
+   "name": "Switch",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "table",
+   "name": "Table",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "tables",
+   "name": "Tables",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "tasks",
+   "name": "Tasks",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "team",
+   "name": "Team",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "thumbs-down",
+   "name": "Thumbs Down",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "thumbs-up",
+   "name": "Thumbs Up",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "time",
+   "name": "Time",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "time-convert",
+   "name": "Time Convert",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "time-off",
+   "name": "Time off",
+   "section": "Misc",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "time-solid",
+   "name": "Time Solid",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "timesheet",
+   "name": "Timesheet",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "tip",
+   "name": "Tip",
+   "section": "Date & Time",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "transfer",
+   "name": "Transfer",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "trash",
+   "name": "Trash",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "triangle-down-minor-solid",
+   "name": "Triangle Down Minor Solid",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "triangle-left-minor-solid",
+   "name": "Triangle Left Minor Solid",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "triangle-right-minor-solid",
+   "name": "Triangle Right Minor Solid",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "triangle-up-minor-solid",
+   "name": "Triangle Up Minor Solid",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "ui-guidelines",
+   "name": "UI Guidelines",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "undo",
+   "name": "Undo",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "unlink",
+   "name": "Unlink",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "update",
+   "name": "Update",
+   "section": "Arrows",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "upload",
+   "name": "Upload",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "upload-document",
+   "name": "Upload Document",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "user",
+   "name": "User",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "verification-badge",
+   "name": "Verification badge",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 25 25"
+  },
+  {
+   "slug": "video",
+   "name": "Video",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "video-broadcast",
+   "name": "Video Broadcast",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "video-call",
+   "name": "Video Call",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "video-call-2",
+   "name": "Video Call 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "video-off",
+   "name": "Video Off",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "video-on",
+   "name": "Video On",
+   "section": "Audio & Video",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "view",
+   "name": "View",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "vr",
+   "name": "VR",
+   "section": "Communication",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "warning",
+   "name": "Warning",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "warning-solid",
+   "name": "Warning Solid",
+   "section": "Alerts",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "web-monitoring",
+   "name": "Web Monitoring",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "white-paper",
+   "name": "White Paper",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "white-paper-2",
+   "name": "White Paper 2",
+   "section": "Documents",
+   "viewBox": "0 0 24 25"
+  },
+  {
+   "slug": "wide-tables-row",
+   "name": "Wide Tables Row",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "wifi",
+   "name": "Wifi",
+   "section": "Computing & Networks",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "work-experience",
+   "name": "Work Experience",
+   "section": "Documents",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "working",
+   "name": "Working",
+   "section": "Interface Essentials",
+   "viewBox": "0 0 24 24"
+  }
+ ]
+}

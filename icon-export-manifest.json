@@ -1,0 +1,2246 @@
+{
+ "fileKey": "TqaGgbpjGSUDf7qq153Isq",
+ "count": 320,
+ "icons": [
+  {
+   "slug": "associated-org-unit-join",
+   "name": "Associated Org Unit Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "533:80",
+   "node": "533:81"
+  },
+  {
+   "slug": "associated-org-unit-leave",
+   "name": "Associated Org Unit Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "533:51",
+   "node": "533:52"
+  },
+  {
+   "slug": "business-owner-join",
+   "name": "Business Owner Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:154",
+   "node": "536:155"
+  },
+  {
+   "slug": "business-owner-leave",
+   "name": "Business Owner Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:125",
+   "node": "536:126"
+  },
+  {
+   "slug": "career",
+   "name": "Career",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:484",
+   "node": "1:485"
+  },
+  {
+   "slug": "education",
+   "name": "Education",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:457",
+   "node": "1:458"
+  },
+  {
+   "slug": "guests",
+   "name": "Guests",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:440",
+   "node": "1:441"
+  },
+  {
+   "slug": "lead-org-unit-join",
+   "name": "Lead Org Unit Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:204",
+   "node": "536:205"
+  },
+  {
+   "slug": "lead-org-unit-leave",
+   "name": "Lead Org Unit Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:199",
+   "node": "536:200"
+  },
+  {
+   "slug": "manager-change",
+   "name": "Manager Change",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "533:22",
+   "node": "533:23"
+  },
+  {
+   "slug": "new-candidate",
+   "name": "New Candidate",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:423",
+   "node": "1:424"
+  },
+  {
+   "slug": "okr",
+   "name": "OKR",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:400",
+   "node": "1:401"
+  },
+  {
+   "slug": "key-results",
+   "name": "Key Results",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "5778:75",
+   "node": "5778:76"
+  },
+  {
+   "slug": "owner-default",
+   "name": "Owner Default",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:377",
+   "node": "1:378"
+  },
+  {
+   "slug": "owner-pending",
+   "name": "Owner Pending",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:360",
+   "node": "1:361"
+  },
+  {
+   "slug": "participants",
+   "name": "Participants",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:339",
+   "node": "1:340"
+  },
+  {
+   "slug": "profile",
+   "name": "Profile",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:306",
+   "node": "1:307"
+  },
+  {
+   "slug": "referral",
+   "name": "Referral",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:285",
+   "node": "1:286"
+  },
+  {
+   "slug": "referrals",
+   "name": "Referrals",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:268",
+   "node": "1:269"
+  },
+  {
+   "slug": "removed-user",
+   "name": "Removed User",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:247",
+   "node": "1:248"
+  },
+  {
+   "slug": "special-group",
+   "name": "Special Group",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:220",
+   "node": "1:221"
+  },
+  {
+   "slug": "special-group-join",
+   "name": "Special Group Join",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:225",
+   "node": "536:226"
+  },
+  {
+   "slug": "special-group-leave",
+   "name": "Special Group Leave",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "536:252",
+   "node": "536:253"
+  },
+  {
+   "slug": "team",
+   "name": "Team",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:189",
+   "node": "1:190"
+  },
+  {
+   "slug": "user",
+   "name": "User",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "1:176",
+   "node": "1:177"
+  },
+  {
+   "slug": "focus-group",
+   "name": "Focus Group",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2695:32",
+   "node": "2695:31"
+  },
+  {
+   "slug": "group-2",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2858:1016",
+   "node": "2858:1015"
+  },
+  {
+   "slug": "group-2-1",
+   "name": "Group 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2858:1019",
+   "node": "2858:1018"
+  },
+  {
+   "slug": "group-3",
+   "name": "Group 3",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2858:1023",
+   "node": "2858:1021"
+  },
+  {
+   "slug": "sad-emoji",
+   "name": "Sad Emoji",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2693:19",
+   "node": "2693:18"
+  },
+  {
+   "slug": "happy-emoji",
+   "name": "Happy Emoji",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2695:4",
+   "node": "2695:3"
+  },
+  {
+   "slug": "avatar",
+   "name": "Avatar",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2695:18",
+   "node": "2695:17"
+  },
+  {
+   "slug": "ceo-founder",
+   "name": "CEO Founder",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2703:18",
+   "node": "2703:17"
+  },
+  {
+   "slug": "video-call",
+   "name": "Video Call",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2719:4",
+   "node": "2719:3"
+  },
+  {
+   "slug": "video-call-2",
+   "name": "Video Call 2",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2858:941",
+   "node": "2858:940"
+  },
+  {
+   "slug": "presenter-mode",
+   "name": "Presenter Mode",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2720:9",
+   "node": "2720:8"
+  },
+  {
+   "slug": "presenter",
+   "name": "Presenter",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2827:112",
+   "node": "2827:111"
+  },
+  {
+   "slug": "attendee",
+   "name": "Attendee",
+   "section": "People, Faces, Profiles, Avatars, Groups",
+   "setId": "2858:1013",
+   "node": "2858:1012"
+  },
+  {
+   "slug": "asterisk-solid",
+   "name": "Asterisk Solid",
+   "section": "Misc",
+   "setId": "1:859",
+   "node": "1:860"
+  },
+  {
+   "slug": "award",
+   "name": "Award",
+   "section": "Misc",
+   "setId": "1:842",
+   "node": "1:843"
+  },
+  {
+   "slug": "board-new",
+   "name": "Board New",
+   "section": "Misc",
+   "setId": "568:5",
+   "node": "568:6"
+  },
+  {
+   "slug": "box",
+   "name": "Box",
+   "section": "Misc",
+   "setId": "622:2",
+   "node": "622:3"
+  },
+  {
+   "slug": "bullet-solid",
+   "name": "Bullet Solid",
+   "section": "Misc",
+   "setId": "1:837",
+   "node": "1:838"
+  },
+  {
+   "slug": "bullet-outline",
+   "name": "Bullet Outline",
+   "section": "Misc",
+   "setId": "2024:2",
+   "node": "2024:3"
+  },
+  {
+   "slug": "cake",
+   "name": "Cake",
+   "section": "Misc",
+   "setId": "872:2",
+   "node": "872:3"
+  },
+  {
+   "slug": "chef",
+   "name": "Chef",
+   "section": "Misc",
+   "setId": "478:5",
+   "node": "478:6"
+  },
+  {
+   "slug": "component",
+   "name": "Component",
+   "section": "Misc",
+   "setId": "1:818",
+   "node": "1:819"
+  },
+  {
+   "slug": "dispute",
+   "name": "Dispute",
+   "section": "Misc",
+   "setId": "1:797",
+   "node": "1:798"
+  },
+  {
+   "slug": "flag",
+   "name": "Flag",
+   "section": "Misc",
+   "setId": "1:784",
+   "node": "1:785"
+  },
+  {
+   "slug": "flash",
+   "name": "Flash",
+   "section": "Misc",
+   "setId": "1:775",
+   "node": "1:776"
+  },
+  {
+   "slug": "function",
+   "name": "Function",
+   "section": "Misc",
+   "setId": "1:748",
+   "node": "1:749"
+  },
+  {
+   "slug": "subfunction",
+   "name": "Subfunction",
+   "section": "Misc",
+   "setId": "1:515",
+   "node": "1:516"
+  },
+  {
+   "slug": "heartbeat",
+   "name": "Heartbeat",
+   "section": "Misc",
+   "setId": "1:743",
+   "node": "1:744"
+  },
+  {
+   "slug": "multi",
+   "name": "Multi",
+   "section": "Misc",
+   "setId": "1:720",
+   "node": "1:721"
+  },
+  {
+   "slug": "numerical-analysis",
+   "name": "Numerical Analysis",
+   "section": "Misc",
+   "setId": "1:691",
+   "node": "1:692"
+  },
+  {
+   "slug": "pod",
+   "name": "Pod",
+   "section": "Misc",
+   "setId": "1:662",
+   "node": "1:663"
+  },
+  {
+   "slug": "project",
+   "name": "Project",
+   "section": "Misc",
+   "setId": "1:633",
+   "node": "1:634"
+  },
+  {
+   "slug": "rank-1",
+   "name": "Rank 1",
+   "section": "Misc",
+   "setId": "1:628",
+   "node": "1:629"
+  },
+  {
+   "slug": "rank-2",
+   "name": "Rank 2",
+   "section": "Misc",
+   "setId": "1:619",
+   "node": "1:620"
+  },
+  {
+   "slug": "rank-3",
+   "name": "Rank 3",
+   "section": "Misc",
+   "setId": "1:608",
+   "node": "1:609"
+  },
+  {
+   "slug": "recognize",
+   "name": "Recognize",
+   "section": "Misc",
+   "setId": "1:583",
+   "node": "1:584"
+  },
+  {
+   "slug": "services",
+   "name": "Services",
+   "section": "Misc",
+   "setId": "1:574",
+   "node": "1:575"
+  },
+  {
+   "slug": "single",
+   "name": "Single",
+   "section": "Misc",
+   "setId": "1:565",
+   "node": "1:566"
+  },
+  {
+   "slug": "sleep",
+   "name": "Sleep",
+   "section": "Misc",
+   "setId": "1:542",
+   "node": "1:543"
+  },
+  {
+   "slug": "sticker",
+   "name": "Sticker",
+   "section": "Misc",
+   "setId": "568:53",
+   "node": "568:54"
+  },
+  {
+   "slug": "image",
+   "name": "Image",
+   "section": "Misc",
+   "setId": "1584:9",
+   "node": "1784:69"
+  },
+  {
+   "slug": "image-gallery",
+   "name": "Image Gallery",
+   "section": "Misc",
+   "setId": "5285:72",
+   "node": "5285:79"
+  },
+  {
+   "slug": "security",
+   "name": "Security",
+   "section": "Misc",
+   "setId": "2720:14",
+   "node": "2720:13"
+  },
+  {
+   "slug": "badge",
+   "name": "Badge",
+   "section": "Misc",
+   "setId": "2720:23",
+   "node": "2720:22"
+  },
+  {
+   "slug": "flag-2",
+   "name": "Flag 2",
+   "section": "Misc",
+   "setId": "2720:29",
+   "node": "2720:28"
+  },
+  {
+   "slug": "folder-misc",
+   "name": "Folder Misc",
+   "section": "Misc",
+   "setId": "2724:34",
+   "node": "2724:33"
+  },
+  {
+   "slug": "gift",
+   "name": "Gift",
+   "section": "Misc",
+   "setId": "3198:125",
+   "node": "3198:124"
+  },
+  {
+   "slug": "bulb",
+   "name": "Bulb",
+   "section": "Misc",
+   "setId": "3343:102",
+   "node": "3343:101"
+  },
+  {
+   "slug": "send",
+   "name": "Send",
+   "section": "Misc",
+   "setId": "3343:521",
+   "node": "3343:519"
+  },
+  {
+   "slug": "initiatives",
+   "name": "Initiatives",
+   "section": "Misc",
+   "setId": "5482:72",
+   "node": "5482:79"
+  },
+  {
+   "slug": "org-unit",
+   "name": "Org Unit",
+   "section": "Misc",
+   "setId": "5482:104",
+   "node": "5482:108"
+  },
+  {
+   "slug": "process",
+   "name": "Process",
+   "section": "Misc",
+   "setId": "5482:151",
+   "node": "5482:165"
+  },
+  {
+   "slug": "time-off",
+   "name": "Time off",
+   "section": "Misc",
+   "setId": "5708:616",
+   "node": "5708:624"
+  },
+  {
+   "slug": "company",
+   "name": "Company",
+   "section": "Location",
+   "setId": "1:917",
+   "node": "1:918"
+  },
+  {
+   "slug": "globe",
+   "name": "Globe",
+   "section": "Location",
+   "setId": "1:898",
+   "node": "1:899"
+  },
+  {
+   "slug": "pin",
+   "name": "Pin",
+   "section": "Location",
+   "setId": "1:881",
+   "node": "1:882"
+  },
+  {
+   "slug": "pin-solid",
+   "name": "Pin Solid",
+   "section": "Location",
+   "setId": "1:872",
+   "node": "1:873"
+  },
+  {
+   "slug": "location",
+   "name": "Location",
+   "section": "Location",
+   "setId": "2724:53",
+   "node": "2724:52"
+  },
+  {
+   "slug": "bold",
+   "name": "Bold",
+   "section": "Interface Essentials",
+   "setId": "313:48",
+   "node": "313:49"
+  },
+  {
+   "slug": "check",
+   "name": "Check",
+   "section": "Interface Essentials",
+   "setId": "1:1696",
+   "node": "1:1697"
+  },
+  {
+   "slug": "check-minor",
+   "name": "Check Minor",
+   "section": "Interface Essentials",
+   "setId": "1:1687",
+   "node": "1:1688"
+  },
+  {
+   "slug": "close",
+   "name": "Close",
+   "section": "Interface Essentials",
+   "setId": "1:1678",
+   "node": "1:1679"
+  },
+  {
+   "slug": "close-minor",
+   "name": "Close Minor",
+   "section": "Interface Essentials",
+   "setId": "1:1669",
+   "node": "1:1670"
+  },
+  {
+   "slug": "code-block",
+   "name": "Code Block",
+   "section": "Interface Essentials",
+   "setId": "2557:35",
+   "node": "2557:34"
+  },
+  {
+   "slug": "copy",
+   "name": "Copy",
+   "section": "Interface Essentials",
+   "setId": "1:1641",
+   "node": "1:1642"
+  },
+  {
+   "slug": "download",
+   "name": "Download",
+   "section": "Interface Essentials",
+   "setId": "1:1602",
+   "node": "1:1603"
+  },
+  {
+   "slug": "drag",
+   "name": "Drag",
+   "section": "Interface Essentials",
+   "setId": "1:1573",
+   "node": "1:1574"
+  },
+  {
+   "slug": "enter",
+   "name": "Enter",
+   "section": "Interface Essentials",
+   "setId": "533:5",
+   "node": "533:6"
+  },
+  {
+   "slug": "exit",
+   "name": "Exit",
+   "section": "Interface Essentials",
+   "setId": "1:1528",
+   "node": "1:1529"
+  },
+  {
+   "slug": "eye",
+   "name": "Eye",
+   "section": "Interface Essentials",
+   "setId": "1:1511",
+   "node": "1:1512"
+  },
+  {
+   "slug": "eye-hide",
+   "name": "Eye Hide",
+   "section": "Interface Essentials",
+   "setId": "1:1486",
+   "node": "1:1487"
+  },
+  {
+   "slug": "filter",
+   "name": "Filter",
+   "section": "Interface Essentials",
+   "setId": "1:1475",
+   "node": "1:1476"
+  },
+  {
+   "slug": "font-size",
+   "name": "Font Size",
+   "section": "Interface Essentials",
+   "setId": "885:19",
+   "node": "885:20"
+  },
+  {
+   "slug": "grid",
+   "name": "Grid",
+   "section": "Interface Essentials",
+   "setId": "1:1446",
+   "node": "1:1447"
+  },
+  {
+   "slug": "heading",
+   "name": "Heading",
+   "section": "Interface Essentials",
+   "setId": "728:16",
+   "node": "728:17"
+  },
+  {
+   "slug": "italic",
+   "name": "Italic",
+   "section": "Interface Essentials",
+   "setId": "313:75",
+   "node": "313:76"
+  },
+  {
+   "slug": "keypad",
+   "name": "Keypad",
+   "section": "Interface Essentials",
+   "setId": "1:1343",
+   "node": "1:1344"
+  },
+  {
+   "slug": "layers",
+   "name": "Layers",
+   "section": "Interface Essentials",
+   "setId": "1:1330",
+   "node": "1:1331"
+  },
+  {
+   "slug": "link",
+   "name": "Link",
+   "section": "Interface Essentials",
+   "setId": "1:1313",
+   "node": "1:1314"
+  },
+  {
+   "slug": "list-checkboxes",
+   "name": "List Checkboxes",
+   "section": "Interface Essentials",
+   "setId": "728:2",
+   "node": "728:3"
+  },
+  {
+   "slug": "list-ordered",
+   "name": "List Ordered",
+   "section": "Interface Essentials",
+   "setId": "314:188",
+   "node": "314:189"
+  },
+  {
+   "slug": "list-unordered",
+   "name": "List Unordered",
+   "section": "Interface Essentials",
+   "setId": "314:158",
+   "node": "314:159"
+  },
+  {
+   "slug": "lock",
+   "name": "Lock",
+   "section": "Interface Essentials",
+   "setId": "1:1296",
+   "node": "1:1297"
+  },
+  {
+   "slug": "minus",
+   "name": "Minus",
+   "section": "Interface Essentials",
+   "setId": "1:1291",
+   "node": "1:1292"
+  },
+  {
+   "slug": "minus-minor",
+   "name": "Minus Minor",
+   "section": "Interface Essentials",
+   "setId": "5442:72",
+   "node": "5442:73"
+  },
+  {
+   "slug": "more",
+   "name": "More",
+   "section": "Interface Essentials",
+   "setId": "1:1268",
+   "node": "1:1269"
+  },
+  {
+   "slug": "new",
+   "name": "New",
+   "section": "Interface Essentials",
+   "setId": "1:1257",
+   "node": "1:1258"
+  },
+  {
+   "slug": "overlap",
+   "name": "Overlap",
+   "section": "Interface Essentials",
+   "setId": "1:1234",
+   "node": "1:1235"
+  },
+  {
+   "slug": "overview",
+   "name": "Overview",
+   "section": "Interface Essentials",
+   "setId": "1:1223",
+   "node": "1:1224"
+  },
+  {
+   "slug": "pencil",
+   "name": "Pencil",
+   "section": "Interface Essentials",
+   "setId": "1:1210",
+   "node": "1:1211"
+  },
+  {
+   "slug": "plus",
+   "name": "Plus",
+   "section": "Interface Essentials",
+   "setId": "1:1201",
+   "node": "1:1202"
+  },
+  {
+   "slug": "plus-minor",
+   "name": "Plus Minor",
+   "section": "Interface Essentials",
+   "setId": "5442:79",
+   "node": "5442:80"
+  },
+  {
+   "slug": "quote",
+   "name": "Quote",
+   "section": "Interface Essentials",
+   "setId": "729:74",
+   "node": "729:75"
+  },
+  {
+   "slug": "search",
+   "name": "Search",
+   "section": "Interface Essentials",
+   "setId": "1:1188",
+   "node": "1:1189"
+  },
+  {
+   "slug": "settings",
+   "name": "Settings",
+   "section": "Interface Essentials",
+   "setId": "1:1171",
+   "node": "1:1172"
+  },
+  {
+   "slug": "skills",
+   "name": "Skills",
+   "section": "Interface Essentials",
+   "setId": "1:1151",
+   "node": "1:1152"
+  },
+  {
+   "slug": "star",
+   "name": "Star",
+   "section": "Interface Essentials",
+   "setId": "1:1142",
+   "node": "1:1143"
+  },
+  {
+   "slug": "star-solid",
+   "name": "Star Solid",
+   "section": "Interface Essentials",
+   "setId": "1:1137",
+   "node": "1:1138"
+  },
+  {
+   "slug": "strikethrough",
+   "name": "Strikethrough",
+   "section": "Interface Essentials",
+   "setId": "729:45",
+   "node": "729:46"
+  },
+  {
+   "slug": "table",
+   "name": "Table",
+   "section": "Interface Essentials",
+   "setId": "1:1116",
+   "node": "1:1117"
+  },
+  {
+   "slug": "tasks",
+   "name": "Tasks",
+   "section": "Interface Essentials",
+   "setId": "1:1089",
+   "node": "1:1090"
+  },
+  {
+   "slug": "thumbs-down",
+   "name": "Thumbs Down",
+   "section": "Interface Essentials",
+   "setId": "1:1076",
+   "node": "1:1077"
+  },
+  {
+   "slug": "thumbs-up",
+   "name": "Thumbs Up",
+   "section": "Interface Essentials",
+   "setId": "1:1063",
+   "node": "1:1064"
+  },
+  {
+   "slug": "trash",
+   "name": "Trash",
+   "section": "Interface Essentials",
+   "setId": "1:1039",
+   "node": "1:1040"
+  },
+  {
+   "slug": "ui-guidelines",
+   "name": "UI Guidelines",
+   "section": "Interface Essentials",
+   "setId": "1:1022",
+   "node": "1:1023"
+  },
+  {
+   "slug": "unlink",
+   "name": "Unlink",
+   "section": "Interface Essentials",
+   "setId": "1:997",
+   "node": "1:998"
+  },
+  {
+   "slug": "upload",
+   "name": "Upload",
+   "section": "Interface Essentials",
+   "setId": "1:978",
+   "node": "1:979"
+  },
+  {
+   "slug": "view",
+   "name": "View",
+   "section": "Interface Essentials",
+   "setId": "1:959",
+   "node": "1:960"
+  },
+  {
+   "slug": "working",
+   "name": "Working",
+   "section": "Interface Essentials",
+   "setId": "1:946",
+   "node": "1:947"
+  },
+  {
+   "slug": "preview",
+   "name": "Preview",
+   "section": "Interface Essentials",
+   "setId": "1784:2",
+   "node": "1784:3"
+  },
+  {
+   "slug": "verification-badge",
+   "name": "Verification badge",
+   "section": "Interface Essentials",
+   "setId": "1982:8",
+   "node": "1982:9"
+  },
+  {
+   "slug": "badge-star",
+   "name": "Badge Star",
+   "section": "Interface Essentials",
+   "setId": "5454:72",
+   "node": "5454:77"
+  },
+  {
+   "slug": "ai-smart-writing",
+   "name": "AI Smart Writing",
+   "section": "Interface Essentials",
+   "setId": "2453:16",
+   "node": "2453:14"
+  },
+  {
+   "slug": "grammar-check",
+   "name": "Grammar Check",
+   "section": "Interface Essentials",
+   "setId": "2453:31",
+   "node": "2453:29"
+  },
+  {
+   "slug": "shorten-paragraph-text",
+   "name": "Shorten Paragraph Text",
+   "section": "Interface Essentials",
+   "setId": "2453:66",
+   "node": "2453:64"
+  },
+  {
+   "slug": "lengthen-paragraph-text",
+   "name": "Lengthen Paragraph Text",
+   "section": "Interface Essentials",
+   "setId": "2453:69",
+   "node": "2453:67"
+  },
+  {
+   "slug": "home",
+   "name": "Home",
+   "section": "Interface Essentials",
+   "setId": "2460:16",
+   "node": "2460:15"
+  },
+  {
+   "slug": "command-key",
+   "name": "Command Key",
+   "section": "Interface Essentials",
+   "setId": "2821:4",
+   "node": "2821:3"
+  },
+  {
+   "slug": "expand",
+   "name": "Expand",
+   "section": "Interface Essentials",
+   "setId": "2822:22",
+   "node": "2822:21"
+  },
+  {
+   "slug": "collapse",
+   "name": "Collapse",
+   "section": "Interface Essentials",
+   "setId": "2822:40",
+   "node": "2822:39"
+  },
+  {
+   "slug": "controls",
+   "name": "Controls",
+   "section": "Interface Essentials",
+   "setId": "4197:312",
+   "node": "4197:310"
+  },
+  {
+   "slug": "drawer",
+   "name": "Drawer",
+   "section": "Interface Essentials",
+   "setId": "5453:504",
+   "node": "5453:507"
+  },
+  {
+   "slug": "add-document",
+   "name": "Add Document",
+   "section": "Documents",
+   "setId": "1:2263",
+   "node": "1:2264"
+  },
+  {
+   "slug": "archive",
+   "name": "Archive",
+   "section": "Documents",
+   "setId": "1:2244",
+   "node": "1:2245"
+  },
+  {
+   "slug": "attachment",
+   "name": "Attachment",
+   "section": "Documents",
+   "setId": "1:2233",
+   "node": "1:2234"
+  },
+  {
+   "slug": "billing",
+   "name": "Billing",
+   "section": "Documents",
+   "setId": "1:2210",
+   "node": "1:2211"
+  },
+  {
+   "slug": "billing-2",
+   "name": "Billing 2",
+   "section": "Documents",
+   "setId": "4484:72",
+   "node": "4484:73"
+  },
+  {
+   "slug": "bookmark",
+   "name": "Bookmark",
+   "section": "Documents",
+   "setId": "1:2201",
+   "node": "1:2202"
+  },
+  {
+   "slug": "bookmark-solid",
+   "name": "Bookmark Solid",
+   "section": "Documents",
+   "setId": "3263:72",
+   "node": "3263:73"
+  },
+  {
+   "slug": "bookmark-star-empty",
+   "name": "Bookmark Star Empty",
+   "section": "Documents",
+   "setId": "951:11",
+   "node": "951:12"
+  },
+  {
+   "slug": "bookmark-star-full",
+   "name": "Bookmark Star Full",
+   "section": "Documents",
+   "setId": "951:2",
+   "node": "951:3"
+  },
+  {
+   "slug": "certificate",
+   "name": "Certificate",
+   "section": "Documents",
+   "setId": "1:2180",
+   "node": "1:2181"
+  },
+  {
+   "slug": "folder",
+   "name": "Folder",
+   "section": "Documents",
+   "setId": "1:2171",
+   "node": "1:2172"
+  },
+  {
+   "slug": "job-change",
+   "name": "Job Change",
+   "section": "Documents",
+   "setId": "1:2134",
+   "node": "1:2135"
+  },
+  {
+   "slug": "jobs",
+   "name": "Jobs",
+   "section": "Documents",
+   "setId": "1:2113",
+   "node": "1:2114"
+  },
+  {
+   "slug": "legal-info",
+   "name": "Legal Info",
+   "section": "Documents",
+   "setId": "1:2092",
+   "node": "1:2093"
+  },
+  {
+   "slug": "contracts",
+   "name": "Contracts",
+   "section": "Documents",
+   "setId": "4482:81",
+   "node": "4482:82"
+  },
+  {
+   "slug": "page",
+   "name": "Page",
+   "section": "Documents",
+   "setId": "1:2073",
+   "node": "1:2074"
+  },
+  {
+   "slug": "page-2",
+   "name": "Page 2",
+   "section": "Documents",
+   "setId": "2864:1663",
+   "node": "2864:1662"
+  },
+  {
+   "slug": "resources",
+   "name": "Resources",
+   "section": "Documents",
+   "setId": "1:2037",
+   "node": "1:2038"
+  },
+  {
+   "slug": "timesheet",
+   "name": "Timesheet",
+   "section": "Documents",
+   "setId": "1:2016",
+   "node": "1:2017"
+  },
+  {
+   "slug": "upload-document",
+   "name": "Upload Document",
+   "section": "Documents",
+   "setId": "1:1997",
+   "node": "1:1998"
+  },
+  {
+   "slug": "download-document",
+   "name": "Download Document",
+   "section": "Documents",
+   "setId": "6196:72",
+   "node": "6196:73"
+  },
+  {
+   "slug": "white-paper",
+   "name": "White Paper",
+   "section": "Documents",
+   "setId": "1:1976",
+   "node": "1:1977"
+  },
+  {
+   "slug": "work-experience",
+   "name": "Work Experience",
+   "section": "Documents",
+   "setId": "1:1943",
+   "node": "1:1944"
+  },
+  {
+   "slug": "brochure",
+   "name": "Brochure",
+   "section": "Documents",
+   "setId": "2827:95",
+   "node": "2827:94"
+  },
+  {
+   "slug": "preview-1",
+   "name": "Preview",
+   "section": "Documents",
+   "setId": "2827:98",
+   "node": "2827:97"
+  },
+  {
+   "slug": "search-box",
+   "name": "Search Box",
+   "section": "Documents",
+   "setId": "2827:101",
+   "node": "2827:100"
+  },
+  {
+   "slug": "memo",
+   "name": "Memo",
+   "section": "Documents",
+   "setId": "2861:1508",
+   "node": "2861:1507"
+  },
+  {
+   "slug": "white-paper-2",
+   "name": "White Paper 2",
+   "section": "Documents",
+   "setId": "2871:53",
+   "node": "2871:52"
+  },
+  {
+   "slug": "project-implementation",
+   "name": "Project Implementation",
+   "section": "Documents",
+   "setId": "2871:66",
+   "node": "2871:64"
+  },
+  {
+   "slug": "project-implementation-2",
+   "name": "Project Implementation 2",
+   "section": "Documents",
+   "setId": "2871:86",
+   "node": "2871:84"
+  },
+  {
+   "slug": "project-implementation-3",
+   "name": "Project Implementation 3",
+   "section": "Documents",
+   "setId": "2871:83",
+   "node": "2871:81"
+  },
+  {
+   "slug": "project-discovery",
+   "name": "Project Discovery",
+   "section": "Documents",
+   "setId": "2871:105",
+   "node": "2871:103"
+  },
+  {
+   "slug": "project-discovery-2",
+   "name": "Project Discovery 2",
+   "section": "Documents",
+   "setId": "2871:122",
+   "node": "2871:121"
+  },
+  {
+   "slug": "project-discovery-3",
+   "name": "Project Discovery 3",
+   "section": "Documents",
+   "setId": "2872:137",
+   "node": "2872:135"
+  },
+  {
+   "slug": "wide-tables-row",
+   "name": "Wide Tables Row",
+   "section": "Documents",
+   "setId": "5809:96",
+   "node": "5809:103"
+  },
+  {
+   "slug": "narrow-tables-row",
+   "name": "Narrow Tables Row",
+   "section": "Documents",
+   "setId": "5809:110",
+   "node": "5809:117"
+  },
+  {
+   "slug": "afternoon",
+   "name": "Afternoon",
+   "section": "Date & Time",
+   "setId": "1:2536",
+   "node": "1:2537"
+  },
+  {
+   "slug": "availability-full-time",
+   "name": "Availability Full Time",
+   "section": "Date & Time",
+   "setId": "1:2496",
+   "node": "1:2497"
+  },
+  {
+   "slug": "availability-part-time",
+   "name": "Availability Part Time",
+   "section": "Date & Time",
+   "setId": "1:2460",
+   "node": "1:2461"
+  },
+  {
+   "slug": "availability-unavailable",
+   "name": "Availability Unavailable",
+   "section": "Date & Time",
+   "setId": "1:2447",
+   "node": "1:2448"
+  },
+  {
+   "slug": "availability-unavailable-minor",
+   "name": "Availability Unavailable Minor",
+   "section": "Date & Time",
+   "setId": "4252:133",
+   "node": "4252:134"
+  },
+  {
+   "slug": "bell",
+   "name": "Bell",
+   "section": "Date & Time",
+   "setId": "1:2432",
+   "node": "1:2433"
+  },
+  {
+   "slug": "bell-solid",
+   "name": "Bell Solid",
+   "section": "Date & Time",
+   "setId": "1721:2",
+   "node": "1723:38"
+  },
+  {
+   "slug": "bell-off",
+   "name": "Bell Off",
+   "section": "Date & Time",
+   "setId": "130:5",
+   "node": "130:6"
+  },
+  {
+   "slug": "calendar",
+   "name": "Calendar",
+   "section": "Date & Time",
+   "setId": "1:2413",
+   "node": "1:2414"
+  },
+  {
+   "slug": "calendar-reminder",
+   "name": "Calendar Reminder",
+   "section": "Date & Time",
+   "setId": "1:2398",
+   "node": "1:2399"
+  },
+  {
+   "slug": "evening",
+   "name": "Evening",
+   "section": "Date & Time",
+   "setId": "1:2373",
+   "node": "1:2374"
+  },
+  {
+   "slug": "morning",
+   "name": "Morning",
+   "section": "Date & Time",
+   "setId": "1:2356",
+   "node": "1:2357"
+  },
+  {
+   "slug": "night",
+   "name": "Night",
+   "section": "Date & Time",
+   "setId": "1:2340",
+   "node": "1:2341"
+  },
+  {
+   "slug": "time",
+   "name": "Time",
+   "section": "Date & Time",
+   "setId": "1:2324",
+   "node": "1:2325"
+  },
+  {
+   "slug": "time-solid",
+   "name": "Time Solid",
+   "section": "Date & Time",
+   "setId": "322:5",
+   "node": "322:6"
+  },
+  {
+   "slug": "time-convert",
+   "name": "Time Convert",
+   "section": "Date & Time",
+   "setId": "2260:87",
+   "node": "2260:88"
+  },
+  {
+   "slug": "hours-this-month",
+   "name": "Hours This Month",
+   "section": "Date & Time",
+   "setId": "2260:191",
+   "node": "2260:190"
+  },
+  {
+   "slug": "avg-weekly-hours",
+   "name": "Avg Weekly Hours",
+   "section": "Date & Time",
+   "setId": "2260:219",
+   "node": "2260:217"
+  },
+  {
+   "slug": "tip",
+   "name": "Tip",
+   "section": "Date & Time",
+   "setId": "2597:22",
+   "node": "2597:20"
+  },
+  {
+   "slug": "estimated-delivery",
+   "name": "Estimated Delivery",
+   "section": "Date & Time",
+   "setId": "2858:958",
+   "node": "2858:957"
+  },
+  {
+   "slug": "phone-down",
+   "name": "Phone Down",
+   "section": "Communication",
+   "setId": "1:2754",
+   "node": "1:2755"
+  },
+  {
+   "slug": "call-missed",
+   "name": "Call Missed",
+   "section": "Communication",
+   "setId": "1:2735",
+   "node": "1:2736"
+  },
+  {
+   "slug": "candidates",
+   "name": "Candidates",
+   "section": "Communication",
+   "setId": "1:2726",
+   "node": "1:2727"
+  },
+  {
+   "slug": "chat",
+   "name": "Chat",
+   "section": "Communication",
+   "setId": "1:2705",
+   "node": "1:2706"
+  },
+  {
+   "slug": "comment-add",
+   "name": "Comment Add",
+   "section": "Communication",
+   "setId": "568:32",
+   "node": "568:33"
+  },
+  {
+   "slug": "comment-ask",
+   "name": "Comment Ask",
+   "section": "Communication",
+   "setId": "914:2",
+   "node": "914:3"
+  },
+  {
+   "slug": "email",
+   "name": "Email",
+   "section": "Communication",
+   "setId": "1:2692",
+   "node": "1:2693"
+  },
+  {
+   "slug": "inbox",
+   "name": "Inbox",
+   "section": "Communication",
+   "setId": "1013:2",
+   "node": "1013:3"
+  },
+  {
+   "slug": "language",
+   "name": "Language",
+   "section": "Communication",
+   "setId": "1:2675",
+   "node": "1:2676"
+  },
+  {
+   "slug": "mention",
+   "name": "Mention",
+   "section": "Communication",
+   "setId": "1:2658",
+   "node": "1:2659"
+  },
+  {
+   "slug": "message",
+   "name": "Message",
+   "section": "Communication",
+   "setId": "1:2649",
+   "node": "1:2650"
+  },
+  {
+   "slug": "mobile",
+   "name": "Mobile",
+   "section": "Communication",
+   "setId": "505:5",
+   "node": "505:6"
+  },
+  {
+   "slug": "phone",
+   "name": "Phone",
+   "section": "Communication",
+   "setId": "1:2640",
+   "node": "1:2641"
+  },
+  {
+   "slug": "report",
+   "name": "Report",
+   "section": "Communication",
+   "setId": "1:2624",
+   "node": "1:2625"
+  },
+  {
+   "slug": "skype",
+   "name": "Skype",
+   "section": "Communication",
+   "setId": "1:2611",
+   "node": "1:2612"
+  },
+  {
+   "slug": "support",
+   "name": "Support",
+   "section": "Communication",
+   "setId": "1:2584",
+   "node": "1:2585"
+  },
+  {
+   "slug": "switch",
+   "name": "Switch",
+   "section": "Communication",
+   "setId": "1:2565",
+   "node": "1:2566"
+  },
+  {
+   "slug": "video-broadcast",
+   "name": "Video Broadcast",
+   "section": "Communication",
+   "setId": "2858:911",
+   "node": "2858:910"
+  },
+  {
+   "slug": "vr",
+   "name": "VR",
+   "section": "Communication",
+   "setId": "2858:926",
+   "node": "2858:925"
+  },
+  {
+   "slug": "pie-chart",
+   "name": "Pie Chart",
+   "section": "Charts",
+   "setId": "1:2056",
+   "node": "1:2057"
+  },
+  {
+   "slug": "donut-chart",
+   "name": "Donut Chart",
+   "section": "Charts",
+   "setId": "2827:89",
+   "node": "2827:88"
+  },
+  {
+   "slug": "bar-chart",
+   "name": "Bar Chart",
+   "section": "Charts",
+   "setId": "2860:1381",
+   "node": "2860:1380"
+  },
+  {
+   "slug": "bar-chart-2",
+   "name": "Bar Chart 2",
+   "section": "Charts",
+   "setId": "2860:1384",
+   "node": "2860:1383"
+  },
+  {
+   "slug": "bar-chart-3",
+   "name": "Bar Chart 3",
+   "section": "Charts",
+   "setId": "2860:1387",
+   "node": "2860:1386"
+  },
+  {
+   "slug": "org-chart",
+   "name": "Org Chart",
+   "section": "Charts",
+   "setId": "2860:1390",
+   "node": "2860:1389"
+  },
+  {
+   "slug": "org-chart-2",
+   "name": "Org Chart 2",
+   "section": "Charts",
+   "setId": "2860:1421",
+   "node": "2860:1420"
+  },
+  {
+   "slug": "org-chart-3",
+   "name": "Org Chart 3",
+   "section": "Charts",
+   "setId": "2861:1467",
+   "node": "2861:1466"
+  },
+  {
+   "slug": "performance-2",
+   "name": "Performance 2",
+   "section": "Charts",
+   "setId": "2860:1424",
+   "node": "2860:1423"
+  },
+  {
+   "slug": "strategy",
+   "name": "Strategy",
+   "section": "Charts",
+   "setId": "2861:1470",
+   "node": "2861:1469"
+  },
+  {
+   "slug": "proceed",
+   "name": "Proceed",
+   "section": "Charts",
+   "setId": "2861:1475",
+   "node": "2861:1474"
+  },
+  {
+   "slug": "org",
+   "name": "Org",
+   "section": "Charts",
+   "setId": "2841:875",
+   "node": "2841:874"
+  },
+  {
+   "slug": "list",
+   "name": "List",
+   "section": "Charts",
+   "setId": "2864:1617",
+   "node": "2864:1616"
+  },
+  {
+   "slug": "list-2",
+   "name": "List 2",
+   "section": "Charts",
+   "setId": "2864:1620",
+   "node": "2864:1619"
+  },
+  {
+   "slug": "list-3",
+   "name": "List 3",
+   "section": "Charts",
+   "setId": "2864:1623",
+   "node": "2864:1622"
+  },
+  {
+   "slug": "list-4",
+   "name": "List 4",
+   "section": "Charts",
+   "setId": "2864:1626",
+   "node": "2864:1625"
+  },
+  {
+   "slug": "fullscreen",
+   "name": "Fullscreen",
+   "section": "Audio & Video",
+   "setId": "1:2949",
+   "node": "1:2950"
+  },
+  {
+   "slug": "microphone-off",
+   "name": "Microphone Off",
+   "section": "Audio & Video",
+   "setId": "1:2924",
+   "node": "1:2925"
+  },
+  {
+   "slug": "microphone-on",
+   "name": "Microphone On",
+   "section": "Audio & Video",
+   "setId": "1:2907",
+   "node": "1:2908"
+  },
+  {
+   "slug": "pause",
+   "name": "Pause",
+   "section": "Audio & Video",
+   "setId": "1:2892",
+   "node": "1:2893"
+  },
+  {
+   "slug": "pause-solid",
+   "name": "Pause Solid",
+   "section": "Audio & Video",
+   "setId": "1511:2",
+   "node": "1511:3"
+  },
+  {
+   "slug": "play",
+   "name": "Play",
+   "section": "Audio & Video",
+   "setId": "568:88",
+   "node": "568:89"
+  },
+  {
+   "slug": "play-solid",
+   "name": "Play Solid",
+   "section": "Audio & Video",
+   "setId": "1:2887",
+   "node": "1:2888"
+  },
+  {
+   "slug": "record-solid",
+   "name": "Record Solid",
+   "section": "Audio & Video",
+   "setId": "1:2882",
+   "node": "1:2883"
+  },
+  {
+   "slug": "share-screen",
+   "name": "Share Screen",
+   "section": "Audio & Video",
+   "setId": "1:2863",
+   "node": "1:2864"
+  },
+  {
+   "slug": "sound-off",
+   "name": "Sound Off",
+   "section": "Audio & Video",
+   "setId": "1:2848",
+   "node": "1:2849"
+  },
+  {
+   "slug": "sound-on",
+   "name": "Sound On",
+   "section": "Audio & Video",
+   "setId": "1:2829",
+   "node": "1:2830"
+  },
+  {
+   "slug": "stop-solid",
+   "name": "Stop Solid",
+   "section": "Audio & Video",
+   "setId": "1:2824",
+   "node": "1:2825"
+  },
+  {
+   "slug": "video",
+   "name": "Video",
+   "section": "Audio & Video",
+   "setId": "1:2807",
+   "node": "1:2808"
+  },
+  {
+   "slug": "video-off",
+   "name": "Video Off",
+   "section": "Audio & Video",
+   "setId": "1:2782",
+   "node": "1:2783"
+  },
+  {
+   "slug": "video-on",
+   "name": "Video On",
+   "section": "Audio & Video",
+   "setId": "1:2765",
+   "node": "1:2766"
+  },
+  {
+   "slug": "arrow-down-minor",
+   "name": "Arrow Down Minor",
+   "section": "Arrows",
+   "setId": "1:3188",
+   "node": "1:3189"
+  },
+  {
+   "slug": "arrow-long-down",
+   "name": "Arrow Long Down",
+   "section": "Arrows",
+   "setId": "1:3177",
+   "node": "1:3178"
+  },
+  {
+   "slug": "arrow-long-left",
+   "name": "Arrow Long Left",
+   "section": "Arrows",
+   "setId": "1:3166",
+   "node": "1:3167"
+  },
+  {
+   "slug": "arrow-long-right",
+   "name": "Arrow Long Right",
+   "section": "Arrows",
+   "setId": "1:3155",
+   "node": "1:3156"
+  },
+  {
+   "slug": "arrow-long-up",
+   "name": "Arrow Long Up",
+   "section": "Arrows",
+   "setId": "1:3144",
+   "node": "1:3145"
+  },
+  {
+   "slug": "arrow-up-minor",
+   "name": "Arrow Up Minor",
+   "section": "Arrows",
+   "setId": "1:3135",
+   "node": "1:3136"
+  },
+  {
+   "slug": "arrows-select",
+   "name": "Arrows Select",
+   "section": "Arrows",
+   "setId": "1:3120",
+   "node": "1:3121"
+  },
+  {
+   "slug": "back",
+   "name": "Back",
+   "section": "Arrows",
+   "setId": "1:3111",
+   "node": "1:3112"
+  },
+  {
+   "slug": "back-minor",
+   "name": "Back Minor",
+   "section": "Arrows",
+   "setId": "1:3102",
+   "node": "1:3103"
+  },
+  {
+   "slug": "backspace",
+   "name": "Backspace",
+   "section": "Arrows",
+   "setId": "314:205",
+   "node": "314:206"
+  },
+  {
+   "slug": "chevron",
+   "name": "Chevron",
+   "section": "Arrows",
+   "setId": "1:3093",
+   "node": "1:3094"
+  },
+  {
+   "slug": "chevron-double",
+   "name": "Chevron Double",
+   "section": "Arrows",
+   "setId": "1:3079",
+   "node": "1:3080"
+  },
+  {
+   "slug": "chevron-minor",
+   "name": "Chevron Minor",
+   "section": "Arrows",
+   "setId": "1:3070",
+   "node": "1:3071"
+  },
+  {
+   "slug": "length",
+   "name": "Length",
+   "section": "Arrows",
+   "setId": "1:3053",
+   "node": "1:3054"
+  },
+  {
+   "slug": "reset",
+   "name": "Reset",
+   "section": "Arrows",
+   "setId": "1:3042",
+   "node": "1:3043"
+  },
+  {
+   "slug": "rotate",
+   "name": "Rotate",
+   "section": "Arrows",
+   "setId": "1:3021",
+   "node": "1:3022"
+  },
+  {
+   "slug": "sort",
+   "name": "Sort",
+   "section": "Arrows",
+   "setId": "1:3004",
+   "node": "1:3005"
+  },
+  {
+   "slug": "transfer",
+   "name": "Transfer",
+   "section": "Arrows",
+   "setId": "6:5",
+   "node": "6:6"
+  },
+  {
+   "slug": "triangle-left-minor-solid",
+   "name": "Triangle Left Minor Solid",
+   "section": "Arrows",
+   "setId": "1:2999",
+   "node": "1:3000"
+  },
+  {
+   "slug": "triangle-right-minor-solid",
+   "name": "Triangle Right Minor Solid",
+   "section": "Arrows",
+   "setId": "1:2994",
+   "node": "1:2995"
+  },
+  {
+   "slug": "triangle-down-minor-solid",
+   "name": "Triangle Down Minor Solid",
+   "section": "Arrows",
+   "setId": "1173:12",
+   "node": "1173:13"
+  },
+  {
+   "slug": "triangle-up-minor-solid",
+   "name": "Triangle Up Minor Solid",
+   "section": "Arrows",
+   "setId": "3362:71",
+   "node": "3362:72"
+  },
+  {
+   "slug": "undo",
+   "name": "Undo",
+   "section": "Arrows",
+   "setId": "1:2989",
+   "node": "1:2990"
+  },
+  {
+   "slug": "update",
+   "name": "Update",
+   "section": "Arrows",
+   "setId": "1:2970",
+   "node": "1:2971"
+  },
+  {
+   "slug": "bidirectional",
+   "name": "Bidirectional",
+   "section": "Arrows",
+   "setId": "2858:894",
+   "node": "2858:893"
+  },
+  {
+   "slug": "sub-arrow-right",
+   "name": "Sub Arrow Right",
+   "section": "Arrows",
+   "setId": "2871:12",
+   "node": "2871:10"
+  },
+  {
+   "slug": "exclamation",
+   "name": "Exclamation",
+   "section": "Alerts",
+   "setId": "1:1558",
+   "node": "1:1559"
+  },
+  {
+   "slug": "exclamation-solid",
+   "name": "Exclamation Solid",
+   "section": "Alerts",
+   "setId": "1:1545",
+   "node": "1:1546"
+  },
+  {
+   "slug": "done",
+   "name": "Done",
+   "section": "Alerts",
+   "setId": "1:1626",
+   "node": "1:1627"
+  },
+  {
+   "slug": "done-solid",
+   "name": "Done Solid",
+   "section": "Alerts",
+   "setId": "1:1617",
+   "node": "1:1618"
+  },
+  {
+   "slug": "info",
+   "name": "Info",
+   "section": "Alerts",
+   "setId": "1:1408",
+   "node": "1:1409"
+  },
+  {
+   "slug": "info-solid",
+   "name": "Info Solid",
+   "section": "Alerts",
+   "setId": "152:5",
+   "node": "152:6"
+  },
+  {
+   "slug": "critical",
+   "name": "Critical",
+   "section": "Alerts",
+   "setId": "4197:205",
+   "node": "4197:206"
+  },
+  {
+   "slug": "critical-solid",
+   "name": "Critical Solid",
+   "section": "Alerts",
+   "setId": "4197:230",
+   "node": "4197:231"
+  },
+  {
+   "slug": "warning",
+   "name": "Warning",
+   "section": "Alerts",
+   "setId": "4197:251",
+   "node": "4197:252"
+  },
+  {
+   "slug": "warning-solid",
+   "name": "Warning Solid",
+   "section": "Alerts",
+   "setId": "4197:264",
+   "node": "4197:265"
+  },
+  {
+   "slug": "close-circle",
+   "name": "Close Circle",
+   "section": "Alerts",
+   "setId": "314:226",
+   "node": "314:227"
+  },
+  {
+   "slug": "help",
+   "name": "Help",
+   "section": "Alerts",
+   "setId": "1:1427",
+   "node": "1:1428"
+  },
+  {
+   "slug": "placeholder",
+   "name": "Placeholder",
+   "section": "Placeholder",
+   "setId": "1:5",
+   "node": "1:6"
+  },
+  {
+   "slug": "storage",
+   "name": "Storage",
+   "section": "Computing & Networks",
+   "setId": "2828:206",
+   "node": "2828:205"
+  },
+  {
+   "slug": "wifi",
+   "name": "Wifi",
+   "section": "Computing & Networks",
+   "setId": "2828:142",
+   "node": "2828:141"
+  },
+  {
+   "slug": "data-warehouse",
+   "name": "Data Warehouse",
+   "section": "Computing & Networks",
+   "setId": "2861:1490",
+   "node": "2861:1489"
+  },
+  {
+   "slug": "keyboard-key",
+   "name": "Keyboard Key",
+   "section": "Computing & Networks",
+   "setId": "2834:715",
+   "node": "2834:714"
+  },
+  {
+   "slug": "react-ai",
+   "name": "React AI",
+   "section": "Computing & Networks",
+   "setId": "2839:719",
+   "node": "2839:718"
+  },
+  {
+   "slug": "cloud-gaming",
+   "name": "Cloud Gaming",
+   "section": "Computing & Networks",
+   "setId": "2839:723",
+   "node": "2839:722"
+  },
+  {
+   "slug": "cloud-storage",
+   "name": "Cloud Storage",
+   "section": "Computing & Networks",
+   "setId": "2839:726",
+   "node": "2839:725"
+  },
+  {
+   "slug": "cloud-layers",
+   "name": "Cloud Layers",
+   "section": "Computing & Networks",
+   "setId": "2841:748",
+   "node": "2841:747"
+  },
+  {
+   "slug": "cloud-connect",
+   "name": "Cloud Connect",
+   "section": "Computing & Networks",
+   "setId": "2841:782",
+   "node": "2841:781"
+  },
+  {
+   "slug": "dashboard",
+   "name": "Dashboard",
+   "section": "Computing & Networks",
+   "setId": "2839:729",
+   "node": "2839:728"
+  },
+  {
+   "slug": "devices",
+   "name": "Devices",
+   "section": "Computing & Networks",
+   "setId": "2839:742",
+   "node": "2839:741"
+  },
+  {
+   "slug": "cpu",
+   "name": "CPU",
+   "section": "Computing & Networks",
+   "setId": "2839:733",
+   "node": "2839:732"
+  },
+  {
+   "slug": "cpu-2",
+   "name": "CPU 2",
+   "section": "Computing & Networks",
+   "setId": "2839:739",
+   "node": "2839:738"
+  },
+  {
+   "slug": "cpu-3",
+   "name": "CPU 3",
+   "section": "Computing & Networks",
+   "setId": "2841:779",
+   "node": "2841:778"
+  },
+  {
+   "slug": "circuit",
+   "name": "Circuit",
+   "section": "Computing & Networks",
+   "setId": "2839:736",
+   "node": "2839:735"
+  },
+  {
+   "slug": "circuit-2",
+   "name": "Circuit 2",
+   "section": "Computing & Networks",
+   "setId": "2841:745",
+   "node": "2841:744"
+  },
+  {
+   "slug": "connectors",
+   "name": "Connectors",
+   "section": "Computing & Networks",
+   "setId": "2841:751",
+   "node": "2841:750"
+  },
+  {
+   "slug": "connectors-2",
+   "name": "Connectors 2",
+   "section": "Computing & Networks",
+   "setId": "2841:785",
+   "node": "2841:784"
+  },
+  {
+   "slug": "research",
+   "name": "Research",
+   "section": "Computing & Networks",
+   "setId": "2841:770",
+   "node": "2841:769"
+  },
+  {
+   "slug": "lan",
+   "name": "LAN",
+   "section": "Computing & Networks",
+   "setId": "2841:773",
+   "node": "2841:772"
+  },
+  {
+   "slug": "network",
+   "name": "Network",
+   "section": "Computing & Networks",
+   "setId": "2841:776",
+   "node": "2841:775"
+  },
+  {
+   "slug": "web-monitoring",
+   "name": "Web Monitoring",
+   "section": "Computing & Networks",
+   "setId": "2841:799",
+   "node": "2841:798"
+  },
+  {
+   "slug": "mobile-monitoring",
+   "name": "Mobile Monitoring",
+   "section": "Computing & Networks",
+   "setId": "2841:788",
+   "node": "2841:787"
+  },
+  {
+   "slug": "desktop-monitoring",
+   "name": "Desktop Monitoring",
+   "section": "Computing & Networks",
+   "setId": "2841:826",
+   "node": "2841:824"
+  },
+  {
+   "slug": "device-monitoring",
+   "name": "Device Monitoring",
+   "section": "Computing & Networks",
+   "setId": "2841:829",
+   "node": "2841:828"
+  },
+  {
+   "slug": "tables",
+   "name": "Tables",
+   "section": "Computing & Networks",
+   "setId": "2841:852",
+   "node": "2841:851"
+  },
+  {
+   "slug": "settings-2",
+   "name": "Settings 2",
+   "section": "Computing & Networks",
+   "setId": "2864:1517",
+   "node": "2864:1516"
+  },
+  {
+   "slug": "chat-bot",
+   "name": "Chat bot",
+   "section": "Computing & Networks",
+   "setId": "2864:1666",
+   "node": "2864:1665"
+  }
+ ]
+}

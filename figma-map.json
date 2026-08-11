@@ -760,6 +760,68 @@
         },
         "propMap": {}
       }
+    },
+    {
+      "id": "iconography",
+      "name": "Icons",
+      "designmd": {
+        "root": ".icon",
+        "shortcode": "example.html#iconography",
+        "note": "Phosphor retired. designmd ships the custom Figma pack as an inline SVG sprite (icons.svg, 320 icons + aliases), built by tools/export_icons.py.",
+        "usage": "<svg class=\"icon\"><use href=\"#i-{slug}\"></svg>"
+      },
+      "figma": {
+        "component": "Iconography (custom pack)",
+        "fileKey": "TqaGgbpjGSUDf7qq153Isq",
+        "url": "https://www.figma.com/design/TqaGgbpjGSUDf7qq153Isq/Iconography",
+        "status": "mapped",
+        "note": "Slugs match 1:1 (#i-{slug} in HTML ↔ {slug} component in Figma). Skipped sections: Country Flags, Verticals, Social Media, Managed Delivery, Finance, Ecommerce.",
+        "aliases": {
+          "arrow-counter-clockwise": "rotate",
+          "arrow-down": "arrow-down-minor",
+          "arrow-right": "arrow-long-right",
+          "arrow-square-out": "expand",
+          "arrow-up": "arrow-up-minor",
+          "buildings": "company",
+          "calendar-blank": "calendar",
+          "caret-down": "chevron",
+          "caret-right": "chevron",
+          "caret-up": "chevron",
+          "chevron-down": "chevron",
+          "chevron-left": "chevron",
+          "chat-circle": "message",
+          "check-circle": "check",
+          "circle-notch": "rotate",
+          "code": "code-block",
+          "cycle": "rotate",
+          "dots-three": "more",
+          "dots-three-vertical": "more",
+          "envelope": "email",
+          "eye-slash": "eye-hide",
+          "file": "page",
+          "funnel": "filter",
+          "gear": "settings",
+          "heart": "heartbeat",
+          "house": "home",
+          "lightning": "flash",
+          "lightbulb": "bulb",
+          "list-bullet": "list-unordered",
+          "list-dashes": "list-unordered",
+          "magnifying-glass": "search",
+          "more-vertical": "more",
+          "pencil-simple": "pencil",
+          "rows": "list",
+          "sort-ascending": "arrow-up-minor",
+          "sort-descending": "arrow-down-minor",
+          "upload-simple": "upload",
+          "users": "team",
+          "users-three": "focus-group",
+          "warning-circle": "exclamation",
+          "warning-octagon": "exclamation-solid",
+          "x": "close"
+        },
+        "propMap": {}
+      }
     }
   ]
 }
