@@ -27,7 +27,13 @@
 /* Generic icon — <svg class="icon"><use href="#i-{name}"></svg> from the custom
  * Figma icon sprite (designmd/icons.svg). Sized in em so font-size scales it,
  * matching the icons' old font-based sizing; colour follows currentColor. */
-.icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: currentColor; }
+.icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: currentColor; color: var(--color-icon); }
+/* The pack ships two sizes only — 16 and 24 (see design.md §9). */
+.icon-16 { width: 16px; height: 16px; }
+.icon-24 { width: 24px; height: 24px; }
+/* Interactive / colour-carrying contexts keep the icon on the context colour
+ * (primary buttons = white, links = blue, badges/tags/toasts = their own). */
+.btn .icon, a .icon, .badge .icon, .tag .icon, .toast .icon { color: inherit; }
 .btn-xs .btn-icon { width: 12px; height: 12px; }
 
 /* Icon-only button (no text) — fully rounded "pill" shape. */
