@@ -27,6 +27,11 @@ def normalise(svg, slug):
     inner = re.sub(r'\s*id="[^"]*"', '', inner)                       # strip layer ids
     inner = re.sub(r'(fill|stroke)="(?!none")(#[0-9a-fA-F]{3,8}|black|rgb\([^)]*\))"',
                    r'\1="currentColor"', inner, flags=re.I)
+    # keep stroke a constant 1px at any render size (16 or 24)
+    inner = re.sub(r'<(path|circle|rect|line|ellipse|polyline|polygon)([^>]*)>',
+                   lambda m: (f'<{m.group(1)} vector-effect="non-scaling-stroke"{m.group(2)}>'
+                              if 'stroke=' in m.group(2) and 'vector-effect' not in m.group(2)
+                              else m.group(0)), inner)
     inner = re.sub(r'>\s+<', '><', inner)
     inner = re.sub(r'\s+', ' ', inner).strip()
     return f'<symbol id="i-{slug}" viewBox="{viewbox}">{inner}</symbol>', viewbox

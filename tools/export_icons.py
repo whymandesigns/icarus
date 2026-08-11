@@ -44,6 +44,13 @@ def fetch_bytes(url):
     with urllib.request.urlopen(url, timeout=60) as r:
         return r.read().decode("utf-8")
 
+def add_non_scaling_stroke(inner):
+    # Keep stroke a constant 1px at any render size (16 or 24). Only stroked shapes.
+    return re.sub(r'<(path|circle|rect|line|ellipse|polyline|polygon)([^>]*)>',
+                  lambda m: (f'<{m.group(1)} vector-effect="non-scaling-stroke"{m.group(2)}>'
+                             if 'stroke=' in m.group(2) and 'vector-effect' not in m.group(2)
+                             else m.group(0)), inner)
+
 def normalise(svg, slug):
     """Turn a raw Figma SVG export into a reusable <symbol>. Returns (symbol, viewBox)."""
     # viewBox: keep the one Figma emits; fall back to 0 0 24 24
@@ -58,6 +65,7 @@ def normalise(svg, slug):
     # theme-aware: any concrete fill/stroke colour -> currentColor (leave "none")
     inner = re.sub(r'(fill|stroke)="(?!none")(#[0-9a-fA-F]{3,8}|black|rgb\([^)]*\))"',
                    r'\1="currentColor"', inner)
+    inner = add_non_scaling_stroke(inner)
     inner = re.sub(r'\s+', ' ', inner).strip()
     return f'<symbol id="i-{slug}" viewBox="{viewbox}">{inner}</symbol>', viewbox
 
