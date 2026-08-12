@@ -128,9 +128,12 @@
   --ic-palette-purple-900: #1A0840;
 
 
-  /* ---- Typography ---- */
-
-  --ic-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ---- Typography ----
+   * Product / Figma font is Proxima Nova (commercial — loaded via an Adobe Fonts
+   * kit where licensed). Inter is the websafe local stand-in / fallback for
+   * prototyping: metrically close, free, no login. Proxima Nova leads the stack
+   * so it renders wherever it's installed; Inter renders everywhere else. */
+  --ic-font-sans: 'Proxima Nova', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ic-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --ic-font-display: var(--ic-font-sans);
 

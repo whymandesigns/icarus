@@ -90,7 +90,7 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: `Inter` (loaded by `tokens.css`). Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface. It's a commercial font (Adobe Fonts / Typekit), so `--ic-font-sans` leads with `"Proxima Nova"` and falls back to **Inter**, the websafe local stand-in loaded by `tokens.css`. Proxima Nova renders wherever it's installed (Figma, the product, licensed machines / an Adobe Fonts kit); Inter renders everywhere else. Treat Inter the way we treat Phosphor-era icons: a stand-in for the real thing, mapped 1:1. Mono: system mono stack.
 
 ### Size primitives
 
