@@ -117,8 +117,10 @@ Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as lice
 | `--type-h4` | semibold 14/22 Inter |
 | `--type-body-lg` | regular 16/24 Inter |
 | `--type-body` | regular 14/22 Inter |
-| `--type-body-sm` | regular 13/20 Inter |
-| `--type-caption` | medium 12/18 Inter |
+| `--type-body-sm` | regular 13/20 |
+| `--type-body-xs` | regular 12/18 |
+| `--type-body-xxs` | regular 11/16 |
+| `--type-caption` | medium 12/18 |
 | `--type-mono` | regular 13/20 mono |
 
 ```css
@@ -126,7 +128,7 @@ h1 { font: var(--type-h1); }
 .muted { font: var(--type-body-sm); color: var(--color-text-muted); }
 ```
 
-Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body` `.body-sm` `.caption`.
+Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body-lg` `.body` `.body-sm` `.body-xs` `.body-xxs` `.caption`. Body scale mirrors the product: Large 16/24 · Medium 14/22 · Small 13/20 · Xsmall 12/18 · Xxsmall 11/16 (all weight 400).
 
 ---
 
