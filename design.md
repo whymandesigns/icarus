@@ -90,7 +90,7 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: `Inter` (loaded by `tokens.css`). Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--ic-font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
 
 ### Size primitives
 
@@ -117,8 +117,10 @@ Family: `Inter` (loaded by `tokens.css`). Mono: system mono stack.
 | `--type-h4` | semibold 14/22 Inter |
 | `--type-body-lg` | regular 16/24 Inter |
 | `--type-body` | regular 14/22 Inter |
-| `--type-body-sm` | regular 13/20 Inter |
-| `--type-caption` | medium 12/18 Inter |
+| `--type-body-sm` | regular 13/20 |
+| `--type-body-xs` | regular 12/18 |
+| `--type-body-xxs` | regular 11/16 |
+| `--type-caption` | medium 12/18 |
 | `--type-mono` | regular 13/20 mono |
 
 ```css
@@ -126,7 +128,7 @@ h1 { font: var(--type-h1); }
 .muted { font: var(--type-body-sm); color: var(--color-text-muted); }
 ```
 
-Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body` `.body-sm` `.caption`.
+Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body-lg` `.body` `.body-sm` `.body-xs` `.body-xxs` `.caption`. Body scale mirrors the product: Large 16/24 · Medium 14/22 · Small 13/20 · Xsmall 12/18 · Xxsmall 11/16 (all weight 400).
 
 ---
 

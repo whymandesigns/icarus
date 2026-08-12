@@ -2694,9 +2694,12 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .h2 { font: var(--type-h2); margin: 0; color: var(--color-text); }
 .h3 { font: var(--type-h3); margin: 0; color: var(--color-text); }
 .h4 { font: var(--type-h4); margin: 0; color: var(--color-text); }
-.body    { font: var(--type-body);    color: var(--color-text); }
-.body-sm { font: var(--type-body-sm); color: var(--color-text-muted); }
-.caption { font: var(--type-caption); color: var(--color-text-subtle); }
+.body-lg  { font: var(--type-body-lg);  color: var(--color-text); }
+.body     { font: var(--type-body);     color: var(--color-text); }
+.body-sm  { font: var(--type-body-sm);  color: var(--color-text-muted); }
+.body-xs  { font: var(--type-body-xs);  color: var(--color-text-muted); }
+.body-xxs { font: var(--type-body-xxs); color: var(--color-text-subtle); }
+.caption  { font: var(--type-caption);  color: var(--color-text-subtle); }
 
 /* ---------- Layout helpers ----------
  * Tiny flex/grid primitives used across prototypes. `.page` lives in

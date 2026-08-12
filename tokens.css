@@ -5,6 +5,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* Proxima Nova — product/Figma typeface, self-hosted (licensed .woff2). Only
+ * Regular (400) and Semibold (600) are supplied, so 500 folds into Regular and
+ * 700 into Semibold via the weight ranges. Add Medium/Bold .woff2 to fonts/ and
+ * split the ranges when available. inline.py base64-embeds these for prototypes. */
+@font-face {
+  font-family: 'Proxima Nova'; font-style: normal; font-weight: 400 500; font-display: swap;
+  src: url('fonts/ProximaNova-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Proxima Nova'; font-style: normal; font-weight: 600 700; font-display: swap;
+  src: url('fonts/ProximaNova-Semibold.woff2') format('woff2');
+}
+
 :root {
   /* ================================================================
      COLOR — PRIMITIVE PALETTE (from Figma: Mobile-App / Color Palette)
@@ -128,9 +141,12 @@
   --ic-palette-purple-900: #1A0840;
 
 
-  /* ---- Typography ---- */
-
-  --ic-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ---- Typography ----
+   * Product / Figma font is Proxima Nova (commercial — loaded via an Adobe Fonts
+   * kit where licensed). Inter is the websafe local stand-in / fallback for
+   * prototyping: metrically close, free, no login. Proxima Nova leads the stack
+   * so it renders wherever it's installed; Inter renders everywhere else. */
+  --ic-font-sans: 'Proxima Nova', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ic-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --ic-font-display: var(--ic-font-sans);
 
