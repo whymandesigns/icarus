@@ -32,6 +32,7 @@ Workflow:
 import re
 import sys
 import os
+import base64
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,13 +40,24 @@ def read(name):
     with open(os.path.join(ROOT, name)) as f:
         return f.read()
 
+def embed_fonts(css):
+    # Replace self-hosted font url('fonts/x.woff2') with base64 data URIs so an
+    # inlined prototype carries the fonts with it (no external font files).
+    def repl(m):
+        path = os.path.join(ROOT, m.group(1))
+        if not os.path.exists(path):
+            return m.group(0)
+        b64 = base64.b64encode(open(path, 'rb').read()).decode('ascii')
+        return f"url(data:font/woff2;base64,{b64}) format('woff2')"
+    return re.sub(r"url\('(fonts/[^']+\.woff2)'\)\s*format\('woff2'\)", repl, css)
+
 def build_style_block():
     # The three-layer chain (tokens → semantic → components) is followed by
     # devtools.css — auto-inlined for convenience but explicitly NOT part of
     # the layer chain. See design.md §7 and devtools.css's own header for why.
     return (
         '<style>\n'
-        '    /* === tokens.css === */\n' + read('tokens.css') + '\n'
+        '    /* === tokens.css === */\n' + embed_fonts(read('tokens.css')) + '\n'
         '    /* === semantic.css === */\n' + read('semantic.css') + '\n'
         '    /* === components.css === */\n' + read('components.css') + '\n'
         '    /* === devtools.css === */\n' + read('devtools.css') + '\n'
