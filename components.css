@@ -8,7 +8,8 @@
   gap: var(--ic-space-2);
   height: 32px; /* default — sm */
   padding: 0 var(--ic-space-3);
-  font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
+  /* SM (default) solid buttons — Body Small Semibold 13/600 (NB-52) */
+  font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans);
   border-radius: var(--ic-radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
@@ -19,7 +20,8 @@
 .btn-xs {
   height: 24px;
   padding: 0 var(--ic-space-2);
-  font: var(--ic-weight-medium) var(--ic-text-xs)/1 var(--ic-font-sans);
+  /* XS solid buttons — Body Xsmall Semibold 12/600 (NB-54) */
+  font: var(--ic-weight-semibold) var(--ic-text-xs)/1 var(--ic-font-sans);
 }
 
 /* Icons inside buttons. Place an <svg class="btn-icon" /> as a child. */
@@ -83,7 +85,11 @@
 .btn-ghost {
   background: transparent;
   color: var(--color-accent);
+  /* Ghost buttons run one size larger than solid: SM ghost 14px semibold (NB-53) */
+  font-size: var(--ic-text-base);
 }
+/* XS ghost — 13px semibold (NB-53) */
+.btn-xs.btn-ghost { font-size: var(--ic-text-sm); }
 /* Hover keeps the background transparent (clickable area unchanged) and
  * signals interactivity with an underline instead. */
 .btn-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -1796,6 +1802,10 @@ a.avatar:focus-visible {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  /* fill:none so stroke-based icons (e.g. Initiatives) render as outlines
+   * instead of a solid black silhouette; filled icons carry their own
+   * fill="currentColor" on their paths and are unaffected. (NB-51) */
+  fill: none;
   color: var(--color-text-muted);
   transition: color var(--ic-duration-fast) var(--ic-ease);
 }
@@ -2147,10 +2157,10 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-color: var(--color-accent);
   color: var(--color-text-inverse);
 }
-/* Completed step (optional) — same accent fill with a check instead of a number */
+/* Completed step — green fill with a check instead of a number (NB-50) */
 .stepper-step.is-complete .stepper-num {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--color-success);
+  border-color: var(--color-success);
   color: var(--color-text-inverse);
 }
 .stepper-sep {
@@ -2366,7 +2376,9 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toast.is-entering { opacity: 0; transform: translateX(20%); }
 .toast.is-leaving  { opacity: 0; transform: translateX(20%); }
 
-.toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); margin-top: 1px; }
+/* .toast .toast-icon (0,2,0) so the accent colour wins over the generic
+ * `.toast .icon { color: inherit }` rule; per-variant --toast-accent drives it. */
+.toast .toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); margin-top: 1px; }
 .toast-message { flex: 1; min-width: 0; margin: 0; line-height: 1.4; }
 .toast-action { flex-shrink: 0; align-self: center; }
 .toast-close {
@@ -2388,13 +2400,15 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toast-close:hover { color: var(--color-text); }
 .toast-close svg { font-size: 14px; }
 
-/* Color variants — set --toast-accent, icon color follows */
+/* Color variants (NB-56) — set --toast-accent (icon colour), a {hue}-150 border,
+ * and a subtle tinted background. Icon colours: error red-500, warning yellow-500,
+ * success green-600, info blue-500. Borders: {hue}-150 strokes. */
 .toast-neutral { --toast-accent: var(--color-border-strong); }
 .toast-neutral .toast-icon { color: var(--color-text-muted); }
-.toast-error   { --toast-accent: var(--color-danger);  background: var(--color-danger-subtle); }
-.toast-warning { --toast-accent: var(--color-warning); background: var(--color-warning-subtle); }
-.toast-success { --toast-accent: var(--color-success); background: var(--color-success-subtle); }
-.toast-info    { --toast-accent: var(--color-accent);  background: var(--color-accent-subtle); }
+.toast-error   { --toast-accent: var(--color-danger);            background: var(--color-danger-subtle);  border-color: var(--ic-palette-red-150); }
+.toast-warning { --toast-accent: var(--color-warning);           background: var(--color-warning-subtle); border-color: var(--ic-palette-yellow-150); }
+.toast-success { --toast-accent: var(--ic-palette-green-600);     background: var(--color-success-subtle); border-color: var(--ic-palette-green-150); }
+.toast-info    { --toast-accent: var(--color-accent);            background: var(--color-accent-subtle);  border-color: var(--ic-palette-blue-150); }
 
 /* ---------- Top bar ----------
  * Dark application chrome. 56px tall, graphite-800 background.
@@ -2699,6 +2713,12 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .body-sm  { font: var(--type-body-sm);  color: var(--color-text-muted); }
 .body-xs  { font: var(--type-body-xs);  color: var(--color-text-muted); }
 .body-xxs { font: var(--type-body-xxs); color: var(--color-text-subtle); }
+/* Semibold body variants (NB-55) — same sizes, weight 600 */
+.body-lg-semibold  { font: var(--type-body-lg-semibold);  color: var(--color-text); }
+.body-semibold     { font: var(--type-body-semibold);     color: var(--color-text); }
+.body-sm-semibold  { font: var(--type-body-sm-semibold);  color: var(--color-text); }
+.body-xs-semibold  { font: var(--type-body-xs-semibold);  color: var(--color-text); }
+.body-xxs-semibold { font: var(--type-body-xxs-semibold); color: var(--color-text); }
 .caption  { font: var(--type-caption);  color: var(--color-text-subtle); }
 
 /* ---------- Layout helpers ----------

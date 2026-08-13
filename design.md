@@ -120,6 +120,11 @@ Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as lice
 | `--type-body-sm` | regular 13/20 |
 | `--type-body-xs` | regular 12/18 |
 | `--type-body-xxs` | regular 11/16 |
+| `--type-body-lg-semibold` | semibold 16/24 |
+| `--type-body-semibold` | semibold 14/22 |
+| `--type-body-sm-semibold` | semibold 13/20 |
+| `--type-body-xs-semibold` | semibold 12/18 |
+| `--type-body-xxs-semibold` | semibold 11/16 |
 | `--type-caption` | medium 12/18 |
 | `--type-mono` | regular 13/20 mono |
 

@@ -61,6 +61,12 @@
   --type-body-sm:  var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-sans);
   --type-body-xs:  var(--ic-weight-regular) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);   /* Body Xsmall 12/18 */
   --type-body-xxs: var(--ic-weight-regular) var(--ic-text-xxs)/var(--ic-lh-body-xxs) var(--ic-font-sans); /* Body Xxsmall 11/16 */
+  /* Semibold body variants (same sizes, weight 600) */
+  --type-body-lg-semibold:  var(--ic-weight-semibold) var(--ic-text-md)/var(--ic-lh-body-lg) var(--ic-font-sans);
+  --type-body-semibold:     var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans);
+  --type-body-sm-semibold:  var(--ic-weight-semibold) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-sans);
+  --type-body-xs-semibold:  var(--ic-weight-semibold) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);
+  --type-body-xxs-semibold: var(--ic-weight-semibold) var(--ic-text-xxs)/var(--ic-lh-body-xxs) var(--ic-font-sans);
   --type-caption:  var(--ic-weight-medium) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);
   --type-mono:     var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-mono);
 }
