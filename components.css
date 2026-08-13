@@ -2300,6 +2300,105 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   transform: translateY(-50%) rotate(45deg);
 }
 
+/* ---------- Dropzone (file upload) ----------
+ * A dashed drop target that doubles as a click-to-browse control. Structure:
+ *   <label class="dropzone"> wraps a focusable <input type="file" class="dropzone-input">
+ *   so the whole area is clickable and keyboard-reachable; the JS helper
+ *   (initDropzones) wires drag-over highlighting and simulated upload progress.
+ * States: idle · .is-dragover (blue) · .is-disabled (muted) · .is-error (red).
+ * Uploading / error feedback lives in a sibling .dropzone-status row. */
+.dropzone-field { display: flex; flex-direction: column; gap: var(--ic-space-3); }
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ic-space-1);
+  padding: var(--ic-space-5) var(--ic-space-4);
+  min-height: 126px;
+  text-align: center;
+  background: var(--color-surface-sunken);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--ic-radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--ic-duration-fast) var(--ic-ease),
+              background var(--ic-duration-fast) var(--ic-ease),
+              box-shadow var(--ic-duration-fast) var(--ic-ease);
+}
+.dropzone:hover { border-color: var(--color-border-focus); }
+
+.dropzone-icon  { color: var(--color-icon); margin-bottom: var(--ic-space-1); }
+.dropzone-title { font: var(--type-body-semibold); margin: 0; }
+.dropzone-hint  { font: var(--type-body-xxs); color: var(--color-text-muted); margin: 0; }
+
+/* Focusable input, visually hidden but reachable by keyboard/AT. */
+.dropzone-input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; cursor: pointer;
+}
+.dropzone-input:disabled { cursor: not-allowed; }
+
+/* Drag-over / keyboard focus — blue dashed border + soft ring. */
+.dropzone.is-dragover,
+.dropzone:focus-within {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+/* Disabled — muted content, no pointer. */
+.dropzone.is-disabled {
+  cursor: not-allowed;
+  background: var(--color-surface-muted);
+  box-shadow: none;
+}
+.dropzone.is-disabled .dropzone-icon,
+.dropzone.is-disabled .dropzone-title,
+.dropzone.is-disabled .dropzone-hint { color: var(--color-text-subtle); }
+
+/* Error — red dashed border; pair with a .dropzone-status.is-error row. */
+.dropzone.is-error { border-color: var(--color-danger); }
+
+/* Status row under the box — uploading progress or an error message. */
+.dropzone-status {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-3);
+  font: var(--type-body-sm);
+  color: var(--color-text);
+}
+.dropzone-status-label { flex: 1; min-width: 0; }
+.dropzone-status.is-error { color: var(--color-danger); }
+
+.dropzone-progress {
+  flex-shrink: 0;
+  width: 96px;
+  height: 6px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-surface-sunken);
+  overflow: hidden;
+}
+.dropzone-progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  transition: width var(--ic-duration-base) var(--ic-ease);
+}
+
+.dropzone-status-dismiss {
+  flex-shrink: 0;
+  display: inline-flex;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--color-danger);
+}
+
 /* ---------- Loaders ----------
  * Chase spinner — the Operationalize logo mark (24 segments) fading in
  * sequence. Copy the <svg class="chase …" viewBox="0 0 22 32"> block from
