@@ -1500,7 +1500,7 @@
           <p class="body-sm">A dashed drop target that doubles as a click-to-browse file control. A focusable <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;input type="file"&gt;</code> fills the <code style="font: var(--type-mono); color: var(--color-text-muted)">.dropzone</code> label so the whole area is clickable and keyboard-reachable. States: idle · <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-dragover</code> · <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-disabled</code> · <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-error</code>. Upload progress and error messages render in a sibling <code style="font: var(--type-mono); color: var(--color-text-muted)">.dropzone-status</code> row. Drag-and-drop + progress are wired by <code style="font: var(--type-mono); color: var(--color-text-muted)">initDropzones()</code>.</p>
         </div>
 
-        <p class="body-sm" style="margin: 0; color: var(--color-text-muted)">Live — click or drag a file in.</p>
+        <p class="body-sm" style="margin: 0; color: var(--color-text-muted)">Click or drag a file in to preview the drag-over, uploading and uploaded states.</p>
         <div class="dropzone-field" style="max-width: 340px" data-dropzone>
           <label class="dropzone">
             <input class="dropzone-input" type="file" multiple aria-label="Upload files">
@@ -1508,58 +1508,6 @@
             <p class="dropzone-title">Click or drag to upload</p>
             <p class="dropzone-hint">Max file size: 25MB</p>
           </label>
-        </div>
-
-        <p class="body-sm" style="margin: var(--ic-space-3) 0 0; color: var(--color-text-muted)">Static reference — all states.</p>
-        <div class="stack" style="gap: var(--ic-space-5); max-width: 340px">
-          <div class="dropzone-field">
-            <p class="body-xs" style="margin: 0; color: var(--color-text-subtle)">Enabled</p>
-            <div class="dropzone">
-              <svg class="icon icon-24 dropzone-icon"><use href="#i-upload"/></svg>
-              <p class="dropzone-title">Click or drag to upload</p>
-              <p class="dropzone-hint">Max file size: 25MB</p>
-            </div>
-          </div>
-          <div class="dropzone-field">
-            <p class="body-xs" style="margin: 0; color: var(--color-text-subtle)">Drag-over</p>
-            <div class="dropzone is-dragover">
-              <svg class="icon icon-24 dropzone-icon"><use href="#i-upload"/></svg>
-              <p class="dropzone-title">Click or drag to upload</p>
-              <p class="dropzone-hint">Max file size: 25MB</p>
-            </div>
-          </div>
-          <div class="dropzone-field">
-            <p class="body-xs" style="margin: 0; color: var(--color-text-subtle)">Disabled</p>
-            <div class="dropzone is-disabled">
-              <svg class="icon icon-24 dropzone-icon"><use href="#i-upload"/></svg>
-              <p class="dropzone-title">Click or drag to upload</p>
-              <p class="dropzone-hint">Max file size: 25MB</p>
-            </div>
-          </div>
-          <div class="dropzone-field">
-            <p class="body-xs" style="margin: 0; color: var(--color-text-subtle)">Uploading</p>
-            <div class="dropzone is-dragover">
-              <svg class="icon icon-24 dropzone-icon"><use href="#i-upload"/></svg>
-              <p class="dropzone-title">Click or drag to upload</p>
-              <p class="dropzone-hint">Max file size: 25MB</p>
-            </div>
-            <div class="dropzone-status">
-              <span class="dropzone-status-label">Uploading…</span>
-              <div class="dropzone-progress"><div class="dropzone-progress-bar" style="width: 60%"></div></div>
-            </div>
-          </div>
-          <div class="dropzone-field">
-            <p class="body-xs" style="margin: 0; color: var(--color-text-subtle)">Error</p>
-            <div class="dropzone is-error">
-              <svg class="icon icon-24 dropzone-icon"><use href="#i-upload"/></svg>
-              <p class="dropzone-title">Click or drag to upload</p>
-              <p class="dropzone-hint">Max file size: 25MB</p>
-            </div>
-            <div class="dropzone-status is-error">
-              <span class="dropzone-status-label">Upload unsuccessful — too many files.</span>
-              <button class="dropzone-status-dismiss" type="button" aria-label="Dismiss"><svg class="icon"><use href="#i-x"/></svg></button>
-            </div>
-          </div>
         </div>
       </section>
 
