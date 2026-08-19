@@ -320,8 +320,12 @@ textarea.input {
 }
 .segmented-item:last-child { border-right: 0; }
 .segmented-item:hover { background: var(--color-surface-muted); color: var(--color-text); }
+/* Active segment — graphite-700 fill, white label + icon (NB-60). Icons
+ * inherit the item's colour so the active one flips to white instead of
+ * staying graphite-700 (invisible on the dark fill). */
 .segmented-item.is-active,
-.segmented-item.is-active:hover { background: var(--color-text); color: var(--color-text-inverse); }
+.segmented-item.is-active:hover { background: var(--ic-palette-graphite-700); color: var(--color-text-inverse); }
+.segmented-item .icon { color: inherit; }
 .segmented-item .btn-icon { width: 16px; height: 16px; }
 .segmented-item.segmented-icon { padding: 0; width: 34px; }
 
@@ -552,7 +556,8 @@ textarea.input {
 }
 .table thead th {
   padding: var(--ic-space-3) var(--ic-space-4);
-  font: var(--ic-weight-regular) var(--ic-text-sm)/1 var(--ic-font-sans);
+  /* Semibold column heads (NB-58) */
+  font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans);
   color: var(--color-text-muted);
   border-bottom: 1px solid var(--color-border);
   vertical-align: middle;
