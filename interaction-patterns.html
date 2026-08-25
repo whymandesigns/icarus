@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icarus — Interaction Patterns</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    /* ---- Page chrome (shared shape with example.html) ---- */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: var(--ic-z-sticky);
+      padding: var(--ic-space-2) var(--ic-space-5);
+      background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ic-space-4);
+      max-width: var(--ic-container-lg);
+      margin: 0 auto;
+    }
+    .topnav-links { display: flex; gap: var(--ic-space-2); }
+    .topnav-links a {
+      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: var(--ic-space-2) var(--ic-space-3);
+      border-radius: var(--ic-radius-md);
+      transition: color var(--ic-duration-fast) var(--ic-ease),
+                  background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
+    .topnav-actions { display: flex; gap: var(--ic-space-2); align-items: center; }
+
+    [id] { scroll-margin-top: calc(var(--ic-space-7) + var(--ic-space-4)); }
+
+    /* Theme toggle — sun in light mode, moon in dark mode */
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: inline-block; }
+
+    /* ---- Interaction pattern lab ----
+       Playground chrome: a controls rail beside a live stage, plus a two-up
+       decision comparison. Not a product component — it documents and demoes
+       an interaction decision. */
+    .pattern-lab {
+      display: grid;
+      grid-template-columns: 248px 1fr;
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      background: var(--color-surface);
+      overflow: hidden;
+    }
+    .pattern-lab-controls {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ic-space-4);
+      padding: var(--ic-space-5);
+      background: var(--color-bg);
+      border-right: 1px solid var(--color-border);
+    }
+    .pattern-control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-control-label,
+    .pattern-stage-title,
+    .pattern-list-head {
+      font: var(--type-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-subtle);
+      margin: 0;
+    }
+    .pattern-control .segmented { display: flex; width: 100%; }
+    .pattern-control .segmented-item { flex: 1; padding: 0 var(--ic-space-2); }
+
+    .pattern-lab-stage {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ic-space-4);
+      padding: var(--ic-space-5);
+      min-width: 0;
+    }
+    .pattern-stage-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ic-space-3); }
+    .pattern-demo-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-demo-item {
+      display: flex; align-items: center; gap: var(--ic-space-3);
+      padding: var(--ic-space-2) var(--ic-space-2) var(--ic-space-2) var(--ic-space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      background: var(--color-surface);
+    }
+    .pattern-demo-name { flex: 1; min-width: 0; font: var(--type-body-sm); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pattern-demo-empty {
+      padding: var(--ic-space-6) var(--ic-space-4);
+      text-align: center;
+      color: var(--color-text-subtle);
+      font: var(--type-body-sm);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--ic-radius-md);
+    }
+
+    /* Decision comparison — two approaches side by side */
+    .pattern-compare-card { transition: border-color var(--ic-duration-fast) var(--ic-ease), box-shadow var(--ic-duration-fast) var(--ic-ease); }
+    .pattern-compare-card.is-recommended { border-color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+    .pattern-compare-head { display: flex; align-items: center; gap: var(--ic-space-2); margin: 0 0 var(--ic-space-1); }
+    /* .tag sets display:inline-flex, which beats the UA [hidden] rule — re-hide explicitly. */
+    .pattern-compare-head [data-reco-badge][hidden] { display: none; }
+    .pattern-compare-title { font: var(--type-h4); margin: 0; color: var(--color-text); }
+    .pattern-list-head { margin-top: var(--ic-space-3); }
+    .pattern-list { margin: var(--ic-space-1) 0 0; padding-left: var(--ic-space-4); display: flex; flex-direction: column; gap: 4px; }
+    .pattern-list li { font: var(--type-body-sm); color: var(--color-text-muted); }
+
+    @media (max-width: 760px) {
+      .pattern-lab { grid-template-columns: 1fr; }
+      .pattern-lab-controls { border-right: 0; border-bottom: 1px solid var(--color-border); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Icon sprite — only the symbols this page needs. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-info" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 22C17.299 22 22 17.299 22 11.5C22 5.70101 17.299 1 11.5 1C5.70101 1 1 5.70101 1 11.5C1 17.299 5.70101 22 11.5 22ZM11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21ZM12 9V16H13V17H10V16H11V10H10V9H11H12ZM12 7V6H11V7H12Z" fill="currentColor"/></symbol>
+    <symbol id="i-done" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12ZM9.79289 15.5L10.5 16.2071L11.2071 15.5L17.2071 9.5L16.5 8.79289L10.5 14.7929L7.5 11.7929L6.79289 12.5L9.79289 15.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 11.293L20.5 2.79297L21.2071 3.50008L12.7071 12.0001L21.2071 20.5001L20.5 21.2072L12 12.7072L3.50001 21.2072L2.79291 20.5001L11.2929 12.0001L2.79291 3.50008L3.50001 2.79297L12 11.293Z" fill="currentColor"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><use href="#i-close"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  </svg>
+
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-links">
+        <a href="./index.html">← designmd</a>
+        <a href="./example.html">Component kit</a>
+      </div>
+      <div class="topnav-actions">
+        <span class="badge badge-info">v0.1</span>
+        <button class="btn btn-icon-only btn-ghost" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
+          <svg class="btn-icon theme-icon-sun"><use href="#i-sun"/></svg>
+          <svg class="btn-icon theme-icon-moon"><use href="#i-moon"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page stack" style="gap: var(--ic-space-8)">
+    <header class="stack" style="gap: var(--ic-space-2)">
+      <h1 class="h1">Interaction patterns</h1>
+      <p class="body" style="color: var(--color-text-muted); max-width: 70ch">Documented interaction <em>decisions</em> — not new UI. Each pattern pairs a live playground with the reasoning behind it, so “which approach do we use here?” has an answer you can see and feel. Change the situation on the left; the guidance updates and you can trigger the real interaction on the right.</p>
+    </header>
+
+    <section class="stack" id="pattern-destructive" data-pattern-lab="destructive">
+      <div>
+        <h3 class="h3">Destructive actions</h3>
+        <p class="body-sm">When someone deletes something, how much friction is right? Two defensible answers: a <b>confirm modal</b> that blocks until they say “yes”, or an <b>optimistic delete with an Undo toast</b> that trusts the action and offers a way back. The right call depends on how reversible and how wide-reaching the delete is.</p>
+      </div>
+
+      <div class="pattern-lab">
+        <div class="pattern-lab-controls">
+          <div class="pattern-control">
+            <span class="pattern-control-label">Approach to preview</span>
+            <div class="segmented" data-pattern-approach role="tablist">
+              <button class="segmented-item is-active" data-value="modal" type="button">Confirm modal</button>
+              <button class="segmented-item" data-value="undo" type="button">Undo toast</button>
+            </div>
+          </div>
+          <div class="pattern-control">
+            <span class="pattern-control-label">Reversibility</span>
+            <div class="segmented" data-pattern-reversibility>
+              <button class="segmented-item is-active" data-value="recoverable" type="button">Recoverable</button>
+              <button class="segmented-item" data-value="permanent" type="button">Permanent</button>
+            </div>
+          </div>
+          <div class="pattern-control">
+            <span class="pattern-control-label">Scope</span>
+            <div class="segmented" data-pattern-scope>
+              <button class="segmented-item is-active" data-value="single" type="button">Single item</button>
+              <button class="segmented-item" data-value="bulk" type="button">Bulk</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-lab-stage">
+          <div class="alert alert-info pattern-reco" role="status">
+            <svg class="icon alert-icon"><use href="#i-info"/></svg>
+            <p class="alert-message" data-pattern-reco></p>
+          </div>
+          <div class="pattern-stage-head">
+            <span class="pattern-stage-title">Try it — delete an item</span>
+            <button class="btn btn-xs btn-ghost" type="button" data-pattern-reset>Reset list</button>
+          </div>
+          <ul class="pattern-demo-list" data-pattern-list></ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card pattern-compare-card" data-approach-card="modal">
+          <div class="pattern-compare-head">
+            <h4 class="pattern-compare-title">Confirm modal</h4>
+            <span class="tag" data-reco-badge hidden>Recommended here</span>
+          </div>
+          <p class="body-sm">Blocks the flow with an “Are you sure?” dialog. Deliberate, interruptive, unmissable.</p>
+          <p class="pattern-list-head">Use when</p>
+          <ul class="pattern-list">
+            <li>The action is permanent or genuinely hard to reverse.</li>
+            <li>It affects many items at once (bulk).</li>
+            <li>Consequences are severe or hard to undo (billing, access, data loss).</li>
+          </ul>
+          <p class="pattern-list-head">Costs</p>
+          <ul class="pattern-list">
+            <li>Interrupts the flow on every use — nags if the action is common.</li>
+            <li>Confirmation fatigue: people click “Delete” without reading.</li>
+          </ul>
+        </div>
+        <div class="card pattern-compare-card" data-approach-card="undo">
+          <div class="pattern-compare-head">
+            <h4 class="pattern-compare-title">Undo toast</h4>
+            <span class="tag" data-reco-badge hidden>Recommended here</span>
+          </div>
+          <p class="body-sm">Removes the item immediately and offers a time-boxed “Undo”. Trusts the action, respects flow.</p>
+          <p class="pattern-list-head">Use when</p>
+          <ul class="pattern-list">
+            <li>The action is reversible (soft-delete, restore from Trash).</li>
+            <li>It’s a single item and low-stakes.</li>
+            <li>It happens often — friction would compound.</li>
+          </ul>
+          <p class="pattern-list-head">Costs</p>
+          <ul class="pattern-list">
+            <li>The window is easy to miss — needs a real, reliable restore.</li>
+            <li>Not safe for irreversible or wide-reaching actions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="alert alert-info" role="note">
+        <svg class="icon alert-icon"><use href="#i-info"/></svg>
+        <p class="alert-message"><b>Rule of thumb.</b> Default to an Undo toast for reversible, single-item actions — it respects flow. Escalate to a confirm modal when the action is permanent, affects many items, or is genuinely hard to reverse. Never use both for the same action.</p>
+      </div>
+
+      <div class="modal-overlay" id="pattern-confirm" hidden>
+        <div class="modal modal-xs">
+          <header class="modal-header">
+            <h2 class="modal-title" data-confirm-title>Delete item?</h2>
+            <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+          </header>
+          <div class="modal-body" data-confirm-body></div>
+          <footer class="modal-footer">
+            <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+            <button class="btn btn-danger" data-confirm-delete type="button">Delete</button>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Segmented control — click selects one option within the group.
+    document.querySelectorAll('.segmented').forEach(seg => {
+      seg.addEventListener('click', (e) => {
+        const item = e.target.closest('.segmented-item');
+        if (!item || !seg.contains(item)) return;
+        seg.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
+        item.classList.add('is-active');
+      });
+    });
+
+    // Modal — open via [data-modal-open="id"], close via [data-modal-close], overlay click, or Escape.
+    (function wireOverlays() {
+      const OVERLAY_SELECTOR = '.modal-overlay, .drawer-overlay';
+      const close = (overlay) => { if (overlay) overlay.hidden = true; };
+      document.querySelectorAll('[data-modal-open]').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          document.getElementById(trigger.dataset.modalOpen)?.removeAttribute('hidden');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('[data-modal-close]');
+        if (closeBtn) { close(closeBtn.closest(OVERLAY_SELECTOR)); return; }
+        const overlay = e.target.closest(OVERLAY_SELECTOR);
+        if (overlay && e.target === overlay) close(overlay);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        document.querySelectorAll(OVERLAY_SELECTOR).forEach(o => { if (!o.hidden) close(o); });
+      });
+    })();
+
+    // Toast helper — floating notifications; supports a timed auto-dismiss and
+    // an 'action' behavior (e.g. Undo). Mirrors the example.html implementation.
+    window.toast = function toast({ variant = 'neutral', message = '', behavior = 'timed', timeout = 4000, action, icon } = {}) {
+      let region = document.querySelector('.toast-region');
+      if (!region) {
+        region = document.createElement('div');
+        region.className = 'toast-region';
+        region.setAttribute('aria-live', 'polite');
+        region.setAttribute('aria-atomic', 'false');
+        document.body.appendChild(region);
+      }
+      const defaultIcon = { neutral: 'info', info: 'info', success: 'done', warning: 'warning', error: 'exclamation-solid' }[variant] || 'info';
+      const el = document.createElement('div');
+      el.className = `toast toast-${variant} is-entering`;
+      el.setAttribute('role', variant === 'error' ? 'alert' : 'status');
+      const actionHTML = behavior === 'action' && action ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
+      const closeHTML  = behavior !== 'timed' ? `<button type="button" class="toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>` : '';
+      el.innerHTML = `<svg class="icon toast-icon"><use href="#i-${icon || defaultIcon}"/></svg><p class="toast-message"></p>${actionHTML}${closeHTML}`;
+      el.querySelector('.toast-message').textContent = message;
+      region.appendChild(el);
+      requestAnimationFrame(() => el.classList.remove('is-entering'));
+
+      const dismiss = () => {
+        if (!el.isConnected) return;
+        el.classList.add('is-leaving');
+        const cleanup = () => el.remove();
+        el.addEventListener('transitionend', cleanup, { once: true });
+        setTimeout(cleanup, 400);
+      };
+
+      el.querySelector('.toast-close')?.addEventListener('click', dismiss);
+      if (behavior === 'action' && action) {
+        el.querySelector('.toast-action').addEventListener('click', () => {
+          try { action.onClick?.(); } catch (e) { /* swallow */ }
+          dismiss();
+        });
+      }
+      if (behavior === 'timed') setTimeout(dismiss, timeout);
+      return { dismiss };
+    };
+
+    // Interaction pattern lab — destructive actions playground. Situation
+    // controls drive a recommendation; the "approach" control lets you trigger
+    // the real interaction (confirm modal vs. optimistic delete + undo toast).
+    document.querySelectorAll('[data-pattern-lab="destructive"]').forEach(lab => {
+      const listEl  = lab.querySelector('[data-pattern-list]');
+      const recoEl  = lab.querySelector('[data-pattern-reco]');
+      const confirm = lab.querySelector('#pattern-confirm');
+      const val = sel => lab.querySelector(sel + ' .segmented-item.is-active')?.dataset.value;
+      const LABEL = { modal: 'Confirm modal', undo: 'Undo toast' };
+
+      const initial = [
+        { name: 'Q4 revenue model.xlsx' },
+        { name: 'Creator playbook.docx' },
+        { name: 'Launch checklist' },
+      ];
+      let items = initial.map(i => ({ ...i }));
+
+      // Recommendation: a modal for permanent OR bulk deletes; otherwise an
+      // undo toast for the low-stakes, reversible, single case.
+      const recommend = () => (val('[data-pattern-reversibility]') === 'permanent' || val('[data-pattern-scope]') === 'bulk') ? 'modal' : 'undo';
+
+      const updateReco = () => {
+        const rec = recommend();
+        const approach = val('[data-pattern-approach]');
+        const rev = val('[data-pattern-reversibility]');
+        const scope = val('[data-pattern-scope]');
+        const why = rec === 'modal'
+          ? (rev === 'permanent'
+              ? 'it can’t be undone, so it deserves a deliberate confirmation step.'
+              : 'a bulk delete has a large blast radius — a summary and an explicit confirm prevent mistakes.')
+          : 'it’s a single, recoverable delete — keep friction low and offer an Undo instead of a dialog.';
+        let msg = `For a ${rev}, ${scope === 'bulk' ? 'bulk' : 'single-item'} delete, prefer the ${LABEL[rec]} — ${why}`;
+        if (approach !== rec) msg += ` You’re previewing the ${LABEL[approach]}; trigger it, then switch to compare.`;
+        recoEl.textContent = msg;
+        document.querySelectorAll('[data-approach-card]').forEach(c => {
+          const on = c.dataset.approachCard === rec;
+          c.classList.toggle('is-recommended', on);
+          const badge = c.querySelector('[data-reco-badge]');
+          if (badge) badge.hidden = !on;
+        });
+      };
+
+      const render = () => {
+        listEl.innerHTML = '';
+        if (!items.length) {
+          const li = document.createElement('li');
+          li.className = 'pattern-demo-empty';
+          li.textContent = 'All items deleted — reset the list to try another approach.';
+          listEl.appendChild(li);
+          return;
+        }
+        items.forEach((it, idx) => {
+          const li = document.createElement('li');
+          li.className = 'pattern-demo-item';
+          li.innerHTML = '<span class="pattern-demo-name"></span><button class="btn btn-xs btn-danger" type="button">Delete</button>';
+          li.querySelector('.pattern-demo-name').textContent = it.name;
+          li.querySelector('button').addEventListener('click', () => del(idx));
+          listEl.appendChild(li);
+        });
+      };
+
+      // Confirm modal — reused for the "modal" approach; copy reflects reversibility.
+      let pending = null;
+      const cTitle = confirm.querySelector('[data-confirm-title]');
+      const cBody  = confirm.querySelector('[data-confirm-body]');
+      confirm.querySelector('[data-confirm-delete]').addEventListener('click', () => {
+        confirm.hidden = true;
+        const fn = pending; pending = null;
+        if (fn) fn();
+      });
+
+      const del = (idx) => {
+        const item = items[idx];
+        if (val('[data-pattern-approach]') === 'modal') {
+          cTitle.textContent = `Delete “${item.name}”?`;
+          cBody.textContent = val('[data-pattern-reversibility]') === 'permanent'
+            ? 'This can’t be undone. It will be permanently removed.'
+            : 'You can restore it from Trash for 30 days.';
+          pending = () => {
+            items.splice(idx, 1); render();
+            toast({ variant: 'success', message: `Deleted “${item.name}”.` });
+          };
+          confirm.hidden = false;
+        } else {
+          const removed = items.splice(idx, 1)[0]; render();
+          const t = toast({
+            variant: 'neutral',
+            behavior: 'action',
+            message: `Deleted “${removed.name}”.`,
+            action: { label: 'Undo', onClick: () => { items.splice(idx, 0, removed); render(); } },
+          });
+          setTimeout(() => t.dismiss(), 5000);
+        }
+      };
+
+      lab.addEventListener('click', (e) => { if (e.target.closest('.pattern-control .segmented-item')) updateReco(); });
+      lab.querySelector('[data-pattern-reset]').addEventListener('click', () => { items = initial.map(i => ({ ...i })); render(); });
+
+      render();
+      updateReco();
+    });
+  </script>
+</body>
+</html>
