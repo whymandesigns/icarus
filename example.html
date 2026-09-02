@@ -4688,12 +4688,13 @@
           pop.innerHTML = '';
           const head = document.createElement('div');
           head.className = 'map-pop-head';
-          head.textContent = c.name + (r.component && r.component !== c.name ? ' → ' + r.component : '');
+          head.textContent = c.name + (r.component && r.component !== c.name ? ' → ' + r.component : '')
+            + (r.status && r.status !== 'mapped' ? '  · ' + r.status : '');
           pop.appendChild(head);
           if (gap) {
             const g = document.createElement('div');
             g.className = 'map-pop-gap';
-            g.textContent = 'No Picasso mapping yet (gap).';
+            g.textContent = r.note || 'No Picasso mapping yet (gap).';
             pop.appendChild(g);
           } else {
             const code = document.createElement('code');
@@ -4712,6 +4713,12 @@
               a.rel = 'noopener';
               a.textContent = 'Open in Storybook ↗';
               pop.appendChild(a);
+            }
+            if (r.note) {
+              const n = document.createElement('div');
+              n.className = 'map-pop-note';
+              n.textContent = r.note;
+              pop.appendChild(n);
             }
           }
           pop.hidden = false;

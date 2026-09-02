@@ -156,3 +156,4 @@
 .map-pop-gap  { color: var(--color-warning); }
 .map-pop-link { color: var(--color-text-link); text-decoration: none; font: var(--type-body-sm-semibold); }
 .map-pop-link:hover { text-decoration: underline; }
+.map-pop-note { font: var(--type-body-xs); color: var(--color-text-muted); }
