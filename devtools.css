@@ -119,8 +119,12 @@
    example.html; the mapping data is read from figma-map.json.
    Inactive unless the page adds .is-map-mode to <html>.
    ============================================================ */
-.is-map-mode [data-component] { outline: 1px dashed var(--color-accent); outline-offset: 2px; }
+:root { --map-color: #E5308C; }  /* pink — deliberately off-brand so it never reads as UI */
+.is-map-mode [data-component] { outline: 1px dotted var(--map-color); outline-offset: 2px; }
 .is-map-mode [data-component]:hover { outline-width: 2px; }
+/* Nav toggle turns pink while the inspector is on. */
+.map-toggle.is-active,
+.map-toggle.is-active:hover { color: var(--map-color); }
 
 .map-pop {
   position: fixed;
