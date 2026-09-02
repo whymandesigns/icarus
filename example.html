@@ -4620,6 +4620,106 @@
 
       updateUI();
     })();
+
+    // Component-map inspector — stamps [data-component] onto components from the
+    // registry (figma-map.json), and with ?map=1 reveals the React/Storybook
+    // (Picasso) mapping on hover. Registry is the single source of truth; CSS
+    // lives in devtools.css.
+    (function componentMap() {
+      const active = new URLSearchParams(location.search).has('map');
+      const STORYBOOK = 'https://toptal.github.io/picasso/?path=/story/';
+      fetch('./figma-map.json').then(r => r.ok ? r.json() : null).then(map => {
+        if (!map) return;
+        const bySlug = {};
+        (map.components || []).forEach(c => { if (c.slug) bySlug[c.slug] = c; });
+
+        // Stamp data-component from each entry's stampSelector (idempotent).
+        (map.components || []).forEach(c => {
+          if (!c.slug || !c.stampSelector) return;
+          document.querySelectorAll(c.stampSelector).forEach(el => {
+            if (!el.hasAttribute('data-component')) el.setAttribute('data-component', c.slug);
+          });
+        });
+        if (!active) return;
+        document.documentElement.classList.add('is-map-mode');
+
+        const pop = document.createElement('div');
+        pop.className = 'map-pop';
+        pop.hidden = true;
+        document.body.appendChild(pop);
+        let hideTimer = null;
+        const scheduleHide = () => { hideTimer = setTimeout(() => { pop.hidden = true; }, 200); };
+        const cancelHide = () => { if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; } };
+        pop.addEventListener('mouseenter', cancelHide);
+        pop.addEventListener('mouseleave', scheduleHide);
+
+        const resolveProps = (el, c) => {
+          const pm = (c.react && c.react.propMap) || {};
+          const props = {};
+          el.classList.forEach(cls => { if (pm[cls]) Object.assign(props, pm[cls]); });
+          return props;
+        };
+        const jsx = (comp, props) => {
+          const attrs = Object.entries(props).map(([k, v]) => `${k}="${v}"`).join(' ');
+          return `<${comp}${attrs ? ' ' + attrs : ''} />`;
+        };
+
+        const show = (el) => {
+          const c = bySlug[el.getAttribute('data-component')];
+          if (!c) return;
+          const r = c.react || {};
+          const gap = r.status === 'gap' || !r.component;
+          pop.innerHTML = '';
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = c.name + (r.component && r.component !== c.name ? ' → ' + r.component : '');
+          pop.appendChild(head);
+          if (gap) {
+            const g = document.createElement('div');
+            g.className = 'map-pop-gap';
+            g.textContent = 'No Picasso mapping yet (gap).';
+            pop.appendChild(g);
+          } else {
+            const code = document.createElement('code');
+            code.className = 'map-pop-code';
+            code.textContent = jsx(r.component, resolveProps(el, c));
+            pop.appendChild(code);
+            const meta = document.createElement('div');
+            meta.className = 'map-pop-meta';
+            meta.textContent = `import { ${r.component} } from '${r.import}'`;
+            pop.appendChild(meta);
+            if (r.storyId) {
+              const a = document.createElement('a');
+              a.className = 'map-pop-link';
+              a.href = STORYBOOK + r.storyId;
+              a.target = '_blank';
+              a.rel = 'noopener';
+              a.textContent = 'Open in Storybook ↗';
+              pop.appendChild(a);
+            }
+          }
+          pop.hidden = false;
+          const rect = el.getBoundingClientRect();
+          const pr = pop.getBoundingClientRect();
+          let top = rect.bottom + 8, left = rect.left;
+          if (left + pr.width > innerWidth - 8) left = innerWidth - pr.width - 8;
+          if (top + pr.height > innerHeight - 8) top = rect.top - pr.height - 8;
+          pop.style.top = Math.max(8, top) + 'px';
+          pop.style.left = Math.max(8, left) + 'px';
+        };
+
+        document.addEventListener('mouseover', (e) => {
+          const el = e.target.closest('[data-component]');
+          if (!el) return;
+          cancelHide();
+          show(el);
+        });
+        document.addEventListener('mouseout', (e) => {
+          if (e.target.closest('[data-component]') && !e.relatedTarget?.closest('.map-pop')) scheduleHide();
+        });
+        window.addEventListener('scroll', () => { pop.hidden = true; }, true);
+      }).catch(() => {});
+    })();
   </script>
 </body>
 </html>

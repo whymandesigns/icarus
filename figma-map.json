@@ -18,6 +18,8 @@
     {
       "id": "buttons",
       "name": "Button",
+      "slug": "button",
+      "stampSelector": ".btn",
       "designmd": {
         "root": ".btn",
         "shortcode": "example.html#buttons",
@@ -38,11 +40,28 @@
         "status": "mapped",
         "note": "btn-icon-only → Button Icon (110:252)",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Button",
+        "import": "@toptal/picasso",
+        "storyId": "components-button--button",
+        "status": "mapped",
+        "propMap": {
+          "btn-primary": { "variant": "primary" },
+          "btn-secondary": { "variant": "secondary" },
+          "btn-danger": { "variant": "negative" },
+          "btn-ghost": { "variant": "transparent" },
+          "btn-xs": { "size": "small" }
+        },
+        "note": "propMap values best-effort — confirm against the Picasso Button story controls."
       }
     },
     {
       "id": "inputs",
       "name": "Input / Field",
+      "slug": "input",
+      "stampSelector": ".field",
       "designmd": {
         "root": ".field + .input",
         "shortcode": "example.html#inputs",
@@ -62,6 +81,18 @@
         "status": "mapped",
         "note": "Text area → Text Area Input (18295:63749)",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Input",
+        "import": "@toptal/picasso",
+        "storyId": "forms-input--input",
+        "status": "mapped",
+        "propMap": {
+          "is-error": { "status": "error" },
+          "input-xs": { "size": "small" }
+        },
+        "note": "Picasso groups inputs under Forms; propMap best-effort."
       }
     },
     {
@@ -370,6 +401,8 @@
     {
       "id": "toasts",
       "name": "Toast",
+      "slug": "toast",
+      "stampSelector": ".toast",
       "designmd": {
         "root": ".toast-region + .toast",
         "shortcode": "example.html#toasts",
@@ -389,6 +422,21 @@
         "status": "mapped",
         "note": "Transient toast ≈ Notification — confirm",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Notification",
+        "import": "@toptal/picasso",
+        "storyId": "components-notification--notification",
+        "status": "mapped",
+        "propMap": {
+          "toast-error": { "variant": "red" },
+          "toast-success": { "variant": "green" },
+          "toast-warning": { "variant": "yellow" },
+          "toast-info": { "variant": "blue" },
+          "toast-neutral": { "variant": "grey" }
+        },
+        "note": "Name mismatch: designmd Toast ≈ Picasso Notification. propMap best-effort — confirm variant values."
       }
     },
     {
@@ -441,6 +489,8 @@
     {
       "id": "modals",
       "name": "Modal",
+      "slug": "modal",
+      "stampSelector": ".modal",
       "designmd": {
         "root": ".modal-overlay + .modal",
         "shortcode": "example.html#modals",
@@ -460,6 +510,20 @@
         "status": "mapped",
         "note": "Full screen → Full Screen Modal 12713:42200",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Modal",
+        "import": "@toptal/picasso",
+        "storyId": "overlays-modal--modal",
+        "status": "mapped",
+        "propMap": {
+          "modal-sm": { "size": "small" },
+          "modal-md": { "size": "medium" },
+          "modal-lg": { "size": "large" },
+          "modal-xl": { "size": "large" }
+        },
+        "note": "propMap sizes best-effort — confirm against Picasso Modal."
       }
     },
     {
