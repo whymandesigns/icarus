@@ -679,7 +679,45 @@
         "storyId": "components-dropdown--dropdown",
         "status": "mapped",
         "propMap": {},
-        "note": "menu items ≈ Picasso Menu / Menu.Item"
+        "note": "Trigger + popup. The list inside is a Menu; rows are Menu.Item — see those entries."
+      }
+    },
+    {
+      "id": "dropdowns",
+      "name": "Menu",
+      "slug": "dropdown-menu",
+      "stampSelector": ".dropdown-menu",
+      "designmd": {
+        "root": ".dropdown-menu",
+        "shortcode": "example.html#dropdowns"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Menu",
+        "import": "@toptal/picasso",
+        "storyId": "components-menu--menu",
+        "status": "mapped",
+        "propMap": {},
+        "note": "The list rendered inside a Dropdown."
+      }
+    },
+    {
+      "id": "dropdowns",
+      "name": "Menu item",
+      "slug": "dropdown-item",
+      "stampSelector": ".dropdown-item",
+      "designmd": {
+        "root": ".dropdown-item",
+        "shortcode": "example.html#dropdowns"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Menu.Item",
+        "import": "@toptal/picasso",
+        "storyId": "components-menu--menu",
+        "status": "mapped",
+        "propMap": {},
+        "note": "A row within a Picasso Menu."
       }
     },
     {
