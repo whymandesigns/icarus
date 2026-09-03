@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icarus — Interaction Patterns</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    /* ---- Page chrome (shared shape with example.html) ---- */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: var(--ic-z-sticky);
+      padding: var(--ic-space-2) var(--ic-space-5);
+      background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ic-space-4);
+      max-width: var(--ic-container-lg);
+      margin: 0 auto;
+    }
+    .topnav-links { display: flex; gap: var(--ic-space-2); }
+    .topnav-links a {
+      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: var(--ic-space-2) var(--ic-space-3);
+      border-radius: var(--ic-radius-md);
+      transition: color var(--ic-duration-fast) var(--ic-ease),
+                  background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
+    .topnav-actions { display: flex; gap: var(--ic-space-2); align-items: center; }
+
+    [id] { scroll-margin-top: calc(var(--ic-space-7) + var(--ic-space-4)); }
+
+    /* Theme toggle — sun in light mode, moon in dark mode */
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: inline-block; }
+
+    /* ---- Section head ---- */
+    .section-head {
+      font: var(--type-h1);
+      color: var(--color-text);
+      margin: 0;
+      padding-bottom: var(--ic-space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* ---- Right-side sidebar TOC (ported from the component kit) ---- */
+    .page-toc {
+      position: fixed;
+      top: var(--ic-space-10);
+      right: var(--ic-space-5);
+      width: 220px;
+      max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-5));
+      overflow-y: auto;
+      z-index: var(--ic-z-sticky);
+      padding: var(--ic-space-3) 0;
+    }
+    .page-toc-section { margin-bottom: var(--ic-space-4); }
+    .page-toc-section:last-child { margin-bottom: 0; }
+    .page-toc-section-label {
+      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+      padding: 0 var(--ic-space-3);
+      margin-bottom: var(--ic-space-2);
+    }
+    .page-toc-item {
+      display: block;
+      padding: var(--ic-space-1) var(--ic-space-3);
+      font: var(--type-body-sm);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color var(--ic-duration-fast) var(--ic-ease),
+                  border-color var(--ic-duration-fast) var(--ic-ease);
+    }
+    .page-toc-item:hover { color: var(--color-text); }
+    .page-toc-item.is-active { color: var(--color-accent); border-left-color: var(--color-accent); }
+    .page-toc-toggle { display: none; }
+
+    @media (max-width: 1320px) {
+      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--ic-z-sticky) + 1); }
+      .page-toc {
+        top: var(--ic-space-10);
+        right: var(--ic-space-3);
+        max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-3));
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--ic-radius-md);
+        box-shadow: var(--ic-shadow-lg);
+        padding: var(--ic-space-4) 0;
+        transform: translateX(calc(100% + var(--ic-space-5)));
+        transition: transform var(--ic-duration-base) var(--ic-ease);
+      }
+      .page-toc.is-open { transform: translateX(0); }
+    }
+
+    /* ---- Interaction pattern lab ----
+       A contained, interactive playground: a toolbar of controls above a
+       preview stage. Not a product component. */
+    .pattern-lab {
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      background: var(--color-surface);
+      overflow: hidden;
+    }
+    .pattern-lab-bar {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--ic-space-5);
+      flex-wrap: wrap;
+      padding: var(--ic-space-4) var(--ic-space-5);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .pattern-control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-control-label {
+      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-subtle);
+    }
+    .pattern-reset { margin-left: auto; align-self: center; }
+    .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--ic-radius-full); background: var(--color-accent); display: inline-block; }
+    .pattern-reco-dot[hidden] { display: none; }
+
+    .pattern-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--ic-space-8) var(--ic-space-5);
+      min-height: 300px;
+      background: var(--color-bg);
+    }
+    .pattern-demo-list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-demo-item {
+      display: flex; align-items: center; gap: var(--ic-space-3);
+      padding: var(--ic-space-2) var(--ic-space-2) var(--ic-space-2) var(--ic-space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      background: var(--color-surface);
+    }
+    .pattern-demo-name { flex: 1; min-width: 0; font: var(--type-body-sm); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pattern-demo-empty {
+      width: 100%; max-width: 380px;
+      padding: var(--ic-space-6) var(--ic-space-4);
+      text-align: center;
+      color: var(--color-text-subtle);
+      font: var(--type-body-sm);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--ic-radius-md);
+    }
+  </style>
+</head>
+<body>
+  <!-- Icon sprite — only the symbols this page needs. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-info" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 22C17.299 22 22 17.299 22 11.5C22 5.70101 17.299 1 11.5 1C5.70101 1 1 5.70101 1 11.5C1 17.299 5.70101 22 11.5 22ZM11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21ZM12 9V16H13V17H10V16H11V10H10V9H11H12ZM12 7V6H11V7H12Z" fill="currentColor"/></symbol>
+    <symbol id="i-done" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12ZM9.79289 15.5L10.5 16.2071L11.2071 15.5L17.2071 9.5L16.5 8.79289L10.5 14.7929L7.5 11.7929L6.79289 12.5L9.79289 15.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 11.293L20.5 2.79297L21.2071 3.50008L12.7071 12.0001L21.2071 20.5001L20.5 21.2072L12 12.7072L3.50001 21.2072L2.79291 20.5001L11.2929 12.0001L2.79291 3.50008L3.50001 2.79297L12 11.293Z" fill="currentColor"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><use href="#i-close"/></symbol>
+    <symbol id="i-overview" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 5H0V6H24V5ZM0 12H24V13H0V12ZM0 19H24V20H0V19Z" fill="currentColor"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  </svg>
+
+  <aside class="page-toc" id="page-toc" aria-label="Table of contents"></aside>
+
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-links">
+        <a href="./index.html">← designmd</a>
+      </div>
+      <div class="topnav-actions">
+        <span class="badge badge-info">v0.1</span>
+        <button class="btn btn-icon-only btn-ghost" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
+          <svg class="btn-icon theme-icon-sun"><use href="#i-sun"/></svg>
+          <svg class="btn-icon theme-icon-moon"><use href="#i-moon"/></svg>
+        </button>
+        <button class="btn btn-icon-only btn-ghost page-toc-toggle" type="button" aria-label="Open table of contents" aria-controls="page-toc" aria-expanded="false"><svg class="icon"><use href="#i-overview"/></svg></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page stack" style="gap: var(--ic-space-8)">
+    <section id="patterns" class="stack" style="gap: var(--ic-space-7)">
+      <h2 class="section-head">Patterns</h2>
+
+      <section class="stack" id="pattern-destructive" data-pattern-lab="destructive">
+        <h3 class="h3">Destructive actions</h3>
+        <div class="pattern-lab">
+          <div class="pattern-lab-bar">
+            <div class="pattern-control">
+              <span class="pattern-control-label">Approach</span>
+              <div class="segmented" data-pattern-approach role="tablist">
+                <button class="segmented-item is-active" data-value="modal" type="button">Confirm modal<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item" data-value="undo" type="button">Undo toast<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+              </div>
+            </div>
+            <div class="pattern-control">
+              <span class="pattern-control-label">Reversibility</span>
+              <div class="segmented" data-pattern-reversibility>
+                <button class="segmented-item is-active" data-value="recoverable" type="button">Recoverable</button>
+                <button class="segmented-item" data-value="permanent" type="button">Permanent</button>
+              </div>
+            </div>
+            <button class="btn btn-xs btn-ghost pattern-reset" type="button" data-pattern-reset>Reset</button>
+          </div>
+          <div class="pattern-stage">
+            <ul class="pattern-demo-list" data-pattern-list></ul>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="pattern-confirm" hidden>
+          <div class="modal modal-xs">
+            <header class="modal-header">
+              <h2 class="modal-title" data-confirm-title>Delete item?</h2>
+              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body" data-confirm-body></div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-danger" data-confirm-delete type="button">Delete</button>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // Segmented control — click selects one option within the group.
+    document.querySelectorAll('.segmented').forEach(seg => {
+      seg.addEventListener('click', (e) => {
+        const item = e.target.closest('.segmented-item');
+        if (!item || !seg.contains(item)) return;
+        seg.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
+        item.classList.add('is-active');
+      });
+    });
+
+    // Modal — close via [data-modal-close], overlay click, or Escape.
+    (function wireOverlays() {
+      const OVERLAY_SELECTOR = '.modal-overlay, .drawer-overlay';
+      const close = (overlay) => { if (overlay) overlay.hidden = true; };
+      document.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('[data-modal-close]');
+        if (closeBtn) { close(closeBtn.closest(OVERLAY_SELECTOR)); return; }
+        const overlay = e.target.closest(OVERLAY_SELECTOR);
+        if (overlay && e.target === overlay) close(overlay);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        document.querySelectorAll(OVERLAY_SELECTOR).forEach(o => { if (!o.hidden) close(o); });
+      });
+    })();
+
+    // Toast helper — mirrors the example.html implementation.
+    window.toast = function toast({ variant = 'neutral', message = '', behavior = 'timed', timeout = 4000, action, icon } = {}) {
+      let region = document.querySelector('.toast-region');
+      if (!region) {
+        region = document.createElement('div');
+        region.className = 'toast-region';
+        region.setAttribute('aria-live', 'polite');
+        region.setAttribute('aria-atomic', 'false');
+        document.body.appendChild(region);
+      }
+      const defaultIcon = { neutral: 'info', info: 'info', success: 'done', warning: 'warning', error: 'exclamation-solid' }[variant] || 'info';
+      const el = document.createElement('div');
+      el.className = `toast toast-${variant} is-entering`;
+      el.setAttribute('role', variant === 'error' ? 'alert' : 'status');
+      const actionHTML = behavior === 'action' && action ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
+      const closeHTML  = behavior !== 'timed' ? `<button type="button" class="btn btn-icon-only btn-ghost btn-xs toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>` : '';
+      el.innerHTML = `<svg class="icon toast-icon"><use href="#i-${icon || defaultIcon}"/></svg><p class="toast-message"></p>${actionHTML}${closeHTML}`;
+      el.querySelector('.toast-message').textContent = message;
+      region.appendChild(el);
+      requestAnimationFrame(() => el.classList.remove('is-entering'));
+
+      const dismiss = () => {
+        if (!el.isConnected) return;
+        el.classList.add('is-leaving');
+        const cleanup = () => el.remove();
+        el.addEventListener('transitionend', cleanup, { once: true });
+        setTimeout(cleanup, 400);
+      };
+
+      el.querySelector('.toast-close')?.addEventListener('click', dismiss);
+      if (behavior === 'action' && action) {
+        el.querySelector('.toast-action').addEventListener('click', () => {
+          try { action.onClick?.(); } catch (e) { /* swallow */ }
+          dismiss();
+        });
+      }
+      if (behavior === 'timed') setTimeout(dismiss, timeout);
+      return { dismiss };
+    };
+
+    // Right-side TOC — auto-built from sections, with scroll-spy + mobile toggle.
+    (function buildSidebarToc() {
+      const container = document.querySelector('.page-toc');
+      if (!container) return;
+      document.querySelectorAll('main > section[id]').forEach(top => {
+        const wrap = document.createElement('div');
+        wrap.className = 'page-toc-section';
+        const label = document.createElement('div');
+        label.className = 'page-toc-section-label';
+        label.textContent = (top.querySelector('h2.section-head')?.firstChild?.textContent || top.id).trim();
+        wrap.appendChild(label);
+        top.querySelectorAll(':scope > section[id]').forEach(sub => {
+          const heading = sub.querySelector('h3.h3');
+          if (!heading) return;
+          const a = document.createElement('a');
+          a.className = 'page-toc-item';
+          a.href = '#' + sub.id;
+          a.dataset.tocTarget = sub.id;
+          a.textContent = (heading.firstChild?.textContent || sub.id).trim();
+          wrap.appendChild(a);
+        });
+        container.appendChild(wrap);
+      });
+      const items = container.querySelectorAll('.page-toc-item');
+      const setActive = id => items.forEach(i => i.classList.toggle('is-active', i.dataset.tocTarget === id));
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(e => e.isIntersecting);
+        if (!visible.length) return;
+        visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        setActive(visible[0].target.id);
+      }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+      document.querySelectorAll('main > section[id] > section[id]').forEach(sec => observer.observe(sec));
+
+      const toggle = document.querySelector('.page-toc-toggle');
+      const panel = container;
+      if (toggle) {
+        const setOpen = open => {
+          panel.classList.toggle('is-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+          toggle.setAttribute('aria-label', open ? 'Close table of contents' : 'Open table of contents');
+        };
+        toggle.addEventListener('click', e => { e.stopPropagation(); setOpen(!panel.classList.contains('is-open')); });
+        document.addEventListener('click', e => {
+          if (!panel.classList.contains('is-open')) return;
+          if (panel.contains(e.target) || toggle.contains(e.target)) return;
+          setOpen(false);
+        });
+        panel.addEventListener('click', e => { if (e.target.closest('.page-toc-item')) setOpen(false); });
+      }
+    })();
+
+    // Interaction pattern lab — destructive actions playground. The approach
+    // control picks the interaction to preview; reversibility changes the
+    // confirm copy and marks the recommended approach with an accent dot.
+    document.querySelectorAll('[data-pattern-lab="destructive"]').forEach(lab => {
+      const listEl  = lab.querySelector('[data-pattern-list]');
+      const confirm = lab.querySelector('#pattern-confirm');
+      const val = sel => lab.querySelector(sel + ' .segmented-item.is-active')?.dataset.value;
+
+      const initial = [
+        { name: 'Q4 revenue model.xlsx' },
+        { name: 'Creator playbook.docx' },
+        { name: 'Launch checklist' },
+      ];
+      let items = initial.map(i => ({ ...i }));
+
+      // Recommendation: permanent → confirm modal; recoverable → undo toast.
+      const recommend = () => val('[data-pattern-reversibility]') === 'permanent' ? 'modal' : 'undo';
+      const updateReco = () => {
+        const rec = recommend();
+        lab.querySelectorAll('[data-pattern-approach] .segmented-item').forEach(item => {
+          const on = item.dataset.value === rec;
+          const dot = item.querySelector('[data-reco-badge]');
+          if (dot) dot.hidden = !on;
+          if (on) item.title = 'Recommended for this situation'; else item.removeAttribute('title');
+        });
+      };
+
+      const render = () => {
+        listEl.innerHTML = '';
+        if (!items.length) {
+          const li = document.createElement('li');
+          li.className = 'pattern-demo-empty';
+          li.textContent = 'All items deleted — reset to try again.';
+          listEl.appendChild(li);
+          return;
+        }
+        items.forEach((it, idx) => {
+          const li = document.createElement('li');
+          li.className = 'pattern-demo-item';
+          li.innerHTML = '<span class="pattern-demo-name"></span><button class="btn btn-xs btn-danger" type="button">Delete</button>';
+          li.querySelector('.pattern-demo-name').textContent = it.name;
+          li.querySelector('button').addEventListener('click', () => del(idx));
+          listEl.appendChild(li);
+        });
+      };
+
+      // Confirm modal — reused for the "modal" approach; copy reflects reversibility.
+      let pending = null;
+      const cTitle = confirm.querySelector('[data-confirm-title]');
+      const cBody  = confirm.querySelector('[data-confirm-body]');
+      confirm.querySelector('[data-confirm-delete]').addEventListener('click', () => {
+        confirm.hidden = true;
+        const fn = pending; pending = null;
+        if (fn) fn();
+      });
+
+      const del = (idx) => {
+        const item = items[idx];
+        if (val('[data-pattern-approach]') === 'modal') {
+          cTitle.textContent = `Delete “${item.name}”?`;
+          cBody.textContent = val('[data-pattern-reversibility]') === 'permanent'
+            ? 'This can’t be undone. It will be permanently removed.'
+            : 'You can restore it from Trash for 30 days.';
+          pending = () => {
+            items.splice(idx, 1); render();
+            toast({ variant: 'success', message: `Deleted “${item.name}”.` });
+          };
+          confirm.hidden = false;
+        } else {
+          const removed = items.splice(idx, 1)[0]; render();
+          const t = toast({
+            variant: 'neutral',
+            behavior: 'action',
+            message: `Deleted “${removed.name}”.`,
+            action: { label: 'Undo', onClick: () => { items.splice(idx, 0, removed); render(); } },
+          });
+          setTimeout(() => t.dismiss(), 5000);
+        }
+      };
+
+      lab.addEventListener('click', (e) => { if (e.target.closest('[data-pattern-reversibility] .segmented-item')) updateReco(); });
+      lab.querySelector('[data-pattern-reset]').addEventListener('click', () => { items = initial.map(i => ({ ...i })); render(); });
+
+      render();
+      updateReco();
+    });
+  </script>
+</body>
+</html>

@@ -12,12 +12,18 @@
     "designmd.snippet": "Canonical minimal markup — what Claude emits when building the feature in HTML/CSS.",
     "figma.component": "Exact Figma component / component-set name in the published library.",
     "figma.nodeId": "Component (set) node id, colon form (e.g. 1234:5678).",
-    "figma.propMap": "Maps Figma variant/property values -> designmd variant classes, e.g. {\"Variant\":{\"Primary\":\"btn-primary\"}}."
+    "figma.propMap": "Maps Figma variant/property values -> designmd variant classes, e.g. {\"Variant\":{\"Primary\":\"btn-primary\"}}.",
+    "react.block": "Cross-reference to the React/Storybook library (Picasso). Fields: component, import, storyId, status, propMap, note.",
+    "react.status": "mapped = clean 1:1 · partial = closest fit, see note · gap = no single Picasso component (compose).",
+    "slug": "Stable key stamped as data-component=\"<slug>\"; the ?map=1 inspector resolves it to this entry.",
+    "stampSelector": "CSS selector the inspector uses to auto-stamp data-component; omit to register without auto-stamping."
   },
   "components": [
     {
       "id": "buttons",
       "name": "Button",
+      "slug": "button",
+      "stampSelector": ".btn",
       "designmd": {
         "root": ".btn",
         "shortcode": "example.html#buttons",
@@ -38,11 +44,38 @@
         "status": "mapped",
         "note": "btn-icon-only → Button Icon (110:252)",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Button",
+        "import": "@toptal/picasso",
+        "storyId": "components-button--button",
+        "status": "mapped",
+        "propMap": {
+          "btn-primary": {
+            "variant": "primary"
+          },
+          "btn-secondary": {
+            "variant": "secondary"
+          },
+          "btn-danger": {
+            "variant": "negative"
+          },
+          "btn-ghost": {
+            "variant": "transparent"
+          },
+          "btn-xs": {
+            "size": "small"
+          }
+        },
+        "note": "propMap values best-effort — confirm against the Picasso Button story controls."
       }
     },
     {
       "id": "inputs",
       "name": "Input / Field",
+      "slug": "input",
+      "stampSelector": ".field",
       "designmd": {
         "root": ".field + .input",
         "shortcode": "example.html#inputs",
@@ -62,11 +95,29 @@
         "status": "mapped",
         "note": "Text area → Text Area Input (18295:63749)",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Input",
+        "import": "@toptal/picasso",
+        "storyId": "forms-input--input",
+        "status": "mapped",
+        "propMap": {
+          "is-error": {
+            "status": "error"
+          },
+          "input-xs": {
+            "size": "small"
+          }
+        },
+        "note": "Picasso groups inputs under Forms; propMap best-effort."
       }
     },
     {
       "id": "inputs",
       "name": "Select",
+      "slug": "select",
+      "stampSelector": ".input-select",
       "designmd": {
         "root": ".input-select",
         "shortcode": "example.html#inputs",
@@ -84,11 +135,21 @@
         "status": "mapped",
         "note": "Confirm Figma 'Dropdown' is the select control (not the action menu)",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Select",
+        "import": "@toptal/picasso",
+        "storyId": "forms-select--select",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "inputs",
       "name": "Tag input",
+      "slug": "tag-input",
+      "stampSelector": ".input-tags",
       "designmd": {
         "root": ".input-tags",
         "shortcode": "example.html#inputs",
@@ -106,11 +167,58 @@
         "status": "mapped",
         "note": "Lives inside the Forms component in Product Library v2.0 (node 18533:7493).",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "TagSelector",
+        "import": "@toptal/picasso",
+        "storyId": "forms-tagselector--tagselector",
+        "status": "mapped",
+        "propMap": {}
+      }
+    },
+    {
+      "id": "dropzone",
+      "name": "Dropzone",
+      "slug": "dropzone",
+      "stampSelector": ".dropzone",
+      "designmd": {
+        "root": ".dropzone",
+        "shortcode": "example.html#dropzone",
+        "variants": [
+          ".dropzone-field",
+          ".dropzone-input",
+          ".is-dragover",
+          ".is-disabled",
+          ".is-error",
+          ".dropzone-status",
+          ".dropzone-progress"
+        ],
+        "snippet": "<label class=\"dropzone\"><input class=\"dropzone-input\" type=\"file\"><svg class=\"icon icon-24 dropzone-icon\"><use href=\"#i-upload\"/></svg><p class=\"dropzone-title\">Click or drag to upload</p></label>"
+      },
+      "figma": {
+        "component": null,
+        "nodeId": null,
+        "key": null,
+        "status": "pending",
+        "note": "Added after the Figma import; node TBD.",
+        "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Dropzone",
+        "import": "@toptal/picasso",
+        "storyId": "forms-dropzone--dropzone",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Picasso groups it under Forms."
       }
     },
     {
       "id": "topbar",
       "name": "Top bar",
+      "slug": "topbar",
+      "stampSelector": ".topbar",
       "designmd": {
         "root": ".topbar",
         "shortcode": "example.html#topbar",
@@ -128,11 +236,22 @@
         "status": "skip",
         "note": "Not present in Product Library v2.0 — skip.",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Page.TopBar",
+        "import": "@toptal/picasso",
+        "storyId": "components-pagetopbar--pagetopbar",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Picasso composes it as Page.TopBar"
       }
     },
     {
       "id": "sidenav-demo",
       "name": "Side navigation",
+      "slug": "sidenav",
+      "stampSelector": ".sidenav",
       "designmd": {
         "root": ".sidenav",
         "shortcode": "example.html#sidenav-demo",
@@ -151,11 +270,41 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Page.Sidebar",
+        "import": "@toptal/picasso",
+        "storyId": "components-pagesidebar--pagesidebar",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Picasso composes it as Page.Sidebar (with Page.Sidebar.Menu / Page.Sidebar.Item inside)."
+      }
+    },
+    {
+      "id": "sidenav-demo",
+      "name": "Sidebar item",
+      "slug": "sidenav-item",
+      "stampSelector": ".sidenav-item",
+      "designmd": {
+        "root": ".sidenav-item",
+        "shortcode": "example.html#sidenav-demo"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Page.Sidebar.Item",
+        "import": "@toptal/picasso",
+        "storyId": "components-pagesidebar--pagesidebar",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Row within Page.Sidebar.Menu."
       }
     },
     {
       "id": "switches",
       "name": "Switch",
+      "slug": "switch",
+      "stampSelector": ".switch",
       "designmd": {
         "root": ".switch",
         "shortcode": "example.html#switches",
@@ -172,11 +321,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Switch",
+        "import": "@toptal/picasso",
+        "storyId": "forms-switch--switch",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "radios",
       "name": "Radio",
+      "slug": "radio",
+      "stampSelector": ".radio",
       "designmd": {
         "root": ".radio",
         "shortcode": "example.html#radios",
@@ -195,11 +354,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Radio",
+        "import": "@toptal/picasso",
+        "storyId": "forms-radio--radio",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "checkboxes",
       "name": "Checkbox",
+      "slug": "checkbox",
+      "stampSelector": ".checkbox",
       "designmd": {
         "root": ".checkbox",
         "shortcode": "example.html#checkboxes",
@@ -218,11 +387,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Checkbox",
+        "import": "@toptal/picasso",
+        "storyId": "forms-checkbox--checkbox",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "sliders",
       "name": "Slider",
+      "slug": "slider",
+      "stampSelector": ".slider",
       "designmd": {
         "root": ".slider + .slider-input",
         "shortcode": "example.html#sliders",
@@ -241,11 +420,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Slider",
+        "import": "@toptal/picasso",
+        "storyId": "components-slider--slider",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "tags",
       "name": "Tag",
+      "slug": "tag",
+      "stampSelector": ".tag",
       "designmd": {
         "root": ".tag",
         "shortcode": "example.html#tags",
@@ -268,11 +457,21 @@
         "status": "mapped",
         "note": "Solid rectangular; alts: Tag Filled 18164:1804 / Tag Outlined 665:14182",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Tag",
+        "import": "@toptal/picasso",
+        "storyId": "components-tag--tag",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "tags",
       "name": "Status pill",
+      "slug": "status-pill",
+      "stampSelector": ".badge",
       "designmd": {
         "root": ".badge",
         "shortcode": "example.html#tags",
@@ -293,11 +492,22 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Tag",
+        "import": "@toptal/picasso",
+        "storyId": "components-tag--tag",
+        "status": "partial",
+        "propMap": {},
+        "note": "designmd status pill ≈ a colored Picasso Tag; no dedicated status-pill component"
       }
     },
     {
       "id": "badges",
       "name": "Count badge",
+      "slug": "count-badge",
+      "stampSelector": ".count-badge",
       "designmd": {
         "root": ".count-badge",
         "shortcode": "example.html#badges",
@@ -315,11 +525,21 @@
         "status": "mapped",
         "note": "Shared Badge component (Style/Size variants) — same node as Status pill.",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Badge",
+        "import": "@toptal/picasso",
+        "storyId": "components-badge--badge",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "avatars",
       "name": "Avatar",
+      "slug": "avatar",
+      "stampSelector": ".avatar",
       "designmd": {
         "root": ".avatar",
         "shortcode": "example.html#avatars",
@@ -341,11 +561,21 @@
         "status": "mapped",
         "note": "team → Avatar Icon 463:15418 / talent → Avatar Talent 463:15416",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Avatar",
+        "import": "@toptal/picasso",
+        "storyId": "components-avatar--avatar",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "alerts",
       "name": "Alert",
+      "slug": "alert",
+      "stampSelector": ".alert",
       "designmd": {
         "root": ".alert",
         "shortcode": "example.html#alerts",
@@ -365,11 +595,35 @@
         "status": "mapped",
         "note": "Inline → Alert Inline 146:2482",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Alert",
+        "import": "@toptal/picasso",
+        "storyId": "components-alert--alert",
+        "status": "mapped",
+        "propMap": {
+          "alert-danger": {
+            "variant": "red"
+          },
+          "alert-warning": {
+            "variant": "yellow"
+          },
+          "alert-success": {
+            "variant": "green"
+          },
+          "alert-info": {
+            "variant": "blue"
+          }
+        },
+        "note": "Alert variant values best-effort — confirm against Picasso Alert controls."
       }
     },
     {
       "id": "toasts",
       "name": "Toast",
+      "slug": "toast",
+      "stampSelector": ".toast",
       "designmd": {
         "root": ".toast-region + .toast",
         "shortcode": "example.html#toasts",
@@ -389,11 +643,38 @@
         "status": "mapped",
         "note": "Transient toast ≈ Notification — confirm",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Notification",
+        "import": "@toptal/picasso",
+        "storyId": "components-notification--notification",
+        "status": "mapped",
+        "propMap": {
+          "toast-error": {
+            "variant": "red"
+          },
+          "toast-success": {
+            "variant": "green"
+          },
+          "toast-warning": {
+            "variant": "yellow"
+          },
+          "toast-info": {
+            "variant": "blue"
+          },
+          "toast-neutral": {
+            "variant": "grey"
+          }
+        },
+        "note": "Name mismatch: designmd Toast ≈ Picasso Notification. propMap best-effort — confirm variant values."
       }
     },
     {
       "id": "loaders",
       "name": "Loader (chase)",
+      "slug": "loader",
+      "stampSelector": ".chase, .chase-cw",
       "designmd": {
         "root": ".chase / .chase-cw",
         "shortcode": "example.html#loaders",
@@ -411,11 +692,21 @@
         "status": "mapped",
         "note": "Skeleton → Skeleton 9669:34027",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Loader",
+        "import": "@toptal/picasso",
+        "storyId": "components-loader--loader",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "dropdowns",
       "name": "Dropdown menu",
+      "slug": "dropdown",
+      "stampSelector": ".dropdown",
       "designmd": {
         "root": ".dropdown",
         "shortcode": "example.html#dropdowns",
@@ -436,11 +727,60 @@
         "status": "mapped",
         "note": "Overlaps Select mapping; nested → Multilevel 17970:4459",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Dropdown",
+        "import": "@toptal/picasso",
+        "storyId": "components-dropdown--dropdown",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Trigger + popup. The list inside is a Menu; rows are Menu.Item — see those entries."
+      }
+    },
+    {
+      "id": "dropdowns",
+      "name": "Menu",
+      "slug": "dropdown-menu",
+      "stampSelector": ".dropdown-menu",
+      "designmd": {
+        "root": ".dropdown-menu",
+        "shortcode": "example.html#dropdowns"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Menu",
+        "import": "@toptal/picasso",
+        "storyId": "components-menu--menu",
+        "status": "mapped",
+        "propMap": {},
+        "note": "The list rendered inside a Dropdown."
+      }
+    },
+    {
+      "id": "dropdowns",
+      "name": "Menu item",
+      "slug": "dropdown-item",
+      "stampSelector": ".dropdown-item",
+      "designmd": {
+        "root": ".dropdown-item",
+        "shortcode": "example.html#dropdowns"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Menu.Item",
+        "import": "@toptal/picasso",
+        "storyId": "components-menu--menu",
+        "status": "mapped",
+        "propMap": {},
+        "note": "A row within a Picasso Menu."
       }
     },
     {
       "id": "modals",
       "name": "Modal",
+      "slug": "modal",
+      "stampSelector": ".modal",
       "designmd": {
         "root": ".modal-overlay + .modal",
         "shortcode": "example.html#modals",
@@ -460,11 +800,35 @@
         "status": "mapped",
         "note": "Full screen → Full Screen Modal 12713:42200",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Modal",
+        "import": "@toptal/picasso",
+        "storyId": "overlays-modal--modal",
+        "status": "mapped",
+        "propMap": {
+          "modal-sm": {
+            "size": "small"
+          },
+          "modal-md": {
+            "size": "medium"
+          },
+          "modal-lg": {
+            "size": "large"
+          },
+          "modal-xl": {
+            "size": "large"
+          }
+        },
+        "note": "propMap sizes best-effort — confirm against Picasso Modal."
       }
     },
     {
       "id": "drawers",
       "name": "Drawer",
+      "slug": "drawer",
+      "stampSelector": ".drawer",
       "designmd": {
         "root": ".drawer-overlay + .drawer",
         "shortcode": "example.html#drawers",
@@ -485,11 +849,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Drawer",
+        "import": "@toptal/picasso",
+        "storyId": "components-drawer--drawer",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "breadcrumbs",
       "name": "Breadcrumbs",
+      "slug": "breadcrumbs",
+      "stampSelector": ".breadcrumbs",
       "designmd": {
         "root": ".breadcrumbs + .breadcrumb",
         "shortcode": "example.html#breadcrumbs",
@@ -505,11 +879,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Breadcrumbs",
+        "import": "@toptal/picasso",
+        "storyId": "components-breadcrumbs--breadcrumbs",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "page-heads",
       "name": "Page head",
+      "slug": "page-head",
+      "stampSelector": ".page-head",
       "designmd": {
         "root": ".page-head",
         "shortcode": "example.html#page-heads",
@@ -529,11 +913,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "PageHead",
+        "import": "@toptal/picasso",
+        "storyId": "components-pagehead--pagehead",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "tabs",
       "name": "Tabs",
+      "slug": "tabs",
+      "stampSelector": ".tabs",
       "designmd": {
         "root": ".tabs + .tab",
         "shortcode": "example.html#tabs",
@@ -549,11 +943,21 @@
         "status": "mapped",
         "note": "Full-width → Tabs Full Width 14488:4136; vertical → Vertical Tabs 1405:15300",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Tabs",
+        "import": "@toptal/picasso",
+        "storyId": "layout-tabs--tabs",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "stepper",
       "name": "Stepper",
+      "slug": "stepper",
+      "stampSelector": ".stepper",
       "designmd": {
         "root": ".stepper",
         "shortcode": "example.html#stepper",
@@ -574,11 +978,21 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Stepper",
+        "import": "@toptal/picasso",
+        "storyId": "components-stepper--stepper",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "tooltips",
       "name": "Tooltip",
+      "slug": "tooltip",
+      "stampSelector": "[data-tooltip]",
       "designmd": {
         "root": "[data-tooltip]",
         "shortcode": "example.html#tooltips",
@@ -595,11 +1009,21 @@
         "status": "mapped",
         "note": "Regular variant → Tooltip Regular 78:141",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Tooltip",
+        "import": "@toptal/picasso",
+        "storyId": "overlays-tooltip--tooltip",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "cards",
       "name": "Card",
+      "slug": "card",
+      "stampSelector": ".card",
       "designmd": {
         "root": ".card",
         "shortcode": "example.html#cards",
@@ -616,11 +1040,22 @@
         "status": "mapped",
         "note": "No dedicated Card; Container is closest — confirm",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Container",
+        "import": "@toptal/picasso",
+        "storyId": "layout-paper--paper",
+        "status": "partial",
+        "propMap": {},
+        "note": "no Picasso Card; nearest is Paper/Container"
       }
     },
     {
       "id": "tables",
       "name": "Table",
+      "slug": "table",
+      "stampSelector": ".table:not(.table-sheet)",
       "designmd": {
         "root": ".table",
         "shortcode": "example.html#tables",
@@ -641,11 +1076,21 @@
         "status": "mapped",
         "note": "Tables composed from .Table/X parts; Table Cell is the atomic unit",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Table",
+        "import": "@toptal/picasso",
+        "storyId": "components-table--table",
+        "status": "mapped",
+        "propMap": {}
       }
     },
     {
       "id": "toolbar",
       "name": "Toolbar",
+      "slug": "toolbar",
+      "stampSelector": ".toolbar",
       "designmd": {
         "root": ".toolbar",
         "shortcode": "example.html#toolbar",
@@ -664,11 +1109,22 @@
         "status": "mapped-external",
         "note": "Not in Product Library — lives in the Operationalize file (16080:28887).",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": null,
+        "import": "@toptal/picasso",
+        "storyId": null,
+        "status": "gap",
+        "propMap": {},
+        "note": "composite — no single Picasso component; assemble from Input (search), Select (filters), Button and Tabs"
       }
     },
     {
       "id": "toolbar",
       "name": "Segmented",
+      "slug": "segmented",
+      "stampSelector": ".segmented",
       "designmd": {
         "root": ".segmented",
         "shortcode": "example.html#toolbar",
@@ -686,11 +1142,22 @@
         "status": "mapped",
         "note": "",
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Tabs",
+        "import": "@toptal/picasso",
+        "storyId": "layout-tabs--tabs",
+        "status": "partial",
+        "propMap": {},
+        "note": "Picasso has no dedicated segmented control; Tabs cover view/period switching"
       }
     },
     {
       "id": "sheet",
       "name": "Sheet",
+      "slug": "sheet",
+      "stampSelector": ".table-sheet",
       "designmd": {
         "root": ".table.table-sheet",
         "shortcode": "example.html#sheet",
@@ -728,11 +1195,22 @@
           }
         ],
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Table",
+        "import": "@toptal/picasso",
+        "storyId": "components-table--table",
+        "status": "partial",
+        "propMap": {},
+        "note": "editable spreadsheet grid; Picasso Table is static/tabular only"
       }
     },
     {
       "id": "pictograms",
       "name": "Pictogram",
+      "slug": "pictogram",
+      "stampSelector": ".pictogram",
       "designmd": {
         "root": ".pictogram",
         "shortcode": "example.html#pictograms",
@@ -759,11 +1237,21 @@
           "team": "1187:2168"
         },
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Pictogram",
+        "import": "@toptal/picasso-pictograms",
+        "storyId": "picasso-pictograms-pictograms--pictograms",
+        "status": "partial",
+        "propMap": {},
+        "note": "cross-ref to the Picasso Pictograms library"
       }
     },
     {
       "id": "iconography",
       "name": "Icons",
+      "slug": "icon",
       "designmd": {
         "root": ".icon",
         "shortcode": "example.html#iconography",
@@ -821,6 +1309,15 @@
           "x": "close"
         },
         "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Icon",
+        "import": "@toptal/picasso",
+        "storyId": "components-icons--icons",
+        "status": "partial",
+        "propMap": {},
+        "note": "designmd uses a custom Figma icon sprite, not Picasso's icon set; not auto-stamped (too granular)"
       }
     }
   ]
