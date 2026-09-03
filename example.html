@@ -42,13 +42,16 @@
       color: var(--color-text-subtle);
       text-transform: uppercase;
     }
-    /* Picasso cross-reference — shown only on swatches that map to a Picasso
-       color. Extras (no Picasso equivalent) stay unlinked (no line). */
+    /* Picasso cross-reference — only on swatches that map to a Picasso color
+       (extras stay unlinked), and only while the component map is enabled
+       (goggles / ?map=1), matching the rest of the inspector layer. */
     .swatch-picasso {
+      display: none;
       font: var(--ic-weight-medium) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
       color: #E5308C;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+    .is-map-mode .swatch-picasso { display: block; }
 
     .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--ic-space-5); align-items: center; }
     .ramp-name { font: var(--type-h4); color: var(--color-text); }
