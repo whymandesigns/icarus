@@ -278,7 +278,26 @@
         "storyId": "components-pagesidebar--pagesidebar",
         "status": "mapped",
         "propMap": {},
-        "note": "Picasso composes it as Page.Sidebar"
+        "note": "Picasso composes it as Page.Sidebar (with Page.Sidebar.Menu / Page.Sidebar.Item inside)."
+      }
+    },
+    {
+      "id": "sidenav-demo",
+      "name": "Sidebar item",
+      "slug": "sidenav-item",
+      "stampSelector": ".sidenav-item",
+      "designmd": {
+        "root": ".sidenav-item",
+        "shortcode": "example.html#sidenav-demo"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Page.Sidebar.Item",
+        "import": "@toptal/picasso",
+        "storyId": "components-pagesidebar--pagesidebar",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Row within Page.Sidebar.Menu."
       }
     },
     {
