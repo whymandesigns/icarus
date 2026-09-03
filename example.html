@@ -42,6 +42,13 @@
       color: var(--color-text-subtle);
       text-transform: uppercase;
     }
+    /* Picasso cross-reference — shown only on swatches that map to a Picasso
+       color. Extras (no Picasso equivalent) stay unlinked (no line). */
+    .swatch-picasso {
+      font: var(--ic-weight-medium) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
+      color: #E5308C;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
 
     .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--ic-space-5); align-items: center; }
     .ramp-name { font: var(--type-h4); color: var(--color-text); }
@@ -4440,17 +4447,51 @@
     const css = getComputedStyle(document.documentElement);
     const root = document.getElementById('palette-root');
 
+    // Picasso color cross-reference. Only tokens that have a Picasso equivalent
+    // are listed; every other shade is an intentional extra and stays unlinked.
+    // Source: https://toptal.github.io/picasso/?path=/story/utils-colors--colors
+    const PICASSO_COLOR = {
+      '--ic-palette-white': 'common.white',
+      '--ic-palette-black': 'common.black',
+      '--ic-palette-gray-100': 'grey.lightest',
+      '--ic-palette-gray-150': 'grey.lighter',
+      '--ic-palette-gray-200': 'grey.lighter2',
+      '--ic-palette-gray-300': 'grey.light',
+      '--ic-palette-gray-400': 'grey.light2',
+      '--ic-palette-gray-500': 'grey.main',
+      '--ic-palette-gray-600': 'grey.main2',
+      '--ic-palette-graphite-500': 'grey.dark',
+      '--ic-palette-graphite-800': 'grey.darker',
+      '--ic-palette-red-100': 'red.lighter',
+      '--ic-palette-red-500': 'red.main',
+      '--ic-palette-yellow-100': 'yellow.lighter',
+      '--ic-palette-yellow-500': 'yellow.main',
+      '--ic-palette-green-100': 'green.lighter',
+      '--ic-palette-green-500': 'green.main',
+      '--ic-palette-green-600': 'green.dark',
+      '--ic-palette-green-700': 'green.darker',
+      '--ic-palette-cyan-500': 'blue.light',
+      '--ic-palette-blue-100': 'blue.lighter',
+      '--ic-palette-blue-500': 'blue.main',
+      '--ic-palette-blue-600': 'blue.dark',
+      '--ic-palette-blue-700': 'blue.darker',
+      '--ic-palette-purple-500': 'purple.main',
+    };
+
     const swatch = (token) => {
       const hex = css.getPropertyValue(token).trim().toUpperCase();
       // Drop "--ic-palette-{ramp}-" so the label is just the shade ("100", "white").
       // Full token shows on hover via the title attribute.
       const short = token.replace(/^--ic-palette-([a-z]+-)?/, '');
+      const picasso = PICASSO_COLOR[token];
+      const picassoLine = picasso ? `<code class="swatch-picasso" title="Picasso ${picasso}">◆ ${picasso}</code>` : '';
       return `
         <div class="swatch-card" title="${token}">
           <div class="swatch" style="background: var(${token})"></div>
           <div class="swatch-label">
             <code class="swatch-token">${short}</code>
             <code class="swatch-hex">${hex}</code>
+            ${picassoLine}
           </div>
         </div>`;
     };

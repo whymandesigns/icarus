@@ -28,13 +28,13 @@
   --ic-palette-black: #000000;
 
   /* Gray */
-  --ic-palette-gray-100: #FCFCFC;
-  --ic-palette-gray-150: #F0F1F3;
-  --ic-palette-gray-200: #E0E1E5;
-  --ic-palette-gray-300: #CCCDD3;
-  --ic-palette-gray-400: #B3B5BC;
-  --ic-palette-gray-500: #999BA4;
-  --ic-palette-gray-600: #84888E;
+  --ic-palette-gray-100: #FCFCFC;   /* Picasso grey.lightest */
+  --ic-palette-gray-150: #F3F4F6;   /* Picasso grey.lighter */
+  --ic-palette-gray-200: #EBECED;   /* Picasso grey.lighter2 */
+  --ic-palette-gray-300: #E5E7EA;   /* Picasso grey.light */
+  --ic-palette-gray-400: #D8D9DC;   /* Picasso grey.light2 */
+  --ic-palette-gray-500: #C4C6CA;   /* Picasso grey.main */
+  --ic-palette-gray-600: #84888E;   /* Picasso grey.main2 */
   --ic-palette-gray-700: #5F636A;
   --ic-palette-gray-800: #3D4149;
   --ic-palette-gray-900: #24272D;
