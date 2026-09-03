@@ -362,7 +362,7 @@
 
       <section class="stack" id="type">
         <h3 class="h3">Type scale</h3>
-        <div class="card stack" style="gap: var(--ic-space-3)">
+        <div class="card stack" style="gap: var(--ic-space-3)" data-no-map>
           <h1 class="h1">H1 — Page titles (28/42)</h1>
           <h2 class="h2">H2 — Section heads (20/30)</h2>
           <h3 class="h3">H3 — Subheads (16/24)</h3>
@@ -375,7 +375,7 @@
           <p class="caption">CAPTION — 12/18, micro labels and timestamps.</p>
         </div>
         <h4 class="h4" style="margin-top: var(--ic-space-2)">Semibold body</h4>
-        <div class="card stack" style="gap: var(--ic-space-3)">
+        <div class="card stack" style="gap: var(--ic-space-3)" data-no-map>
           <p class="body-lg-semibold">Body large semibold — 16/24, emphasis in lead copy.</p>
           <p class="body-semibold">Body medium semibold — 14/22, inline emphasis and labels.</p>
           <p class="body-sm-semibold">Body small semibold — 13/20, buttons and strong metadata.</p>
@@ -4697,12 +4697,48 @@
         (map.components || []).forEach(c => { if (c.slug) bySlug[c.slug] = c; });
 
         // Stamp data-component from each entry's stampSelector (idempotent).
+        // Elements marked data-no-map (or inside one) opt out — e.g. the type
+        // scale cards, where the focus is the fonts, not the card container.
         (map.components || []).forEach(c => {
           if (!c.slug || !c.stampSelector) return;
           document.querySelectorAll(c.stampSelector).forEach(el => {
+            if (el.closest('[data-no-map]')) return;
             if (!el.hasAttribute('data-component')) el.setAttribute('data-component', c.slug);
           });
         });
+
+        // Type scale → Picasso Tailwind font tokens (size/line-height + weight +
+        // family), verified by value. Scoped to the #type demo cards so only the
+        // samples are annotated — not every heading on the page.
+        const FONT_MAP = {
+          'h1':  { role: 'H1', size: '28 / 42', cls: 'text-2xl font-semibold font-sans' },
+          'h2':  { role: 'H2', size: '20 / 30', cls: 'text-xl font-semibold font-sans' },
+          'h3':  { role: 'H3', size: '16 / 24', cls: 'text-lg font-semibold font-sans' },
+          'h4':  { role: 'H4', size: '14 / 22', cls: 'text-md font-semibold font-sans' },
+          'body-lg':  { role: 'Body large', size: '16 / 24', cls: 'text-lg font-regular font-sans' },
+          'body':     { role: 'Body medium', size: '14 / 22', cls: 'text-md font-regular font-sans' },
+          'body-sm':  { role: 'Body small', size: '13 / 20', cls: 'text-sm font-regular font-sans' },
+          'body-xs':  { role: 'Body xsmall', size: '12 / 18', cls: 'text-xxs font-regular font-sans' },
+          'body-xxs': { role: 'Body xxsmall', size: '11 / 16', cls: 'text-2xs font-regular font-sans' },
+          'caption':  { role: 'Caption', size: '12 / 18', cls: 'text-xxs font-sans', note: 'font-weight 500 (medium) has no Picasso token' },
+          'body-lg-semibold':  { role: 'Body large semibold', size: '16 / 24', cls: 'text-lg font-semibold font-sans' },
+          'body-semibold':     { role: 'Body medium semibold', size: '14 / 22', cls: 'text-md font-semibold font-sans' },
+          'body-sm-semibold':  { role: 'Body small semibold', size: '13 / 20', cls: 'text-sm font-semibold font-sans' },
+          'body-xs-semibold':  { role: 'Body xsmall semibold', size: '12 / 18', cls: 'text-xxs font-semibold font-sans' },
+          'body-xxs-semibold': { role: 'Body xxsmall semibold', size: '11 / 16', cls: 'text-2xs font-semibold font-sans' },
+        };
+        const typeSection = document.getElementById('type');
+        if (typeSection) {
+          typeSection.querySelectorAll('.card [class]').forEach(el => {
+            const key = Object.keys(FONT_MAP).find(k => el.classList.contains(k));
+            if (!key) return;
+            const f = FONT_MAP[key];
+            el.setAttribute('data-picasso-font', f.cls);
+            el.setAttribute('data-picasso-font-role', f.role);
+            el.setAttribute('data-picasso-font-size', f.size);
+            if (f.note) el.setAttribute('data-picasso-font-note', f.note);
+          });
+        }
         if (!active) return;
         document.documentElement.classList.add('is-map-mode');
 
@@ -4768,7 +4804,39 @@
           place(el);
         };
 
+        // Type sample popover — Picasso Tailwind font tokens.
+        const showFont = (el) => {
+          pop.innerHTML = '';
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = el.dataset.picassoFontRole;
+          pop.appendChild(head);
+          const code = document.createElement('code');
+          code.className = 'map-pop-code';
+          code.textContent = el.dataset.picassoFont;
+          pop.appendChild(code);
+          const meta = document.createElement('div');
+          meta.className = 'map-pop-meta';
+          meta.textContent = el.dataset.picassoFontSize + '  ·  Picasso Tailwind';
+          pop.appendChild(meta);
+          if (el.dataset.picassoFontNote) {
+            const n = document.createElement('div');
+            n.className = 'map-pop-note';
+            n.textContent = el.dataset.picassoFontNote;
+            pop.appendChild(n);
+          }
+          const a = document.createElement('a');
+          a.className = 'map-pop-link';
+          a.href = STORYBOOK + 'contribution-tailwind-tokens--tailwind-tokens';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Open in Storybook ↗';
+          pop.appendChild(a);
+          place(el);
+        };
+
         const show = (el) => {
+          if (el.hasAttribute('data-picasso-font')) return showFont(el);
           if (el.hasAttribute('data-picasso-color')) return showColor(el);
           const c = bySlug[el.getAttribute('data-component')];
           if (!c) return;
@@ -4813,7 +4881,7 @@
           place(el);
         };
 
-        const SEL = '[data-component],[data-picasso-color]';
+        const SEL = '[data-component],[data-picasso-color],[data-picasso-font]';
         document.addEventListener('mouseover', (e) => {
           const el = e.target.closest(SEL);
           if (!el) return;
