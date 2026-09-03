@@ -4504,15 +4504,28 @@
 
     // Radii
     const radii = ['none','sm','md','lg','xl'].map(k => `--ic-radius-${k}`);
+    // Picasso Tailwind border-radius tokens (only none/sm/md/full exist there);
+    // lg & xl are intentional extras and stay unlinked.
+    const PICASSO_RADIUS = {
+      '--ic-radius-none': 'rounded-none',
+      '--ic-radius-sm': 'rounded-sm',
+      '--ic-radius-md': 'rounded-md',
+      '--ic-radius-full': 'rounded-full',
+    };
     const radiiRoot = document.getElementById('radii-root');
     radii.forEach(token => {
       const value = css.getPropertyValue(token).trim();
       const display = token === '--ic-radius-full' ? 'pill' : value;
+      const label = token.replace('--ic-radius-', '');
+      const rounded = PICASSO_RADIUS[token];
+      const dataAttrs = rounded
+        ? ` data-picasso-radius="${rounded}" data-picasso-radius-token="${label}" data-picasso-radius-value="${display}"`
+        : '';
       const card = document.createElement('div');
       card.className = 'radius-card';
       card.innerHTML = `
-        <div class="radius-shape" style="border-radius: var(${token})"></div>
-        <code class="radius-token">${token.replace('--ic-radius-', '')}</code>
+        <div class="radius-shape" style="border-radius: var(${token})"${dataAttrs}></div>
+        <code class="radius-token">${label}</code>
         <code class="radius-value">${display}</code>
       `;
       radiiRoot.appendChild(card);
@@ -4835,7 +4848,35 @@
           place(el);
         };
 
+        // Border-radius popover — Picasso Tailwind rounded-* token.
+        const showRadius = (el) => {
+          pop.innerHTML = '';
+          const ours = el.dataset.picassoRadiusToken;
+          const tw = el.dataset.picassoRadius;
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = ours + (tw !== ours ? ' → ' + tw : '');
+          pop.appendChild(head);
+          const code = document.createElement('code');
+          code.className = 'map-pop-code';
+          code.textContent = el.dataset.picassoRadiusValue;
+          pop.appendChild(code);
+          const meta = document.createElement('div');
+          meta.className = 'map-pop-meta';
+          meta.textContent = 'Picasso Tailwind token';
+          pop.appendChild(meta);
+          const a = document.createElement('a');
+          a.className = 'map-pop-link';
+          a.href = STORYBOOK + 'contribution-tailwind-tokens--tailwind-tokens';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Open in Storybook ↗';
+          pop.appendChild(a);
+          place(el);
+        };
+
         const show = (el) => {
+          if (el.hasAttribute('data-picasso-radius')) return showRadius(el);
           if (el.hasAttribute('data-picasso-font')) return showFont(el);
           if (el.hasAttribute('data-picasso-color')) return showColor(el);
           const c = bySlug[el.getAttribute('data-component')];
@@ -4881,7 +4922,7 @@
           place(el);
         };
 
-        const SEL = '[data-component],[data-picasso-color],[data-picasso-font]';
+        const SEL = '[data-component],[data-picasso-color],[data-picasso-font],[data-picasso-radius]';
         document.addEventListener('mouseover', (e) => {
           const el = e.target.closest(SEL);
           if (!el) return;
