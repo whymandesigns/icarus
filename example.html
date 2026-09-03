@@ -4440,35 +4440,44 @@
     const css = getComputedStyle(document.documentElement);
     const root = document.getElementById('palette-root');
 
-    // Picasso color cross-reference. Only tokens that have a Picasso equivalent
-    // are listed; every other shade is an intentional extra and stays unlinked.
-    // Source: https://toptal.github.io/picasso/?path=/story/utils-colors--colors
+    // Picasso color cross-reference — uses Picasso's Tailwind token names (which
+    // match our numbered convention), verified by value against the live styles.
+    // Only tokens with a Picasso equivalent are listed; every other shade is an
+    // intentional extra and stays unlinked. Names mostly match 1:1; a few differ
+    // (our gray-100→gray-50, gray-150→gray-100, cyan-500→blue-400, graphite-500→
+    // graphite-700) because Picasso's scale is offset at the edges.
+    // Source: https://toptal.github.io/picasso/?path=/story/contribution-tailwind-tokens--tailwind-tokens
     const PICASSO_COLOR = {
-      '--ic-palette-white': 'common.white',
-      '--ic-palette-black': 'common.black',
-      '--ic-palette-gray-100': 'grey.lightest',
-      '--ic-palette-gray-150': 'grey.lighter',
-      '--ic-palette-gray-200': 'grey.lighter2',
-      '--ic-palette-gray-300': 'grey.light',
-      '--ic-palette-gray-400': 'grey.light2',
-      '--ic-palette-gray-500': 'grey.main',
-      '--ic-palette-gray-600': 'grey.main2',
-      '--ic-palette-graphite-500': 'grey.dark',
-      '--ic-palette-graphite-800': 'grey.darker',
-      '--ic-palette-red-100': 'red.lighter',
-      '--ic-palette-red-500': 'red.main',
-      '--ic-palette-yellow-100': 'yellow.lighter',
-      '--ic-palette-yellow-500': 'yellow.main',
-      '--ic-palette-green-100': 'green.lighter',
-      '--ic-palette-green-500': 'green.main',
-      '--ic-palette-green-600': 'green.dark',
-      '--ic-palette-green-700': 'green.darker',
-      '--ic-palette-cyan-500': 'blue.light',
-      '--ic-palette-blue-100': 'blue.lighter',
-      '--ic-palette-blue-500': 'blue.main',
-      '--ic-palette-blue-600': 'blue.dark',
-      '--ic-palette-blue-700': 'blue.darker',
-      '--ic-palette-purple-500': 'purple.main',
+      '--ic-palette-white': 'white',
+      '--ic-palette-black': 'black',
+      '--ic-palette-gray-100': 'gray-50',
+      '--ic-palette-gray-150': 'gray-100',
+      '--ic-palette-gray-200': 'gray-200',
+      '--ic-palette-gray-300': 'gray-300',
+      '--ic-palette-gray-400': 'gray-400',
+      '--ic-palette-gray-500': 'gray-500',
+      '--ic-palette-gray-600': 'gray-600',
+      '--ic-palette-graphite-500': 'graphite-700',
+      '--ic-palette-graphite-800': 'graphite-800',
+      '--ic-palette-graphite-900': 'graphite-900',
+      '--ic-palette-red-100': 'red-100',
+      '--ic-palette-red-150': 'red-150',
+      '--ic-palette-red-500': 'red-500',
+      '--ic-palette-yellow-100': 'yellow-100',
+      '--ic-palette-yellow-150': 'yellow-150',
+      '--ic-palette-yellow-500': 'yellow-500',
+      '--ic-palette-green-100': 'green-100',
+      '--ic-palette-green-150': 'green-150',
+      '--ic-palette-green-500': 'green-500',
+      '--ic-palette-green-600': 'green-600',
+      '--ic-palette-green-700': 'green-700',
+      '--ic-palette-cyan-500': 'blue-400',
+      '--ic-palette-blue-100': 'blue-100',
+      '--ic-palette-blue-150': 'blue-150',
+      '--ic-palette-blue-500': 'blue-500',
+      '--ic-palette-blue-600': 'blue-600',
+      '--ic-palette-blue-700': 'blue-700',
+      '--ic-palette-purple-500': 'purple-500',
     };
 
     const swatch = (token) => {
@@ -4733,9 +4742,11 @@
         // Color swatch popover — mapped palette chips carry data-picasso-*.
         const showColor = (el) => {
           pop.innerHTML = '';
+          const ours = el.dataset.picassoToken;   // our token label, e.g. "gray-300"
+          const tw = el.dataset.picassoColor;      // Picasso Tailwind token
           const head = document.createElement('div');
           head.className = 'map-pop-head';
-          head.textContent = el.dataset.picassoToken + ' → ' + el.dataset.picassoColor;
+          head.textContent = ours + (tw !== ours ? ' → ' + tw : '');
           pop.appendChild(head);
           if (el.dataset.picassoHex) {
             const code = document.createElement('code');
@@ -4743,9 +4754,13 @@
             code.textContent = el.dataset.picassoHex;
             pop.appendChild(code);
           }
+          const meta = document.createElement('div');
+          meta.className = 'map-pop-meta';
+          meta.textContent = 'Picasso Tailwind token';
+          pop.appendChild(meta);
           const a = document.createElement('a');
           a.className = 'map-pop-link';
-          a.href = STORYBOOK + 'utils-colors--colors';
+          a.href = STORYBOOK + 'contribution-tailwind-tokens--tailwind-tokens';
           a.target = '_blank';
           a.rel = 'noopener';
           a.textContent = 'Open in Storybook ↗';
