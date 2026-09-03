@@ -42,16 +42,6 @@
       color: var(--color-text-subtle);
       text-transform: uppercase;
     }
-    /* Picasso cross-reference — only on swatches that map to a Picasso color
-       (extras stay unlinked), and only while the component map is enabled
-       (goggles / ?map=1), matching the rest of the inspector layer. */
-    .swatch-picasso {
-      display: none;
-      font: var(--ic-weight-medium) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
-      color: #E5308C;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .is-map-mode .swatch-picasso { display: block; }
 
     .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--ic-space-5); align-items: center; }
     .ramp-name { font: var(--type-h4); color: var(--color-text); }
@@ -4486,15 +4476,19 @@
       // Drop "--ic-palette-{ramp}-" so the label is just the shade ("100", "white").
       // Full token shows on hover via the title attribute.
       const short = token.replace(/^--ic-palette-([a-z]+-)?/, '');
+      const label = token.replace('--ic-palette-', '');
       const picasso = PICASSO_COLOR[token];
-      const picassoLine = picasso ? `<code class="swatch-picasso" title="Picasso ${picasso}">◆ ${picasso}</code>` : '';
+      // Mapped swatches carry the Picasso ref as data on the chip; the inspector
+      // (?map=1) outlines them and shows the ref on hover. Extras stay bare.
+      const dataAttrs = picasso
+        ? ` data-picasso-color="${picasso}" data-picasso-token="${label}" data-picasso-hex="${hex}"`
+        : '';
       return `
         <div class="swatch-card" title="${token}">
-          <div class="swatch" style="background: var(${token})"></div>
+          <div class="swatch" style="background: var(${token})"${dataAttrs}></div>
           <div class="swatch-label">
             <code class="swatch-token">${short}</code>
             <code class="swatch-hex">${hex}</code>
-            ${picassoLine}
           </div>
         </div>`;
     };
@@ -4724,7 +4718,43 @@
           return `<${comp}${attrs ? ' ' + attrs : ''} />`;
         };
 
+        // Position the popover next to the hovered element.
+        const place = (el) => {
+          pop.hidden = false;
+          const rect = el.getBoundingClientRect();
+          const pr = pop.getBoundingClientRect();
+          let top = rect.bottom + 8, left = rect.left;
+          if (left + pr.width > innerWidth - 8) left = innerWidth - pr.width - 8;
+          if (top + pr.height > innerHeight - 8) top = rect.top - pr.height - 8;
+          pop.style.top = Math.max(8, top) + 'px';
+          pop.style.left = Math.max(8, left) + 'px';
+        };
+
+        // Color swatch popover — mapped palette chips carry data-picasso-*.
+        const showColor = (el) => {
+          pop.innerHTML = '';
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = el.dataset.picassoToken + ' → ' + el.dataset.picassoColor;
+          pop.appendChild(head);
+          if (el.dataset.picassoHex) {
+            const code = document.createElement('code');
+            code.className = 'map-pop-code';
+            code.textContent = el.dataset.picassoHex;
+            pop.appendChild(code);
+          }
+          const a = document.createElement('a');
+          a.className = 'map-pop-link';
+          a.href = STORYBOOK + 'utils-colors--colors';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Open in Storybook ↗';
+          pop.appendChild(a);
+          place(el);
+        };
+
         const show = (el) => {
+          if (el.hasAttribute('data-picasso-color')) return showColor(el);
           const c = bySlug[el.getAttribute('data-component')];
           if (!c) return;
           const r = c.react || {};
@@ -4765,24 +4795,18 @@
               pop.appendChild(n);
             }
           }
-          pop.hidden = false;
-          const rect = el.getBoundingClientRect();
-          const pr = pop.getBoundingClientRect();
-          let top = rect.bottom + 8, left = rect.left;
-          if (left + pr.width > innerWidth - 8) left = innerWidth - pr.width - 8;
-          if (top + pr.height > innerHeight - 8) top = rect.top - pr.height - 8;
-          pop.style.top = Math.max(8, top) + 'px';
-          pop.style.left = Math.max(8, left) + 'px';
+          place(el);
         };
 
+        const SEL = '[data-component],[data-picasso-color]';
         document.addEventListener('mouseover', (e) => {
-          const el = e.target.closest('[data-component]');
+          const el = e.target.closest(SEL);
           if (!el) return;
           cancelHide();
           show(el);
         });
         document.addEventListener('mouseout', (e) => {
-          if (e.target.closest('[data-component]') && !e.relatedTarget?.closest('.map-pop')) scheduleHide();
+          if (e.target.closest(SEL) && !e.relatedTarget?.closest('.map-pop')) scheduleHide();
         });
         window.addEventListener('scroll', () => { pop.hidden = true; }, true);
       }).catch(() => {});
