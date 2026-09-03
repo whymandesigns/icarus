@@ -178,6 +178,43 @@
       }
     },
     {
+      "id": "dropzone",
+      "name": "Dropzone",
+      "slug": "dropzone",
+      "stampSelector": ".dropzone",
+      "designmd": {
+        "root": ".dropzone",
+        "shortcode": "example.html#dropzone",
+        "variants": [
+          ".dropzone-field",
+          ".dropzone-input",
+          ".is-dragover",
+          ".is-disabled",
+          ".is-error",
+          ".dropzone-status",
+          ".dropzone-progress"
+        ],
+        "snippet": "<label class=\"dropzone\"><input class=\"dropzone-input\" type=\"file\"><svg class=\"icon icon-24 dropzone-icon\"><use href=\"#i-upload\"/></svg><p class=\"dropzone-title\">Click or drag to upload</p></label>"
+      },
+      "figma": {
+        "component": null,
+        "nodeId": null,
+        "key": null,
+        "status": "pending",
+        "note": "Added after the Figma import; node TBD.",
+        "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Dropzone",
+        "import": "@toptal/picasso",
+        "storyId": "forms-dropzone--dropzone",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Picasso groups it under Forms."
+      }
+    },
+    {
       "id": "topbar",
       "name": "Top bar",
       "slug": "topbar",
