@@ -227,7 +227,7 @@
           <div class="modal modal-xs">
             <header class="modal-header">
               <h2 class="modal-title" data-confirm-title>Delete item?</h2>
-              <button class="modal-close" data-modal-close aria-label="Close" type="button"><svg><use href="#i-x"/></svg></button>
+              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body" data-confirm-body></div>
             <footer class="modal-footer">
@@ -282,7 +282,7 @@
       el.className = `toast toast-${variant} is-entering`;
       el.setAttribute('role', variant === 'error' ? 'alert' : 'status');
       const actionHTML = behavior === 'action' && action ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
-      const closeHTML  = behavior !== 'timed' ? `<button type="button" class="toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>` : '';
+      const closeHTML  = behavior !== 'timed' ? `<button type="button" class="btn btn-icon-only btn-ghost btn-xs toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>` : '';
       el.innerHTML = `<svg class="icon toast-icon"><use href="#i-${icon || defaultIcon}"/></svg><p class="toast-message"></p>${actionHTML}${closeHTML}`;
       el.querySelector('.toast-message').textContent = message;
       region.appendChild(el);
