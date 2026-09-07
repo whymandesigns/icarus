@@ -3506,6 +3506,11 @@
         const kebab = n.replace(/(?<=[a-z0-9])(?=[A-Z])/g,'-').replace(/(?<=[A-Z])(?=[A-Z][a-z])/g,'-').toLowerCase();
         iconMap[kebab] = n;
       });
+      // Same glyph, different naming — exact-name matching can't catch these.
+      Object.assign(iconMap, {
+        'cpu-2': 'Cpu2', 'flag-2': 'Flag2',
+        'rank-1': 'RankOne', 'rank-2': 'RankTwo', 'rank-3': 'RankThree',
+      });
       fetch('icons.index.json').then(r => r.json()).then(data => {
         const icons = data.icons.slice().sort((a, b) => a.slug.localeCompare(b.slug));
         const render = (q = '') => {

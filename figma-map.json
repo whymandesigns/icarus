@@ -1317,7 +1317,7 @@
         "storyId": "components-icons--icons",
         "status": "partial",
         "propMap": {},
-        "note": "Custom Figma pack aligned with Picasso's icon set — 230 of 320 slugs match a Picasso icon by name (cross-referenced per-icon in the ?map=1 gallery); the rest are custom extras. Not auto-stamped page-wide (too granular)."
+        "note": "Custom Figma pack aligned with Picasso's icon set — 235 of 320 slugs match a Picasso icon (cross-referenced per-icon in the ?map=1 gallery). The remaining ~85 are Operationalize-specific extras with no Picasso equivalent. Not auto-stamped page-wide (too granular)."
       }
     }
   ]
