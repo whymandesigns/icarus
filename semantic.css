@@ -73,18 +73,18 @@
 
 /* ---- Dark theme override ---- */
 [data-theme="dark"] {
-  --color-bg:             var(--ic-palette-graphite-900);
-  --color-surface:        var(--ic-palette-graphite-800);
-  --color-surface-muted:  var(--ic-palette-graphite-700);
-  --color-surface-sunken: var(--ic-palette-graphite-900);
+  --color-bg:             var(--ic-palette-zinc-900);
+  --color-surface:        var(--ic-palette-zinc-800);
+  --color-surface-muted:  var(--ic-palette-zinc-700);
+  --color-surface-sunken: var(--ic-palette-zinc-900);
 
-  --color-border:         var(--ic-palette-graphite-600);
-  --color-border-strong:  var(--ic-palette-graphite-500);
+  --color-border:         var(--ic-palette-zinc-600);
+  --color-border-strong:  var(--ic-palette-zinc-500);
 
   --color-text:           var(--ic-palette-gray-100);
   --color-text-muted:     var(--ic-palette-gray-400);
   --color-text-subtle:    var(--ic-palette-gray-600);
-  --color-text-inverse:   var(--ic-palette-graphite-900);
+  --color-text-inverse:   var(--ic-palette-zinc-900);
   --color-icon:           var(--ic-palette-graphite-300);   /* lighter graphite for dark mode */
 
   --color-brand:          var(--ic-palette-green-400);

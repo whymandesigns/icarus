@@ -44,12 +44,13 @@ Three layers. Don't skip them.
 
 ### Primitive palette (`tokens.css`)
 
-8 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
+9 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
 
 | Ramp | Role |
 |---|---|
 | `gray` | Neutrals for surfaces, borders, text |
-| `graphite` | Dark chrome — topbar background, inverse text, and the dark-theme surfaces |
+| `zinc` | Dark theme neutrals |
+| `graphite` | Dark chrome — topbar background, inverse text on dark surfaces |
 | `red` | Danger / destructive |
 | `yellow` | Warning |
 | `green` | **Primary CTA** (`--color-brand`) — and success |
@@ -61,17 +62,17 @@ Three layers. Don't skip them.
 
 | Token | Light | Dark |
 |---|---|---|
-| `--color-bg` | gray-100 | graphite-900 |
-| `--color-surface` | white | graphite-800 |
-| `--color-surface-muted` | gray-150 | graphite-700 |
-| `--color-surface-sunken` | gray-200 | graphite-900 |
-| `--color-border` | gray-200 | graphite-600 |
-| `--color-border-strong` | gray-300 | graphite-500 |
+| `--color-bg` | gray-100 | zinc-900 |
+| `--color-surface` | white | zinc-800 |
+| `--color-surface-muted` | gray-150 | zinc-700 |
+| `--color-surface-sunken` | gray-200 | zinc-900 |
+| `--color-border` | gray-200 | zinc-600 |
+| `--color-border-strong` | gray-300 | zinc-500 |
 | `--color-border-focus` | blue-500 | blue-500 |
 | `--color-text` | graphite-900 | gray-100 |
 | `--color-text-muted` | gray-700 | gray-400 |
 | `--color-text-subtle` | gray-500 | gray-600 |
-| `--color-text-inverse` | white | graphite-900 |
+| `--color-text-inverse` | white | zinc-900 |
 | `--color-text-link` | blue-500 | blue-500 |
 | `--color-brand` | green-500 | green-400 |
 | `--color-brand-hover` | green-600 | green-300 |

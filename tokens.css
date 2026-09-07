@@ -39,6 +39,16 @@
   --ic-palette-gray-800: #3D4149;
   --ic-palette-gray-900: #24272D;
 
+  /* Zinc — dark-theme neutrals */
+  --ic-palette-zinc-100: #D1D2D3;
+  --ic-palette-zinc-200: #949597;
+  --ic-palette-zinc-300: #636466;
+  --ic-palette-zinc-400: #484A4C;
+  --ic-palette-zinc-500: #343536;
+  --ic-palette-zinc-600: #282829;
+  --ic-palette-zinc-700: #1E1E1F;
+  --ic-palette-zinc-800: #141415;
+  --ic-palette-zinc-900: #0A0A0A;
 
   /* Graphite (Operationalize brand) */
   --ic-palette-graphite-100: #E0E3EA;
