@@ -3497,14 +3497,26 @@
       if (!grid) return;
       const search = document.getElementById('icon-search');
       const count = document.getElementById('icon-count');
+      // Picasso icon set (components-icons story). Our slugs match Picasso's
+      // PascalCase names 1:1 where both have the icon; matched cards cross-ref
+      // to Picasso under ?map=1, extras (ours-only) stay unlinked.
+      const PICASSO_ICONS = ["Abstract","Ach","Add","AddDocument","Afternoon","Archive","ArrowDownMinor","ArrowDropDown","ArrowDropUp","ArrowLongDown","ArrowLongLeft","ArrowLongRight","ArrowLongUp","ArrowSubdirectory","ArrowUpMinor","Ask","AssociatedOrgUnitJoin","AssociatedOrgUnitLeave","AsteriskSolid","Attachment","AvailabilityFullTime","AvailabilityPartTime","AvailabilityUnavailable","AvailabilityUnavailableMinor","Avatar","AvgWeeklyHours","AvgWeeklySpend","Award","BackMinor","Backspace","Badge","BankWire","Behance","Bell","BellOff","BellSolid","Bidirectional","Billing","BoardNew","Bold","Bookmark","BookmarkSolid","BookmarkStarEmpty","BookmarkStarFull","Box","Bulb","Bullet","BusinessOwnerJoin","BusinessOwnerLeave","Cake","Calendar","CalendarReminder","CallMissed","Canceled","Candidates","Career","Certificate","CertificationBadge","Chat","Check","CheckMinor","CheckSolid","Chef","Chevron","ChevronDouble","ChevronMinor","ChevronRight","Close","CloseCircle","CloseMinor","Code","CodeBlock","Collapse","CommandKey","Commission","Company","Component","Confluence","Control","Copy","Cpu","CreditCard","Critical","CriticalSolid","CurrencyCoin","CurrencyNote","Dashboard","DesignerPencil","Dialpad","Dispute","Dollar","Done","DoneSolid","Download","Drag","Dribble","DropdownArrows","Education","Email","Employee","Enter","Evening","Exclamation","ExclamationSolid","Exit","Expand","Eye","EyeHidden","EyeHide","Facebook","Failed","Filter","Flag","Flash","FocusGroup","Folder","FolderMisc","FontSize","FullTime","Fullscreen","Function","Gift","Github","Globe","GrammarCheck","Grid","Guests","Heading","Heartbeat","Help","Home","HoursThisMonth","Image","ImageGallery","InProgress","InTransit","Inbox","Info","InfoSolid","Instagram","Italic","JobChange","Jobs","KeyResults","Keyboard","KeyboardKey","Keypad","Language","Layers","LeadOrgUnitJoin","LeadOrgUnitLeave","Leave","LegalInfo","Length","LengthenParagraphText","Link","Linkedin","ListOrdered","ListUnordered","Location","Lock","ManagerChange","Memo","Mention","Message","MicrophoneOff","MicrophoneOn","Minus","MissedCall","Mobile","More","Morning","Multi","New","NewCandidate","Night","NumericalAnalysis","Objective","Okr","OnHold","Overlap","Overview","OwnerDefault","OwnerPending","Page","PartTime","Participants","Pause","PauseSolid","Pencil","PendingQueue","PendingReturn","Performance","Phone","PhoneDown","PieChart","Pin","PinSolid","Placeholder","PlaySolid","Playbook","Player","Plus","Pod","PortfolioDesigner","PortfolioFinance","PresenterMode","Preview","ProductManager","Profile","ProfileCard","ProfileCrossed","Project","ProjectDiscovery","QuestionMark","Quote","RankOne","RankThree","RankTwo","Recognize","Referral","ReferralBonus","ReferralDashboard","ReferralPartners","Referrals","RemovedUser","Report","Representatives","RepresentativesSolid","Reset","Resources","Returned","Rotate","ScheduledPayment","Search","Send","Service","Services","Settings","Share","ShareScreen","Shield","ShoppingBasket","ShortenParagraphText","Single","Skills","Skype","Slack","Sleep","Sort","SoundOff","SoundOn","Sparkle","SpecialGroup","SpecialGroupJoin","SpecialGroupLeave","Star","StarSolid","Sticker","StopSolid","Strikethrough","SubArrowRight","Subfunction","Support","Switch","Table","Tasks","Team","Telegram","Terms","ThumbsDown","ThumbsUp","Time","TimeConvert","TimeSolid","Timesheet","Tip","Transfer","Trash","TriangleDownMinorSolid","TriangleLeftMinorSolid","TriangleRightMinorSolid","TriangleUpMinorSolid","Twitter","UiGuidelines","Unavailable","Undo","Unlink","Update","Upload","UploadDocument","User","VerificationBadge","Video","VideoCall","VideoOff","VideoOn","View","Warning","WarningSolid","Whatsapp","WhitePaper","Wifi","WorkExperience","Working"];
+      const iconMap = {};
+      PICASSO_ICONS.forEach(n => {
+        const kebab = n.replace(/(?<=[a-z0-9])(?=[A-Z])/g,'-').replace(/(?<=[A-Z])(?=[A-Z][a-z])/g,'-').toLowerCase();
+        iconMap[kebab] = n;
+      });
       fetch('icons.index.json').then(r => r.json()).then(data => {
         const icons = data.icons.slice().sort((a, b) => a.slug.localeCompare(b.slug));
         const render = (q = '') => {
           const ql = q.trim().toLowerCase();
           const rows = icons.filter(i => !ql || i.slug.includes(ql) ||
             (i.name || '').toLowerCase().includes(ql) || (i.section || '').toLowerCase().includes(ql));
-          grid.innerHTML = rows.map(i =>
-            `<div class="icon-card" title="${i.name || i.slug} · ${i.section || ''}"><svg class="icon"><use href="#i-${i.slug}"/></svg><span class="icon-card-name">${i.slug}</span></div>`).join('');
+          grid.innerHTML = rows.map(i => {
+            const pk = iconMap[i.slug];
+            const attr = pk ? ` data-picasso-icon="${pk}"` : '';
+            return `<div class="icon-card" title="${i.name || i.slug} · ${i.section || ''}"${attr}><svg class="icon"><use href="#i-${i.slug}"/></svg><span class="icon-card-name">${i.slug}</span></div>`;
+          }).join('');
           if (count) count.textContent = ql ? `${rows.length} of ${icons.length} icons` : `${icons.length} icons`;
         };
         render();
@@ -4875,7 +4887,35 @@
           place(el);
         };
 
+        // Icon popover — Picasso icon (PascalCase + size), from the gallery.
+        const showIcon = (el) => {
+          pop.innerHTML = '';
+          const pk = el.dataset.picassoIcon;
+          const slug = el.querySelector('.icon-card-name')?.textContent || '';
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = slug + ' → ' + pk;
+          pop.appendChild(head);
+          const code = document.createElement('code');
+          code.className = 'map-pop-code';
+          code.textContent = `<${pk}24 />`;
+          pop.appendChild(code);
+          const meta = document.createElement('div');
+          meta.className = 'map-pop-meta';
+          meta.textContent = `Picasso icon · also ${pk}16`;
+          pop.appendChild(meta);
+          const a = document.createElement('a');
+          a.className = 'map-pop-link';
+          a.href = STORYBOOK + 'components-icons--icons';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Open in Storybook ↗';
+          pop.appendChild(a);
+          place(el);
+        };
+
         const show = (el) => {
+          if (el.hasAttribute('data-picasso-icon')) return showIcon(el);
           if (el.hasAttribute('data-picasso-radius')) return showRadius(el);
           if (el.hasAttribute('data-picasso-font')) return showFont(el);
           if (el.hasAttribute('data-picasso-color')) return showColor(el);
@@ -4922,7 +4962,7 @@
           place(el);
         };
 
-        const SEL = '[data-component],[data-picasso-color],[data-picasso-font],[data-picasso-radius]';
+        const SEL = '[data-component],[data-picasso-color],[data-picasso-font],[data-picasso-radius],[data-picasso-icon]';
         document.addEventListener('mouseover', (e) => {
           const el = e.target.closest(SEL);
           if (!el) return;

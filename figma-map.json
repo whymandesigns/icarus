@@ -1317,7 +1317,7 @@
         "storyId": "components-icons--icons",
         "status": "partial",
         "propMap": {},
-        "note": "designmd uses a custom Figma icon sprite, not Picasso's icon set; not auto-stamped (too granular)"
+        "note": "Custom Figma pack aligned with Picasso's icon set — 230 of 320 slugs match a Picasso icon by name (cross-referenced per-icon in the ?map=1 gallery); the rest are custom extras. Not auto-stamped page-wide (too granular)."
       }
     }
   ]
