@@ -37,7 +37,7 @@
 .icon-24 { width: 24px; height: 24px; }
 /* Interactive / colour-carrying contexts keep the icon on the context colour
  * (primary buttons = white, links = blue, badges/tags/toasts = their own). */
-.btn .icon, a .icon, .badge .icon, .tag .icon, .toast .icon { color: inherit; }
+.btn .icon, a .icon, .badge .icon, .tag .icon, .toast .icon, .editor-toolbar-btn .icon { color: inherit; }
 .btn-xs .btn-icon { width: 12px; height: 12px; }
 
 /* Icon-only button (no text) — fully rounded "pill" shape. */
