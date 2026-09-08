@@ -286,18 +286,41 @@
 
     .device-frame .template-frame { flex: 1; height: auto; border: 0; border-radius: 0; }
 
-    /* Tablet — collapse the sidebar to compact (icon-only) */
-    @container appshell (max-width: 800px) {
-      .device-frame .sidenav { width: 62px; }
-      .device-frame .sidenav-item { justify-content: center; padding-left: 0; padding-right: 0; }
-      .device-frame .sidenav-item-label,
-      .device-frame .sidenav-item-chevron { display: none; }
-      .device-frame .sidenav-sublist { display: none; }
+    /* Hamburger — injected left of the page title, shown only on tablet/mobile. */
+    .app-shell-ham {
+      display: none;
+      align-items: center; justify-content: center;
+      width: 32px; height: 32px; padding: 0; flex-shrink: 0;
+      border: 0; background: transparent; cursor: pointer;
+      border-radius: var(--ic-radius-sm); color: var(--color-text);
     }
-    /* Mobile — hide the sidebar, drop the search, stack the page head */
+    .app-shell-ham:hover { background: var(--color-surface-muted); }
+    .app-shell-ham .icon { color: inherit; }
+    /* Scrim behind the open drawer */
+    .device-frame .app-shell-scrim { display: none; }
+
+    /* Tablet + Mobile (≤768): hide the top bar; the sidebar becomes an
+       off-canvas drawer opened by the hamburger beside the page title. */
+    @container appshell (max-width: 800px) {
+      .device-frame .topbar { display: none; }
+      .device-frame .app-shell-ham { display: inline-flex; }
+      .device-frame .app-shell { position: relative; }
+      .device-frame .sidenav-toggle { display: none; }
+      .device-frame .sidenav {
+        position: absolute; top: 0; left: 0; bottom: 0; z-index: 50;
+        width: 236px;
+        transform: translateX(-100%);
+        transition: transform var(--ic-duration-base) var(--ic-ease);
+        box-shadow: var(--ic-shadow-lg);
+      }
+      .device-frame .app-shell.is-nav-open .sidenav { transform: translateX(0); }
+      .device-frame .app-shell.is-nav-open .app-shell-scrim {
+        display: block; position: absolute; inset: 0; z-index: 40;
+        background: var(--color-overlay);
+      }
+    }
+    /* Mobile (≤480): stack the page head */
     @container appshell (max-width: 480px) {
-      .device-frame .sidenav { display: none; }
-      .device-frame .topbar-search { display: none; }
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
       .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
       .device-frame .page-head-actions { width: 100%; }
@@ -3573,6 +3596,30 @@
         const item = e.target.closest('[data-device-val]');
         if (item && wrap) wrap.dataset.device = item.dataset.deviceVal;
       });
+    });
+
+    // App-shell hamburger — on tablet/mobile the topbar is hidden and the
+    // sidebar becomes an off-canvas drawer. Inject a menu button left of each
+    // page title, plus a scrim; the hamburger / scrim / a nav item toggle it.
+    document.querySelectorAll('#template-app-shell .app-shell').forEach(shell => {
+      const close = () => shell.classList.remove('is-nav-open');
+      if (!shell.querySelector('.app-shell-scrim')) {
+        const scrim = document.createElement('div');
+        scrim.className = 'app-shell-scrim';
+        scrim.addEventListener('click', close);
+        shell.appendChild(scrim);
+      }
+      shell.querySelectorAll('.page-head-title').forEach(title => {
+        if (title.querySelector('.app-shell-ham')) return;
+        const b = document.createElement('button');
+        b.className = 'app-shell-ham';
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Menu');
+        b.innerHTML = '<svg class="icon icon-24"><use href="#i-overview"/></svg>';
+        b.addEventListener('click', () => shell.classList.toggle('is-nav-open'));
+        title.insertBefore(b, title.firstChild);
+      });
+      shell.querySelectorAll('.sidenav-item').forEach(i => i.addEventListener('click', close));
     });
 
     // Iconography gallery — render the custom icon set from icons.index.json with live search
