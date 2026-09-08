@@ -285,6 +285,7 @@
     .device-chrome-label { margin-left: var(--ic-space-2); font: var(--type-body-xs); color: var(--color-text-subtle); }
 
     .device-frame .template-frame { flex: 1; height: auto; border: 0; border-radius: 0; }
+    .device-frame .app-shell-main { padding: var(--ic-space-7); }
 
     /* Hamburger — injected left of the page title, shown only on tablet/mobile. */
     .app-shell-ham {
@@ -318,10 +319,11 @@
         display: block; position: absolute; inset: 0; z-index: 40;
         background: var(--color-overlay);
       }
+      /* Tighter, even outer padding on tablet/mobile */
+      .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
     /* Mobile (≤480): stack the page head */
     @container appshell (max-width: 480px) {
-      .device-frame .app-shell-main { padding: var(--ic-space-4); }
       .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
       .device-frame .page-head-actions { width: 100%; }
     }
@@ -2915,7 +2917,7 @@
               </div>
             </aside>
 
-            <main class="app-shell-main" style="padding: var(--ic-space-7)">
+            <main class="app-shell-main">
 
               <!-- PROCESSES -->
               <section class="page-view" data-page="processes">
