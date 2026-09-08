@@ -523,6 +523,63 @@
       <h2 class="section-head">Components</h2>
       <nav class="toc" data-toc-for="components" aria-label="Components contents"></nav>
 
+      <section class="stack" id="accordion">
+        <div>
+          <h3 class="h3">Accordion</h3>
+          <p class="body-sm">Collapsible sections that store content behind an always-visible summary. One item = <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion</code> (<code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-summary</code> + <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-details</code>); stack items in an <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-group</code>. Borders: <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-all</code> (default) · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-middle</code> · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-none</code>.</p>
+        </div>
+
+        <div class="grid-2" style="align-items: start">
+          <div>
+            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">All borders (default)</p>
+            <div class="accordion-group">
+              <div class="accordion is-open">
+                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Each breed varies in size and temperament.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">How do you acquire a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Dogs can be acquired from breeders, shelters, or rescue organizations.</p></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">Middle borders</p>
+            <div class="accordion-group borders-middle">
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal.</p></div></div>
+              </div>
+              <div class="accordion is-open">
+                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Owners often select a breed compatible with their lifestyle.</p></div></div>
+              </div>
+              <div class="accordion is-disabled">
+                <button class="accordion-summary" type="button" aria-expanded="false" disabled><span class="accordion-title">Disabled section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">This content can't be opened.</p></div></div>
+              </div>
+            </div>
+
+            <p class="body-xs" style="margin: var(--ic-space-4) 0 var(--ic-space-2); color: var(--color-text-subtle)">No borders</p>
+            <div class="accordion-group borders-none">
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">First section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Borderless sections read as a plain list of toggles.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">Second section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Use inside a card that already provides its own border.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="stack" id="alerts">
         <div>
           <h3 class="h3">Alerts</h3>
@@ -3588,6 +3645,16 @@
         seg.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
         item.classList.add('is-active');
       });
+    });
+
+    // Accordion — toggle .is-open (+ aria-expanded) on the item.
+    document.addEventListener('click', (e) => {
+      const summary = e.target.closest('.accordion-summary');
+      if (!summary) return;
+      const item = summary.closest('.accordion');
+      if (!item || item.classList.contains('is-disabled')) return;
+      const open = item.classList.toggle('is-open');
+      summary.setAttribute('aria-expanded', String(open));
     });
 
     // Device preview tabs — set data-device on the wrapper (drives frame width

@@ -20,6 +20,70 @@
   },
   "components": [
     {
+      "id": "accordion",
+      "name": "Accordion",
+      "slug": "accordion",
+      "stampSelector": ".accordion",
+      "designmd": {
+        "root": ".accordion-group > .accordion",
+        "shortcode": "example.html#accordion"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Accordion",
+        "import": "@toptal/picasso",
+        "storyId": "components-accordion--accordion",
+        "status": "mapped",
+        "propMap": {
+          "is-open": {
+            "expanded": true
+          },
+          "is-disabled": {
+            "disabled": true
+          }
+        },
+        "note": "borders (all/middle/none) set on the .accordion-group in designmd = the `borders` prop in Picasso."
+      }
+    },
+    {
+      "id": "accordion",
+      "name": "Accordion summary",
+      "slug": "accordion-summary",
+      "stampSelector": ".accordion-summary",
+      "designmd": {
+        "root": ".accordion-summary",
+        "shortcode": "example.html#accordion"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Accordion.Summary",
+        "import": "@toptal/picasso",
+        "storyId": "components-accordion--accordion",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Always-visible trigger row."
+      }
+    },
+    {
+      "id": "accordion",
+      "name": "Accordion details",
+      "slug": "accordion-details",
+      "stampSelector": ".accordion-details",
+      "designmd": {
+        "root": ".accordion-details",
+        "shortcode": "example.html#accordion"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Accordion.Details",
+        "import": "@toptal/picasso",
+        "storyId": "components-accordion--accordion",
+        "status": "mapped",
+        "propMap": {},
+        "note": "Collapsible content region."
+      }
+    },
+    {
       "id": "buttons",
       "name": "Button",
       "slug": "button",
