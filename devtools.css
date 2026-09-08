@@ -123,14 +123,17 @@
 .is-map-mode [data-component],
 .is-map-mode [data-picasso-color],
 .is-map-mode [data-picasso-font],
-.is-map-mode [data-picasso-radius] { outline: 1px dotted var(--map-color); outline-offset: 2px; }
+.is-map-mode [data-picasso-radius],
+.is-map-mode [data-picasso-icon] { outline: 1px dotted var(--map-color); outline-offset: 2px; }
 .is-map-mode [data-component]:hover,
 .is-map-mode [data-picasso-color]:hover,
 .is-map-mode [data-picasso-font]:hover,
-.is-map-mode [data-picasso-radius]:hover { outline-width: 2px; }
+.is-map-mode [data-picasso-radius]:hover,
+.is-map-mode [data-picasso-icon]:hover { outline-width: 2px; }
 .is-map-mode [data-picasso-color],
 .is-map-mode [data-picasso-font],
-.is-map-mode [data-picasso-radius] { cursor: help; }
+.is-map-mode [data-picasso-radius],
+.is-map-mode [data-picasso-icon] { cursor: help; }
 /* Nav toggle turns pink while the inspector is on. */
 .map-toggle.is-active,
 .map-toggle.is-active:hover { color: var(--map-color); }

@@ -44,7 +44,7 @@ Three layers. Don't skip them.
 
 ### Primitive palette (`tokens.css`)
 
-10 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
+9 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
 
 | Ramp | Role |
 |---|---|
@@ -53,7 +53,6 @@ Three layers. Don't skip them.
 | `graphite` | Dark chrome — topbar background, inverse text on dark surfaces |
 | `red` | Danger / destructive |
 | `yellow` | Warning |
-| `orange` | Reserved |
 | `green` | **Primary CTA** (`--color-brand`) — and success |
 | `cyan` | Single shade only (`cyan-500`) — backs `.tag-blue-light` and `.badge-info` text. Pending removal: those components migrate to blue, then the ramp goes away. |
 | `blue` | **Brand mark** (logo, `--color-accent`) — also focus rings and links |

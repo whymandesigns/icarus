@@ -39,7 +39,7 @@
   --ic-palette-gray-800: #3D4149;
   --ic-palette-gray-900: #24272D;
 
-  /* Zinc */
+  /* Zinc — dark-theme neutrals */
   --ic-palette-zinc-100: #D1D2D3;
   --ic-palette-zinc-200: #949597;
   --ic-palette-zinc-300: #636466;
@@ -86,17 +86,6 @@
   --ic-palette-yellow-800: #704D01;
   --ic-palette-yellow-900: #4A3301;
 
-  /* Orange */
-  --ic-palette-orange-100: #FFF0E6;
-  --ic-palette-orange-150: #FFDFC7;
-  --ic-palette-orange-200: #FFCBA3;
-  --ic-palette-orange-300: #F5C07A;
-  --ic-palette-orange-400: #F58E42;
-  --ic-palette-orange-500: #F07018;
-  --ic-palette-orange-600: #C05F0E;
-  --ic-palette-orange-700: #964A0A;
-  --ic-palette-orange-800: #6E3607;
-  --ic-palette-orange-900: #482404;
 
   /* Green */
   --ic-palette-green-100: #EAFBF5;
