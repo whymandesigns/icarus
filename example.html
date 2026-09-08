@@ -3514,6 +3514,9 @@
         'ai-smart-writing': 'Sparkle', 'comment-add': 'Add',
         'arrows-select': 'DropdownArrows',
       });
+      // Shared with the ?map=1 inspector so in-context icons (alerts, toolbar,
+      // etc.) get the same Picasso cross-reference as the gallery cards.
+      window.__PICASSO_ICON_MAP = iconMap;
       fetch('icons.index.json').then(r => r.json()).then(data => {
         const icons = data.icons.slice().sort((a, b) => a.slug.localeCompare(b.slug));
         const render = (q = '') => {
@@ -4772,6 +4775,20 @@
             if (f.note) el.setAttribute('data-picasso-font-note', f.note);
           });
         }
+
+        // In-context iconography icons (alerts, toolbar, etc.) — cross-reference
+        // to Picasso by their sprite slug, same as the gallery. Gallery cards are
+        // handled at card level, so skip icons inside them.
+        const ICONREF = window.__PICASSO_ICON_MAP || {};
+        document.querySelectorAll('svg.icon').forEach(svg => {
+          if (svg.closest('.icon-card') || svg.hasAttribute('data-picasso-icon')) return;
+          const u = svg.querySelector('use');
+          const href = u && (u.getAttribute('href') || u.getAttribute('xlink:href')) || '';
+          if (!href.startsWith('#i-')) return;
+          const slug = href.slice(3);
+          const pk = ICONREF[slug];
+          if (pk) { svg.setAttribute('data-picasso-icon', pk); svg.setAttribute('data-icon-slug', slug); }
+        });
         if (!active) return;
         document.documentElement.classList.add('is-map-mode');
 
@@ -4899,7 +4916,7 @@
         const showIcon = (el) => {
           pop.innerHTML = '';
           const pk = el.dataset.picassoIcon;
-          const slug = el.querySelector('.icon-card-name')?.textContent || '';
+          const slug = el.dataset.iconSlug || el.querySelector('.icon-card-name')?.textContent || '';
           const head = document.createElement('div');
           head.className = 'map-pop-head';
           head.textContent = slug + ' → ' + pk;
