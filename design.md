@@ -157,6 +157,28 @@ Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
 | Z-index | `--ic-z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
 | Container | `--ic-container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
 
+### Breakpoints
+
+Match **Picasso's** screen breakpoints when writing responsive rules — viewport `@media`, or `@container` for framed previews (e.g. the app-shell device tabs). Source: [Picasso breakpoints](https://toptal.github.io/picasso/?path=/story/utils-breakpoints--breakpoints).
+
+| Name | Range | Edge |
+|---|---|---|
+| `xs` | `< 480px` | — |
+| `sm` | `480px ≤ w < 768px` | 480 |
+| `md` | `768px ≤ w < 1024px` | 768 |
+| `lg` | `1024px ≤ w < 1440px` | 1024 |
+| `xl` | `≥ 1440px` | 1440 |
+
+The four edges are **480 · 768 · 1024 · 1440**. Author mobile-first (base = `xs`) and layer overrides upward with `min-width`:
+
+```css
+.grid { grid-template-columns: 1fr; }                 /* xs — mobile */
+@media (min-width: 768px)  { .grid { grid-template-columns: 1fr 1fr; } }        /* md+ */
+@media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } } /* lg+ */
+```
+
+CSS custom properties can't be read inside a `@media`/`@container` condition, so use the literal px edges above. On the React side Picasso exposes the same values via its `screens()` helper and the Tailwind `sm:` / `md:` / `lg:` / `xl:` prefixes.
+
 ---
 
 ## 6. Components
