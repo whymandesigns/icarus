@@ -300,9 +300,9 @@
     /* Scrim behind the open drawer */
     .device-frame .app-shell-scrim { display: none; }
 
-    /* Tablet + Mobile (≤768): hide the top bar; the sidebar becomes an
-       off-canvas drawer opened by the hamburger beside the page title. */
-    @container appshell (max-width: 800px) {
+    /* Tablet + Mobile (≤768, Picasso md edge): hide the top bar; the sidebar
+       becomes an off-canvas drawer opened by the hamburger beside the title. */
+    @container appshell (max-width: 768px) {
       .device-frame .topbar { display: none; }
       .device-frame .app-shell-ham { display: inline-flex; }
       .device-frame .app-shell { position: relative; }
@@ -322,7 +322,7 @@
       /* Tighter, even outer padding on tablet/mobile */
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
-    /* Mobile (≤480): stack the page head */
+    /* Mobile (≤480, Picasso xs edge): stack the page head */
     @container appshell (max-width: 480px) {
       .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
       .device-frame .page-head-actions { width: 100%; }
