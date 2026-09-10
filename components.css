@@ -1121,7 +1121,10 @@ textarea.input {
   font: var(--type-body-sm);
 }
 .alert-icon    { font-size: 16px; flex-shrink: 0; }
-.alert-message { flex: 1; min-width: 0; margin: 0; }
+/* Tighter than body-sm's 20px leading: the loose line box let the glyphs ride
+ * high above the centred icon. 1.35 hugs the text so it optically centres with
+ * the 16px icon and the CTAs, and still wraps cleanly on multi-line alerts. */
+.alert-message { flex: 1; min-width: 0; margin: 0; line-height: 1.35; }
 .alert-actions { display: inline-flex; gap: var(--ic-space-2); flex-shrink: 0; }
 /* Dismiss button — styled by the icon-only ghost button component in the
  * markup (.btn.btn-icon-only.btn-ghost.btn-xs); this class only handles layout. */
