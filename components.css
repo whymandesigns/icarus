@@ -63,6 +63,12 @@
 }
 .btn-icon-only.btn-danger:hover  { background: var(--color-danger-subtle); }
 .btn-icon-only.btn-danger:active { background: var(--color-danger-subtle); }
+
+/* Secondary as icon-only: graphite-700 icon on the outlined surface. A shade
+ * darker than the ghost's graphite-500 — reads as a bordered, resting control. */
+.btn-icon-only.btn-secondary {
+  color: var(--ic-palette-graphite-700);
+}
 .btn:active { transform: translateY(1px); }
 .btn:focus-visible {
   outline: 2px solid var(--color-border-focus);
