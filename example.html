@@ -325,6 +325,15 @@
       /* Tighter, even outer padding on tablet/mobile */
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
+    /* A white surface card for presenting a component on the dot-grid canvas. */
+    .device-panel {
+      width: 100%;
+      background: var(--color-surface);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-lg);
+      padding: var(--ic-space-5);
+    }
+
     /* Page-head CTAs carry an icon that only surfaces at mobile width. */
     .btn-cta-icon { display: none; }
     /* Mobile (≤480, Picasso xs edge): keep the page head on one row and
@@ -2578,15 +2587,20 @@
         </div>
 
         <span class="caption" style="display: block">Standalone</span>
-        <div class="tabs" role="tablist">
-          <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+        <div class="device-stage">
+          <div class="device-panel">
+            <div class="tabs" role="tablist">
+              <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+            </div>
+          </div>
         </div>
 
         <span class="caption" style="display: block; margin-top: var(--ic-space-5)">With panels</span>
-        <div>
+        <div class="device-stage">
+          <div class="device-panel">
           <div class="tabs" role="tablist">
             <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
             <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
@@ -2604,6 +2618,7 @@
           </div>
           <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
             <p class="body">Workspace name, billing, integrations and permissions.</p>
+          </div>
           </div>
         </div>
       </section>
