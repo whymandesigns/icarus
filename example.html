@@ -327,11 +327,12 @@
     }
     /* Page-head CTAs carry an icon that only surfaces at mobile width. */
     .btn-cta-icon { display: none; }
-    /* Mobile (≤480, Picasso xs edge): stack the page head; collapse the
-       page-head CTAs to icon-only buttons (download = CSV, plus = create). */
+    /* Mobile (≤480, Picasso xs edge): keep the page head on one row and
+       collapse the CTAs to icon-only buttons (download = CSV, plus = create)
+       that sit flush right of the title. */
     @container appshell (max-width: 480px) {
-      .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
-      .device-frame .page-head-actions { width: auto; align-self: flex-end; }
+      .device-frame .page-head { align-items: flex-start; gap: var(--ic-space-3); }
+      .device-frame .page-head-actions { width: auto; flex-shrink: 0; }
       /* Adopt the icon-only component: round 32px pill; secondary keeps its
          graphite-700 icon, primary its white icon. */
       .device-frame .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
