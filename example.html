@@ -325,10 +325,16 @@
       /* Tighter, even outer padding on tablet/mobile */
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
-    /* Mobile (≤480, Picasso xs edge): stack the page head */
+    /* Page-head CTAs carry an icon that only surfaces at mobile width. */
+    .btn-cta-icon { display: none; }
+    /* Mobile (≤480, Picasso xs edge): stack the page head; collapse the
+       page-head CTAs to icon-only buttons (download = CSV, plus = create). */
     @container appshell (max-width: 480px) {
       .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
-      .device-frame .page-head-actions { width: 100%; }
+      .device-frame .page-head-actions { width: auto; align-self: flex-end; }
+      .device-frame .page-head-actions .btn { padding: var(--ic-space-2); }
+      .device-frame .page-head-actions .btn-cta-icon { display: inline-flex; }
+      .device-frame .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     }
 
     /* ---- Page-level sidebar TOC ----
@@ -1993,8 +1999,8 @@
                 <p class="page-head-subtitle">Manage workflows across teams.</p>
               </div>
               <div class="page-head-actions" data-cta-source="page-head-primary">
-                <button class="btn btn-secondary">Export as CSV</button>
-                <button class="btn btn-primary">Create new</button>
+                <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
+                <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
               </div>
             </div>
           </div>
