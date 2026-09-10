@@ -332,7 +332,10 @@
     @container appshell (max-width: 480px) {
       .device-frame .page-head { flex-direction: column; align-items: flex-start; gap: var(--ic-space-3); }
       .device-frame .page-head-actions { width: auto; align-self: flex-end; }
-      .device-frame .page-head-actions .btn { padding: var(--ic-space-2); }
+      /* Adopt the icon-only component: round 32px pill; secondary keeps its
+         graphite-700 icon, primary its white icon. */
+      .device-frame .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
+      .device-frame .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
       .device-frame .page-head-actions .btn-cta-icon { display: inline-flex; }
       .device-frame .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     }
