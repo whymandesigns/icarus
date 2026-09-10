@@ -2047,7 +2047,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   gap: var(--ic-space-3);
 }
 .page-head-heading {
-  font: var(--type-h1);
+  font: var(--type-h2); /* H2 / 20px — page titles sit one step below the display size */
   color: var(--color-text);
   margin: 0;
 }
