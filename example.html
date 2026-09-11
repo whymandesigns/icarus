@@ -2281,33 +2281,36 @@
           <p class="body-sm">Horizontal step indicator for wizards / multi-step flows. Numbered circles + labels joined by carets; the current step's circle is filled with the accent. Mark done steps with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-complete</code> (check) and the active one with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-current</code>.</p>
         </div>
 
-        <span class="caption" style="display: block">Current on step 1 (matches the component)</span>
-        <div class="device-stage">
-          <div class="device-panel">
-            <ol class="stepper">
-              <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
-            </ol>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Stepper state">
+            <button class="segmented-item is-active" type="button" data-variant="start">On step 1</button>
+            <button class="segmented-item" type="button" data-variant="progress">In progress</button>
           </div>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In progress — steps 1–2 complete, on step 3</span>
-        <div class="device-stage">
-          <div class="device-panel">
-            <ol class="stepper">
-              <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Account</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Workspace</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
-              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-              <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
-            </ol>
+          <div class="device-stage">
+            <div class="device-panel">
+              <div class="playground-variant" data-variant="start">
+                <ol class="stepper">
+                  <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
+                </ol>
+              </div>
+              <div class="playground-variant" data-variant="progress" hidden>
+                <ol class="stepper">
+                  <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Account</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Workspace</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
+                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                  <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
+                </ol>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2724,39 +2727,42 @@
           <p class="body-sm">Horizontal trigger strip with a hairline border and a 2px accent indicator under the active tab. Pair with <code style="font: var(--type-mono); color: var(--color-text-muted)">role="tabpanel"</code> via <code style="font: var(--type-mono); color: var(--color-text-muted)">aria-controls</code> for interactive content switching.</p>
         </div>
 
-        <span class="caption" style="display: block">Standalone</span>
-        <div class="device-stage">
-          <div class="device-panel">
-            <div class="tabs" role="tablist">
-              <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
-              <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
-              <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
-              <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Tabs example">
+            <button class="segmented-item is-active" type="button" data-variant="standalone">Standalone</button>
+            <button class="segmented-item" type="button" data-variant="panels">With panels</button>
+          </div>
+          <div class="device-stage">
+            <div class="device-panel">
+              <div class="playground-variant" data-variant="standalone">
+                <div class="tabs" role="tablist">
+                  <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="panels" hidden>
+                <div class="tabs" role="tablist">
+                  <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Members</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Settings</button>
+                </div>
+                <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--ic-space-5)">
+                  <p class="body">A summary of recent activity and key metrics for this workspace.</p>
+                </div>
+                <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--ic-space-5)" hidden>
+                  <p class="body">Audit log of recent changes across all members.</p>
+                </div>
+                <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--ic-space-5)" hidden>
+                  <p class="body">12 members have access to this workspace.</p>
+                </div>
+                <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
+                  <p class="body">Workspace name, billing, integrations and permissions.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-5)">With panels</span>
-        <div class="device-stage">
-          <div class="device-panel">
-          <div class="tabs" role="tablist">
-            <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
-            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
-            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Members</button>
-            <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Settings</button>
-          </div>
-          <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--ic-space-5)">
-            <p class="body">A summary of recent activity and key metrics for this workspace.</p>
-          </div>
-          <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--ic-space-5)" hidden>
-            <p class="body">Audit log of recent changes across all members.</p>
-          </div>
-          <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--ic-space-5)" hidden>
-            <p class="body">12 members have access to this workspace.</p>
-          </div>
-          <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
-            <p class="body">Workspace name, billing, integrations and permissions.</p>
-          </div>
           </div>
         </div>
       </section>
@@ -2879,7 +2885,9 @@
           <h3 class="h3">Toolbar</h3>
           <p class="body-sm">Control strip above a table or list — search, filters, quick-filter selects, and a view switcher. Composes existing parts: <code style="font: var(--type-mono); color: var(--color-text-muted)">.input-icon</code> search, <code style="font: var(--type-mono); color: var(--color-text-muted)">.input-select</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.btn</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.segmented</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.checkbox</code>. Left cluster grows; <code style="font: var(--type-mono); color: var(--color-text-muted)">.toolbar-end</code> pins controls right.</p>
         </div>
-        <div class="stack" style="gap: var(--ic-space-6)">
+        <div class="device-stage">
+          <div class="device-panel">
+        <div class="stack" style="gap: var(--ic-space-6); width: 100%">
 
           <!-- BAU page -->
           <div class="stack" style="gap: var(--ic-space-2)">
@@ -3013,6 +3021,8 @@
           </div>
 
         </div>
+          </div>
+        </div>
       </section>
 
       <section class="stack" id="tooltips">
@@ -3021,25 +3031,36 @@
           <p class="body-sm">CSS-only tooltip on any element via <code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip="…"</code>. Default placement is top; override with <code style="font: var(--type-mono); color: var(--color-text-muted)">data-placement="bottom"</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">left</code>, or <code style="font: var(--type-mono); color: var(--color-text-muted)">right</code>. Two styles: compact (default, dark pill for short labels) and regular (<code style="font: var(--type-mono); color: var(--color-text-muted)">data-tooltip-style="regular"</code> — white surface, wrapping body text, caret). Reveals on hover and keyboard focus.</p>
         </div>
 
-        <span class="caption" style="display: block">Compact (default) — dark pill, single line</span>
-        <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-7) var(--ic-space-3); justify-content: flex-start">
-          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on top" data-placement="top">Top</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on bottom" data-placement="bottom">Bottom</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the left side" data-placement="left">Left</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the right side" data-placement="right">Right</button>
-          <span style="border-left: 1px solid var(--color-border); height: 24px; margin: 0 var(--ic-space-2)"></span>
-          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Edit" aria-label="Edit"><svg class="btn-icon"><use href="#i-pencil"/></svg></button>
-          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Duplicate" aria-label="Duplicate"><svg class="btn-icon"><use href="#i-copy"/></svg></button>
-          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Archive" aria-label="Archive"><svg class="btn-icon"><use href="#i-archive"/></svg></button>
-          <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Delete" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Regular — white surface, wrapping body text, caret</span>
-        <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-8) var(--ic-space-3); justify-content: flex-start">
-          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="top">Top</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="bottom">Bottom</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="left">Left</button>
-          <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="right">Right</button>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Tooltip style">
+            <button class="segmented-item is-active" type="button" data-variant="compact">Compact</button>
+            <button class="segmented-item" type="button" data-variant="regular">Regular</button>
+          </div>
+          <div class="device-stage">
+            <div class="device-panel">
+              <div class="playground-variant" data-variant="compact">
+                <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-6) var(--ic-space-3); justify-content: center">
+                  <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on top" data-placement="top">Top</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on bottom" data-placement="bottom">Bottom</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the left side" data-placement="left">Left</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the right side" data-placement="right">Right</button>
+                  <span style="border-left: 1px solid var(--color-border); height: 24px; margin: 0 var(--ic-space-2)"></span>
+                  <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Edit" aria-label="Edit"><svg class="btn-icon"><use href="#i-pencil"/></svg></button>
+                  <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Duplicate" aria-label="Duplicate"><svg class="btn-icon"><use href="#i-copy"/></svg></button>
+                  <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Archive" aria-label="Archive"><svg class="btn-icon"><use href="#i-archive"/></svg></button>
+                  <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Delete" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="regular" hidden>
+                <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-8) var(--ic-space-3); justify-content: center">
+                  <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="top">Top</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="bottom">Bottom</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="left">Left</button>
+                  <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="right">Right</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -3394,7 +3415,8 @@
           <p class="body-sm">Input fields composed into a complete create flow — paired fields on a grid, select, tag input, character counter, radio group, switch rows, a slider, and a single primary CTA per the color-role rule.</p>
         </div>
 
-        <article class="card" style="max-width: 640px; padding: var(--ic-space-6)">
+        <div class="device-stage">
+        <article class="card" style="width: 100%; max-width: 640px; padding: var(--ic-space-6)">
           <div style="margin-bottom: var(--ic-space-6)">
             <h2 class="h2">New process</h2>
             <p class="body-sm" style="margin: var(--ic-space-1) 0 0">Define the workflow, owners and review cadence.</p>
@@ -3488,6 +3510,7 @@
 
           </form>
         </article>
+        </div>
       </section>
     </section>
 
