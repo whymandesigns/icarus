@@ -774,14 +774,16 @@
         </div>
 
         <span class="caption" style="display: block">Standalone</span>
-        <div class="device-stage">
-          <div class="device-panel">
-            <nav class="breadcrumbs" aria-label="Breadcrumb">
-              <a class="breadcrumb" href="#breadcrumbs">Processes</a>
-              <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
-              <a class="breadcrumb" href="#breadcrumbs">Steps</a>
-              <span class="breadcrumb is-current" aria-current="page">Review step</span>
-            </nav>
+        <div class="playground" data-vp="desktop">
+          <div class="device-stage">
+            <div class="device-panel">
+              <nav class="breadcrumbs" aria-label="Breadcrumb">
+                <a class="breadcrumb" href="#breadcrumbs">Processes</a>
+                <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
+                <a class="breadcrumb" href="#breadcrumbs">Steps</a>
+                <span class="breadcrumb is-current" aria-current="page">Review step</span>
+              </nav>
+            </div>
           </div>
         </div>
 
@@ -3885,21 +3887,28 @@
         `<button class="segmented-item segmented-icon${i === 0 ? ' is-active' : ''}" type="button" data-val="${k}" aria-label="${VP_LABEL[k]}" title="${VP_LABEL[k]}"><svg class="icon"><use href="#${VP_ICONS[k]}"/></svg></button>`
       ).join('') + `</div>`;
     document.querySelectorAll('.playground').forEach(pg => {
+      if (pg.querySelector('[data-viewport]')) return; // already has one (e.g. alerts)
       const tabs = pg.querySelector(':scope > .playground-tabs');
-      if (!tabs || pg.querySelector('[data-viewport]')) return; // skip alerts (own controls) / already done
       const strip = document.createElement('div');
       strip.className = 'playground-controls';
-      const variantControl = document.createElement('div');
-      variantControl.className = 'control';
-      const label = document.createElement('span');
-      label.className = 'control-label';
-      label.textContent = tabs.getAttribute('aria-label') || 'Variant';
-      tabs.replaceWith(strip);
-      variantControl.append(label, tabs);
+      if (tabs) {
+        // wrap the existing variant knobs in a labelled control
+        const variantControl = document.createElement('div');
+        variantControl.className = 'control';
+        const label = document.createElement('span');
+        label.className = 'control-label';
+        label.textContent = tabs.getAttribute('aria-label') || 'Variant';
+        tabs.replaceWith(strip);
+        variantControl.append(label, tabs);
+        strip.append(variantControl);
+      } else {
+        // no variants — the strip is just the viewport control, above the demo
+        pg.prepend(strip);
+      }
       const vpControl = document.createElement('div');
       vpControl.className = 'control';
       vpControl.innerHTML = vpMarkup();
-      strip.append(variantControl, vpControl);
+      strip.append(vpControl);
       pg.dataset.vp = 'desktop';
     });
 
