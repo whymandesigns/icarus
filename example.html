@@ -329,6 +329,10 @@
        canvas panel, swapping one live demo. Reusable across component sections. */
     .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
     .playground-tabs { align-self: flex-start; }
+    /* Multi-knob controls strip (Storybook-style): one labelled control per prop. */
+    .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
+    .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .control-label { font: var(--type-caption); color: var(--color-text-muted); }
     .playground-stage { width: 100%; max-width: 640px; }
     .playground-variant[hidden] { display: none; }
 
@@ -614,58 +618,43 @@
           <h3 class="h3">Alerts</h3>
           <p class="body-sm">Page-level message that sits inline beneath the page head — not a floating toast. Horizontal block with icon · message · optional CTAs · optional close. Four variants: <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-danger</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-warning</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-success</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-info</code>. Omit <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-close</code> for persistent alerts.</p>
         </div>
-        <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Alert status">
-            <button class="segmented-item is-active" type="button" data-variant="danger">Danger</button>
-            <button class="segmented-item" type="button" data-variant="warning">Warning</button>
-            <button class="segmented-item" type="button" data-variant="success">Success</button>
-            <button class="segmented-item" type="button" data-variant="info">Info</button>
+        <div class="playground" data-alert-playground>
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Status</span>
+              <div class="segmented" role="group" aria-label="Alert status" data-alert-status>
+                <button class="segmented-item is-active" type="button" data-val="danger">Danger</button>
+                <button class="segmented-item" type="button" data-val="warning">Warning</button>
+                <button class="segmented-item" type="button" data-val="success">Success</button>
+                <button class="segmented-item" type="button" data-val="info">Info</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Close button</span>
+              <div class="segmented" role="group" aria-label="Close button" data-alert-close>
+                <button class="segmented-item is-active" type="button" data-val="on">Dismissible</button>
+                <button class="segmented-item" type="button" data-val="off">Persistent</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">CTAs</span>
+              <div class="segmented" role="group" aria-label="CTAs" data-alert-ctas>
+                <button class="segmented-item" type="button" data-val="0">None</button>
+                <button class="segmented-item" type="button" data-val="1">1 CTA</button>
+                <button class="segmented-item is-active" type="button" data-val="2">2 CTAs</button>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="playground-stage">
-              <div class="playground-variant" data-variant="danger">
-                <div class="alert alert-danger" role="alert">
-                  <svg class="icon alert-icon"><use href="#i-exclamation-solid"/></svg>
-                  <p class="alert-message">This is a critical warning alert.</p>
-                  <div class="alert-actions">
-                    <button class="btn btn-xs btn-primary">Action</button>
-                    <button class="btn btn-xs btn-secondary">Dismiss</button>
-                  </div>
-                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+              <div class="alert alert-danger" role="alert" data-alert-live>
+                <svg class="icon alert-icon" data-alert-icon><use href="#i-exclamation-solid"/></svg>
+                <p class="alert-message">This is a critical warning alert.</p>
+                <div class="alert-actions" data-alert-actions>
+                  <button class="btn btn-xs btn-primary">Action</button>
+                  <button class="btn btn-xs btn-secondary" data-alert-cta2>Dismiss</button>
                 </div>
-              </div>
-              <div class="playground-variant" data-variant="warning" hidden>
-                <div class="alert alert-warning" role="alert">
-                  <svg class="icon alert-icon"><use href="#i-warning"/></svg>
-                  <p class="alert-message">This is a warning alert.</p>
-                  <div class="alert-actions">
-                    <button class="btn btn-xs btn-primary">Action</button>
-                    <button class="btn btn-xs btn-secondary">Dismiss</button>
-                  </div>
-                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-                </div>
-              </div>
-              <div class="playground-variant" data-variant="success" hidden>
-                <div class="alert alert-success" role="alert">
-                  <svg class="icon alert-icon"><use href="#i-done"/></svg>
-                  <p class="alert-message">This is a success alert.</p>
-                  <div class="alert-actions">
-                    <button class="btn btn-xs btn-primary">Action</button>
-                    <button class="btn btn-xs btn-secondary">Dismiss</button>
-                  </div>
-                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-                </div>
-              </div>
-              <div class="playground-variant" data-variant="info" hidden>
-                <div class="alert alert-info" role="alert">
-                  <svg class="icon alert-icon"><use href="#i-info"/></svg>
-                  <p class="alert-message">This is an info alert.</p>
-                  <div class="alert-actions">
-                    <button class="btn btn-xs btn-primary">Action</button>
-                    <button class="btn btn-xs btn-secondary">Dismiss</button>
-                  </div>
-                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-                </div>
+                <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close" data-alert-closebtn><svg class="icon"><use href="#i-x"/></svg></button>
               </div>
             </div>
           </div>
@@ -3861,6 +3850,31 @@
         if (!item) return;
         variants.forEach(el => { el.hidden = el.dataset.variant !== item.dataset.variant; });
       });
+    });
+
+    // Alert playground — multi-knob controls compose one live alert:
+    // status (colour + icon) · close button on/off · CTA count (0 / 1 / 2).
+    document.querySelectorAll('[data-alert-playground]').forEach(pg => {
+      const alert   = pg.querySelector('[data-alert-live]');
+      const icon    = pg.querySelector('[data-alert-icon] use');
+      const actions = pg.querySelector('[data-alert-actions]');
+      const cta2    = pg.querySelector('[data-alert-cta2]');
+      const closeBt = pg.querySelector('[data-alert-closebtn]');
+      const ICON = { danger: '#i-exclamation-solid', warning: '#i-warning', success: '#i-done', info: '#i-info' };
+      const MSG  = { danger: 'This is a critical warning alert.', warning: 'This is a warning alert.', success: 'This is a success alert.', info: 'This is an info alert.' };
+      const val = (name) => pg.querySelector(`[data-alert-${name}] .is-active`)?.dataset.val;
+      const render = () => {
+        const status = val('status') || 'danger';
+        alert.className = 'alert alert-' + status;
+        icon.setAttribute('href', ICON[status]);
+        pg.querySelector('.alert-message').textContent = MSG[status];
+        const ctas = val('ctas');
+        actions.hidden = ctas === '0';
+        cta2.hidden = ctas !== '2';
+        closeBt.hidden = val('close') === 'off';
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
+      render();
     });
 
     // Accordion — toggle .is-open (+ aria-expanded) on the item.
