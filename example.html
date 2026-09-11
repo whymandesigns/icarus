@@ -333,8 +333,21 @@
     .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
     .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
     .control-label { font: var(--type-caption); color: var(--color-text-muted); }
-    .playground-stage { width: 100%; max-width: 640px; }
+    .playground-stage { width: 100%; max-width: 640px; container-type: inline-size; }
     .playground-variant[hidden] { display: none; }
+    /* Viewport control — constrain the demo to a device width so components can
+       be checked (and reflow, via container queries) at tablet / mobile sizes. */
+    .playground[data-vp="tablet"] .playground-stage,
+    .playground[data-vp="mobile"] .playground-stage {
+      max-width: 100%;
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-4);
+      background: var(--color-surface);
+      transition: width var(--ic-duration-base) var(--ic-ease);
+    }
+    .playground[data-vp="tablet"] .playground-stage { width: 768px; }
+    .playground[data-vp="mobile"] .playground-stage { width: 375px; }
     /* The [hidden] attribute must win over component display rules like
        .btn { display: inline-flex } (used by the alert close button / CTAs). */
     [hidden] { display: none !important; }
@@ -645,6 +658,14 @@
                 <button class="segmented-item" type="button" data-val="0">None</button>
                 <button class="segmented-item" type="button" data-val="1">1 CTA</button>
                 <button class="segmented-item is-active" type="button" data-val="2">2 CTAs</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Viewport</span>
+              <div class="segmented" role="group" aria-label="Viewport" data-viewport>
+                <button class="segmented-item is-active" type="button" data-val="desktop">Desktop</button>
+                <button class="segmented-item" type="button" data-val="tablet">Tablet · 768</button>
+                <button class="segmented-item" type="button" data-val="mobile">Mobile · 375</button>
               </div>
             </div>
           </div>
@@ -3852,6 +3873,18 @@
         const item = e.target.closest('[data-variant]');
         if (!item) return;
         variants.forEach(el => { el.hidden = el.dataset.variant !== item.dataset.variant; });
+      });
+    });
+
+    // Viewport control — a [data-viewport] segmented group sets data-vp on its
+    // .playground, constraining the demo stage to a device width (CSS above).
+    // Reusable across any playground.
+    document.querySelectorAll('[data-viewport]').forEach(vp => {
+      const pg = vp.closest('.playground');
+      if (!pg) return;
+      vp.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-val]');
+        if (item) pg.dataset.vp = item.dataset.val;
       });
     });
 
