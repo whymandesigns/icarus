@@ -1,7 +1,7 @@
 {
  "source": "Figma \u00b7 Iconography (custom pack)",
  "fileKey": "TqaGgbpjGSUDf7qq153Isq",
- "count": 320,
+ "count": 321,
  "icons": [
   {
    "slug": "add-document",
@@ -637,6 +637,12 @@
    "slug": "education",
    "name": "Education",
    "section": "People, Faces, Profiles, Avatars, Groups",
+   "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "ellipses",
+   "name": "Ellipses",
+   "section": "Interface Essentials",
    "viewBox": "0 0 24 24"
   },
   {
