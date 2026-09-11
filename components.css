@@ -2021,19 +2021,6 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   .breadcrumbs-fit .bc-collapsible { display: none; }
   .breadcrumbs-fit .breadcrumb-overflow { display: inline-flex; }
 }
-.breadcrumb-more {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  padding: 2px var(--ic-space-1);
-  background: transparent;
-  color: var(--color-accent);
-  cursor: pointer;
-  border-radius: var(--ic-radius-sm);
-}
-.breadcrumb-more:hover { background: var(--color-accent-subtle); }
-.breadcrumb-more .icon { width: 20px; height: 20px; }
 
 /* ---------- Page head ----------
  * Page-level header. Title (+ optional breadcrumbs + count + subtitle) on
