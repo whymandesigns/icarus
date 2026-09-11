@@ -157,6 +157,28 @@ Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
 | Z-index | `--ic-z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
 | Container | `--ic-container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
 
+### Breakpoints
+
+Match **Picasso's** screen breakpoints when writing responsive rules — viewport `@media`, or `@container` for framed previews (e.g. the app-shell device tabs). Source: [Picasso breakpoints](https://toptal.github.io/picasso/?path=/story/utils-breakpoints--breakpoints).
+
+| Name | Range | Edge |
+|---|---|---|
+| `xs` | `< 480px` | — |
+| `sm` | `480px ≤ w < 768px` | 480 |
+| `md` | `768px ≤ w < 1024px` | 768 |
+| `lg` | `1024px ≤ w < 1440px` | 1024 |
+| `xl` | `≥ 1440px` | 1440 |
+
+The four edges are **480 · 768 · 1024 · 1440**. Author mobile-first (base = `xs`) and layer overrides upward with `min-width`:
+
+```css
+.grid { grid-template-columns: 1fr; }                 /* xs — mobile */
+@media (min-width: 768px)  { .grid { grid-template-columns: 1fr 1fr; } }        /* md+ */
+@media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } } /* lg+ */
+```
+
+CSS custom properties can't be read inside a `@media`/`@container` condition, so use the literal px edges above. On the React side Picasso exposes the same values via its `screens()` helper and the Tailwind `sm:` / `md:` / `lg:` / `xl:` prefixes.
+
 ---
 
 ## 6. Components
@@ -183,6 +205,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Status pills](./example.html#tags) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info`. Interactive: render as `<button class="badge">` (editable); compose `.badge-icon` (leading icon) and/or `.badge-remove` (trailing ×, click deletes the pill). Demoed under Tags. |
 | [Count badges](./example.html#badges) | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
 | [Avatars](./example.html#avatars) | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<svg class="icon"><use href="#i-…"></svg>`. |
+| [Accordion](./example.html#accordion) | `.accordion-group` > `.accordion` | Item = `.accordion-summary` (trigger, `aria-expanded`) + `.accordion-details` > `.accordion-content`. Open with `.is-open`, disable with `.is-disabled` (+ `disabled` on the summary). Group border modifiers: `.borders-all` (default) · `.borders-middle` · `.borders-none`. Chevron `.accordion-chevron` rotates; toggle handled by the delegated script. |
 | [Alerts](./example.html#alerts) | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
 | [Toasts](./example.html#toasts) | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
 | [Loaders](./example.html#loaders) | `.chase` / `.chase-cw` | Chase spinner — the logo mark's 24 segments fading in sequence. `.chase` counter-clockwise (blue) · `.chase-cw` clockwise (graphite + blue flash). Sizes `.size-sm` 24 · `.size-md` 32 · `.size-lg` 48. Copy the `<svg viewBox="0 0 22 32">` block from example.html#loaders; segment delays come from the script block. Respects `prefers-reduced-motion`. |

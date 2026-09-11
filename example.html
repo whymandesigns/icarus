@@ -240,6 +240,116 @@
       white-space: nowrap;
     }
 
+    /* ---- Device preview (App shell template) ----
+       Flip the app shell between Desktop / Tablet (768) / Mobile (375). The
+       frame is a CSS container, so the app shell reflows by container width
+       (real responsive behaviour) while staying live in the page. */
+    .device-preview { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+    .device-tabs { align-self: flex-start; }
+    .device-stage {
+      display: flex;
+      justify-content: center;
+      padding: var(--ic-space-6) var(--ic-space-5);
+      background-color: var(--color-bg);
+      background-image: radial-gradient(var(--color-border-strong) 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-position: -8px -8px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      overflow: auto;
+    }
+    .device-frame {
+      width: 100%;
+      height: 620px;
+      display: flex;
+      flex-direction: column;
+      container-type: inline-size;
+      container-name: appshell;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-lg);
+      overflow: hidden;
+      transition: width var(--ic-duration-base) var(--ic-ease);
+    }
+    [data-device="tablet"] .device-frame { width: 768px; }
+    [data-device="mobile"] .device-frame { width: 375px; }
+
+    .device-chrome {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      padding: var(--ic-space-2) var(--ic-space-3);
+      background: var(--color-surface-muted);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .device-dot { width: 10px; height: 10px; border-radius: var(--ic-radius-full); background: var(--color-border-strong); }
+    .device-chrome-label { margin-left: var(--ic-space-2); font: var(--type-body-xs); color: var(--color-text-subtle); }
+
+    .device-frame .template-frame { flex: 1; height: auto; border: 0; border-radius: 0; }
+    .device-frame .app-shell-main { padding: var(--ic-space-7); }
+
+    /* Hamburger — injected left of the page title, shown only on tablet/mobile. */
+    .app-shell-ham {
+      display: none;
+      align-items: center; justify-content: center;
+      width: 32px; height: 32px; padding: 0; flex-shrink: 0;
+      border: 0; background: transparent; cursor: pointer;
+      border-radius: var(--ic-radius-sm); color: var(--color-text);
+    }
+    .app-shell-ham:hover { background: var(--color-surface-muted); }
+    .app-shell-ham .icon { color: inherit; }
+    /* Scrim behind the open drawer */
+    .device-frame .app-shell-scrim { display: none; }
+
+    /* Tablet + Mobile (≤768, Picasso md edge): hide the top bar; the sidebar
+       becomes an off-canvas drawer opened by the hamburger beside the title. */
+    @container appshell (max-width: 768px) {
+      .device-frame .topbar { display: none; }
+      .device-frame .app-shell-ham { display: inline-flex; }
+      .device-frame .app-shell { position: relative; }
+      .device-frame .sidenav-toggle { display: none; }
+      .device-frame .sidenav {
+        position: absolute; top: 0; left: 0; bottom: 0; z-index: 50;
+        width: 236px;
+        transform: translateX(-100%);
+        transition: transform var(--ic-duration-base) var(--ic-ease);
+        box-shadow: var(--ic-shadow-lg);
+      }
+      .device-frame .app-shell.is-nav-open .sidenav { transform: translateX(0); }
+      .device-frame .app-shell.is-nav-open .app-shell-scrim {
+        display: block; position: absolute; inset: 0; z-index: 40;
+        background: var(--color-overlay);
+      }
+      /* Tighter, even outer padding on tablet/mobile */
+      .device-frame .app-shell-main { padding: var(--ic-space-4); }
+    }
+    /* A white surface card for presenting a component on the dot-grid canvas. */
+    .device-panel {
+      width: 100%;
+      background: var(--color-surface);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-lg);
+      padding: var(--ic-space-5);
+    }
+
+    /* Page-head CTAs carry an icon that only surfaces at mobile width. */
+    .btn-cta-icon { display: none; }
+    /* Mobile (≤480, Picasso xs edge): keep the page head on one row and
+       collapse the CTAs to icon-only buttons (download = CSV, plus = create)
+       that sit flush right of the title. */
+    @container appshell (max-width: 480px) {
+      .device-frame .page-head { align-items: flex-start; gap: var(--ic-space-3); }
+      .device-frame .page-head-actions { width: auto; flex-shrink: 0; }
+      /* Adopt the icon-only component: round 32px pill; secondary keeps its
+         graphite-700 icon, primary its white icon. */
+      .device-frame .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
+      .device-frame .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
+      .device-frame .page-head-actions .btn-cta-icon { display: inline-flex; }
+      .device-frame .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    }
+
     /* ---- Page-level sidebar TOC ----
        Fixed-position vertical nav showing all sections + subsections, with
        scroll-spy highlighting the current section. Hides on viewports too
@@ -434,6 +544,63 @@
     <section id="components" class="stack" style="gap: var(--ic-space-7)">
       <h2 class="section-head">Components</h2>
       <nav class="toc" data-toc-for="components" aria-label="Components contents"></nav>
+
+      <section class="stack" id="accordion">
+        <div>
+          <h3 class="h3">Accordion</h3>
+          <p class="body-sm">Collapsible sections that store content behind an always-visible summary. One item = <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion</code> (<code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-summary</code> + <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-details</code>); stack items in an <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-group</code>. Borders: <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-all</code> (default) · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-middle</code> · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-none</code>.</p>
+        </div>
+
+        <div class="grid-2" style="align-items: start">
+          <div>
+            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">All borders (default)</p>
+            <div class="accordion-group">
+              <div class="accordion is-open">
+                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Each breed varies in size and temperament.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">How do you acquire a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Dogs can be acquired from breeders, shelters, or rescue organizations.</p></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">Middle borders</p>
+            <div class="accordion-group borders-middle">
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal.</p></div></div>
+              </div>
+              <div class="accordion is-open">
+                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Owners often select a breed compatible with their lifestyle.</p></div></div>
+              </div>
+              <div class="accordion is-disabled">
+                <button class="accordion-summary" type="button" aria-expanded="false" disabled><span class="accordion-title">Disabled section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">This content can't be opened.</p></div></div>
+              </div>
+            </div>
+
+            <p class="body-xs" style="margin: var(--ic-space-4) 0 var(--ic-space-2); color: var(--color-text-subtle)">No borders</p>
+            <div class="accordion-group borders-none">
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">First section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Borderless sections read as a plain list of toggles.</p></div></div>
+              </div>
+              <div class="accordion">
+                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">Second section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                <div class="accordion-details"><div><p class="accordion-content">Use inside a card that already provides its own border.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section class="stack" id="alerts">
         <div>
@@ -1014,6 +1181,8 @@
           </div>
           <div class="row" style="align-items: center">
             <span class="caption" style="width: 96px">Icon only</span>
+            <button class="btn btn-icon-only btn-primary" aria-label="Create new"><svg class="btn-icon"><use href="#i-plus"/></svg></button>
+            <button class="btn btn-icon-only btn-secondary" aria-label="Download"><svg class="btn-icon"><use href="#i-download"/></svg></button>
             <button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="btn-icon"><use href="#i-x"/></svg></button>
             <button class="btn btn-icon-only btn-danger" aria-label="Delete"><svg class="btn-icon"><use href="#i-trash"/></svg></button>
           </div>
@@ -1832,6 +2001,8 @@
 
           <div>
             <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Breadcrumbs + title + subtitle + actions</span>
+            <div class="device-stage">
+             <div class="device-panel">
             <div class="page-head" style="margin-bottom: 0">
               <div class="page-head-main">
                 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -1845,9 +2016,11 @@
                 <p class="page-head-subtitle">Manage workflows across teams.</p>
               </div>
               <div class="page-head-actions" data-cta-source="page-head-primary">
-                <button class="btn btn-secondary">Export as CSV</button>
-                <button class="btn btn-primary">Create new</button>
+                <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
+                <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
               </div>
+            </div>
+             </div>
             </div>
           </div>
 
@@ -1918,7 +2091,8 @@
         <h3 class="h3">Side navigation</h3>
         <p class="body-sm">Two states — expanded (236px) and compact (62px). Click the chevron at the edge to toggle.</p>
 
-        <div style="height: 560px; width: fit-content; overflow: visible">
+        <div class="device-stage" style="overflow: visible">
+          <div style="height: 560px; width: fit-content; overflow: visible">
           <aside class="sidenav">
             <button class="sidenav-toggle" aria-label="Toggle navigation" type="button"><svg><use href="#i-chevron-left"/></svg></button>
             <ul class="sidenav-list">
@@ -1942,6 +2116,7 @@
               <a class="sidenav-item" href="#"><svg class="sidenav-item-icon"><use href="#i-lightbulb"/></svg><span class="sidenav-item-label">Learning Hub</span></a>
             </div>
           </aside>
+          </div>
         </div>
       </section>
 
@@ -2000,26 +2175,34 @@
         </div>
 
         <span class="caption" style="display: block">Current on step 1 (matches the component)</span>
-        <ol class="stepper">
-          <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
-        </ol>
+        <div class="device-stage">
+          <div class="device-panel">
+            <ol class="stepper">
+              <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
+            </ol>
+          </div>
+        </div>
 
         <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In progress — steps 1–2 complete, on step 3</span>
-        <ol class="stepper">
-          <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Account</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Workspace</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
-          <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-          <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
-        </ol>
+        <div class="device-stage">
+          <div class="device-panel">
+            <ol class="stepper">
+              <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Account</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Workspace</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
+              <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+              <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
+            </ol>
+          </div>
+        </div>
       </section>
 
       <section class="stack" id="switches">
@@ -2418,15 +2601,20 @@
         </div>
 
         <span class="caption" style="display: block">Standalone</span>
-        <div class="tabs" role="tablist">
-          <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
-          <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+        <div class="device-stage">
+          <div class="device-panel">
+            <div class="tabs" role="tablist">
+              <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
+              <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+            </div>
+          </div>
         </div>
 
         <span class="caption" style="display: block; margin-top: var(--ic-space-5)">With panels</span>
-        <div>
+        <div class="device-stage">
+          <div class="device-panel">
           <div class="tabs" role="tablist">
             <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
             <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
@@ -2444,6 +2632,7 @@
           </div>
           <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
             <p class="body">Workspace name, billing, integrations and permissions.</p>
+          </div>
           </div>
         </div>
       </section>
@@ -2721,8 +2910,8 @@
       <section class="stack" id="topbar">
         <h3 class="h3">Top bar</h3>
         <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar.</p>
-        <div style="border-radius: var(--ic-radius-sm); border: 1px solid var(--color-border)">
-          <header class="topbar" style="border-radius: var(--ic-radius-sm)">
+        <div class="device-stage">
+          <header class="topbar" style="border-radius: var(--ic-radius-sm); width: 100%; box-shadow: var(--ic-shadow-lg)">
             <a class="topbar-brand" href="#">
               <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
             </a>
@@ -2765,9 +2954,18 @@
       <section class="stack" id="template-app-shell">
         <div>
           <h3 class="h3">App shell UI</h3>
-          <p class="body-sm">Topbar + sidebar + main page composing a complete view. Toggle the sidebar to see compact mode.</p>
+          <p class="body-sm">Topbar + sidebar + main page composing a complete view. Toggle the sidebar to see compact mode, or flip devices to see it reflow.</p>
         </div>
 
+        <div class="device-preview" data-device="desktop">
+          <div class="segmented device-tabs" role="tablist" aria-label="Device size">
+            <button class="segmented-item is-active" type="button" data-device-val="desktop">Desktop</button>
+            <button class="segmented-item" type="button" data-device-val="tablet">Tablet · 768</button>
+            <button class="segmented-item" type="button" data-device-val="mobile">Mobile · 375</button>
+          </div>
+          <div class="device-stage">
+            <div class="device-frame">
+              <div class="device-chrome"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span><span class="device-chrome-label">Operationalize</span></div>
         <div class="template-frame">
 
           <!-- Topbar -->
@@ -2820,7 +3018,7 @@
               </div>
             </aside>
 
-            <main class="app-shell-main" style="padding: var(--ic-space-7)">
+            <main class="app-shell-main">
 
               <!-- PROCESSES -->
               <section class="page-view" data-page="processes">
@@ -3047,6 +3245,9 @@
               </section>
 
             </main>
+          </div>
+        </div>
+            </div>
           </div>
         </div>
       </section>
@@ -3490,6 +3691,50 @@
       });
     });
 
+    // Accordion — toggle .is-open (+ aria-expanded) on the item.
+    document.addEventListener('click', (e) => {
+      const summary = e.target.closest('.accordion-summary');
+      if (!summary) return;
+      const item = summary.closest('.accordion');
+      if (!item || item.classList.contains('is-disabled')) return;
+      const open = item.classList.toggle('is-open');
+      summary.setAttribute('aria-expanded', String(open));
+    });
+
+    // Device preview tabs — set data-device on the wrapper (drives frame width
+    // + the app-shell container queries).
+    document.querySelectorAll('.device-tabs').forEach(tabs => {
+      const wrap = tabs.closest('.device-preview');
+      tabs.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-device-val]');
+        if (item && wrap) wrap.dataset.device = item.dataset.deviceVal;
+      });
+    });
+
+    // App-shell hamburger — on tablet/mobile the topbar is hidden and the
+    // sidebar becomes an off-canvas drawer. Inject a menu button left of each
+    // page title, plus a scrim; the hamburger / scrim / a nav item toggle it.
+    document.querySelectorAll('#template-app-shell .app-shell').forEach(shell => {
+      const close = () => shell.classList.remove('is-nav-open');
+      if (!shell.querySelector('.app-shell-scrim')) {
+        const scrim = document.createElement('div');
+        scrim.className = 'app-shell-scrim';
+        scrim.addEventListener('click', close);
+        shell.appendChild(scrim);
+      }
+      shell.querySelectorAll('.page-head-title').forEach(title => {
+        if (title.querySelector('.app-shell-ham')) return;
+        const b = document.createElement('button');
+        b.className = 'app-shell-ham';
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Menu');
+        b.innerHTML = '<svg class="icon icon-24"><use href="#i-overview"/></svg>';
+        b.addEventListener('click', () => shell.classList.toggle('is-nav-open'));
+        title.insertBefore(b, title.firstChild);
+      });
+      shell.querySelectorAll('.sidenav-item').forEach(i => i.addEventListener('click', close));
+    });
+
     // Iconography gallery — render the custom icon set from icons.index.json with live search
     (function () {
       const grid = document.getElementById('icon-gallery');
@@ -3514,6 +3759,9 @@
         'ai-smart-writing': 'Sparkle', 'comment-add': 'Add',
         'arrows-select': 'DropdownArrows',
       });
+      // Shared with the ?map=1 inspector so in-context icons (alerts, toolbar,
+      // etc.) get the same Picasso cross-reference as the gallery cards.
+      window.__PICASSO_ICON_MAP = iconMap;
       fetch('icons.index.json').then(r => r.json()).then(data => {
         const icons = data.icons.slice().sort((a, b) => a.slug.localeCompare(b.slug));
         const render = (q = '') => {
@@ -4772,6 +5020,20 @@
             if (f.note) el.setAttribute('data-picasso-font-note', f.note);
           });
         }
+
+        // In-context iconography icons (alerts, toolbar, etc.) — cross-reference
+        // to Picasso by their sprite slug, same as the gallery. Gallery cards are
+        // handled at card level, so skip icons inside them.
+        const ICONREF = window.__PICASSO_ICON_MAP || {};
+        document.querySelectorAll('svg.icon').forEach(svg => {
+          if (svg.closest('.icon-card') || svg.hasAttribute('data-picasso-icon')) return;
+          const u = svg.querySelector('use');
+          const href = u && (u.getAttribute('href') || u.getAttribute('xlink:href')) || '';
+          if (!href.startsWith('#i-')) return;
+          const slug = href.slice(3);
+          const pk = ICONREF[slug];
+          if (pk) { svg.setAttribute('data-picasso-icon', pk); svg.setAttribute('data-icon-slug', slug); }
+        });
         if (!active) return;
         document.documentElement.classList.add('is-map-mode');
 
@@ -4899,7 +5161,7 @@
         const showIcon = (el) => {
           pop.innerHTML = '';
           const pk = el.dataset.picassoIcon;
-          const slug = el.querySelector('.icon-card-name')?.textContent || '';
+          const slug = el.dataset.iconSlug || el.querySelector('.icon-card-name')?.textContent || '';
           const head = document.createElement('div');
           head.className = 'map-pop-head';
           head.textContent = slug + ' → ' + pk;

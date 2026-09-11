@@ -63,6 +63,12 @@
 }
 .btn-icon-only.btn-danger:hover  { background: var(--color-danger-subtle); }
 .btn-icon-only.btn-danger:active { background: var(--color-danger-subtle); }
+
+/* Secondary as icon-only: graphite-700 icon on the outlined surface. A shade
+ * darker than the ghost's graphite-500 — reads as a bordered, resting control. */
+.btn-icon-only.btn-secondary {
+  color: var(--ic-palette-graphite-700);
+}
 .btn:active { transform: translateY(1px); }
 .btn:focus-visible {
   outline: 2px solid var(--color-border-focus);
@@ -1017,6 +1023,75 @@ textarea.input {
 }
 .sheet-empty-state svg { font-size: 32px; color: var(--color-text-subtle); }
 
+/* ---------- Accordion ----------
+ * Collapsible sections. One item = .accordion (a .accordion-summary trigger +
+ * a .accordion-details collapsible region). Stack items in an .accordion-group;
+ * the group's border modifier controls the horizontal rules:
+ *   .borders-all (default) · .borders-middle (only between) · .borders-none.
+ *   <div class="accordion-group">
+ *     <div class="accordion is-open">
+ *       <button class="accordion-summary" type="button" aria-expanded="true">
+ *         <span class="accordion-title">Title</span>
+ *         <svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg>
+ *       </button>
+ *       <div class="accordion-details"><div class="accordion-content">…</div></div>
+ *     </div>
+ *   </div>
+ * Toggling .is-open (+ aria-expanded) is handled by the delegated script.
+ */
+.accordion { background: var(--color-surface); }
+.accordion-summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ic-space-3);
+  padding: var(--ic-space-3) var(--ic-space-4);
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: var(--type-body-semibold);
+  color: var(--color-text);
+  transition: background var(--ic-duration-fast) var(--ic-ease);
+}
+.accordion-summary:hover { background: var(--color-surface-muted); }
+.accordion-summary:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: -2px; }
+.accordion-title { min-width: 0; }
+.accordion-chevron {
+  flex-shrink: 0;
+  color: var(--color-icon);
+  transition: transform var(--ic-duration-base) var(--ic-ease);
+}
+.accordion.is-open .accordion-chevron { transform: rotate(180deg); }
+
+/* Collapsible region — animate height via the grid-rows 0fr→1fr technique. */
+.accordion-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ic-duration-base) var(--ic-ease);
+}
+.accordion.is-open .accordion-details { grid-template-rows: 1fr; }
+.accordion-details > * { overflow: hidden; min-height: 0; }
+.accordion-content {
+  padding: 0 var(--ic-space-4) var(--ic-space-4);
+  font: var(--type-body-sm);
+  color: var(--color-text-muted);
+}
+
+/* Disabled */
+.accordion.is-disabled .accordion-summary { color: var(--color-text-subtle); cursor: not-allowed; pointer-events: none; }
+.accordion.is-disabled .accordion-chevron { color: var(--color-text-subtle); }
+
+/* Group + border modifiers (default = all) */
+.accordion-group { border-radius: var(--ic-radius-md); overflow: hidden; }
+.accordion-group .accordion { border-top: 1px solid var(--color-border); }
+.accordion-group.borders-none .accordion { border-top: 0; }
+.accordion-group.borders-middle .accordion:first-child { border-top: 0; }
+.accordion-group:not(.borders-none):not(.borders-middle) { border: 1px solid var(--color-border); }
+.accordion-group:not(.borders-none):not(.borders-middle) .accordion:first-child { border-top: 0; }
+
 /* ---------- Alert ----------
  * Horizontal block with: icon · message · optional CTAs · optional close button.
  *
@@ -1046,7 +1121,10 @@ textarea.input {
   font: var(--type-body-sm);
 }
 .alert-icon    { font-size: 16px; flex-shrink: 0; }
-.alert-message { flex: 1; min-width: 0; margin: 0; }
+/* Tighter than body-sm's 20px leading: the loose line box let the glyphs ride
+ * high above the centred icon. 1.35 hugs the text so it optically centres with
+ * the 16px icon and the CTAs, and still wraps cleanly on multi-line alerts. */
+.alert-message { flex: 1; min-width: 0; margin: 0; line-height: 1.35; }
 .alert-actions { display: inline-flex; gap: var(--ic-space-2); flex-shrink: 0; }
 /* Dismiss button — styled by the icon-only ghost button component in the
  * markup (.btn.btn-icon-only.btn-ghost.btn-xs); this class only handles layout. */
@@ -1972,7 +2050,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   gap: var(--ic-space-3);
 }
 .page-head-heading {
-  font: var(--type-h1);
+  font: var(--type-h2); /* H2 / 20px — page titles sit one step below the display size */
   color: var(--color-text);
   margin: 0;
 }
