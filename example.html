@@ -325,9 +325,10 @@
       /* Tighter, even outer padding on tablet/mobile */
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
-    /* Component playground — a segmented header over one live demo that swaps
-       variants. Reusable across component sections. */
-    .playground-tabs { align-self: flex-start; margin-bottom: var(--ic-space-5); }
+    /* Component playground — a segmented header (knobs) sitting on top of the
+       canvas panel, swapping one live demo. Reusable across component sections. */
+    .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+    .playground-tabs { align-self: flex-start; }
     .playground-stage { max-width: 480px; }
     .playground-variant[hidden] { display: none; }
 
@@ -2136,17 +2137,18 @@
              variant of one live demo. Reusable: any [data-playground] with a
              .playground-tabs (segmented, items carry data-variant) and matching
              .playground-variant[data-variant] panels is wired by JS. -->
-        <div class="device-stage">
-          <div class="device-panel playground" data-playground>
-            <div class="segmented playground-tabs" role="tablist" aria-label="Slider variant">
-              <button class="segmented-item is-active" type="button" data-variant="plain">Plain</button>
-              <button class="segmented-item" type="button" data-variant="minmax">Min / max</button>
-              <button class="segmented-item" type="button" data-variant="value">Live value</button>
-              <button class="segmented-item" type="button" data-variant="field">With input</button>
-              <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
-            </div>
-            <div class="playground-stage">
-              <div class="playground-variant" data-variant="plain">
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Slider variant">
+            <button class="segmented-item is-active" type="button" data-variant="plain">Plain</button>
+            <button class="segmented-item" type="button" data-variant="minmax">Min / max</button>
+            <button class="segmented-item" type="button" data-variant="value">Live value</button>
+            <button class="segmented-item" type="button" data-variant="field">With input</button>
+            <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
+          </div>
+          <div class="device-stage">
+            <div class="device-panel">
+              <div class="playground-stage">
+                <div class="playground-variant" data-variant="plain">
                 <div class="slider">
                   <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Value" />
                 </div>
@@ -2174,6 +2176,7 @@
                 <div class="slider">
                   <input class="slider-input" type="range" min="0" max="100" value="60" aria-label="Value" disabled />
                 </div>
+              </div>
               </div>
             </div>
           </div>
