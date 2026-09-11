@@ -2009,15 +2009,18 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   cursor: default;
 }
 
-/* Overflow collapse — when the trail would wrap, JS adds .is-collapsed to hide
- * the middle crumbs and reveal a "…" menu holding them. Keeps the last parent +
- * current page visible to preserve horizontal space on mobile. */
-.breadcrumbs { position: relative; }        /* anchor the overflow menu */
+/* Overflow collapse — a container query on the trail's wrapper (.breadcrumbs-fit,
+ * container-type: inline-size) hides the middle crumbs and reveals a "…" menu
+ * below ~480px. Keeps the last parent + current page visible to save space on
+ * mobile; desktop and tablet show the full trail. */
 .breadcrumbs[data-collapsible] { flex-wrap: nowrap; }
-.breadcrumb-overflow { display: none; position: static; }
-.breadcrumbs.is-collapsed { flex-wrap: nowrap; }
-.breadcrumbs.is-collapsed .bc-collapsible { display: none; }
-.breadcrumbs.is-collapsed .breadcrumb-overflow { display: inline-flex; }
+.breadcrumbs-fit { container-type: inline-size; }
+/* Hidden by default; specificity beats .dropdown { display: inline-flex }. */
+.breadcrumbs .breadcrumb-overflow { display: none; }
+@container (max-width: 480px) {
+  .breadcrumbs-fit .bc-collapsible { display: none; }
+  .breadcrumbs-fit .breadcrumb-overflow { display: inline-flex; }
+}
 .breadcrumb-more {
   display: inline-flex;
   align-items: center;
@@ -2031,8 +2034,8 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .breadcrumb-more:hover { background: var(--color-accent-subtle); }
 .breadcrumb-more .icon { width: 20px; height: 20px; }
-/* Menu anchors under the "…" trigger */
-.breadcrumb-overflow .dropdown-menu { top: 100%; left: 0; margin-top: var(--ic-space-1); }
+/* Menu floats below the "…" trigger, above following content. */
+.breadcrumb-overflow .dropdown-menu { top: 100%; left: 0; margin-top: var(--ic-space-1); z-index: 50; }
 
 /* ---------- Page head ----------
  * Page-level header. Title (+ optional breadcrumbs + count + subtitle) on

@@ -777,6 +777,7 @@
         <div class="playground" data-vp="desktop">
           <div class="device-stage" style="overflow: visible">
             <div class="device-panel">
+              <div class="breadcrumbs-fit">
               <nav class="breadcrumbs" aria-label="Breadcrumb" data-collapsible>
                 <!-- Overflow — shown only when the full trail would wrap (narrow widths).
                      Opens a menu of the collapsed parent crumbs. -->
@@ -792,6 +793,7 @@
                 <a class="breadcrumb" href="#breadcrumbs">Steps</a>
                 <span class="breadcrumb is-current" aria-current="page">Review step</span>
               </nav>
+              </div>
             </div>
           </div>
         </div>
@@ -4304,24 +4306,8 @@
       }, true);
     });
 
-    // Breadcrumbs overflow — a [data-collapsible] trail collapses its middle
-    // crumbs into a "…" menu when the full trail no longer fits on one line.
-    document.querySelectorAll('.breadcrumbs[data-collapsible]').forEach(nav => {
-      const measure = () => {
-        nav.classList.remove('is-collapsed');
-        if (nav.scrollWidth > nav.clientWidth + 1) nav.classList.add('is-collapsed');
-      };
-      const host = nav.parentElement;
-      if (window.ResizeObserver && host) {
-        let lastW = -1;
-        new ResizeObserver((entries) => {
-          const w = Math.round(entries[0].contentRect.width);
-          if (w === lastW) return;      // only re-measure on width change (avoids loops)
-          lastW = w; measure();
-        }).observe(host);
-      }
-      measure();
-    });
+    // Breadcrumbs overflow collapse is handled purely by a container query
+    // (.breadcrumbs-fit); the "…" trigger opens via the generic .dropdown handler.
 
     // Tag inputs — Enter to add, Backspace on empty to remove last
     document.querySelectorAll('.input-tags').forEach(wrap => {
