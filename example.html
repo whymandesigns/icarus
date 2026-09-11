@@ -2332,6 +2332,20 @@
 
       <section class="stack" id="switches">
         <h3 class="h3">Switches</h3>
+
+        <span class="caption" style="display: block">States — on · off · disabled</span>
+        <div class="device-stage">
+          <div class="device-panel">
+            <div class="row" style="gap: var(--ic-space-6); align-items: center; justify-content: center">
+              <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
+              <label class="switch"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></label>
+              <label class="switch"><input type="checkbox" class="switch-input" checked disabled /><span class="switch-track"></span></label>
+              <label class="switch"><input type="checkbox" class="switch-input" disabled /><span class="switch-track"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In a form</span>
         <div class="device-stage">
         <article class="card" style="width: 100%; max-width: 480px">
           <div class="stack" style="gap: var(--ic-space-4)">
