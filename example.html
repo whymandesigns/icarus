@@ -1373,13 +1373,17 @@
         <h3 class="h3">Drawer</h3>
         <p class="body-sm">Right-anchored side panel. 6 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes.</p>
 
-        <div class="row">
+        <div class="device-stage">
+          <div class="device-panel">
+        <div class="row" style="justify-content: center">
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-narrow">Narrow · 440</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-regular">Regular · 560</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-medium">Medium · 640</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-wide">Wide · 960</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-ultra">Ultra · 1180</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-full">Full</button>
+        </div>
+          </div>
         </div>
 
         <!-- Narrow: filters panel -->
@@ -1556,7 +1560,8 @@
         <h3 class="h3">Dropdown menus</h3>
         <p class="body-sm">The open panel — items compose icon, label, description, avatar, selected state, or removable chips.</p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--ic-space-5); align-items: start">
+        <div class="device-stage">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--ic-space-5); align-items: start; width: 100%">
 
           <!-- 1. Default -->
           <div class="stack" style="gap: var(--ic-space-2)">
@@ -1730,6 +1735,7 @@
             </div>
           </div>
 
+        </div>
         </div>
       </section>
 
@@ -1936,12 +1942,16 @@
         <h3 class="h3">Modal</h3>
         <p class="body-sm">Overlay + centered panel. 5 desktop sizes. Click any size to open. Escape, overlay click, or Cancel closes.</p>
 
-        <div class="row">
+        <div class="device-stage">
+          <div class="device-panel">
+        <div class="row" style="justify-content: center">
           <button class="btn btn-secondary" type="button" data-modal-open="modal-xs">XS · 328</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-sm">SM · 520</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-md">MD · 650</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-lg">LG · 800</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-xl">XL · 1200</button>
+        </div>
+          </div>
         </div>
 
         <!-- Modal instances -->
@@ -2156,6 +2166,8 @@
           <h3 class="h3">Sheet</h3>
           <p class="body-sm">Editable spreadsheet variant of the table — grid lines, sticky header + <code style="font: var(--type-mono); color: var(--color-text-muted)">#</code> gutter, and every cell editable through one shared state machine. Same <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table class="table"&gt;</code> base as the wide variant, so a prototype can toggle <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-wide</code> ⇄ <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-sheet</code>. Six cell primitives: text (Name/Description), single-select (Status/Health), person, date (+ roadmap dot / RoB time), multi-select tags, link.</p>
         </div>
+        <div class="device-stage">
+          <div class="device-panel" style="padding: var(--ic-space-3)">
         <div class="table-scroll" style="max-height: 520px">
           <table class="table table-sheet" data-sheet>
             <thead><tr><th class="sheet-gutter">#</th><th class="sheet-col" data-col="name" style="width:220px"><span class="sheet-col-inner"><button class="th-sort" type="button">Name <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="description" style="width:210px"><span class="sheet-col-inner"><button class="th-sort" type="button">Description <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="status" style="width:180px"><span class="sheet-col-inner"><button class="th-sort" type="button">Status <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="health" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Health <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="accountability" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Accountability <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="roadmap" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">Roadmap <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="tags" style="width:200px"><span class="sheet-col-inner"><button class="th-sort" type="button">Tags <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="beneficiary" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Beneficiary function <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="rob" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">RoB Meetings <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="start" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Start date <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th></tr></thead>
@@ -2170,6 +2182,8 @@
               <tr data-level="0"><td class="sheet-gutter"><span class="sheet-rownum">8</span></td><td class="sheet-cell" data-type="text" data-variant="name" data-level="0" data-value="AI Powered Creator Tools" tabindex="-1"><span class="sheet-tree"><span class="row-toggle-spacer"></span><span class="sheet-name"></span><button class="sheet-addchild" type="button" aria-label="Add sub-item"><svg class="icon"><use href="#i-plus"/></svg></button></span></td><td class="sheet-cell" data-type="text" data-variant="muted" data-value="End-to-end initiative to ship AI tooling." tabindex="-1"></td><td class="sheet-cell" data-type="select" data-value="Execution" tabindex="-1"></td><td class="sheet-cell" data-type="select" data-variant="health" data-value="At Risk" tabindex="-1"></td><td class="sheet-cell" data-type="person" data-value="Alejandro Reyes" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-dot="is-danger" data-empty-icon="upload" data-value="Jan 2, 2026" tabindex="-1"></td><td class="sheet-cell" data-type="tags" data-value="marketing-client" tabindex="-1"></td><td class="sheet-cell" data-type="link" data-label="Talent Ops" data-value="https://example.com/talent-ops" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-variant="time" data-value="May 11 · 6:00pm" tabindex="-1"></td><td class="sheet-cell" data-type="date" data-value="Jan 15, 2026" tabindex="-1"></td></tr>
             </tbody>
           </table>
+        </div>
+          </div>
         </div>
         <p class="body-sm" style="color: var(--color-text-muted)">Click a cell to select · click again or <kbd>Enter</kbd> to edit · <kbd>Esc</kbd> cancels · arrow keys / <kbd>Tab</kbd> move · <kbd>⌘/Ctrl</kbd>+<kbd>C</kbd> copies a <kbd>Shift</kbd>-drag range · empty cells reveal <code style="font: var(--type-mono); color: var(--color-text-muted)">+</code> · the header menu sorts, filters and resizes. Cells flash a saving → saved tick; row 7’s Beneficiary cell demos a save error with retry.</p>
       </section>
@@ -2351,6 +2365,8 @@
           <h3 class="h3">Tables</h3>
           <p class="body-sm">Wide variant — tall rows, zebra striping, no grid lines. Built on semantic <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table&gt;</code> with cell-content helpers (<code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-title</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-user</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-meta</code>) for repeating patterns. For a dense, editable spreadsheet grid on the same <code style="font: var(--type-mono); color: var(--color-text-muted)">.table</code> base, see the <a href="#sheet">Sheet</a> variant.</p>
         </div>
+        <div class="device-stage">
+          <div class="device-panel" style="padding: var(--ic-space-3)">
         <div class="table-scroll">
           <table class="table table-wide">
             <thead>
@@ -2697,6 +2713,8 @@
               </tr>
             </tbody>
           </table>
+        </div>
+          </div>
         </div>
       </section>
 
