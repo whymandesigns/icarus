@@ -335,6 +335,9 @@
     .control-label { font: var(--type-caption); color: var(--color-text-muted); }
     .playground-stage { width: 100%; max-width: 640px; }
     .playground-variant[hidden] { display: none; }
+    /* The [hidden] attribute must win over component display rules like
+       .btn { display: inline-flex } (used by the alert close button / CTAs). */
+    [hidden] { display: none !important; }
 
     /* A white surface card for presenting a component on the dot-grid canvas. */
     .device-panel {
