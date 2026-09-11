@@ -777,9 +777,18 @@
         <div class="playground" data-vp="desktop">
           <div class="device-stage">
             <div class="device-panel">
-              <nav class="breadcrumbs" aria-label="Breadcrumb">
-                <a class="breadcrumb" href="#breadcrumbs">Processes</a>
-                <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
+              <nav class="breadcrumbs" aria-label="Breadcrumb" data-collapsible>
+                <!-- Overflow — shown only when the full trail would wrap (narrow widths).
+                     Opens a menu of the collapsed parent crumbs. -->
+                <div class="dropdown breadcrumb breadcrumb-overflow">
+                  <button class="breadcrumb-more dropdown-trigger" type="button" aria-label="Show hidden breadcrumbs" aria-expanded="false"><svg class="icon"><use href="#i-dots-three"/></svg></button>
+                  <div class="dropdown-menu" hidden>
+                    <a class="dropdown-item" href="#breadcrumbs">Processes</a>
+                    <a class="dropdown-item" href="#breadcrumbs">Onboarding</a>
+                  </div>
+                </div>
+                <a class="breadcrumb bc-collapsible" href="#breadcrumbs">Processes</a>
+                <a class="breadcrumb bc-collapsible" href="#breadcrumbs">Onboarding</a>
                 <a class="breadcrumb" href="#breadcrumbs">Steps</a>
                 <span class="breadcrumb is-current" aria-current="page">Review step</span>
               </nav>
@@ -4293,6 +4302,25 @@
       tabs.addEventListener('click', (e) => {
         if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
       }, true);
+    });
+
+    // Breadcrumbs overflow — a [data-collapsible] trail collapses its middle
+    // crumbs into a "…" menu when the full trail no longer fits on one line.
+    document.querySelectorAll('.breadcrumbs[data-collapsible]').forEach(nav => {
+      const measure = () => {
+        nav.classList.remove('is-collapsed');
+        if (nav.scrollWidth > nav.clientWidth + 1) nav.classList.add('is-collapsed');
+      };
+      const host = nav.parentElement;
+      if (window.ResizeObserver && host) {
+        let lastW = -1;
+        new ResizeObserver((entries) => {
+          const w = Math.round(entries[0].contentRect.width);
+          if (w === lastW) return;      // only re-measure on width change (avoids loops)
+          lastW = w; measure();
+        }).observe(host);
+      }
+      measure();
     });
 
     // Tag inputs — Enter to add, Backspace on empty to remove last
