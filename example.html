@@ -344,6 +344,8 @@
     }
     .playground[data-vp="tablet"] .playground-stage { width: 768px; }
     .playground[data-vp="mobile"] .playground-stage { width: 375px; }
+    /* Desktop = fill the canvas (so it's never narrower than the tablet frame). */
+    .playground[data-vp="desktop"] .playground-stage { max-width: 100%; }
     /* The [hidden] attribute must win over component display rules like
        .btn { display: inline-flex } (used by the alert close button / CTAs). */
     [hidden] { display: none !important; }
@@ -630,7 +632,7 @@
           <h3 class="h3">Alerts</h3>
           <p class="body-sm">Page-level message that sits inline beneath the page head — not a floating toast. Horizontal block with icon · message · optional CTAs · optional close. Four variants: <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-danger</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-warning</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-success</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-info</code>. Omit <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-close</code> for persistent alerts.</p>
         </div>
-        <div class="playground" data-alert-playground>
+        <div class="playground" data-alert-playground data-vp="desktop">
           <div class="playground-controls">
             <div class="control">
               <span class="control-label">Status</span>
