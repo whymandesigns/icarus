@@ -2173,6 +2173,10 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   scroll-behavior: smooth;
 }
 .tabs-scroller > .tabs::-webkit-scrollbar { display: none; }
+/* Grab-to-scroll (mouse/pen; touch uses native momentum scrolling). */
+.tabs-scroller.can-left > .tabs,
+.tabs-scroller.can-right > .tabs { cursor: grab; }
+.tabs.is-dragging { cursor: grabbing; scroll-behavior: auto; user-select: none; }
 .tabs-more {
   position: absolute;
   top: 0;

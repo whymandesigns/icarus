@@ -4262,6 +4262,27 @@
       tabs.addEventListener('scroll', update, { passive: true });
       if (window.ResizeObserver) new ResizeObserver(update).observe(tabs);
       update();
+
+      // Grab-to-scroll for mouse/pen (touch already scrolls natively). A drag
+      // that moves is suppressed from activating the tab it started on.
+      let dragging = false, startX = 0, startScroll = 0, moved = false;
+      tabs.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') return;
+        dragging = true; moved = false; startX = e.clientX; startScroll = tabs.scrollLeft;
+        tabs.setPointerCapture(e.pointerId);
+      });
+      tabs.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 3) { moved = true; tabs.classList.add('is-dragging'); }
+        tabs.scrollLeft = startScroll - dx;
+      });
+      const endDrag = () => { dragging = false; tabs.classList.remove('is-dragging'); };
+      tabs.addEventListener('pointerup', endDrag);
+      tabs.addEventListener('pointercancel', endDrag);
+      tabs.addEventListener('click', (e) => {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      }, true);
     });
 
     // Tag inputs — Enter to add, Backspace on empty to remove last
