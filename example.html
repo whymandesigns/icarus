@@ -329,7 +329,7 @@
        canvas panel, swapping one live demo. Reusable across component sections. */
     .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
     .playground-tabs { align-self: flex-start; }
-    .playground-stage { width: 100%; max-width: 360px; }
+    .playground-stage { width: 100%; max-width: 640px; }
     .playground-variant[hidden] { display: none; }
 
     /* A white surface card for presenting a component on the dot-grid canvas. */
@@ -614,65 +614,66 @@
           <h3 class="h3">Alerts</h3>
           <p class="body-sm">Page-level message that sits inline beneath the page head — not a floating toast. Horizontal block with icon · message · optional CTAs · optional close. Four variants: <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-danger</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-warning</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-success</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-info</code>. Omit <code style="font: var(--type-mono); color: var(--color-text-muted)">.alert-close</code> for persistent alerts.</p>
         </div>
-        <div class="stack" style="gap: var(--ic-space-3)">
-          <div class="alert alert-danger" role="alert">
-            <svg class="icon alert-icon"><use href="#i-exclamation-solid"/></svg>
-            <p class="alert-message">This is a critical warning alert.</p>
-            <div class="alert-actions">
-              <button class="btn btn-xs btn-primary">Action</button>
-              <button class="btn btn-xs btn-secondary">Dismiss</button>
-            </div>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Alert status">
+            <button class="segmented-item is-active" type="button" data-variant="danger">Danger</button>
+            <button class="segmented-item" type="button" data-variant="warning">Warning</button>
+            <button class="segmented-item" type="button" data-variant="success">Success</button>
+            <button class="segmented-item" type="button" data-variant="info">Info</button>
           </div>
-          <div class="alert alert-warning" role="alert">
-            <svg class="icon alert-icon"><use href="#i-warning"/></svg>
-            <p class="alert-message">This is a warning alert.</p>
-            <div class="alert-actions">
-              <button class="btn btn-xs btn-primary">Action</button>
-              <button class="btn btn-xs btn-secondary">Dismiss</button>
+          <div class="device-stage">
+            <div class="playground-stage">
+              <div class="playground-variant" data-variant="danger">
+                <div class="alert alert-danger" role="alert">
+                  <svg class="icon alert-icon"><use href="#i-exclamation-solid"/></svg>
+                  <p class="alert-message">This is a critical warning alert.</p>
+                  <div class="alert-actions">
+                    <button class="btn btn-xs btn-primary">Action</button>
+                    <button class="btn btn-xs btn-secondary">Dismiss</button>
+                  </div>
+                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="warning" hidden>
+                <div class="alert alert-warning" role="alert">
+                  <svg class="icon alert-icon"><use href="#i-warning"/></svg>
+                  <p class="alert-message">This is a warning alert.</p>
+                  <div class="alert-actions">
+                    <button class="btn btn-xs btn-primary">Action</button>
+                    <button class="btn btn-xs btn-secondary">Dismiss</button>
+                  </div>
+                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="success" hidden>
+                <div class="alert alert-success" role="alert">
+                  <svg class="icon alert-icon"><use href="#i-done"/></svg>
+                  <p class="alert-message">This is a success alert.</p>
+                  <div class="alert-actions">
+                    <button class="btn btn-xs btn-primary">Action</button>
+                    <button class="btn btn-xs btn-secondary">Dismiss</button>
+                  </div>
+                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="info" hidden>
+                <div class="alert alert-info" role="alert">
+                  <svg class="icon alert-icon"><use href="#i-info"/></svg>
+                  <p class="alert-message">This is an info alert.</p>
+                  <div class="alert-actions">
+                    <button class="btn btn-xs btn-primary">Action</button>
+                    <button class="btn btn-xs btn-secondary">Dismiss</button>
+                  </div>
+                  <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+                </div>
+              </div>
             </div>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
           </div>
-          <div class="alert alert-success" role="alert">
-            <svg class="icon alert-icon"><use href="#i-done"/></svg>
-            <p class="alert-message">This is a success alert.</p>
-            <div class="alert-actions">
-              <button class="btn btn-xs btn-primary">Action</button>
-              <button class="btn btn-xs btn-secondary">Dismiss</button>
-            </div>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-          </div>
-          <div class="alert alert-info" role="alert">
-            <svg class="icon alert-icon"><use href="#i-info"/></svg>
-            <p class="alert-message">This is an info alert.</p>
-            <div class="alert-actions">
-              <button class="btn btn-xs btn-primary">Action</button>
-              <button class="btn btn-xs btn-secondary">Dismiss</button>
-            </div>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-          </div>
+        </div>
 
-          <p class="body-sm" style="margin-top: var(--ic-space-3); color: var(--color-text-muted)">Without CTAs · without close (persistent) · single CTA only</p>
-          <div class="alert alert-info" role="alert">
-            <svg class="icon alert-icon"><use href="#i-info"/></svg>
-            <p class="alert-message">Heads up — your trial expires in 5 days.</p>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-          </div>
-          <div class="alert alert-success" role="status">
-            <svg class="icon alert-icon"><use href="#i-done"/></svg>
-            <p class="alert-message">Backup completed successfully. This message will stay until the next backup runs.</p>
-          </div>
-          <div class="alert alert-warning" role="alert">
-            <svg class="icon alert-icon"><use href="#i-warning"/></svg>
-            <p class="alert-message">An older version of this document is open elsewhere.</p>
-            <div class="alert-actions">
-              <button class="btn btn-xs btn-primary">Reload</button>
-            </div>
-            <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
-          </div>
-
-          <p class="body-sm" style="margin-top: var(--ic-space-3); color: var(--color-text-muted)">In context — sitting directly beneath a page head</p>
-          <div class="card" style="padding: var(--ic-space-5)">
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In context — sitting directly beneath a page head (persistent, single CTA)</span>
+        <div class="device-stage">
+          <div class="device-panel">
             <div class="page-head" style="margin-bottom: var(--ic-space-4)">
               <div class="page-head-main">
                 <div class="page-head-title">
@@ -1196,7 +1197,8 @@
 
       <section class="stack" id="cards">
         <h3 class="h3">Cards</h3>
-        <div class="grid-2">
+        <div class="device-stage">
+        <div class="grid-2" style="width: 100%; max-width: 720px">
           <article class="card">
             <h3 class="card-title">Sign in</h3>
             <p class="card-body" style="margin-bottom: var(--ic-space-5)">Welcome back to Operationalize.</p>
@@ -1238,6 +1240,7 @@
               </div>
             </div>
           </article>
+        </div>
         </div>
       </section>
 
@@ -2146,7 +2149,7 @@
             <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
           </div>
           <div class="device-stage">
-              <div class="playground-stage">
+              <div class="playground-stage" style="max-width: 360px">
                 <div class="playground-variant" data-variant="plain">
                 <div class="slider">
                   <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Value" />
@@ -2654,46 +2657,58 @@
         <h3 class="h3">Tags</h3>
         <p class="body-sm">Status markers — solid filled chip, dot indicator, or soft status pill. Solid and indicator carry 8 statuses; pills come in 5 tints and compose into interactive variants.</p>
 
-        <div class="stack" style="gap: var(--ic-space-3)">
-          <div class="row" style="align-items: center; gap: var(--ic-space-3)">
-            <span class="caption" style="width: 96px">Solid</span>
-            <span class="tag tag-positive">Label</span>
-            <span class="tag tag-negative">Label</span>
-            <span class="tag tag-warning">Label</span>
-            <span class="tag tag-dark">Label</span>
-            <span class="tag tag-blue-light">Label</span>
-            <span class="tag tag-blue">Label</span>
-            <span class="tag tag-blue-dark">Label</span>
-            <span class="tag tag-light">Label</span>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Tag style">
+            <button class="segmented-item is-active" type="button" data-variant="solid">Solid</button>
+            <button class="segmented-item" type="button" data-variant="indicator">Indicator</button>
+            <button class="segmented-item" type="button" data-variant="pills">Pills</button>
+            <button class="segmented-item" type="button" data-variant="interactive">Interactive</button>
           </div>
-          <div class="row" style="align-items: center; gap: var(--ic-space-3)">
-            <span class="caption" style="width: 96px">Indicator</span>
-            <span class="tag tag-indicator tag-positive">Label</span>
-            <span class="tag tag-indicator tag-negative">Label</span>
-            <span class="tag tag-indicator tag-warning">Label</span>
-            <span class="tag tag-indicator tag-dark">Label</span>
-            <span class="tag tag-indicator tag-blue-light">Label</span>
-            <span class="tag tag-indicator tag-blue">Label</span>
-            <span class="tag tag-indicator tag-blue-dark">Label</span>
+          <div class="device-stage">
+            <div class="playground-stage" style="max-width: 720px">
+              <div class="playground-variant" data-variant="solid">
+                <div class="row">
+                  <span class="tag tag-positive">Label</span>
+                  <span class="tag tag-negative">Label</span>
+                  <span class="tag tag-warning">Label</span>
+                  <span class="tag tag-dark">Label</span>
+                  <span class="tag tag-blue-light">Label</span>
+                  <span class="tag tag-blue">Label</span>
+                  <span class="tag tag-blue-dark">Label</span>
+                  <span class="tag tag-light">Label</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="indicator" hidden>
+                <div class="row">
+                  <span class="tag tag-indicator tag-positive">Label</span>
+                  <span class="tag tag-indicator tag-negative">Label</span>
+                  <span class="tag tag-indicator tag-warning">Label</span>
+                  <span class="tag tag-indicator tag-dark">Label</span>
+                  <span class="tag tag-indicator tag-blue-light">Label</span>
+                  <span class="tag tag-indicator tag-blue">Label</span>
+                  <span class="tag tag-indicator tag-blue-dark">Label</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="pills" hidden>
+                <div class="row">
+                  <span class="badge">Default</span>
+                  <span class="badge badge-success">Success</span>
+                  <span class="badge badge-warning">Warning</span>
+                  <span class="badge badge-danger">Danger</span>
+                  <span class="badge badge-info">Info</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="interactive" hidden>
+                <div class="row">
+                  <button class="badge badge-success" type="button"><svg class="icon badge-icon"><use href="#i-check-circle"/></svg>Active</button>
+                  <button class="badge badge-warning" type="button">Pending</button>
+                  <span class="badge badge-info"><svg class="icon badge-icon"><use href="#i-info"/></svg>New<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
+                  <span class="badge">Draft<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
+                  <span class="badge badge-danger"><svg class="icon badge-icon"><use href="#i-warning-octagon"/></svg>Blocked<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <p class="body-sm" style="margin: var(--ic-space-4) 0 0">Status pills — soft tinted surface (<code style="font: var(--type-mono); color: var(--color-text-muted)">.badge</code>)</p>
-        <div class="row">
-          <span class="badge">Default</span>
-          <span class="badge badge-success">Success</span>
-          <span class="badge badge-warning">Warning</span>
-          <span class="badge badge-danger">Danger</span>
-          <span class="badge badge-info">Info</span>
-        </div>
-
-        <p class="body-sm" style="margin: var(--ic-space-4) 0 0">Interactive pills — editable renders as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button class="badge"&gt;</code>; compose <code style="font: var(--type-mono); color: var(--color-text-muted)">.badge-icon</code> (left) and <code style="font: var(--type-mono); color: var(--color-text-muted)">.badge-remove</code> (right ×, click deletes)</p>
-        <div class="row">
-          <button class="badge badge-success" type="button"><svg class="icon badge-icon"><use href="#i-check-circle"/></svg>Active</button>
-          <button class="badge badge-warning" type="button">Pending</button>
-          <span class="badge badge-info"><svg class="icon badge-icon"><use href="#i-info"/></svg>New<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
-          <span class="badge">Draft<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
-          <span class="badge badge-danger"><svg class="icon badge-icon"><use href="#i-warning-octagon"/></svg>Blocked<button class="badge-remove" type="button" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>
         </div>
       </section>
 
