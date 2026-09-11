@@ -1412,7 +1412,7 @@
 
       <section class="stack" id="drawers">
         <h3 class="h3">Drawer</h3>
-        <p class="body-sm">Right-anchored side panel. 6 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes.</p>
+        <p class="body-sm">Right-anchored side panel. 5 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes. For an edge-to-edge panel, use the <a href="#modals">full-screen Modal</a>.</p>
 
         <div class="device-stage">
           <div class="device-panel">
@@ -1422,7 +1422,6 @@
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-medium">Medium · 640</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-wide">Wide · 960</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-ultra">Ultra · 1180</button>
-          <button class="btn btn-secondary" type="button" data-modal-open="drawer-full">Full</button>
         </div>
           </div>
         </div>
@@ -1571,30 +1570,6 @@
         </div>
 
         <!-- Full: mobile-style full-screen drawer -->
-        <div class="drawer-overlay" id="drawer-full" hidden>
-          <aside class="drawer drawer-full">
-            <header class="modal-header">
-              <h2 class="modal-title">Quick add</h2>
-              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
-            </header>
-            <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
-                <label class="field">
-                  <span class="field-label">What's this for?</span>
-                  <input class="input" type="text" placeholder="Title…" />
-                </label>
-                <label class="field">
-                  <span class="field-label">Notes</span>
-                  <textarea class="input" rows="4" placeholder="Optional context…"></textarea>
-                </label>
-              </div>
-            </div>
-            <footer class="modal-footer">
-              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
-              <button class="btn btn-primary" type="button">Add</button>
-            </footer>
-          </aside>
-        </div>
       </section>
 
       <section class="stack" id="dropdowns">
@@ -1981,7 +1956,7 @@
 
       <section class="stack" id="modals">
         <h3 class="h3">Modal</h3>
-        <p class="body-sm">Overlay + centered panel. 5 desktop sizes. Click any size to open. Escape, overlay click, or Cancel closes.</p>
+        <p class="body-sm">Overlay + centered panel. 5 desktop sizes plus an edge-to-edge <code style="font: var(--type-mono); color: var(--color-text-muted)">.modal-full</code>. Click any size to open. Escape, overlay click, or Cancel closes.</p>
 
         <div class="device-stage">
           <div class="device-panel">
@@ -1991,6 +1966,7 @@
           <button class="btn btn-secondary" type="button" data-modal-open="modal-md">MD · 650</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-lg">LG · 800</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-xl">XL · 1200</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-full">Full screen</button>
         </div>
           </div>
         </div>
@@ -2111,6 +2087,31 @@
             <footer class="modal-footer">
               <button class="btn btn-secondary" data-modal-close type="button">Close</button>
               <button class="btn btn-primary" type="button">Approve all</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-full" hidden>
+          <div class="modal modal-full">
+            <header class="modal-header">
+              <h2 class="modal-title">Quick add</h2>
+              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
+                <label class="field">
+                  <span class="field-label">What's this for?</span>
+                  <input class="input" type="text" placeholder="Title…" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Notes</span>
+                  <textarea class="input" rows="4" placeholder="Optional context…"></textarea>
+                </label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Add</button>
             </footer>
           </div>
         </div>
