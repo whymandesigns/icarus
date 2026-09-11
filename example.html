@@ -335,15 +335,20 @@
     .control-label { font: var(--type-caption); color: var(--color-text-muted); }
     .playground-stage { width: 100%; max-width: 640px; container-type: inline-size; }
     .playground-variant[hidden] { display: none; }
-    /* Viewport control — constrain the demo to a device width so components can
-       be checked (and reflow, via container queries) at tablet / mobile sizes. */
-    .playground[data-vp="tablet"] .playground-stage,
-    .playground[data-vp="mobile"] .playground-stage {
-      max-width: 100%;
+    /* Viewport control — constrain the demo (playground-stage or device-panel,
+       whichever a playground uses) to a device width so components can be checked
+       (and reflow, via container queries) at tablet / mobile sizes. The device
+       widths override each demo's own max-width via !important. */
+    .playground[data-vp="tablet"] .device-stage > *,
+    .playground[data-vp="mobile"] .device-stage > * {
+      max-width: 100% !important;
       transition: width var(--ic-duration-base) var(--ic-ease);
     }
-    .playground[data-vp="tablet"] .playground-stage { width: 768px; }
-    .playground[data-vp="mobile"] .playground-stage { width: 375px; }
+    .playground[data-vp="tablet"] .device-stage > * { width: 768px !important; }
+    .playground[data-vp="mobile"] .device-stage > * { width: 375px !important; }
+    /* Tablet/mobile playground-stage sits bare on the canvas (no card frame). */
+    .playground[data-vp="tablet"] .playground-stage,
+    .playground[data-vp="mobile"] .playground-stage { background: transparent; border: 0; padding: 0; }
     /* Desktop = fill the canvas (so it's never narrower than the tablet frame). */
     .playground[data-vp="desktop"] .playground-stage { max-width: 100%; }
     /* The [hidden] attribute must win over component display rules like
@@ -3868,16 +3873,44 @@
       });
     });
 
-    // Viewport control — a [data-viewport] segmented group sets data-vp on its
-    // .playground, constraining the demo stage to a device width (CSS above).
-    // Reusable across any playground.
-    document.querySelectorAll('[data-viewport]').forEach(vp => {
-      const pg = vp.closest('.playground');
-      if (!pg) return;
-      vp.addEventListener('click', (e) => {
-        const item = e.target.closest('[data-val]');
-        if (item) pg.dataset.vp = item.dataset.val;
-      });
+    // Viewport control — device-icon switcher that constrains a playground's demo
+    // to desktop / tablet / mobile width (CSS above). Auto-added to every variant
+    // playground so all components can be checked at device sizes.
+    const VP_ICONS = { desktop: 'i-vp-desktop', tablet: 'i-vp-tablet', mobile: 'i-vp-mobile' };
+    const VP_LABEL = { desktop: 'Desktop', tablet: 'Tablet · 768', mobile: 'Mobile · 375' };
+    const vpMarkup = () => `<span class="control-label">Viewport</span><div class="segmented" role="group" aria-label="Viewport" data-viewport>` +
+      Object.keys(VP_ICONS).map((k, i) =>
+        `<button class="segmented-item segmented-icon${i === 0 ? ' is-active' : ''}" type="button" data-val="${k}" aria-label="${VP_LABEL[k]}" title="${VP_LABEL[k]}"><svg class="icon"><use href="#${VP_ICONS[k]}"/></svg></button>`
+      ).join('') + `</div>`;
+    document.querySelectorAll('.playground').forEach(pg => {
+      const tabs = pg.querySelector(':scope > .playground-tabs');
+      if (!tabs || pg.querySelector('[data-viewport]')) return; // skip alerts (own controls) / already done
+      const strip = document.createElement('div');
+      strip.className = 'playground-controls';
+      const variantControl = document.createElement('div');
+      variantControl.className = 'control';
+      const label = document.createElement('span');
+      label.className = 'control-label';
+      label.textContent = tabs.getAttribute('aria-label') || 'Variant';
+      tabs.replaceWith(strip);
+      variantControl.append(label, tabs);
+      const vpControl = document.createElement('div');
+      vpControl.className = 'control';
+      vpControl.innerHTML = vpMarkup();
+      strip.append(variantControl, vpControl);
+      pg.dataset.vp = 'desktop';
+    });
+
+    // Delegated handler — covers every viewport control (static or injected):
+    // move the active pill and set data-vp on the playground.
+    document.addEventListener('click', (e) => {
+      const item = e.target.closest('[data-viewport] .segmented-item');
+      if (!item) return;
+      const group = item.closest('[data-viewport]');
+      group.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+      const pg = item.closest('.playground');
+      if (pg) pg.dataset.vp = item.dataset.val;
     });
 
     // Alert playground — multi-knob controls compose one live alert:
