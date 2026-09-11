@@ -2373,7 +2373,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: var(--ic-space-5) var(--ic-space-4);
   min-height: 126px;
   text-align: center;
-  background: var(--color-surface-sunken);
+  background: var(--color-bg); /* gray-100 */
   border: 1px dashed var(--color-border-strong);
   border-radius: var(--ic-radius-md);
   color: var(--color-text);
