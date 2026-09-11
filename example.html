@@ -700,41 +700,54 @@
           <p class="body-sm">Squarish identity badge (4px corner radius) in six sizes and three content types. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
         </div>
 
-        <span class="caption" style="display: block">Photo — &lt;img&gt; child</span>
-        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-          <span class="avatar avatar-xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-          <span class="avatar avatar-sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-          <span class="avatar avatar-md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-          <span class="avatar avatar-lg"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-          <span class="avatar avatar-xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-          <span class="avatar avatar-2xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Initials — 1–2 letters of text</span>
-        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-          <span class="avatar avatar-xs">JD</span>
-          <span class="avatar avatar-sm">JD</span>
-          <span class="avatar avatar-md">JD</span>
-          <span class="avatar avatar-lg">JD</span>
-          <span class="avatar avatar-xl">JD</span>
-          <span class="avatar avatar-2xl">JD</span>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Team / company — icon child (<code style="font: var(--type-mono); color: var(--color-text-muted)">.avatar-team</code> is a semantic hook; visual differentiation is the icon itself)</span>
-        <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-          <span class="avatar avatar-xs avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-          <span class="avatar avatar-sm avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-          <span class="avatar avatar-md avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-          <span class="avatar avatar-lg avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-          <span class="avatar avatar-xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-          <span class="avatar avatar-2xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-        </div>
-
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Interactive — render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code></span>
-        <div class="row" style="gap: var(--ic-space-3); align-items: center">
-          <button class="avatar avatar-md" type="button" aria-label="Open profile">JD</button>
-          <a class="avatar avatar-md" href="#avatars" aria-label="View team"><svg class="icon"><use href="#i-users-three"/></svg></a>
-          <button class="avatar avatar-lg" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Avatar type">
+            <button class="segmented-item is-active" type="button" data-variant="photo">Photo</button>
+            <button class="segmented-item" type="button" data-variant="initials">Initials</button>
+            <button class="segmented-item" type="button" data-variant="team">Team</button>
+            <button class="segmented-item" type="button" data-variant="interactive">Interactive</button>
+          </div>
+          <div class="device-stage">
+            <div class="playground-stage" style="max-width: 520px">
+              <div class="playground-variant" data-variant="photo">
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+                  <span class="avatar avatar-xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-lg"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-2xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="initials" hidden>
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+                  <span class="avatar avatar-xs">JD</span>
+                  <span class="avatar avatar-sm">JD</span>
+                  <span class="avatar avatar-md">JD</span>
+                  <span class="avatar avatar-lg">JD</span>
+                  <span class="avatar avatar-xl">JD</span>
+                  <span class="avatar avatar-2xl">JD</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="team" hidden>
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
+                  <span class="avatar avatar-xs avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-sm avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-md avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-lg avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-2xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="interactive" hidden>
+                <div class="row" style="gap: var(--ic-space-3); align-items: center">
+                  <button class="avatar avatar-md" type="button" aria-label="Open profile">JD</button>
+                  <a class="avatar avatar-md" href="#avatars" aria-label="View team"><svg class="icon"><use href="#i-users-three"/></svg></a>
+                  <button class="avatar avatar-lg" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1247,70 +1260,97 @@
       <section class="stack" id="checkboxes">
         <h3 class="h3">Checkboxes</h3>
 
-        <div class="stack" style="gap: var(--ic-space-3)">
-          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-            <span class="caption" style="width: 96px">Enabled</span>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-            <span class="caption">checked · unchecked · indeterminate</span>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Checkbox state">
+            <button class="segmented-item is-active" type="button" data-variant="enabled">Enabled</button>
+            <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
+            <button class="segmented-item" type="button" data-variant="error">Error</button>
           </div>
-          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-            <span class="caption" style="width: 96px">Disabled</span>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-          </div>
-          <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-            <span class="caption" style="width: 96px">Error</span>
-            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+          <div class="device-stage">
+            <div class="playground-stage" style="max-width: 320px">
+              <div class="playground-variant" data-variant="enabled">
+                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+                  <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <span class="caption">checked · unchecked · indeterminate</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="disabled" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+                  <label class="checkbox"><input type="checkbox" class="checkbox-input" checked disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="error" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+                  <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <article class="card" style="max-width: 480px; margin-top: var(--ic-space-4)">
-          <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Notify me about</p>
-          <div class="stack" style="gap: var(--ic-space-3)">
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Product updates</span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Team activity (some channels)</span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Weekly digest</span></label>
-            <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Marketing (paused)</span></label>
-          </div>
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In a form</span>
+        <div class="device-stage">
+          <article class="card" style="width: 100%; max-width: 480px">
+            <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Notify me about</p>
+            <div class="stack" style="gap: var(--ic-space-3)">
+              <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Product updates</span></label>
+              <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Team activity (some channels)</span></label>
+              <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Weekly digest</span></label>
+              <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Marketing (paused)</span></label>
+            </div>
 
-          <div class="field" style="margin-top: var(--ic-space-5)">
-            <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">I agree to the terms</span></label>
-            <span class="field-hint is-error">You must agree to continue.</span>
-          </div>
-        </article>
+            <div class="field" style="margin-top: var(--ic-space-5)">
+              <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">I agree to the terms</span></label>
+              <span class="field-hint is-error">You must agree to continue.</span>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="stack" id="badges">
         <h3 class="h3">Count badges</h3>
 
-        <div class="stack" style="gap: var(--ic-space-3)">
-          <div class="row" style="align-items: center; gap: var(--ic-space-4)">
-            <span class="caption" style="width: 96px">Primary</span>
-            <span class="count-badge count-badge-lg">1</span>
-            <span class="count-badge">1</span>
-            <span class="count-badge count-badge-sm">1</span>
-            <span class="count-badge count-badge-lg">99+</span>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Count badge variant">
+            <button class="segmented-item is-active" type="button" data-variant="primary">Primary</button>
+            <button class="segmented-item" type="button" data-variant="secondary">Secondary</button>
+            <button class="segmented-item" type="button" data-variant="context">In context</button>
           </div>
-          <div class="row" style="align-items: center; gap: var(--ic-space-4)">
-            <span class="caption" style="width: 96px">Secondary</span>
-            <span class="count-badge count-badge-secondary count-badge-lg">1</span>
-            <span class="count-badge count-badge-secondary">1</span>
-            <span class="count-badge count-badge-secondary count-badge-sm">1</span>
-            <span class="count-badge count-badge-secondary count-badge-lg">99+</span>
-          </div>
-          <div class="row" style="align-items: center; gap: var(--ic-space-4); margin-top: var(--ic-space-2)">
-            <span class="caption" style="width: 96px">In context</span>
-            <button class="btn btn-icon-only btn-ghost" aria-label="Notifications" style="position: relative">
-              <svg class="btn-icon"><use href="#i-bell"/></svg>
-              <span class="count-badge count-badge-sm" style="position: absolute; top: 6px; right: 6px">3</span>
-            </button>
-            <button class="btn btn-secondary" style="position: relative">
-              Inbox
-              <span class="count-badge">12</span>
-            </button>
+          <div class="device-stage">
+            <div class="playground-stage" style="max-width: 320px">
+              <div class="playground-variant" data-variant="primary">
+                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                  <span class="count-badge count-badge-lg">1</span>
+                  <span class="count-badge">1</span>
+                  <span class="count-badge count-badge-sm">1</span>
+                  <span class="count-badge count-badge-lg">99+</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="secondary" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                  <span class="count-badge count-badge-secondary count-badge-lg">1</span>
+                  <span class="count-badge count-badge-secondary">1</span>
+                  <span class="count-badge count-badge-secondary count-badge-sm">1</span>
+                  <span class="count-badge count-badge-secondary count-badge-lg">99+</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="context" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                  <button class="btn btn-icon-only btn-ghost" aria-label="Notifications" style="position: relative">
+                    <svg class="btn-icon"><use href="#i-bell"/></svg>
+                    <span class="count-badge count-badge-sm" style="position: absolute; top: 6px; right: 6px">3</span>
+                  </button>
+                  <button class="btn btn-secondary" style="position: relative">
+                    Inbox
+                    <span class="count-badge">12</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
