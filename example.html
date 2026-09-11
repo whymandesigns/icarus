@@ -1312,6 +1312,7 @@
         <div class="playground" data-playground>
           <div class="segmented playground-tabs" role="tablist" aria-label="Checkbox state">
             <button class="segmented-item is-active" type="button" data-variant="enabled">Enabled</button>
+            <button class="segmented-item" type="button" data-variant="indeterminate">Indeterminate</button>
             <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
             <button class="segmented-item" type="button" data-variant="error">Error</button>
           </div>
@@ -1321,8 +1322,13 @@
                 <div class="row" style="align-items: center; gap: var(--ic-space-5)">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                  <span class="caption">checked · unchecked</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="indeterminate" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-                  <span class="caption">checked · unchecked · indeterminate</span>
+                  <span class="caption">Partially selected — a dash, not a tick</span>
                 </div>
               </div>
               <div class="playground-variant" data-variant="disabled" hidden>
