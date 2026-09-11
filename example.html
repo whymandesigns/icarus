@@ -325,6 +325,12 @@
       /* Tighter, even outer padding on tablet/mobile */
       .device-frame .app-shell-main { padding: var(--ic-space-4); }
     }
+    /* Component playground — a segmented header over one live demo that swaps
+       variants. Reusable across component sections. */
+    .playground-tabs { align-self: flex-start; margin-bottom: var(--ic-space-5); }
+    .playground-stage { max-width: 480px; }
+    .playground-variant[hidden] { display: none; }
+
     /* A white surface card for presenting a component on the dot-grid canvas. */
     .device-panel {
       width: 100%;
@@ -2126,49 +2132,51 @@
           <p class="body-sm">Native <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;input type="range"&gt;</code> in a <code style="font: var(--type-mono); color: var(--color-text-muted)">.slider</code> row. Variants compose via optional siblings: icons, labels, min/max values, a live value readout (<code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;output data-slider-output&gt;</code>), or a two-way-synced number field (<code style="font: var(--type-mono); color: var(--color-text-muted)">.slider-field</code>).</p>
         </div>
 
+        <!-- Component playground — a segmented header switches the visible
+             variant of one live demo. Reusable: any [data-playground] with a
+             .playground-tabs (segmented, items carry data-variant) and matching
+             .playground-variant[data-variant] panels is wired by JS. -->
         <div class="device-stage">
-         <div class="device-panel">
-          <div class="stack" style="gap: var(--ic-space-5); max-width: 480px">
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Plain</span>
-            <div class="slider">
-              <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Value" />
+          <div class="device-panel playground" data-playground>
+            <div class="segmented playground-tabs" role="tablist" aria-label="Slider variant">
+              <button class="segmented-item is-active" type="button" data-variant="plain">Plain</button>
+              <button class="segmented-item" type="button" data-variant="minmax">Min / max</button>
+              <button class="segmented-item" type="button" data-variant="value">Live value</button>
+              <button class="segmented-item" type="button" data-variant="field">With input</button>
+              <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
+            </div>
+            <div class="playground-stage">
+              <div class="playground-variant" data-variant="plain">
+                <div class="slider">
+                  <input class="slider-input" type="range" min="0" max="100" value="35" aria-label="Value" />
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="minmax" hidden>
+                <div class="slider">
+                  <span class="slider-value">0</span>
+                  <input class="slider-input" type="range" min="0" max="100" value="40" aria-label="Value" />
+                  <span class="slider-value">100</span>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="value" hidden>
+                <div class="slider">
+                  <input class="slider-input" type="range" min="0" max="100" value="19" aria-label="Value" />
+                  <output class="slider-value" data-slider-output>19</output>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="field" hidden>
+                <div class="slider">
+                  <input class="slider-input" type="range" min="0" max="100" value="20" aria-label="Value" />
+                  <input class="input input-xs slider-field" type="number" min="0" max="100" value="20" aria-label="Value" />
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="disabled" hidden>
+                <div class="slider">
+                  <input class="slider-input" type="range" min="0" max="100" value="60" aria-label="Value" disabled />
+                </div>
+              </div>
             </div>
           </div>
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Min / max values</span>
-            <div class="slider">
-              <span class="slider-value">0</span>
-              <input class="slider-input" type="range" min="0" max="100" value="40" aria-label="Value" />
-              <span class="slider-value">100</span>
-            </div>
-          </div>
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Current value — drag to update</span>
-            <div class="slider">
-              <input class="slider-input" type="range" min="0" max="100" value="19" aria-label="Value" />
-              <output class="slider-value" data-slider-output>19</output>
-            </div>
-          </div>
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">With input — synced both ways</span>
-            <div class="slider">
-              <input class="slider-input" type="range" min="0" max="100" value="20" aria-label="Value" />
-              <input class="input input-xs slider-field" type="number" min="0" max="100" value="20" aria-label="Value" />
-            </div>
-          </div>
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Disabled</span>
-            <div class="slider">
-              <input class="slider-input" type="range" min="0" max="100" value="60" aria-label="Value" disabled />
-            </div>
-          </div>
-          </div>
-         </div>
         </div>
       </section>
 
@@ -3692,6 +3700,19 @@
         if (!item || !seg.contains(item)) return;
         seg.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('is-active'));
         item.classList.add('is-active');
+      });
+    });
+
+    // Component playground — the segmented header (.playground-tabs, items
+    // carry data-variant) swaps which .playground-variant is shown. The generic
+    // .segmented handler above already moves the is-active pill.
+    document.querySelectorAll('[data-playground]').forEach(pg => {
+      const tabs = pg.querySelector('.playground-tabs');
+      const variants = pg.querySelectorAll('.playground-variant');
+      tabs?.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-variant]');
+        if (!item) return;
+        variants.forEach(el => { el.hidden = el.dataset.variant !== item.dataset.variant; });
       });
     });
 
