@@ -2034,8 +2034,6 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .breadcrumb-more:hover { background: var(--color-accent-subtle); }
 .breadcrumb-more .icon { width: 20px; height: 20px; }
-/* Menu floats below the "…" trigger, above following content. */
-.breadcrumb-overflow .dropdown-menu { top: 100%; left: 0; margin-top: var(--ic-space-1); z-index: 50; }
 
 /* ---------- Page head ----------
  * Page-level header. Title (+ optional breadcrumbs + count + subtitle) on
