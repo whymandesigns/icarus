@@ -2746,24 +2746,25 @@
             <div class="device-panel">
               <div class="playground-variant" data-variant="standalone">
                 <div class="tabs" role="tablist">
-                  <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
-                  <button class="tab" role="tab" aria-selected="false" type="button">Activity</button>
-                  <button class="tab" role="tab" aria-selected="false" type="button">Members</button>
-                  <button class="tab" role="tab" aria-selected="false" type="button">Settings</button>
+                  <button class="tab is-active" role="tab" aria-selected="true" type="button">Directory</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Reporting relationships</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Geography</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Team collaboration</button>
+                  <button class="tab" role="tab" aria-selected="false" type="button">Cost centers</button>
                 </div>
               </div>
               <div class="playground-variant" data-variant="panels" hidden>
                 <div class="tabs" role="tablist">
                   <button class="tab is-active" role="tab" aria-selected="true" aria-controls="tabs-demo-overview" id="tabs-demo-tab-overview" type="button">Overview</button>
-                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Activity</button>
-                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Members</button>
-                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Settings</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-activity" id="tabs-demo-tab-activity" type="button">Reporting relationships</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Team collaboration</button>
+                  <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Workspace settings</button>
                 </div>
                 <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--ic-space-5)">
                   <p class="body">A summary of recent activity and key metrics for this workspace.</p>
                 </div>
                 <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--ic-space-5)" hidden>
-                  <p class="body">Audit log of recent changes across all members.</p>
+                  <p class="body">Who reports to whom across the org.</p>
                 </div>
                 <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--ic-space-5)" hidden>
                   <p class="body">12 members have access to this workspace.</p>
@@ -4230,6 +4231,37 @@
           });
         });
       });
+    });
+
+    // Tabs overflow — wrap each .tabs so a strip wider than its container scrolls
+    // horizontally, revealing an edge fade + chevron on the overflowing side(s).
+    document.querySelectorAll('.tabs').forEach(tabs => {
+      if (tabs.closest('.tabs-scroller')) return;
+      const scroller = document.createElement('div');
+      scroller.className = 'tabs-scroller';
+      tabs.replaceWith(scroller);
+      scroller.appendChild(tabs);
+      const mkBtn = (side) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tabs-more tabs-more-' + side;
+        b.tabIndex = -1;
+        b.setAttribute('aria-hidden', 'true');
+        b.innerHTML = '<svg class="icon"><use href="#i-chevron-left"/></svg>';
+        b.addEventListener('click', () => {
+          tabs.scrollBy({ left: (side === 'left' ? -1 : 1) * tabs.clientWidth * 0.7, behavior: 'smooth' });
+        });
+        return b;
+      };
+      scroller.append(mkBtn('left'), mkBtn('right'));
+      const update = () => {
+        const max = tabs.scrollWidth - tabs.clientWidth;
+        scroller.classList.toggle('can-left', tabs.scrollLeft > 1);
+        scroller.classList.toggle('can-right', tabs.scrollLeft < max - 1);
+      };
+      tabs.addEventListener('scroll', update, { passive: true });
+      if (window.ResizeObserver) new ResizeObserver(update).observe(tabs);
+      update();
     });
 
     // Tag inputs — Enter to add, Backspace on empty to remove last

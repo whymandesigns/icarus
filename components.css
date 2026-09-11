@@ -2162,6 +2162,47 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-radius: var(--ic-radius-sm);
 }
 
+/* Overflow — when the tab strip is wider than its container it scrolls
+ * horizontally; JS (initTabScrollers) wraps it in .tabs-scroller and toggles
+ * .can-left / .can-right, which reveal an edge fade + chevron affordance. */
+.tabs-scroller { position: relative; }
+.tabs-scroller > .tabs {
+  overflow-x: auto;
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* old Edge */
+  scroll-behavior: smooth;
+}
+.tabs-scroller > .tabs::-webkit-scrollbar { display: none; }
+.tabs-more {
+  position: absolute;
+  top: 0;
+  bottom: 1px;                    /* clear the hairline border */
+  width: 44px;
+  display: none;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  z-index: 1;
+}
+.tabs-more:hover { color: var(--color-text); }
+.tabs-more .icon { width: 16px; height: 16px; }
+/* Fade blurs the tabs into the surface behind the strip. */
+.tabs-more-right {
+  right: 0;
+  justify-content: flex-end;
+  background: linear-gradient(to right, transparent, var(--color-surface) 55%);
+}
+.tabs-more-left {
+  left: 0;
+  justify-content: flex-start;
+  background: linear-gradient(to left, transparent, var(--color-surface) 55%);
+}
+.tabs-more-right .icon { transform: scaleX(-1); } /* flip the left chevron */
+.tabs-scroller.can-right > .tabs-more-right,
+.tabs-scroller.can-left  > .tabs-more-left { display: flex; }
+
 /* ---------- Stepper ----------
  * Horizontal step indicator for wizards / multi-step flows. Numbered 24px
  * circles + labels, joined by caret separators. The current step's circle is
