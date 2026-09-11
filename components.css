@@ -2738,10 +2738,11 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   font: var(--type-body);
   color: var(--color-text);
   text-align: left;
+  text-decoration: none;      /* dropdown items render as <a> or <button> */
   cursor: pointer;
   transition: background var(--ic-duration-fast) var(--ic-ease);
 }
-.dropdown-item:hover  { background: var(--color-accent-subtle); }
+.dropdown-item:hover  { background: var(--color-accent-subtle); text-decoration: none; }
 .dropdown-item:disabled,
 .dropdown-item[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
 
