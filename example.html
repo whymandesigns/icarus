@@ -1208,29 +1208,39 @@
         </svg>
 
         <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Button set">
-            <button class="segmented-item is-active" type="button" data-variant="sizes">Sizes</button>
-            <button class="segmented-item" type="button" data-variant="icons">With icons</button>
-            <button class="segmented-item" type="button" data-variant="icononly">Icon only</button>
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Variant</span>
+              <div class="input-select playground-select" data-playground-select style="width: 160px">
+                <button class="input-select-trigger" type="button" aria-expanded="false">
+                  <span class="input-select-value">XS · 24</span>
+                  <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
+                </button>
+                <div class="dropdown-menu" hidden>
+                  <button class="dropdown-item is-selected" type="button" data-variant="xs"><svg class="dropdown-item-check"><use href="#i-check"/></svg>XS · 24</button>
+                  <button class="dropdown-item" type="button" data-variant="sm"><svg class="dropdown-item-check"><use href="#i-check"/></svg>SM · 32</button>
+                  <button class="dropdown-item" type="button" data-variant="icons"><svg class="dropdown-item-check"><use href="#i-check"/></svg>With icons</button>
+                  <button class="dropdown-item" type="button" data-variant="icononly"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Icon only</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 560px">
-              <div class="playground-variant" data-variant="sizes">
-                <div class="stack" style="gap: var(--ic-space-3)">
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 64px">XS · 24</span>
-                    <button class="btn btn-xs btn-primary">Primary</button>
-                    <button class="btn btn-xs btn-secondary">Secondary</button>
-                    <button class="btn btn-xs btn-ghost">Ghost</button>
-                    <button class="btn btn-xs btn-danger">Delete</button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 64px">SM · 32</span>
-                    <button class="btn btn-primary">Primary</button>
-                    <button class="btn btn-secondary">Secondary</button>
-                    <button class="btn btn-ghost">Ghost</button>
-                    <button class="btn btn-danger">Delete</button>
-                  </div>
+              <div class="playground-variant" data-variant="xs">
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-primary">Primary</button>
+                  <button class="btn btn-xs btn-secondary">Secondary</button>
+                  <button class="btn btn-xs btn-ghost">Ghost</button>
+                  <button class="btn btn-xs btn-danger">Delete</button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="sm" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-primary">Primary</button>
+                  <button class="btn btn-secondary">Secondary</button>
+                  <button class="btn btn-ghost">Ghost</button>
+                  <button class="btn btn-danger">Delete</button>
                 </div>
               </div>
               <div class="playground-variant" data-variant="icons" hidden>
@@ -3900,6 +3910,19 @@
       });
     });
 
+    // Reusable dropdown variant filter — an .input-select marked
+    // [data-playground-select] whose items carry data-variant swaps the shown
+    // .playground-variant. The .input-select JS already handles open/close and
+    // the trigger label; this only does the filtering + selected tick.
+    document.addEventListener('click', (e) => {
+      const item = e.target.closest('[data-playground-select] .dropdown-item[data-variant]');
+      if (!item) return;
+      const sel = item.closest('[data-playground-select]');
+      const pg = sel.closest('.playground');
+      sel.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
+      pg?.querySelectorAll('.playground-variant').forEach(v => { v.hidden = v.dataset.variant !== item.dataset.variant; });
+    });
+
     // Viewport control — device-icon switcher that constrains a playground's demo
     // to desktop / tablet / mobile width (CSS above). Auto-added to every variant
     // playground so all components can be checked at device sizes.
@@ -3911,22 +3934,26 @@
       ).join('') + `</div>`;
     document.querySelectorAll('.playground').forEach(pg => {
       if (pg.querySelector('[data-viewport]')) return; // already has one (e.g. alerts)
-      const tabs = pg.querySelector(':scope > .playground-tabs');
-      const strip = document.createElement('div');
-      strip.className = 'playground-controls';
-      if (tabs) {
-        // wrap the existing variant knobs in a labelled control
-        const variantControl = document.createElement('div');
-        variantControl.className = 'control';
-        const label = document.createElement('span');
-        label.className = 'control-label';
-        label.textContent = tabs.getAttribute('aria-label') || 'Variant';
-        tabs.replaceWith(strip);
-        variantControl.append(label, tabs);
-        strip.append(variantControl);
-      } else {
-        // no variants — the strip is just the viewport control, above the demo
-        pg.prepend(strip);
+      // Reuse an authored controls strip (e.g. a dropdown filter) if present.
+      let strip = pg.querySelector(':scope > .playground-controls');
+      if (!strip) {
+        const tabs = pg.querySelector(':scope > .playground-tabs');
+        strip = document.createElement('div');
+        strip.className = 'playground-controls';
+        if (tabs) {
+          // wrap the existing variant knobs in a labelled control
+          const variantControl = document.createElement('div');
+          variantControl.className = 'control';
+          const label = document.createElement('span');
+          label.className = 'control-label';
+          label.textContent = tabs.getAttribute('aria-label') || 'Variant';
+          tabs.replaceWith(strip);
+          variantControl.append(label, tabs);
+          strip.append(variantControl);
+        } else {
+          // no variants — the strip is just the viewport control, above the demo
+          pg.prepend(strip);
+        }
       }
       const vpControl = document.createElement('div');
       vpControl.className = 'control';
