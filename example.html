@@ -334,6 +334,9 @@
     .segmented-wrap { position: relative; display: inline-block; }
     .segmented-caret { margin-left: 2px; }
     .segmented-item[aria-expanded="true"] .segmented-caret { transform: rotate(180deg); }
+    /* Menus float below their trigger segment (JS sets left); outside the
+       segmented's clipped bounds. */
+    .seg-menu { position: absolute; top: calc(100% + var(--ic-space-1)); z-index: var(--ic-z-dropdown); }
     /* Multi-knob controls strip (Storybook-style): one labelled control per prop. */
     .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
     .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
@@ -1218,13 +1221,18 @@
               <span class="control-label">Button set</span>
               <div class="segmented-wrap">
                 <div class="segmented playground-tabs" role="tablist" aria-label="Button set">
-                  <button class="segmented-item is-active" type="button" data-variant="xs" data-sizes-trigger aria-haspopup="true" aria-expanded="false">Sizes<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
-                  <button class="segmented-item" type="button" data-variant="icons">With icons</button>
+                  <button class="segmented-item is-active" type="button" data-variant="xs" data-seg-menu="menu-sizes" aria-haspopup="true" aria-expanded="false">Sizes<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
+                  <button class="segmented-item" type="button" data-variant="icons-left" data-seg-menu="menu-icons" aria-haspopup="true" aria-expanded="false">With icons<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
                   <button class="segmented-item" type="button" data-variant="icononly">Icon only</button>
                 </div>
-                <div class="dropdown-menu dropdown-menu-start sizes-menu" hidden>
+                <div class="dropdown-menu seg-menu" data-seg-menu-id="menu-sizes" hidden>
                   <button class="dropdown-item is-selected" type="button" data-variant="xs"><svg class="dropdown-item-check"><use href="#i-check"/></svg>XS · 24</button>
                   <button class="dropdown-item" type="button" data-variant="sm"><svg class="dropdown-item-check"><use href="#i-check"/></svg>SM · 32</button>
+                </div>
+                <div class="dropdown-menu seg-menu" data-seg-menu-id="menu-icons" hidden>
+                  <button class="dropdown-item is-selected" type="button" data-variant="icons-left"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Left icon</button>
+                  <button class="dropdown-item" type="button" data-variant="icons-right"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Right icon</button>
+                  <button class="dropdown-item" type="button" data-variant="icons-both"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Both</button>
                 </div>
               </div>
             </div>
@@ -1247,25 +1255,24 @@
                   <button class="btn btn-danger">Delete</button>
                 </div>
               </div>
-              <div class="playground-variant" data-variant="icons" hidden>
-                <div class="stack" style="gap: var(--ic-space-3)">
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Left icon</span>
-                    <button class="btn btn-xs btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New</button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New project</button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-download"/></svg>Download</button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Right icon</span>
-                    <button class="btn btn-xs btn-secondary">Next<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-secondary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-primary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Both</span>
-                    <button class="btn btn-xs btn-secondary"><svg class="btn-icon"><use href="#i-check"/></svg>Apply<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-check"/></svg>Save changes<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                  </div>
+              <div class="playground-variant" data-variant="icons-left" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New</button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New project</button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-download"/></svg>Download</button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="icons-right" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-secondary">Next<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-secondary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-primary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="icons-both" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-secondary"><svg class="btn-icon"><use href="#i-check"/></svg>Apply<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-check"/></svg>Save changes<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
                 </div>
               </div>
               <div class="playground-variant" data-variant="icononly" hidden>
@@ -3927,31 +3934,43 @@
       pg?.querySelectorAll('.playground-variant').forEach(v => { v.hidden = v.dataset.variant !== item.dataset.variant; });
     });
 
-    // Segmented item with a dropdown ([data-sizes-trigger]) — the segment stays a
-    // normal variant tab, but a chevron opens a menu to pick the sub-variant
-    // (e.g. button size). Reusable for any segment that needs a filtered list.
-    document.querySelectorAll('[data-sizes-trigger]').forEach(trigger => {
-      const wrap = trigger.closest('.segmented-wrap');
-      const menu = wrap.querySelector('.sizes-menu');
-      const pg = trigger.closest('.playground');
-      const setOpen = (open) => { menu.hidden = !open; trigger.setAttribute('aria-expanded', String(open)); };
-      trigger.addEventListener('click', (e) => { e.stopPropagation(); setOpen(menu.hidden); });
-      menu.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
+    // Segmented item with a dropdown ([data-seg-menu] → .seg-menu[data-seg-menu-id])
+    // — the segment stays a normal variant tab, but a chevron opens a menu to pick
+    // a sub-variant (button size, icon position, …). Multiple per segmented; each
+    // menu floats under its own trigger. Reusable across components.
+    document.querySelectorAll('.segmented-wrap').forEach(wrap => {
+      const triggers = wrap.querySelectorAll('[data-seg-menu]');
+      const menus = wrap.querySelectorAll('.seg-menu');
+      const pg = wrap.closest('.playground');
+      const closeAll = () => {
+        menus.forEach(m => { m.hidden = true; });
+        triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+      };
+      triggers.forEach(trigger => {
+        const menu = wrap.querySelector(`.seg-menu[data-seg-menu-id="${trigger.dataset.segMenu}"]`);
+        trigger.addEventListener('click', (e) => {
           e.stopPropagation();
-          const v = item.dataset.variant;
-          trigger.dataset.variant = v;   // so re-clicking the segment restores this size
-          menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
-          pg.querySelectorAll('.playground-variant').forEach(el => { el.hidden = el.dataset.variant !== v; });
-          trigger.closest('.segmented').querySelectorAll('.segmented-item').forEach(s => s.classList.remove('is-active'));
-          trigger.classList.add('is-active');
-          setOpen(false);
+          const willOpen = menu.hidden;
+          closeAll();
+          if (willOpen) { menu.style.left = trigger.offsetLeft + 'px'; menu.hidden = false; trigger.setAttribute('aria-expanded', 'true'); }
+        });
+        menu.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const v = item.dataset.variant;
+            trigger.dataset.variant = v;   // re-clicking the segment restores this choice
+            menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
+            pg.querySelectorAll('.playground-variant').forEach(el => { el.hidden = el.dataset.variant !== v; });
+            wrap.querySelectorAll('.segmented-item').forEach(s => s.classList.remove('is-active'));
+            trigger.classList.add('is-active');
+            closeAll();
+          });
         });
       });
-      // Close on any click that isn't the trigger or inside the menu.
+      // Close when clicking anything outside a trigger or an open menu.
       document.addEventListener('click', (e) => {
-        if (e.target.closest('[data-sizes-trigger]') === trigger || menu.contains(e.target)) return;
-        setOpen(false);
+        if (wrap.contains(e.target) && (e.target.closest('[data-seg-menu]') || e.target.closest('.seg-menu'))) return;
+        closeAll();
       });
     });
 
