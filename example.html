@@ -329,6 +329,11 @@
        canvas panel, swapping one live demo. Reusable across component sections. */
     .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
     .playground-tabs { align-self: flex-start; }
+    /* A segmented control where one item opens a dropdown (its menu floats
+       outside the segmented's clipped bounds). */
+    .segmented-wrap { position: relative; display: inline-block; }
+    .segmented-caret { margin-left: 2px; }
+    .segmented-item[aria-expanded="true"] .segmented-caret { transform: rotate(180deg); }
     /* Multi-knob controls strip (Storybook-style): one labelled control per prop. */
     .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
     .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
@@ -1210,17 +1215,16 @@
         <div class="playground" data-playground>
           <div class="playground-controls">
             <div class="control">
-              <span class="control-label">Variant</span>
-              <div class="input-select playground-select" data-playground-select style="width: 160px">
-                <button class="input-select-trigger" type="button" aria-expanded="false">
-                  <span class="input-select-value">XS · 24</span>
-                  <svg class="btn-icon"><use href="#i-chevron-down"/></svg>
-                </button>
-                <div class="dropdown-menu" hidden>
+              <span class="control-label">Button set</span>
+              <div class="segmented-wrap">
+                <div class="segmented playground-tabs" role="tablist" aria-label="Button set">
+                  <button class="segmented-item is-active" type="button" data-variant="xs" data-sizes-trigger aria-haspopup="true" aria-expanded="false">Sizes<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
+                  <button class="segmented-item" type="button" data-variant="icons">With icons</button>
+                  <button class="segmented-item" type="button" data-variant="icononly">Icon only</button>
+                </div>
+                <div class="dropdown-menu dropdown-menu-start sizes-menu" hidden>
                   <button class="dropdown-item is-selected" type="button" data-variant="xs"><svg class="dropdown-item-check"><use href="#i-check"/></svg>XS · 24</button>
                   <button class="dropdown-item" type="button" data-variant="sm"><svg class="dropdown-item-check"><use href="#i-check"/></svg>SM · 32</button>
-                  <button class="dropdown-item" type="button" data-variant="icons"><svg class="dropdown-item-check"><use href="#i-check"/></svg>With icons</button>
-                  <button class="dropdown-item" type="button" data-variant="icononly"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Icon only</button>
                 </div>
               </div>
             </div>
@@ -3921,6 +3925,34 @@
       const pg = sel.closest('.playground');
       sel.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
       pg?.querySelectorAll('.playground-variant').forEach(v => { v.hidden = v.dataset.variant !== item.dataset.variant; });
+    });
+
+    // Segmented item with a dropdown ([data-sizes-trigger]) — the segment stays a
+    // normal variant tab, but a chevron opens a menu to pick the sub-variant
+    // (e.g. button size). Reusable for any segment that needs a filtered list.
+    document.querySelectorAll('[data-sizes-trigger]').forEach(trigger => {
+      const wrap = trigger.closest('.segmented-wrap');
+      const menu = wrap.querySelector('.sizes-menu');
+      const pg = trigger.closest('.playground');
+      const setOpen = (open) => { menu.hidden = !open; trigger.setAttribute('aria-expanded', String(open)); };
+      trigger.addEventListener('click', (e) => { e.stopPropagation(); setOpen(menu.hidden); });
+      menu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const v = item.dataset.variant;
+          trigger.dataset.variant = v;   // so re-clicking the segment restores this size
+          menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
+          pg.querySelectorAll('.playground-variant').forEach(el => { el.hidden = el.dataset.variant !== v; });
+          trigger.closest('.segmented').querySelectorAll('.segmented-item').forEach(s => s.classList.remove('is-active'));
+          trigger.classList.add('is-active');
+          setOpen(false);
+        });
+      });
+      // Close on any click that isn't the trigger or inside the menu.
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('[data-sizes-trigger]') === trigger || menu.contains(e.target)) return;
+        setOpen(false);
+      });
     });
 
     // Viewport control — device-icon switcher that constrains a playground's demo
