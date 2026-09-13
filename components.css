@@ -1113,7 +1113,9 @@ textarea.input {
   align-items: center;
   gap: var(--ic-space-3);
   min-height: 56px;
-  padding: var(--ic-space-4);
+  /* 12px vertical keeps the 24px-CTA variant within the 56px min-height
+     (24 + 24 + 2px border = 50 < 56); single-line + multi-line still fit. */
+  padding: var(--ic-space-3) var(--ic-space-4);
   border-radius: var(--ic-radius-md);
   border: 1px solid transparent;
   background: var(--color-surface-muted);
