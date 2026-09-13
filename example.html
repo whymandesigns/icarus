@@ -366,6 +366,17 @@
 
     /* Page-head CTAs carry an icon that only surfaces at mobile width. */
     .btn-cta-icon { display: none; }
+    /* Standalone page-head demo — its panel is a query container so the CTAs
+       collapse to icon-only at mobile, mirroring the app-shell page head. */
+    .pagehead-demo { container-type: inline-size; }
+    @container (max-width: 480px) {
+      .pagehead-demo .page-head { align-items: flex-start; gap: var(--ic-space-3); }
+      .pagehead-demo .page-head-actions { width: auto; flex-shrink: 0; }
+      .pagehead-demo .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
+      .pagehead-demo .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
+      .pagehead-demo .page-head-actions .btn-cta-icon { display: inline-flex; }
+      .pagehead-demo .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    }
     /* Mobile (≤480, Picasso xs edge): keep the page head on one row and
        collapse the CTAs to icon-only buttons (download = CSV, plus = create)
        that sit flush right of the title. */
@@ -2119,33 +2130,28 @@
         <h3 class="h3">Page heads</h3>
         <p class="body-sm">Top-of-page header — title (optional breadcrumbs + count + subtitle) on the left, actions on the right. Breadcrumbs, when present, sit as the first row above the title.</p>
 
-        <div class="stack" style="gap: var(--ic-space-7)">
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Breadcrumbs + title + subtitle + actions</span>
-            <div class="device-stage">
-             <div class="device-panel">
-            <div class="page-head" style="margin-bottom: 0">
-              <div class="page-head-main">
-                <nav class="breadcrumbs" aria-label="Breadcrumb">
-                  <a class="breadcrumb" href="#page-heads">Workspace</a>
-                  <span class="breadcrumb is-current" aria-current="page">Processes</span>
-                </nav>
-                <div class="page-head-title">
-                  <h1 class="page-head-heading">Processes</h1>
-                  <span class="count-badge count-badge-lg count-badge-secondary">12</span>
+        <div class="playground" data-vp="desktop">
+          <div class="device-stage">
+            <div class="device-panel pagehead-demo">
+              <div class="page-head" style="margin-bottom: 0">
+                <div class="page-head-main">
+                  <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <a class="breadcrumb" href="#page-heads">Workspace</a>
+                    <span class="breadcrumb is-current" aria-current="page">Processes</span>
+                  </nav>
+                  <div class="page-head-title">
+                    <h1 class="page-head-heading">Processes</h1>
+                    <span class="count-badge count-badge-lg count-badge-secondary">12</span>
+                  </div>
+                  <p class="page-head-subtitle">Manage workflows across teams.</p>
                 </div>
-                <p class="page-head-subtitle">Manage workflows across teams.</p>
+                <div class="page-head-actions" data-cta-source="page-head-primary">
+                  <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
+                  <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
+                </div>
               </div>
-              <div class="page-head-actions" data-cta-source="page-head-primary">
-                <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
-                <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
-              </div>
-            </div>
-             </div>
             </div>
           </div>
-
         </div>
       </section>
 
