@@ -329,6 +329,14 @@
        canvas panel, swapping one live demo. Reusable across component sections. */
     .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
     .playground-tabs { align-self: flex-start; }
+    /* A segmented control where one item opens a dropdown (its menu floats
+       outside the segmented's clipped bounds). */
+    .segmented-wrap { position: relative; display: inline-block; }
+    .segmented-caret { margin-left: 2px; }
+    .segmented-item[aria-expanded="true"] .segmented-caret { transform: rotate(180deg); }
+    /* Menus float below their trigger segment (JS sets left); outside the
+       segmented's clipped bounds. */
+    .seg-menu { position: absolute; top: calc(100% + var(--ic-space-1)); z-index: var(--ic-z-dropdown); }
     /* Multi-knob controls strip (Storybook-style): one labelled control per prop. */
     .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
     .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
@@ -366,6 +374,17 @@
 
     /* Page-head CTAs carry an icon that only surfaces at mobile width. */
     .btn-cta-icon { display: none; }
+    /* Standalone page-head demo — its panel is a query container so the CTAs
+       collapse to icon-only at mobile, mirroring the app-shell page head. */
+    .pagehead-demo { container-type: inline-size; }
+    @container (max-width: 480px) {
+      .pagehead-demo .page-head { align-items: center; gap: var(--ic-space-3); }
+      .pagehead-demo .page-head-actions { width: auto; flex-shrink: 0; }
+      .pagehead-demo .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
+      .pagehead-demo .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
+      .pagehead-demo .page-head-actions .btn-cta-icon { display: inline-flex; }
+      .pagehead-demo .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    }
     /* Mobile (≤480, Picasso xs edge): keep the page head on one row and
        collapse the CTAs to icon-only buttons (download = CSV, plus = create)
        that sit flush right of the title. */
@@ -687,7 +706,7 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In context — sitting directly beneath a page head (persistent, single CTA)</span>
+        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In context — sitting directly beneath a page head (persistent, no close — Dismiss CTA)</span>
         <div class="device-stage">
           <div class="device-panel">
             <div class="page-head" style="margin-bottom: var(--ic-space-4)">
@@ -703,8 +722,8 @@
               <p class="alert-message">Your payment method expires next month. Update it to keep service running.</p>
               <div class="alert-actions">
                 <button class="btn btn-xs btn-primary">Update card</button>
+                <button class="btn btn-xs btn-secondary">Dismiss</button>
               </div>
-              <button class="btn btn-icon-only btn-ghost btn-xs alert-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
             </div>
           </div>
         </div>
@@ -774,14 +793,27 @@
         </div>
 
         <span class="caption" style="display: block">Standalone</span>
-        <div class="device-stage">
-          <div class="device-panel">
-            <nav class="breadcrumbs" aria-label="Breadcrumb">
-              <a class="breadcrumb" href="#breadcrumbs">Processes</a>
-              <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
-              <a class="breadcrumb" href="#breadcrumbs">Steps</a>
-              <span class="breadcrumb is-current" aria-current="page">Review step</span>
-            </nav>
+        <div class="playground" data-vp="desktop">
+          <div class="device-stage" style="overflow: visible">
+            <div class="device-panel">
+              <div class="breadcrumbs-fit">
+              <nav class="breadcrumbs" aria-label="Breadcrumb" data-collapsible>
+                <!-- Overflow — shown only when the full trail would wrap (narrow widths).
+                     Opens a menu of the collapsed parent crumbs. -->
+                <div class="dropdown breadcrumb breadcrumb-overflow">
+                  <button class="btn btn-icon-only btn-ghost btn-xs dropdown-trigger" type="button" aria-label="Show hidden breadcrumbs" aria-expanded="false"><svg class="icon"><use href="#i-ellipses"/></svg></button>
+                  <div class="dropdown-menu dropdown-menu-start" hidden>
+                    <a class="dropdown-item" href="#breadcrumbs">Processes</a>
+                    <a class="dropdown-item" href="#breadcrumbs">Onboarding</a>
+                  </div>
+                </div>
+                <a class="breadcrumb bc-collapsible" href="#breadcrumbs">Processes</a>
+                <a class="breadcrumb bc-collapsible" href="#breadcrumbs">Onboarding</a>
+                <a class="breadcrumb" href="#breadcrumbs">Steps</a>
+                <span class="breadcrumb is-current" aria-current="page">Review step</span>
+              </nav>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -798,7 +830,6 @@
                 <h1 class="page-head-heading">Review step</h1>
                 <span class="count-badge count-badge-lg count-badge-secondary">3</span>
               </div>
-              <p class="page-head-subtitle">Final approval before the workflow goes live.</p>
             </div>
             <div class="page-head-actions">
               <button class="btn btn-secondary">Export as CSV</button>
@@ -915,7 +946,7 @@
           <symbol id="i-list-ordered" viewBox="0 0 24 24"><path d="M4.04403 18.2611C4.63203 18.2611 5.0882 18.3766 5.41253 18.6076C5.73687 18.8386 5.89903 19.1501 5.89903 19.5421C5.89903 19.8081 5.79987 20.0379 5.60153 20.2316C5.4032 20.4252 5.1617 20.5454 4.87703 20.5921C5.15703 20.6201 5.4102 20.7332 5.63653 20.9316C5.86287 21.1299 5.97603 21.3854 5.97603 21.6981C5.97603 22.1087 5.7987 22.4424 5.44403 22.6991C5.08937 22.9557 4.6227 23.0841 4.04403 23.0841C3.6147 23.0841 3.2332 23.0164 2.89953 22.8811C2.56587 22.7457 2.30337 22.5684 2.11203 22.3491L2.72103 21.5301L2.82085 21.6208C2.96011 21.7358 3.124 21.8269 3.31253 21.8941C3.5482 21.9781 3.7757 22.0201 3.99503 22.0201C4.24703 22.0201 4.4407 21.9781 4.57603 21.8941C4.71137 21.8101 4.77903 21.7004 4.77903 21.5651C4.77903 21.4297 4.7172 21.3306 4.59353 21.2676C4.46987 21.2046 4.25403 21.1731 3.94603 21.1731L3.81369 21.1732L3.59494 21.174C3.43817 21.1751 3.3452 21.1771 3.31603 21.1801V20.1091L3.35118 20.1109C3.41022 20.1132 3.51803 20.1147 3.67461 20.1155L3.94603 20.1161L4.08967 20.1124C4.49791 20.0906 4.70203 19.9705 4.70203 19.7521C4.70203 19.6121 4.6297 19.5059 4.48503 19.4336C4.34037 19.3612 4.15137 19.3251 3.91803 19.3251C3.47937 19.3251 3.09203 19.4744 2.75603 19.7731L2.17503 19.0171L2.30155 18.8858C2.73775 18.4693 3.31858 18.2611 4.04403 18.2611ZM23 20.0001V21.0001H9.00003V20.0001H23ZM4.04403 10.2611C4.59937 10.2611 5.0532 10.4034 5.40553 10.6881C5.75787 10.9727 5.93403 11.3484 5.93403 11.8151C5.93403 12.1651 5.80337 12.5057 5.54203 12.8371C5.2807 13.1684 4.8537 13.5394 4.26103 13.9501H5.96903V15.0001H2.30803V14.0621L2.52427 13.9058C3.43628 13.2446 4.02337 12.7927 4.28553 12.5501C4.56787 12.2887 4.70903 12.0437 4.70903 11.8151C4.70903 11.6611 4.6472 11.5409 4.52353 11.4546C4.39987 11.3682 4.24703 11.3251 4.06503 11.3251C3.59837 11.3251 3.18303 11.4954 2.81903 11.8361L2.15403 11.0381L2.30271 10.8892C2.50879 10.7014 2.74623 10.5562 3.01503 10.4536C3.35103 10.3252 3.69403 10.2611 4.04403 10.2611ZM23 12.0001V13.0001H9.00003V12.0001H23ZM4.70903 2.33105V7.00005H3.50503V3.87105L2.72103 4.66205L2.03503 3.94105L3.66603 2.33105H4.70903ZM23 4.00005V5.00005H9.00003V4.00005H23Z" fill="currentColor"/></symbol>
           <symbol id="i-list-unordered" viewBox="0 0 24 24"><path d="M3.5 18C4.88071 18 6 19.1193 6 20.5C6 21.8807 4.88071 23 3.5 23C2.11929 23 1 21.8807 1 20.5C1 19.1193 2.11929 18 3.5 18ZM3.5 19C2.67157 19 2 19.6716 2 20.5C2 21.3284 2.67157 22 3.5 22C4.32843 22 5 21.3284 5 20.5C5 19.6716 4.32843 19 3.5 19ZM23 20V21H9V20H23ZM3.5 10C4.88071 10 6 11.1193 6 12.5C6 13.8807 4.88071 15 3.5 15C2.11929 15 1 13.8807 1 12.5C1 11.1193 2.11929 10 3.5 10ZM3.5 11C2.67157 11 2 11.6716 2 12.5C2 13.3284 2.67157 14 3.5 14C4.32843 14 5 13.3284 5 12.5C5 11.6716 4.32843 11 3.5 11ZM23 12V13H9V12H23ZM3.5 2C4.88071 2 6 3.11929 6 4.5C6 5.88071 4.88071 7 3.5 7C2.11929 7 1 5.88071 1 4.5C1 3.11929 2.11929 2 3.5 2ZM3.5 3C2.67157 3 2 3.67157 2 4.5C2 5.32843 2.67157 6 3.5 6C4.32843 6 5 5.32843 5 4.5C5 3.67157 4.32843 3 3.5 3ZM23 4V5H9V4H23Z" fill="currentColor"/></symbol>
           <symbol id="i-lock" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C15.3137 0 18 2.68629 18 6V10H21V24H3V10H6V6C6 2.68629 8.68629 0 12 0ZM7 10H17V6C17 3.23858 14.7614 1 12 1C9.23858 1 7 3.23858 7 6V10ZM18 11H6H4V23H20V11H18Z" fill="currentColor"/></symbol>
-          <symbol id="i-minus" viewBox="0 0 24 24"><rect x="4" y="11.5" width="16" height="1" fill="currentColor"/></symbol>
+          <symbol id="i-minus" viewBox="0 0 24 24"><rect x="4" y="10.75" width="16" height="2.5" rx="1.25" fill="currentColor"/></symbol>
           <symbol id="i-minus-minor" viewBox="0 0 24 24"><path d="M7 11.5H17V12.5H7V11.5Z" fill="currentColor"/></symbol>
           <symbol id="i-more" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 4C15 5.65685 13.6569 7 12 7C10.3431 7 9 5.65685 9 4C9 2.34315 10.3431 1 12 1C13.6569 1 15 2.34315 15 4ZM10 4C10 5.10457 10.8954 6 12 6C13.1046 6 14 5.10457 14 4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12ZM12 23C13.6569 23 15 21.6569 15 20C15 18.3431 13.6569 17 12 17C10.3431 17 9 18.3431 9 20C9 21.6569 10.3431 23 12 23ZM12 22C10.8954 22 10 21.1046 10 20C10 18.8954 10.8954 18 12 18C13.1046 18 14 18.8954 14 20C14 21.1046 13.1046 22 12 22Z" fill="currentColor"/></symbol>
           <symbol id="i-new" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 0.792969L23.2071 4.50008L12.7071 15.0001H9V11.293L19.5 0.792969ZM12 1.00008V2.00008H2V22.0001H22V12.0001H23V23.0001H1V1.00008H12ZM10 11.7072L19.5 2.20718L21.7929 4.50008L12.2929 14.0001H10V11.7072Z" fill="currentColor"/></symbol>
@@ -1180,53 +1211,68 @@
   <symbol id="i-vp-desktop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect vector-effect="non-scaling-stroke" x="2" y="3.5" width="20" height="13" rx="2"/><path vector-effect="non-scaling-stroke" d="M12 16.5V20.5"/><path vector-effect="non-scaling-stroke" d="M8 20.5H16"/></g></symbol>
   <symbol id="i-vp-tablet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect vector-effect="non-scaling-stroke" x="5" y="2" width="14" height="20" rx="2"/><path vector-effect="non-scaling-stroke" d="M10.5 19H13.5"/></g></symbol>
   <symbol id="i-vp-mobile" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect vector-effect="non-scaling-stroke" x="7.5" y="2" width="9" height="20" rx="2"/><path vector-effect="non-scaling-stroke" d="M10.5 19H13.5"/></g></symbol>
+  <!-- Ellipses — the "More" dots turned horizontal -->
+  <symbol id="i-ellipses" viewBox="0 0 24 24"><g transform="rotate(90 12 12)"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 4C15 5.65685 13.6569 7 12 7C10.3431 7 9 5.65685 9 4C9 2.34315 10.3431 1 12 1C13.6569 1 15 2.34315 15 4ZM10 4C10 5.10457 10.8954 6 12 6C13.1046 6 14 5.10457 14 4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12ZM12 23C13.6569 23 15 21.6569 15 20C15 18.3431 13.6569 17 12 17C10.3431 17 9 18.3431 9 20C9 21.6569 10.3431 23 12 23ZM12 22C10.8954 22 10 21.1046 10 20C10 18.8954 10.8954 18 12 18C13.1046 18 14 18.8954 14 20C14 21.1046 13.1046 22 12 22Z" fill="currentColor"/></g></symbol>
         </svg>
 
         <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Button set">
-            <button class="segmented-item is-active" type="button" data-variant="sizes">Sizes</button>
-            <button class="segmented-item" type="button" data-variant="icons">With icons</button>
-            <button class="segmented-item" type="button" data-variant="icononly">Icon only</button>
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Button set</span>
+              <div class="segmented-wrap">
+                <div class="segmented playground-tabs" role="tablist" aria-label="Button set">
+                  <button class="segmented-item is-active" type="button" data-variant="xs" data-seg-menu="menu-sizes" aria-haspopup="true" aria-expanded="false">Sizes<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
+                  <button class="segmented-item" type="button" data-variant="icons-left" data-seg-menu="menu-icons" aria-haspopup="true" aria-expanded="false">With icons<svg class="btn-icon segmented-caret"><use href="#i-chevron-down"/></svg></button>
+                  <button class="segmented-item" type="button" data-variant="icononly">Icon only</button>
+                </div>
+                <div class="dropdown-menu seg-menu" data-seg-menu-id="menu-sizes" hidden>
+                  <button class="dropdown-item is-selected" type="button" data-variant="xs"><svg class="dropdown-item-check"><use href="#i-check"/></svg>XS · 24</button>
+                  <button class="dropdown-item" type="button" data-variant="sm"><svg class="dropdown-item-check"><use href="#i-check"/></svg>SM · 32</button>
+                </div>
+                <div class="dropdown-menu seg-menu" data-seg-menu-id="menu-icons" hidden>
+                  <button class="dropdown-item is-selected" type="button" data-variant="icons-left"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Left icon</button>
+                  <button class="dropdown-item" type="button" data-variant="icons-right"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Right icon</button>
+                  <button class="dropdown-item" type="button" data-variant="icons-both"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Both</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 560px">
-              <div class="playground-variant" data-variant="sizes">
-                <div class="stack" style="gap: var(--ic-space-3)">
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 64px">XS · 24</span>
-                    <button class="btn btn-xs btn-primary">Primary</button>
-                    <button class="btn btn-xs btn-secondary">Secondary</button>
-                    <button class="btn btn-xs btn-ghost">Ghost</button>
-                    <button class="btn btn-xs btn-danger">Delete</button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 64px">SM · 32</span>
-                    <button class="btn btn-primary">Primary</button>
-                    <button class="btn btn-secondary">Secondary</button>
-                    <button class="btn btn-ghost">Ghost</button>
-                    <button class="btn btn-danger">Delete</button>
-                  </div>
+              <div class="playground-variant" data-variant="xs">
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-primary">Primary</button>
+                  <button class="btn btn-xs btn-secondary">Secondary</button>
+                  <button class="btn btn-xs btn-ghost">Ghost</button>
+                  <button class="btn btn-xs btn-danger">Delete</button>
                 </div>
               </div>
-              <div class="playground-variant" data-variant="icons" hidden>
-                <div class="stack" style="gap: var(--ic-space-3)">
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Left icon</span>
-                    <button class="btn btn-xs btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New</button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New project</button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-download"/></svg>Download</button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Right icon</span>
-                    <button class="btn btn-xs btn-secondary">Next<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-secondary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-primary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span class="caption" style="width: 96px">Both</span>
-                    <button class="btn btn-xs btn-secondary"><svg class="btn-icon"><use href="#i-check"/></svg>Apply<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                    <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-check"/></svg>Save changes<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
-                  </div>
+              <div class="playground-variant" data-variant="sm" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-primary">Primary</button>
+                  <button class="btn btn-secondary">Secondary</button>
+                  <button class="btn btn-ghost">Ghost</button>
+                  <button class="btn btn-danger">Delete</button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="icons-left" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New</button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New project</button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-download"/></svg>Download</button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="icons-right" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-secondary">Next<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-secondary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-primary">Continue<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="icons-both" hidden>
+                <div class="row" style="align-items: center">
+                  <button class="btn btn-xs btn-secondary"><svg class="btn-icon"><use href="#i-check"/></svg>Apply<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
+                  <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-check"/></svg>Save changes<svg class="btn-icon"><use href="#i-arrow-right"/></svg></button>
                 </div>
               </div>
               <div class="playground-variant" data-variant="icononly" hidden>
@@ -1297,6 +1343,7 @@
         <div class="playground" data-playground>
           <div class="segmented playground-tabs" role="tablist" aria-label="Checkbox state">
             <button class="segmented-item is-active" type="button" data-variant="enabled">Enabled</button>
+            <button class="segmented-item" type="button" data-variant="indeterminate">Indeterminate</button>
             <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
             <button class="segmented-item" type="button" data-variant="error">Error</button>
           </div>
@@ -1306,8 +1353,11 @@
                 <div class="row" style="align-items: center; gap: var(--ic-space-5)">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="indeterminate" hidden>
+                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-                  <span class="caption">checked · unchecked · indeterminate</span>
                 </div>
               </div>
               <div class="playground-variant" data-variant="disabled" hidden>
@@ -1391,7 +1441,7 @@
 
       <section class="stack" id="drawers">
         <h3 class="h3">Drawer</h3>
-        <p class="body-sm">Right-anchored side panel. 6 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes.</p>
+        <p class="body-sm">Right-anchored side panel. 5 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes. For an edge-to-edge panel, use the <a href="#modals">full-screen Modal</a>.</p>
 
         <div class="device-stage">
           <div class="device-panel">
@@ -1401,7 +1451,8 @@
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-medium">Medium · 640</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-wide">Wide · 960</button>
           <button class="btn btn-secondary" type="button" data-modal-open="drawer-ultra">Ultra · 1180</button>
-          <button class="btn btn-secondary" type="button" data-modal-open="drawer-full">Full</button>
+        </div>
+          </div>
         </div>
           </div>
         </div>
@@ -1550,30 +1601,6 @@
         </div>
 
         <!-- Full: mobile-style full-screen drawer -->
-        <div class="drawer-overlay" id="drawer-full" hidden>
-          <aside class="drawer drawer-full">
-            <header class="modal-header">
-              <h2 class="modal-title">Quick add</h2>
-              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
-            </header>
-            <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
-                <label class="field">
-                  <span class="field-label">What's this for?</span>
-                  <input class="input" type="text" placeholder="Title…" />
-                </label>
-                <label class="field">
-                  <span class="field-label">Notes</span>
-                  <textarea class="input" rows="4" placeholder="Optional context…"></textarea>
-                </label>
-              </div>
-            </div>
-            <footer class="modal-footer">
-              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
-              <button class="btn btn-primary" type="button">Add</button>
-            </footer>
-          </aside>
-        </div>
       </section>
 
       <section class="stack" id="dropdowns">
@@ -1960,7 +1987,7 @@
 
       <section class="stack" id="modals">
         <h3 class="h3">Modal</h3>
-        <p class="body-sm">Overlay + centered panel. 5 desktop sizes. Click any size to open. Escape, overlay click, or Cancel closes.</p>
+        <p class="body-sm">Overlay + centered panel. 5 desktop sizes plus an edge-to-edge <code style="font: var(--type-mono); color: var(--color-text-muted)">.modal-full</code>. Click any size to open. Escape, overlay click, or Cancel closes.</p>
 
         <div class="device-stage">
           <div class="device-panel">
@@ -1970,6 +1997,9 @@
           <button class="btn btn-secondary" type="button" data-modal-open="modal-md">MD · 650</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-lg">LG · 800</button>
           <button class="btn btn-secondary" type="button" data-modal-open="modal-xl">XL · 1200</button>
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-full">Full screen</button>
+        </div>
+          </div>
         </div>
           </div>
         </div>
@@ -2093,39 +2123,59 @@
             </footer>
           </div>
         </div>
+
+        <div class="modal-overlay" id="modal-full" hidden>
+          <div class="modal modal-full">
+            <header class="modal-header">
+              <h2 class="modal-title">Quick add</h2>
+              <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
+            </header>
+            <div class="modal-body">
+              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
+                <label class="field">
+                  <span class="field-label">What's this for?</span>
+                  <input class="input" type="text" placeholder="Title…" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Notes</span>
+                  <textarea class="input" rows="4" placeholder="Optional context…"></textarea>
+                </label>
+              </div>
+            </div>
+            <footer class="modal-footer">
+              <button class="btn btn-secondary" data-modal-close type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Add</button>
+            </footer>
+          </div>
+        </div>
       </section>
 
       <section class="stack" id="page-heads">
         <h3 class="h3">Page heads</h3>
         <p class="body-sm">Top-of-page header — title (optional breadcrumbs + count + subtitle) on the left, actions on the right. Breadcrumbs, when present, sit as the first row above the title.</p>
 
-        <div class="stack" style="gap: var(--ic-space-7)">
-
-          <div>
-            <span class="caption" style="display: block; margin-bottom: var(--ic-space-2)">Breadcrumbs + title + subtitle + actions</span>
-            <div class="device-stage">
-             <div class="device-panel">
-            <div class="page-head" style="margin-bottom: 0">
-              <div class="page-head-main">
-                <nav class="breadcrumbs" aria-label="Breadcrumb">
-                  <a class="breadcrumb" href="#page-heads">Workspace</a>
-                  <span class="breadcrumb is-current" aria-current="page">Processes</span>
-                </nav>
-                <div class="page-head-title">
-                  <h1 class="page-head-heading">Processes</h1>
-                  <span class="count-badge count-badge-lg count-badge-secondary">12</span>
+        <div class="playground" data-vp="desktop">
+          <div class="device-stage">
+            <div class="device-panel pagehead-demo">
+              <div class="page-head" style="margin-bottom: 0">
+                <div class="page-head-main">
+                  <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <a class="breadcrumb" href="#page-heads">Workspace</a>
+                    <span class="breadcrumb is-current" aria-current="page">Processes</span>
+                  </nav>
+                  <div class="page-head-title">
+                    <h1 class="page-head-heading">Processes</h1>
+                    <span class="count-badge count-badge-lg count-badge-secondary">12</span>
+                  </div>
+                  <p class="page-head-subtitle">Manage workflows across teams.</p>
                 </div>
-                <p class="page-head-subtitle">Manage workflows across teams.</p>
+                <div class="page-head-actions" data-cta-source="page-head-primary">
+                  <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
+                  <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
+                </div>
               </div>
-              <div class="page-head-actions" data-cta-source="page-head-primary">
-                <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
-                <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
-              </div>
-            </div>
-             </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -3875,6 +3925,59 @@
       });
     });
 
+    // Reusable dropdown variant filter — an .input-select marked
+    // [data-playground-select] whose items carry data-variant swaps the shown
+    // .playground-variant. The .input-select JS already handles open/close and
+    // the trigger label; this only does the filtering + selected tick.
+    document.addEventListener('click', (e) => {
+      const item = e.target.closest('[data-playground-select] .dropdown-item[data-variant]');
+      if (!item) return;
+      const sel = item.closest('[data-playground-select]');
+      const pg = sel.closest('.playground');
+      sel.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
+      pg?.querySelectorAll('.playground-variant').forEach(v => { v.hidden = v.dataset.variant !== item.dataset.variant; });
+    });
+
+    // Segmented item with a dropdown ([data-seg-menu] → .seg-menu[data-seg-menu-id])
+    // — the segment stays a normal variant tab, but a chevron opens a menu to pick
+    // a sub-variant (button size, icon position, …). Multiple per segmented; each
+    // menu floats under its own trigger. Reusable across components.
+    document.querySelectorAll('.segmented-wrap').forEach(wrap => {
+      const triggers = wrap.querySelectorAll('[data-seg-menu]');
+      const menus = wrap.querySelectorAll('.seg-menu');
+      const pg = wrap.closest('.playground');
+      const closeAll = () => {
+        menus.forEach(m => { m.hidden = true; });
+        triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+      };
+      triggers.forEach(trigger => {
+        const menu = wrap.querySelector(`.seg-menu[data-seg-menu-id="${trigger.dataset.segMenu}"]`);
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const willOpen = menu.hidden;
+          closeAll();
+          if (willOpen) { menu.style.left = trigger.offsetLeft + 'px'; menu.hidden = false; trigger.setAttribute('aria-expanded', 'true'); }
+        });
+        menu.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const v = item.dataset.variant;
+            trigger.dataset.variant = v;   // re-clicking the segment restores this choice
+            menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.toggle('is-selected', i === item));
+            pg.querySelectorAll('.playground-variant').forEach(el => { el.hidden = el.dataset.variant !== v; });
+            wrap.querySelectorAll('.segmented-item').forEach(s => s.classList.remove('is-active'));
+            trigger.classList.add('is-active');
+            closeAll();
+          });
+        });
+      });
+      // Close when clicking anything outside a trigger or an open menu.
+      document.addEventListener('click', (e) => {
+        if (wrap.contains(e.target) && (e.target.closest('[data-seg-menu]') || e.target.closest('.seg-menu'))) return;
+        closeAll();
+      });
+    });
+
     // Viewport control — device-icon switcher that constrains a playground's demo
     // to desktop / tablet / mobile width (CSS above). Auto-added to every variant
     // playground so all components can be checked at device sizes.
@@ -3885,21 +3988,32 @@
         `<button class="segmented-item segmented-icon${i === 0 ? ' is-active' : ''}" type="button" data-val="${k}" aria-label="${VP_LABEL[k]}" title="${VP_LABEL[k]}"><svg class="icon"><use href="#${VP_ICONS[k]}"/></svg></button>`
       ).join('') + `</div>`;
     document.querySelectorAll('.playground').forEach(pg => {
-      const tabs = pg.querySelector(':scope > .playground-tabs');
-      if (!tabs || pg.querySelector('[data-viewport]')) return; // skip alerts (own controls) / already done
-      const strip = document.createElement('div');
-      strip.className = 'playground-controls';
-      const variantControl = document.createElement('div');
-      variantControl.className = 'control';
-      const label = document.createElement('span');
-      label.className = 'control-label';
-      label.textContent = tabs.getAttribute('aria-label') || 'Variant';
-      tabs.replaceWith(strip);
-      variantControl.append(label, tabs);
+      if (pg.querySelector('[data-viewport]')) return; // already has one (e.g. alerts)
+      // Reuse an authored controls strip (e.g. a dropdown filter) if present.
+      let strip = pg.querySelector(':scope > .playground-controls');
+      if (!strip) {
+        const tabs = pg.querySelector(':scope > .playground-tabs');
+        strip = document.createElement('div');
+        strip.className = 'playground-controls';
+        if (tabs) {
+          // wrap the existing variant knobs in a labelled control
+          const variantControl = document.createElement('div');
+          variantControl.className = 'control';
+          const label = document.createElement('span');
+          label.className = 'control-label';
+          label.textContent = tabs.getAttribute('aria-label') || 'Variant';
+          tabs.replaceWith(strip);
+          variantControl.append(label, tabs);
+          strip.append(variantControl);
+        } else {
+          // no variants — the strip is just the viewport control, above the demo
+          pg.prepend(strip);
+        }
+      }
       const vpControl = document.createElement('div');
       vpControl.className = 'control';
       vpControl.innerHTML = vpMarkup();
-      strip.append(variantControl, vpControl);
+      strip.append(vpControl);
       pg.dataset.vp = 'desktop';
     });
 
@@ -4285,6 +4399,9 @@
         if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
       }, true);
     });
+
+    // Breadcrumbs overflow collapse is handled purely by a container query
+    // (.breadcrumbs-fit); the "…" trigger opens via the generic .dropdown handler.
 
     // Tag inputs — Enter to add, Backspace on empty to remove last
     document.querySelectorAll('.input-tags').forEach(wrap => {
