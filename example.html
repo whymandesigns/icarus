@@ -359,6 +359,10 @@
     .playground[data-vp="mobile"] .playground-stage { background: transparent; border: 0; padding: 0; }
     /* Desktop = fill the canvas (so it's never narrower than the tablet frame). */
     .playground[data-vp="desktop"] .playground-stage { max-width: 100%; }
+    /* Sliders are a fixed-width control — keep them at their desktop width across
+       every viewport instead of stretching to the device frame. */
+    #sliders .playground[data-vp="tablet"] .device-stage > *,
+    #sliders .playground[data-vp="mobile"] .device-stage > * { width: 360px !important; max-width: 360px !important; }
     /* The [hidden] attribute must win over component display rules like
        .btn { display: inline-flex } (used by the alert close button / CTAs). */
     [hidden] { display: none !important; }
@@ -600,51 +604,57 @@
           <p class="body-sm">Collapsible sections that store content behind an always-visible summary. One item = <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion</code> (<code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-summary</code> + <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-details</code>); stack items in an <code style="font: var(--type-mono); color: var(--color-text-muted)">.accordion-group</code>. Borders: <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-all</code> (default) · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-middle</code> · <code style="font: var(--type-mono); color: var(--color-text-muted)">.borders-none</code>.</p>
         </div>
 
-        <div class="grid-2" style="align-items: start">
-          <div>
-            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">All borders (default)</p>
-            <div class="accordion-group">
-              <div class="accordion is-open">
-                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p></div></div>
-              </div>
-              <div class="accordion">
-                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Each breed varies in size and temperament.</p></div></div>
-              </div>
-              <div class="accordion">
-                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">How do you acquire a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">Dogs can be acquired from breeders, shelters, or rescue organizations.</p></div></div>
-              </div>
-            </div>
+        <div class="playground" data-playground>
+          <div class="segmented playground-tabs" role="tablist" aria-label="Accordion borders">
+            <button class="segmented-item is-active" type="button" data-variant="all">All borders</button>
+            <button class="segmented-item" type="button" data-variant="middle">Middle borders</button>
+            <button class="segmented-item" type="button" data-variant="none">No borders</button>
           </div>
-
-          <div>
-            <p class="body-xs" style="margin: 0 0 var(--ic-space-2); color: var(--color-text-subtle)">Middle borders</p>
-            <div class="accordion-group borders-middle">
-              <div class="accordion">
-                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal.</p></div></div>
+          <div class="device-stage">
+            <div class="device-panel">
+              <div class="playground-variant" data-variant="all">
+                <div class="accordion-group">
+                  <div class="accordion is-open">
+                    <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p></div></div>
+                  </div>
+                  <div class="accordion">
+                    <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Each breed varies in size and temperament.</p></div></div>
+                  </div>
+                  <div class="accordion">
+                    <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">How do you acquire a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">Dogs can be acquired from breeders, shelters, or rescue organizations.</p></div></div>
+                  </div>
+                </div>
               </div>
-              <div class="accordion is-open">
-                <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Owners often select a breed compatible with their lifestyle.</p></div></div>
+              <div class="playground-variant" data-variant="middle" hidden>
+                <div class="accordion-group borders-middle">
+                  <div class="accordion">
+                    <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">What is a dog?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">A dog is a type of domesticated animal.</p></div></div>
+                  </div>
+                  <div class="accordion is-open">
+                    <button class="accordion-summary" type="button" aria-expanded="true"><span class="accordion-title">What kinds of dogs are there?</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">There are many breeds of dogs. Owners often select a breed compatible with their lifestyle.</p></div></div>
+                  </div>
+                  <div class="accordion is-disabled">
+                    <button class="accordion-summary" type="button" aria-expanded="false" disabled><span class="accordion-title">Disabled section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">This content can't be opened.</p></div></div>
+                  </div>
+                </div>
               </div>
-              <div class="accordion is-disabled">
-                <button class="accordion-summary" type="button" aria-expanded="false" disabled><span class="accordion-title">Disabled section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">This content can't be opened.</p></div></div>
-              </div>
-            </div>
-
-            <p class="body-xs" style="margin: var(--ic-space-4) 0 var(--ic-space-2); color: var(--color-text-subtle)">No borders</p>
-            <div class="accordion-group borders-none">
-              <div class="accordion">
-                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">First section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">Borderless sections read as a plain list of toggles.</p></div></div>
-              </div>
-              <div class="accordion">
-                <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">Second section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
-                <div class="accordion-details"><div><p class="accordion-content">Use inside a card that already provides its own border.</p></div></div>
+              <div class="playground-variant" data-variant="none" hidden>
+                <div class="accordion-group borders-none">
+                  <div class="accordion">
+                    <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">First section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">Borderless sections read as a plain list of toggles.</p></div></div>
+                  </div>
+                  <div class="accordion">
+                    <button class="accordion-summary" type="button" aria-expanded="false"><span class="accordion-title">Second section</span><svg class="icon accordion-chevron"><use href="#i-chevron-down"/></svg></button>
+                    <div class="accordion-details"><div><p class="accordion-content">Use inside a card that already provides its own border.</p></div></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1693,7 +1703,7 @@
                 <span class="avatar avatar-md">MV</span>
                 <div class="dropdown-item-text">
                   <span class="dropdown-item-label">Matthew Vella</span>
-                  <span class="dropdown-item-description">matthew@spark-code.com</span>
+                  <span class="dropdown-item-description">matthew@operationalize.com</span>
                 </div>
               </button>
               <button class="dropdown-item">
@@ -3491,10 +3501,22 @@
                 <span class="field-label">Process name</span>
                 <input class="input" type="text" placeholder="e.g. Quarterly OKR review" />
               </label>
-              <label class="field">
+              <div class="field">
                 <span class="field-label">Owner</span>
-                <input class="input" type="text" placeholder="Search people…" />
-              </label>
+                <div class="input-select" data-people-search>
+                  <input class="input" type="text" placeholder="Search people…" autocomplete="off" aria-label="Owner" style="width: 100%" />
+                  <div class="dropdown-menu people-menu" hidden style="max-height: 260px; overflow-y: auto">
+                    <div class="dropdown-menu-label" style="font: var(--type-body-xs-semibold)">Suggestions</div>
+                    <button class="dropdown-item" type="button" data-name="Matthew Vella"><span class="avatar avatar-md">MV</span><div class="dropdown-item-text"><span class="dropdown-item-label">Matthew Vella</span><span class="dropdown-item-description">matthew@operationalize.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Anna Schmidt"><span class="avatar avatar-md">AS</span><div class="dropdown-item-text"><span class="dropdown-item-label">Anna Schmidt</span><span class="dropdown-item-description">anna@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Jordan Park"><span class="avatar avatar-md">JP</span><div class="dropdown-item-text"><span class="dropdown-item-label">Jordan Park</span><span class="dropdown-item-description">jordan@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Maria Santos"><span class="avatar avatar-md">MS</span><div class="dropdown-item-text"><span class="dropdown-item-label">Maria Santos</span><span class="dropdown-item-description">maria@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Pavel Vydra"><span class="avatar avatar-md">PV</span><div class="dropdown-item-text"><span class="dropdown-item-label">Pavel Vydra</span><span class="dropdown-item-description">pavel@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Alejandro Reyes"><span class="avatar avatar-md">AR</span><div class="dropdown-item-text"><span class="dropdown-item-label">Alejandro Reyes</span><span class="dropdown-item-description">alejandro@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Camilla Herrere"><span class="avatar avatar-md">CH</span><div class="dropdown-item-text"><span class="dropdown-item-label">Camilla Herrere</span><span class="dropdown-item-description">camilla@example.com</span></div></button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="field">
@@ -3544,8 +3566,10 @@
 
             <!-- Optional-metadata affordance — ghost button, icon left. Reuse
                  this pattern for any "add more" action (links, owners, fields…). -->
-            <div class="row">
-              <button class="btn btn-ghost" type="button"><svg class="btn-icon"><use href="#i-plus"/></svg>Add resources</button>
+            <div class="row" data-add-fields-row>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Resources (optional)" data-placeholder="Link or attachment…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add resources</button>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Business lines (optional)" data-placeholder="Select business lines…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add business lines</button>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Org unit (optional)" data-placeholder="Choose an org unit…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add org unit</button>
             </div>
 
             <div class="stack" style="gap: var(--ic-space-4); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
@@ -4173,6 +4197,48 @@
       });
     });
 
+    // People typeahead — filter the avatar dropdown as you type; pick sets the name.
+    document.querySelectorAll('[data-people-search]').forEach(box => {
+      const input = box.querySelector('.input');
+      const menu = box.querySelector('.people-menu');
+      const items = [...menu.querySelectorAll('.dropdown-item')];
+      const filter = () => {
+        const q = input.value.trim().toLowerCase();
+        if (!q) { menu.hidden = true; return; }
+        let any = false;
+        items.forEach(it => {
+          const hay = (it.dataset.name + ' ' + (it.querySelector('.dropdown-item-description')?.textContent || '')).toLowerCase();
+          const match = hay.includes(q);
+          it.hidden = !match;
+          if (match) any = true;
+        });
+        menu.hidden = !any;
+      };
+      input.addEventListener('input', filter);
+      input.addEventListener('focus', filter);
+      items.forEach(it => it.addEventListener('click', () => { input.value = it.dataset.name; menu.hidden = true; }));
+      document.addEventListener('click', (e) => { if (!box.contains(e.target)) menu.hidden = true; });
+    });
+
+    // Optional "add field" affordances — each ghost button inserts its own field
+    // above the row and removes itself; the row disappears once all are used.
+    document.querySelectorAll('[data-add-field]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('[data-add-fields-row]');
+        const field = document.createElement('label');
+        field.className = 'field';
+        const label = btn.dataset.fieldLabel || 'Field (optional)';
+        const ph = btn.dataset.placeholder || '';
+        field.innerHTML = '<span class="field-label"></span><input class="input" type="text" />';
+        field.querySelector('.field-label').textContent = label;
+        field.querySelector('.input').placeholder = ph;
+        row.before(field);
+        field.querySelector('.input').focus();
+        btn.remove();
+        if (!row.querySelector('[data-add-field]')) row.remove();
+      });
+    });
+
     // Character counters — .field[data-char-limit] with one .field-hint as the readout
     document.querySelectorAll('.field[data-char-limit]').forEach(field => {
       const max = parseInt(field.dataset.charLimit, 10);
@@ -4380,17 +4446,18 @@
 
       // Grab-to-scroll for mouse/pen (touch already scrolls natively). A drag
       // that moves is suppressed from activating the tab it started on.
-      let dragging = false, startX = 0, startScroll = 0, moved = false;
+      let dragging = false, startX = 0, startScroll = 0, moved = false, pointerId = null;
       tabs.addEventListener('pointerdown', (e) => {
         if (e.pointerType === 'touch') return;
-        dragging = true; moved = false; startX = e.clientX; startScroll = tabs.scrollLeft;
-        tabs.setPointerCapture(e.pointerId);
+        dragging = true; moved = false; startX = e.clientX; startScroll = tabs.scrollLeft; pointerId = e.pointerId;
+        // NB: don't capture here — capturing on a plain click redirects the
+        // click to .tabs and the tab button never fires. Capture only on drag.
       });
       tabs.addEventListener('pointermove', (e) => {
         if (!dragging) return;
         const dx = e.clientX - startX;
-        if (Math.abs(dx) > 3) { moved = true; tabs.classList.add('is-dragging'); }
-        tabs.scrollLeft = startScroll - dx;
+        if (!moved && Math.abs(dx) > 3) { moved = true; tabs.classList.add('is-dragging'); tabs.setPointerCapture(pointerId); }
+        if (moved) tabs.scrollLeft = startScroll - dx;
       });
       const endDrag = () => { dragging = false; tabs.classList.remove('is-dragging'); };
       tabs.addEventListener('pointerup', endDrag);
