@@ -45,7 +45,7 @@
     <h2 class="h3" style="margin: 0 0 var(--ic-space-3)">How to use it</h2>
     <ol class="steps">
       <li>Copy the prompt below.</li>
-      <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) and <code>{{WHAT_IT_DOES}}</code> with your feature.</li>
+      <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) with your feature's folder name.</li>
       <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings.</li>
       <li>Iterate locally, then inline + list it as the prompt describes.</li>
     </ol>
@@ -87,9 +87,10 @@ TASK — create `features/{{FEATURE_NAME}}/index.html`
    </body>
    </html>
 
-2. Build the app shell: a `.topbar` (brand logo + search + avatar), a left `.sidenav`,
-   and a main area with a `.page-head` (title + actions) above the content.
-3. Compose the screen(s) for: {{WHAT_IT_DOES}}.
+2. Scaffold the main screen shell only — no real content yet: a `.topbar` (brand
+   logo + search + avatar), a left `.sidenav`, and a main area with a `.page-head`
+   (title + actions) above a placeholder content region. Use realistic placeholder
+   labels; leave the substance for a follow-up prompt.
 
 RULES
 - Use ONLY semantic tokens and existing component classes — never hardcode a hex or px
@@ -108,8 +109,7 @@ BEFORE SHARING / DEPLOYING
 - Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
 
 FILL IN
-- {{FEATURE_NAME}} — kebab-case folder name (e.g. `billing-portal`).
-- {{WHAT_IT_DOES}} — one or two sentences describing the screen(s) to build.</pre>
+- {{FEATURE_NAME}} — kebab-case folder name (e.g. `billing-portal`).</pre>
     </div>
   </main>
 
