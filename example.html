@@ -4186,6 +4186,7 @@
         field.innerHTML = '<span class="field-label">Resources (optional)</span><input class="input" type="text" placeholder="Link or attachment…" />';
         row.before(field);
         field.querySelector('.input').focus();
+        row.remove();   // one-time action — drop the button once the field is shown
       });
     });
 
