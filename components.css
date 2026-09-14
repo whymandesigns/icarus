@@ -2272,6 +2272,8 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   color: var(--ic-palette-graphite-500);
   font: var(--ic-weight-semibold) var(--ic-text-xs)/1 var(--ic-font-sans);
 }
+/* The check/number icon takes the circle's colour (white on the filled states). */
+.stepper-num .icon { color: inherit; }
 .stepper-label {
   font: var(--ic-weight-semibold) var(--ic-text-xxs)/1.3 var(--ic-font-sans);
   color: var(--ic-palette-graphite-500);
