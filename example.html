@@ -3495,10 +3495,21 @@
                 <span class="field-label">Process name</span>
                 <input class="input" type="text" placeholder="e.g. Quarterly OKR review" />
               </label>
-              <label class="field">
+              <div class="field">
                 <span class="field-label">Owner</span>
-                <input class="input" type="text" placeholder="Search people…" />
-              </label>
+                <div class="input-select" data-people-search>
+                  <input class="input" type="text" placeholder="Search people…" autocomplete="off" aria-label="Owner" />
+                  <div class="dropdown-menu people-menu" hidden style="max-height: 260px; overflow-y: auto">
+                    <button class="dropdown-item" type="button" data-name="Matthew Vella"><span class="avatar avatar-md">MV</span><div class="dropdown-item-text"><span class="dropdown-item-label">Matthew Vella</span><span class="dropdown-item-description">matthew@spark-code.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Anna Schmidt"><span class="avatar avatar-md">AS</span><div class="dropdown-item-text"><span class="dropdown-item-label">Anna Schmidt</span><span class="dropdown-item-description">anna@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Jordan Park"><span class="avatar avatar-md">JP</span><div class="dropdown-item-text"><span class="dropdown-item-label">Jordan Park</span><span class="dropdown-item-description">jordan@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Maria Santos"><span class="avatar avatar-md">MS</span><div class="dropdown-item-text"><span class="dropdown-item-label">Maria Santos</span><span class="dropdown-item-description">maria@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Pavel Vydra"><span class="avatar avatar-md">PV</span><div class="dropdown-item-text"><span class="dropdown-item-label">Pavel Vydra</span><span class="dropdown-item-description">pavel@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Alejandro Reyes"><span class="avatar avatar-md">AR</span><div class="dropdown-item-text"><span class="dropdown-item-label">Alejandro Reyes</span><span class="dropdown-item-description">alejandro@example.com</span></div></button>
+                    <button class="dropdown-item" type="button" data-name="Camilla Herrere"><span class="avatar avatar-md">CH</span><div class="dropdown-item-text"><span class="dropdown-item-label">Camilla Herrere</span><span class="dropdown-item-description">camilla@example.com</span></div></button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="field">
@@ -4175,6 +4186,29 @@
         trigger?.setAttribute('aria-expanded', 'false');
         if (menu) menu.hidden = true;
       });
+    });
+
+    // People typeahead — filter the avatar dropdown as you type; pick sets the name.
+    document.querySelectorAll('[data-people-search]').forEach(box => {
+      const input = box.querySelector('.input');
+      const menu = box.querySelector('.people-menu');
+      const items = [...menu.querySelectorAll('.dropdown-item')];
+      const filter = () => {
+        const q = input.value.trim().toLowerCase();
+        if (!q) { menu.hidden = true; return; }
+        let any = false;
+        items.forEach(it => {
+          const hay = (it.dataset.name + ' ' + (it.querySelector('.dropdown-item-description')?.textContent || '')).toLowerCase();
+          const match = hay.includes(q);
+          it.hidden = !match;
+          if (match) any = true;
+        });
+        menu.hidden = !any;
+      };
+      input.addEventListener('input', filter);
+      input.addEventListener('focus', filter);
+      items.forEach(it => it.addEventListener('click', () => { input.value = it.dataset.name; menu.hidden = true; }));
+      document.addEventListener('click', (e) => { if (!box.contains(e.target)) menu.hidden = true; });
     });
 
     // "Add resources" — insert a new optional Resources field above the button.
