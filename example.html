@@ -359,6 +359,10 @@
     .playground[data-vp="mobile"] .playground-stage { background: transparent; border: 0; padding: 0; }
     /* Desktop = fill the canvas (so it's never narrower than the tablet frame). */
     .playground[data-vp="desktop"] .playground-stage { max-width: 100%; }
+    /* Sliders are a fixed-width control — keep them at their desktop width across
+       every viewport instead of stretching to the device frame. */
+    #sliders .playground[data-vp="tablet"] .device-stage > *,
+    #sliders .playground[data-vp="mobile"] .device-stage > * { width: 360px !important; max-width: 360px !important; }
     /* The [hidden] attribute must win over component display rules like
        .btn { display: inline-flex } (used by the alert close button / CTAs). */
     [hidden] { display: none !important; }
