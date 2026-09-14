@@ -70,27 +70,27 @@ CONTEXT
 - The complete, living component reference is `designmd/example.html` — open it to copy
   the exact markup for any component. Principles, color roles and rules are in
   `designmd/design.md`.
-- Prototypes live at `features/<feature-name>/index.html` — one folder per feature,
+- Prototypes live at `features/&lt;feature-name&gt;/index.html` — one folder per feature,
   kebab-case, the file is always named `index.html`.
 
 TASK — create `features/{{FEATURE_NAME}}/index.html`
 1. Start from this skeleton, linking the sibling system (keep these links while
    iterating locally for instant feedback):
 
-   <!doctype html>
-   <html lang="en">
-   <head>
-     <meta charset="utf-8" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
-     <title>{{FEATURE_NAME}}</title>
-     <link rel="stylesheet" href="../designmd/tokens.css" />
-     <link rel="stylesheet" href="../designmd/semantic.css" />
-     <link rel="stylesheet" href="../designmd/components.css" />
-   </head>
-   <body>
-     <!-- feature markup -->
-   </body>
-   </html>
+   &lt;!doctype html&gt;
+   &lt;html lang="en"&gt;
+   &lt;head&gt;
+     &lt;meta charset="utf-8" /&gt;
+     &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+     &lt;title&gt;{{FEATURE_NAME}}&lt;/title&gt;
+     &lt;link rel="stylesheet" href="../designmd/tokens.css" /&gt;
+     &lt;link rel="stylesheet" href="../designmd/semantic.css" /&gt;
+     &lt;link rel="stylesheet" href="../designmd/components.css" /&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+     &lt;!-- feature markup --&gt;
+   &lt;/body&gt;
+   &lt;/html&gt;
 
 2. Scaffold the main screen shell only — no real content yet: a `.topbar` (brand
    logo + search + avatar), a left `.sidenav`, and a main area with a `.page-head`
@@ -103,7 +103,7 @@ RULES
   Type: `var(--type-*)`. Components: `.btn`, `.card`, `.table`, `.alert`, `.tabs`,
   `.page-head`, `.input`, `.badge`, etc. When unsure of a component's markup, read it
   from `designmd/example.html` rather than inventing classes.
-- Icons come from the sprite: `<svg class="icon icon-16"><use href="#i-<name>"/></svg>`.
+- Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
   Browse the names in the Iconography gallery in `designmd/example.html`.
 - Keep it a single file. Do not add frameworks, build steps or external CDNs.
 - Make it responsive and theme-aware (the system supports a `data-theme="dark"` toggle).
