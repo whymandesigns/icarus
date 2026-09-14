@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Master prompt</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    .page { max-width: 820px; }
+    .back { display: inline-flex; align-items: center; gap: var(--ic-space-1); color: var(--color-text-muted); text-decoration: none; font: var(--type-body-sm); margin-bottom: var(--ic-space-5); }
+    .back:hover { color: var(--color-text); }
+    .lede { font: var(--type-body-lg); color: var(--color-text-muted); margin: var(--ic-space-2) 0 var(--ic-space-6); }
+    .steps { margin: 0 0 var(--ic-space-7); padding-left: var(--ic-space-5); display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .steps li { font: var(--type-body); }
+    .steps code { font: var(--type-mono); color: var(--color-text-muted); background: var(--color-surface-muted); padding: 1px 5px; border-radius: var(--ic-radius-sm); }
+    .prompt-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ic-space-3); margin-bottom: var(--ic-space-2); }
+    .prompt-head h2 { font: var(--type-h3); margin: 0; }
+    .prompt-card {
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-5);
+      max-height: 460px;
+      overflow: auto;
+    }
+    .prompt-card pre {
+      margin: 0;
+      font: var(--type-mono);
+      line-height: 1.6;
+      color: var(--color-text);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .copy-ok { color: var(--color-success); }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+    <h1 class="h1">Master prompt</h1>
+    <p class="lede">A copy-paste prompt for getting started with this project. Hand it to a coding agent (Claude Code, Cursor, …) and it scaffolds the skeleton of a new feature prototype on the Operationalize / Icarus design system.</p>
+
+    <h2 class="h3" style="margin: 0 0 var(--ic-space-3)">How to use it</h2>
+    <ol class="steps">
+      <li>Copy the prompt below.</li>
+      <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) and <code>{{WHAT_IT_DOES}}</code> with your feature.</li>
+      <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings.</li>
+      <li>Iterate locally, then inline + list it as the prompt describes.</li>
+    </ol>
+
+    <div class="prompt-head">
+      <h2>The prompt</h2>
+      <button class="btn btn-secondary btn-xs" id="copy-btn" type="button"><svg class="btn-icon"><use href="./icons.svg#i-copy"/></svg><span id="copy-label">Copy prompt</span></button>
+    </div>
+    <div class="prompt-card">
+      <pre id="prompt">You are scaffolding a new feature prototype on the **Operationalize / Icarus design system**.
+
+CONTEXT
+- The design system lives in `designmd/`, a sibling of `features/`. It provides three
+  stylesheets, loaded in order: `tokens.css` (primitives) -> `semantic.css` (intent
+  aliases + reset) -> `components.css` (every component class). Plus `assets/logo.svg`
+  and an icon sprite `icons.svg`.
+- The complete, living component reference is `designmd/example.html` — open it to copy
+  the exact markup for any component. Principles, color roles and rules are in
+  `designmd/design.md`.
+- Prototypes live at `features/<feature-name>/index.html` — one folder per feature,
+  kebab-case, the file is always named `index.html`.
+
+TASK — create `features/{{FEATURE_NAME}}/index.html`
+1. Start from this skeleton, linking the sibling system (keep these links while
+   iterating locally for instant feedback):
+
+   <!doctype html>
+   <html lang="en">
+   <head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>{{FEATURE_NAME}}</title>
+     <link rel="stylesheet" href="../designmd/tokens.css" />
+     <link rel="stylesheet" href="../designmd/semantic.css" />
+     <link rel="stylesheet" href="../designmd/components.css" />
+   </head>
+   <body>
+     <!-- feature markup -->
+   </body>
+   </html>
+
+2. Build the app shell: a `.topbar` (brand logo + search + avatar), a left `.sidenav`,
+   and a main area with a `.page-head` (title + actions) above the content.
+3. Compose the screen(s) for: {{WHAT_IT_DOES}}.
+
+RULES
+- Use ONLY semantic tokens and existing component classes — never hardcode a hex or px
+  that a token covers. Colors: `var(--color-*)`. Spacing: `var(--ic-space-*)`.
+  Type: `var(--type-*)`. Components: `.btn`, `.card`, `.table`, `.alert`, `.tabs`,
+  `.page-head`, `.input`, `.badge`, etc. When unsure of a component's markup, read it
+  from `designmd/example.html` rather than inventing classes.
+- Icons come from the sprite: `<svg class="icon icon-16"><use href="#i-<name>"/></svg>`.
+  Browse the names in the Iconography gallery in `designmd/example.html`.
+- Keep it a single file. Do not add frameworks, build steps or external CDNs.
+- Make it responsive and theme-aware (the system supports a `data-theme="dark"` toggle).
+
+BEFORE SHARING / DEPLOYING
+- From the `designmd/` folder run: `python3 inline.py ../features/{{FEATURE_NAME}}/index.html`
+  to inline the whole system (zero external dependencies). It is idempotent.
+- Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
+
+FILL IN
+- {{FEATURE_NAME}} — kebab-case folder name (e.g. `billing-portal`).
+- {{WHAT_IT_DOES}} — one or two sentences describing the screen(s) to build.</pre>
+    </div>
+  </main>
+
+  <script>
+    const btn = document.getElementById('copy-btn');
+    const label = document.getElementById('copy-label');
+    btn.addEventListener('click', async () => {
+      const text = document.getElementById('prompt').textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        // Fallback: select the pre so the user can copy manually
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById('prompt'));
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+      label.textContent = 'Copied ✓';
+      btn.classList.add('copy-ok');
+      setTimeout(() => { label.textContent = 'Copy prompt'; btn.classList.remove('copy-ok'); }, 1600);
+    });
+  </script>
+</body>
+</html>
