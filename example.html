@@ -3560,8 +3560,10 @@
 
             <!-- Optional-metadata affordance — ghost button, icon left. Reuse
                  this pattern for any "add more" action (links, owners, fields…). -->
-            <div class="row" data-add-resources-row>
-              <button class="btn btn-ghost" type="button" data-add-resources><svg class="btn-icon"><use href="#i-plus"/></svg>Add resources</button>
+            <div class="row" data-add-fields-row>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Resources (optional)" data-placeholder="Link or attachment…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add resources</button>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Business lines (optional)" data-placeholder="Select business lines…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add business lines</button>
+              <button class="btn btn-ghost" type="button" data-add-field data-field-label="Org unit (optional)" data-placeholder="Choose an org unit…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add org unit</button>
             </div>
 
             <div class="stack" style="gap: var(--ic-space-4); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
@@ -4212,16 +4214,22 @@
       document.addEventListener('click', (e) => { if (!box.contains(e.target)) menu.hidden = true; });
     });
 
-    // "Add resources" — insert a new optional Resources field above the button.
-    document.querySelectorAll('[data-add-resources]').forEach(btn => {
-      const row = btn.closest('[data-add-resources-row]');
+    // Optional "add field" affordances — each ghost button inserts its own field
+    // above the row and removes itself; the row disappears once all are used.
+    document.querySelectorAll('[data-add-field]').forEach(btn => {
       btn.addEventListener('click', () => {
+        const row = btn.closest('[data-add-fields-row]');
         const field = document.createElement('label');
         field.className = 'field';
-        field.innerHTML = '<span class="field-label">Resources (optional)</span><input class="input" type="text" placeholder="Link or attachment…" />';
+        const label = btn.dataset.fieldLabel || 'Field (optional)';
+        const ph = btn.dataset.placeholder || '';
+        field.innerHTML = '<span class="field-label"></span><input class="input" type="text" />';
+        field.querySelector('.field-label').textContent = label;
+        field.querySelector('.input').placeholder = ph;
         row.before(field);
         field.querySelector('.input').focus();
-        row.remove();   // one-time action — drop the button once the field is shown
+        btn.remove();
+        if (!row.querySelector('[data-add-field]')) row.remove();
       });
     });
 
