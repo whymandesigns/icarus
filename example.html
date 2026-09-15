@@ -1251,7 +1251,6 @@
                 <button class="segmented-item is-active" type="button" data-val="none">None</button>
                 <button class="segmented-item" type="button" data-val="left">Left</button>
                 <button class="segmented-item" type="button" data-val="right">Right</button>
-                <button class="segmented-item" type="button" data-val="both">Both</button>
               </div>
             </div>
           </div>
@@ -4068,8 +4067,8 @@
         }
         btn.removeAttribute('aria-label');
         btn.className = 'btn ' + sizeCls + TYPE[type];
-        const l = (icon === 'left' || icon === 'both') ? leftIcon : '';
-        const r = (icon === 'right' || icon === 'both') ? rightIcon : '';
+        const l = icon === 'left' ? leftIcon : '';
+        const r = icon === 'right' ? rightIcon : '';
         btn.innerHTML = l + 'Button' + r;
       };
       pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
