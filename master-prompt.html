@@ -105,6 +105,10 @@ RULES
   from `designmd/example.html` rather than inventing classes.
 - Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
   Browse the names in the Iconography gallery in `designmd/example.html`.
+- The sidenav lists the product's real top-level sections (Processes, Initiatives,
+  OKRs, People, …) — do NOT add the feature itself as a new nav item. The feature is
+  a screen reached from an existing section, not a new clickable entry. Mark the most
+  relevant existing item `.is-active`; never invent a `{{FEATURE_NAME}}` nav link.
 - Keep it a single file. Do not add frameworks, build steps or external CDNs.
 - Make it responsive and theme-aware (the system supports a `data-theme="dark"` toggle).
 
