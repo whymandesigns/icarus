@@ -1318,33 +1318,36 @@
 
         <div class="playground" data-playground>
           <div class="segmented playground-tabs" role="tablist" aria-label="Checkbox state">
-            <button class="segmented-item is-active" type="button" data-variant="enabled">Enabled</button>
+            <button class="segmented-item is-active" type="button" data-variant="checked">Checked</button>
+            <button class="segmented-item" type="button" data-variant="unchecked">Unchecked</button>
             <button class="segmented-item" type="button" data-variant="indeterminate">Indeterminate</button>
             <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
             <button class="segmented-item" type="button" data-variant="error">Error</button>
           </div>
           <div class="device-stage">
-            <div class="playground-stage" style="max-width: 320px">
-              <div class="playground-variant" data-variant="enabled">
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+            <div class="playground-stage" style="max-width: 120px">
+              <div class="playground-variant" data-variant="checked">
+                <div class="row" style="justify-content: center">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                </div>
+              </div>
+              <div class="playground-variant" data-variant="unchecked" hidden>
+                <div class="row" style="justify-content: center">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                 </div>
               </div>
               <div class="playground-variant" data-variant="indeterminate" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+                <div class="row" style="justify-content: center">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                 </div>
               </div>
               <div class="playground-variant" data-variant="disabled" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
+                <div class="row" style="justify-content: center">
                   <label class="checkbox"><input type="checkbox" class="checkbox-input" checked disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
-                  <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                 </div>
               </div>
               <div class="playground-variant" data-variant="error" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-                  <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
+                <div class="row" style="justify-content: center">
                   <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span></label>
                 </div>
               </div>
