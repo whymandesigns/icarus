@@ -1720,7 +1720,7 @@ a.avatar:focus-visible {
 /* Full modal only: divider borders separate the header + footer from the body. */
 .modal-full .modal-header { border-bottom: 1px solid var(--ic-palette-gray-200); }
 .modal-full .modal-footer { border-top: 1px solid var(--ic-palette-gray-200); }
-.modal-full .modal-body   { padding-top: var(--ic-space-5); }
+.modal-full .modal-body   { padding-top: var(--ic-space-5); background: var(--ic-palette-gray-100); }
 
 .modal-header {
   display: flex;
