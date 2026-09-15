@@ -1234,7 +1234,7 @@
                 <button class="segmented-item is-active" type="button" data-val="positive">Positive</button>
                 <button class="segmented-item" type="button" data-val="secondary">Secondary</button>
                 <button class="segmented-item" type="button" data-val="ghost">Ghost</button>
-                <button class="segmented-item" type="button" data-val="delete">Delete</button>
+                <button class="segmented-item" type="button" data-val="danger">Danger</button>
                 <button class="segmented-item" type="button" data-val="icon">Icon</button>
               </div>
             </div>
@@ -4048,7 +4048,7 @@
     document.querySelectorAll('[data-btn-playground]').forEach(pg => {
       const btn = pg.querySelector('[data-btn-live]');
       const iconControl = pg.querySelector('[data-btn-icon-control]');
-      const TYPE = { positive: 'btn-primary', secondary: 'btn-secondary', ghost: 'btn-ghost', delete: 'btn-danger' };
+      const TYPE = { positive: 'btn-primary', secondary: 'btn-secondary', ghost: 'btn-ghost', danger: 'btn-danger' };
       const val = (name) => pg.querySelector(`[data-btn-${name}] .is-active`)?.dataset.val;
       const leftIcon = '<svg class="btn-icon"><use href="#i-plus"/></svg>';
       const rightIcon = '<svg class="btn-icon"><use href="#i-arrow-right"/></svg>';
