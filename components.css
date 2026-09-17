@@ -70,6 +70,18 @@
   color: var(--ic-palette-graphite-700);
 }
 .btn:active { transform: translateY(1px); }
+/* Disabled — reduced-opacity + not-allowed cursor across every variant.
+ * `aria-disabled` mirrors the treatment for elements that stay focusable
+ * but shouldn't be actionable. */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn:disabled:hover,
+.btn[aria-disabled="true"]:hover { filter: none; }
+.btn:disabled:active,
+.btn[aria-disabled="true"]:active { transform: none; }
 .btn:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
@@ -519,6 +531,9 @@ textarea.input {
   border-color: var(--color-border-focus);
   box-shadow: 0 0 0 3px var(--color-accent-subtle);
 }
+/* Invalid state — matches .editor.is-error: red border + red focus ring. */
+.input.is-error                { border-color: var(--color-danger); }
+.input.is-error:focus          { border-color: var(--color-danger); box-shadow: 0 0 0 3px var(--color-danger-subtle); }
 
 /* ---------- Card ---------- */
 .card {
@@ -1158,8 +1173,9 @@ textarea.input {
   font: var(--type-caption);
   padding: var(--ic-space-1) var(--ic-space-2);
   border-radius: var(--ic-radius-full);
-  /* Neutral follows the variant recipe: {hue}-100 fill + {hue}-150 stroke */
-  background: var(--ic-palette-gray-100);
+  /* Neutral: white fill on a gray-150 stroke — reads as a chip on any surface.
+   * Variants below still follow the {hue}-subtle + {hue}-150 recipe. */
+  background: var(--color-surface);
   color: var(--color-text-muted);
   border: 1px solid var(--ic-palette-gray-150);
 }
@@ -1219,6 +1235,7 @@ button.badge:focus-visible {
   gap: var(--ic-space-1);
   height: 16px;
   padding: 0 var(--ic-space-2);
+  border: 0;                    /* reset native button border when a tag is a <button> */
   border-radius: var(--ic-radius-sm);
   font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
   background: var(--tag-color);
@@ -2585,7 +2602,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toast {
   --toast-accent: var(--color-border-strong);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--ic-space-3);
   padding: var(--ic-space-3) var(--ic-space-4);
   border-radius: var(--ic-radius-md);
@@ -2605,7 +2622,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* .toast .toast-icon (0,2,0) so the accent colour wins over the generic
  * `.toast .icon { color: inherit }` rule; per-variant --toast-accent drives it. */
-.toast .toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); margin-top: 1px; }
+.toast .toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); }
 .toast-message { flex: 1; min-width: 0; margin: 0; line-height: 1.4; }
 .toast-action { flex-shrink: 0; align-self: center; }
 /* Dismiss button — styled by the icon-only ghost button component in the
@@ -2615,8 +2632,15 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* Color variants (NB-56) — set --toast-accent (icon colour), a {hue}-150 border,
  * and a subtle tinted background. Icon colours: error red-500, warning yellow-500,
  * success green-600, info blue-500. Borders: {hue}-150 strokes. */
-.toast-neutral { --toast-accent: var(--color-border-strong); }
-.toast-neutral .toast-icon { color: var(--color-text-muted); }
+/* Neutral = classic dark toast: graphite-900 surface, inverse (white) text. */
+.toast-neutral {
+  --toast-accent: var(--color-text-inverse);
+  background: rgba(38, 45, 61, 0.9); /* graphite-800 @ 90% */
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-text-inverse);
+}
+.toast-neutral .toast-icon,
+.toast-neutral .toast-close { color: var(--color-text-inverse); }
 .toast-error   { --toast-accent: var(--color-danger);            background: var(--color-danger-subtle);  border-color: var(--ic-palette-red-150); }
 .toast-warning { --toast-accent: var(--color-warning);           background: var(--color-warning-subtle); border-color: var(--ic-palette-yellow-150); }
 .toast-success { --toast-accent: var(--ic-palette-green-600);     background: var(--color-success-subtle); border-color: var(--ic-palette-green-150); }
