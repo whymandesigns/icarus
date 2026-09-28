@@ -57,10 +57,16 @@
     <div class="prompt-card">
       <pre id="prompt">You are scaffolding a new feature prototype on the **Operationalize / Icarus design system**.
 
-FIRST — before doing anything: if `{{FEATURE_NAME}}` below is still the literal
-placeholder (i.e. I pasted this without replacing it), STOP and ask me for the
-feature name, then use my answer everywhere `{{FEATURE_NAME}}` appears. Never create
-a file or folder literally named `{{FEATURE_NAME}}`, and never guess a name.
+FIRST — before doing anything, settle these two things with me and wait for my answers:
+  1. FEATURE NAME — if `{{FEATURE_NAME}}` below is still the literal placeholder
+     (i.e. I pasted this without replacing it), STOP and ask me for it. Use my answer
+     everywhere `{{FEATURE_NAME}}` appears. Never create a file or folder literally
+     named `{{FEATURE_NAME}}`, and never guess a name.
+  2. SIDEBAR PLACEMENT — ask me how this feature sits in the left sidenav, unless I
+     already told you. Either (a) it belongs under an existing top-level section — I'll
+     name it (e.g. "I'm working in Initiatives"), so mark THAT item active and add no
+     new entry; or (b) it needs a brand-new nav item — I'll give you its label and
+     icon, so add it and mark it active. Don't guess placement; wait for my answer.
 
 CONTEXT
 - The design system lives in `designmd/`, a sibling of `features/`. It provides three
@@ -106,9 +112,10 @@ RULES
 - Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
   Browse the names in the Iconography gallery in `designmd/example.html`.
 - The sidenav lists the product's real top-level sections (Processes, Initiatives,
-  OKRs, People, …) — do NOT add the feature itself as a new nav item. The feature is
-  a screen reached from an existing section, not a new clickable entry. Mark the most
-  relevant existing item `.is-active`; never invent a `{{FEATURE_NAME}}` nav link.
+  OKRs, People, …). Follow my answer to the sidebar question above: if I named an
+  existing section, mark that item `.is-active` and add no new entry; if I asked for a
+  new nav item, add it with the label and icon I gave and mark it active. Either way,
+  don't invent a `{{FEATURE_NAME}}` nav link or guess placement on your own.
 - Keep it a single file. Do not add frameworks, build steps or external CDNs.
 - Make it responsive and theme-aware (the system supports a `data-theme="dark"` toggle).
 
