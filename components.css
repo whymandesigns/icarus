@@ -1348,7 +1348,10 @@ button.badge:focus-visible {
   justify-content: center;
   width: var(--avatar-size);
   height: var(--avatar-size);
-  border-radius: var(--ic-radius-sm);
+  border-radius: 0;
+  /* Chamfered bottom-left corner (Figma Avatar Core) — a 45° cut sized at 25%
+   * of the square, so it scales with every avatar size. */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 25% 100%, 0 75%);
   background: var(--color-surface-muted);
   color: var(--color-text-muted);
   font: var(--ic-weight-semibold) var(--avatar-text)/1 var(--ic-font-sans);
@@ -2683,16 +2686,10 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   container-type: inline-size;
 }
 /* Hamburger + page title + primary action — the collapsed mobile layout.
- * Hidden on the wide bar, revealed by the container query below. */
-.topbar-menu {
-  display: none;
-  align-items: center; justify-content: center;
-  width: 36px; height: 36px; padding: 0; flex-shrink: 0;
-  border: 0; background: transparent; cursor: pointer;
-  border-radius: var(--ic-radius-sm); color: inherit;
-}
-.topbar-menu:hover { background: rgba(255, 255, 255, 0.12); }
-.topbar-menu .icon { color: inherit; width: 24px; height: 24px; }
+ * The hamburger is the icon-button component (.btn.btn-icon-only.btn-ghost);
+ * this marker only controls when it shows (hidden on the wide bar, revealed by
+ * the container query below). */
+.topbar-menu { display: none; flex-shrink: 0; }
 .topbar-title {
   display: none;
   flex: 1; min-width: 0;
@@ -2786,7 +2783,6 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   /* Collapsed bar flips to a light surface with a dark H2 title. */
   .topbar { background: var(--color-surface); color: var(--color-text); gap: var(--ic-space-3); }
   .topbar .topbar-menu  { display: inline-flex; }
-  .topbar .topbar-menu:hover { background: var(--color-surface-muted); }
   .topbar .topbar-title { display: block; font: var(--type-h2); }
   .topbar .topbar-cta   { display: inline-flex; }
   .topbar .topbar-brand,

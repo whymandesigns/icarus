@@ -117,7 +117,7 @@
         "status": "mapped",
         "propMap": {
           "btn-primary": {
-            "variant": "primary"
+            "variant": "positive"
           },
           "btn-secondary": {
             "variant": "secondary"

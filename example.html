@@ -342,15 +342,9 @@
     .device-frame .app-shell-main { padding: var(--ic-space-7); }
 
     /* Hamburger — injected left of the page title, shown only on tablet/mobile. */
-    .app-shell-ham {
-      display: none;
-      align-items: center; justify-content: center;
-      width: 32px; height: 32px; padding: 0; flex-shrink: 0;
-      border: 0; background: transparent; cursor: pointer;
-      border-radius: var(--ic-radius-sm); color: var(--color-text);
-    }
-    .app-shell-ham:hover { background: var(--color-surface-muted); }
-    .app-shell-ham .icon { color: inherit; }
+    /* Hamburger uses the icon-button component (.btn.btn-icon-only.btn-ghost);
+       this marker only controls when it shows. */
+    .app-shell-ham { display: none; flex-shrink: 0; }
     /* Scrim behind the open drawer */
     .device-frame .app-shell-scrim { display: none; }
 
@@ -880,53 +874,70 @@
       <section class="stack" id="avatars">
         <div>
           <h3 class="h3">Avatars</h3>
-          <p class="body-sm">Squarish identity badge (4px corner radius) in six sizes and three content types. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
+          <p class="body-sm">Square identity badge in six sizes and three content types. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
         </div>
 
-        <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Avatar type">
-            <button class="segmented-item is-active" type="button" data-variant="photo">Photo</button>
-            <button class="segmented-item" type="button" data-variant="initials">Initials</button>
-            <button class="segmented-item" type="button" data-variant="team">Team</button>
-            <button class="segmented-item" type="button" data-variant="interactive">Interactive</button>
+        <div class="playground" data-playground data-avatar-playground>
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Type</span>
+              <div class="segmented playground-tabs" role="tablist" aria-label="Avatar type">
+                <button class="segmented-item is-active" type="button" data-variant="photo">Photo</button>
+                <button class="segmented-item" type="button" data-variant="initials">Initials</button>
+                <button class="segmented-item" type="button" data-variant="team">Team</button>
+                <button class="segmented-item" type="button" data-variant="interactive">Interactive</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Size</span>
+              <div class="segmented" role="group" aria-label="Avatar size" data-avatar-size>
+                <button class="segmented-item is-active" type="button" data-val="all">All</button>
+                <button class="segmented-item" type="button" data-val="xs">XS</button>
+                <button class="segmented-item" type="button" data-val="sm">SM</button>
+                <button class="segmented-item" type="button" data-val="md">MD</button>
+                <button class="segmented-item" type="button" data-val="lg">LG</button>
+                <button class="segmented-item" type="button" data-val="xl">XL</button>
+                <button class="segmented-item" type="button" data-val="2xl">2XL</button>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 520px">
               <div class="playground-variant" data-variant="photo">
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-                  <span class="avatar avatar-xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-                  <span class="avatar avatar-sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-                  <span class="avatar avatar-md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-                  <span class="avatar avatar-lg"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-                  <span class="avatar avatar-xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
-                  <span class="avatar avatar-2xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                  <span class="avatar avatar-xs" data-size="xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-sm" data-size="sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-md" data-size="md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-lg" data-size="lg"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-xl" data-size="xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
+                  <span class="avatar avatar-2xl" data-size="2xl"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
                 </div>
               </div>
               <div class="playground-variant" data-variant="initials" hidden>
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-                  <span class="avatar avatar-xs">JD</span>
-                  <span class="avatar avatar-sm">JD</span>
-                  <span class="avatar avatar-md">JD</span>
-                  <span class="avatar avatar-lg">JD</span>
-                  <span class="avatar avatar-xl">JD</span>
-                  <span class="avatar avatar-2xl">JD</span>
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                  <span class="avatar avatar-xs" data-size="xs">JD</span>
+                  <span class="avatar avatar-sm" data-size="sm">JD</span>
+                  <span class="avatar avatar-md" data-size="md">JD</span>
+                  <span class="avatar avatar-lg" data-size="lg">JD</span>
+                  <span class="avatar avatar-xl" data-size="xl">JD</span>
+                  <span class="avatar avatar-2xl" data-size="2xl">JD</span>
                 </div>
               </div>
               <div class="playground-variant" data-variant="team" hidden>
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end">
-                  <span class="avatar avatar-xs avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-                  <span class="avatar avatar-sm avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-                  <span class="avatar avatar-md avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-                  <span class="avatar avatar-lg avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-                  <span class="avatar avatar-xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
-                  <span class="avatar avatar-2xl avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                  <span class="avatar avatar-xs avatar-team" data-size="xs"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-sm avatar-team" data-size="sm"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-md avatar-team" data-size="md"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-lg avatar-team" data-size="lg"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-xl avatar-team" data-size="xl"><svg class="icon"><use href="#i-buildings"/></svg></span>
+                  <span class="avatar avatar-2xl avatar-team" data-size="2xl"><svg class="icon"><use href="#i-buildings"/></svg></span>
                 </div>
               </div>
               <div class="playground-variant" data-variant="interactive" hidden>
-                <div class="row" style="gap: var(--ic-space-3); align-items: center">
+                <div class="row" style="gap: var(--ic-space-3); align-items: center; justify-content: center">
                   <button class="avatar avatar-md" type="button" aria-label="Open profile">JD</button>
                   <a class="avatar avatar-md" href="#avatars" aria-label="View team"><svg class="icon"><use href="#i-users-three"/></svg></a>
-                  <button class="avatar avatar-lg" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
+                  <button class="avatar avatar-md" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
                 </div>
               </div>
             </div>
@@ -1920,7 +1931,7 @@
               <div class="dropdown-search">
                 <div class="input-icon input-icon-left">
                   <svg class="icon input-icon-glyph"><use href="#i-search"/></svg>
-                  <input class="input input-xs" type="search" placeholder="Search…" aria-label="Search items" autocomplete="off" data-dropdown-search-input>
+                  <input class="input" type="search" placeholder="Search…" aria-label="Search items" autocomplete="off" data-dropdown-search-input>
                 </div>
               </div>
               <div class="dropdown-list" data-dropdown-list>
@@ -2373,31 +2384,28 @@
       <section class="stack" id="radios">
         <h3 class="h3">Radios</h3>
 
-        <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Radio state">
-            <button class="segmented-item is-active" type="button" data-variant="enabled">Enabled</button>
-            <button class="segmented-item" type="button" data-variant="disabled">Disabled</button>
-            <button class="segmented-item" type="button" data-variant="error">Error</button>
+        <div class="playground" data-radio-playground data-vp="desktop">
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">State</span>
+              <div class="segmented" role="group" aria-label="Radio state" data-radio-state>
+                <button class="segmented-item is-active" type="button" data-val="enabled">Enabled</button>
+                <button class="segmented-item" type="button" data-val="disabled">Disabled</button>
+                <button class="segmented-item" type="button" data-val="error">Error</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Checked</span>
+              <div class="segmented" role="group" aria-label="Checked" data-radio-checked>
+                <button class="segmented-item is-active" type="button" data-val="checked">Checked</button>
+                <button class="segmented-item" type="button" data-val="unchecked">Unchecked</button>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 240px">
-              <div class="playground-variant" data-variant="enabled">
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-                  <label class="radio"><input type="radio" name="r1" class="radio-input" checked /><span class="radio-circle"></span></label>
-                  <label class="radio"><input type="radio" name="r1" class="radio-input" /><span class="radio-circle"></span></label>
-                </div>
-              </div>
-              <div class="playground-variant" data-variant="disabled" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-                  <label class="radio"><input type="radio" name="r2" class="radio-input" checked disabled /><span class="radio-circle"></span></label>
-                  <label class="radio"><input type="radio" name="r2" class="radio-input" disabled /><span class="radio-circle"></span></label>
-                </div>
-              </div>
-              <div class="playground-variant" data-variant="error" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-5)">
-                  <label class="radio is-error"><input type="radio" name="r3" class="radio-input" checked /><span class="radio-circle"></span></label>
-                  <label class="radio is-error"><input type="radio" name="r3" class="radio-input" /><span class="radio-circle"></span></label>
-                </div>
+              <div class="row" style="align-items: center; justify-content: center">
+                <label class="radio" data-radio-live><input type="radio" name="r-live" class="radio-input" checked /><span class="radio-circle"></span></label>
               </div>
             </div>
           </div>
@@ -3105,9 +3113,9 @@
         </div>
 
         <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Static reference — color variants (rendered inline so you can see all five at once)</span>
+        <div class="device-stage">
         <div class="stack" style="gap: var(--ic-space-3); max-width: 380px">
           <div class="toast toast-neutral">
-            <svg class="icon toast-icon"><use href="#i-info"/></svg>
             <p class="toast-message">New comment on Q4 plan.</p>
             <button class="btn btn-icon-only btn-ghost btn-xs toast-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
           </div>
@@ -3133,6 +3141,7 @@
             <button class="btn btn-xs btn-secondary toast-action">Reload</button>
             <button class="btn btn-icon-only btn-ghost btn-xs toast-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
           </div>
+        </div>
         </div>
       </section>
 
@@ -3327,7 +3336,7 @@
           <div class="device-stage">
           <div class="playground-stage">
           <header class="topbar" style="border-radius: var(--ic-radius-sm); width: 100%; box-shadow: var(--ic-shadow-lg)">
-            <button class="topbar-menu" type="button" aria-label="Menu"><svg class="icon"><use href="#i-overview"/></svg></button>
+            <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu"><svg class="icon"><use href="#i-overview"/></svg></button>
             <a class="topbar-brand" href="#">
               <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
             </a>
@@ -3900,9 +3909,11 @@
       const el = document.createElement('div');
       el.className = `toast toast-${variant} is-entering`;
       el.setAttribute('role', variant === 'error' ? 'alert' : 'status');
-      const actionHTML = behavior === 'action' && action ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
+      // Neutral is a plain message toast — no leading icon and no action CTA.
+      const iconHTML   = (variant === 'neutral' && !icon) ? '' : `<svg class="icon toast-icon"><use href="#i-${icon || defaultIcon}"/></svg>`;
+      const actionHTML = (variant !== 'neutral' && behavior === 'action' && action) ? `<button type="button" class="btn btn-xs btn-secondary toast-action">${action.label}</button>` : '';
       const closeHTML  = behavior !== 'timed' ? `<button type="button" class="btn btn-icon-only btn-ghost btn-xs toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>` : '';
-      el.innerHTML = `<svg class="icon toast-icon"><use href="#i-${icon || defaultIcon}"/></svg><p class="toast-message"></p>${actionHTML}${closeHTML}`;
+      el.innerHTML = `${iconHTML}<p class="toast-message"></p>${actionHTML}${closeHTML}`;
       el.querySelector('.toast-message').textContent = message;
       region.appendChild(el);
       // Trigger entrance transition on next frame
@@ -4321,6 +4332,35 @@
       render();
     });
 
+    // Avatar playground — the Type tabs swap content (generic [data-playground]);
+    // the Size control filters which sizes show ('all' shows the whole scale).
+    document.querySelectorAll('[data-avatar-playground]').forEach(pg => {
+      const apply = () => {
+        const s = pg.querySelector('[data-avatar-size] .is-active')?.dataset.val || 'all';
+        pg.querySelectorAll('.avatar[data-size]').forEach(a => {
+          a.hidden = !(s === 'all' || a.dataset.size === s);
+        });
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) apply(); });
+      apply();
+    });
+
+    // Radio playground — one live radio driven by two knobs: state
+    // (enabled / disabled / error) and checked (checked / unchecked).
+    document.querySelectorAll('[data-radio-playground]').forEach(pg => {
+      const label = pg.querySelector('[data-radio-live]');
+      const input = label.querySelector('.radio-input');
+      const val = (name) => pg.querySelector(`[data-radio-${name}] .is-active`)?.dataset.val;
+      const render = () => {
+        const state = val('state') || 'enabled';
+        label.classList.toggle('is-error', state === 'error');
+        input.disabled = state === 'disabled';
+        input.checked = val('checked') !== 'unchecked';
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
+      render();
+    });
+
     // Button playground — compose one live button: type · size · icons.
     document.querySelectorAll('[data-btn-playground]').forEach(pg => {
       const btn = pg.querySelector('[data-btn-live]');
@@ -4386,10 +4426,10 @@
       shell.querySelectorAll('.page-head-title').forEach(title => {
         if (title.querySelector('.app-shell-ham')) return;
         const b = document.createElement('button');
-        b.className = 'app-shell-ham';
+        b.className = 'btn btn-icon-only btn-ghost app-shell-ham';
         b.type = 'button';
         b.setAttribute('aria-label', 'Menu');
-        b.innerHTML = '<svg class="icon icon-24"><use href="#i-overview"/></svg>';
+        b.innerHTML = '<svg class="icon"><use href="#i-overview"/></svg>';
         b.addEventListener('click', () => shell.classList.toggle('is-nav-open'));
         title.insertBefore(b, title.firstChild);
       });
@@ -4623,6 +4663,20 @@
         // Scroll the main area to top so the new page-head is visible
         shell.querySelector('.app-shell-main')?.scrollTo({ top: 0, behavior: 'instant' });
       });
+    });
+
+    // Sidenav items with a placeholder href ("#") — don't jump to the top of
+    // the page; just move the active state within their own sidenav. App-shell
+    // items (data-page) keep their own page-switching handler.
+    document.addEventListener('click', (e) => {
+      const item = e.target.closest('.sidenav-item');
+      if (!item || item.hasAttribute('data-page')) return;
+      const href = item.getAttribute('href');
+      if (!href || !href.startsWith('#')) return; // real links navigate normally
+      e.preventDefault();
+      item.closest('.sidenav')?.querySelectorAll('.sidenav-item')
+        .forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
     });
 
     // Rich text editors — toolbar commands + heading select + character counter
