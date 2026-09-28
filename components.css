@@ -1685,6 +1685,44 @@ a.avatar:focus-visible {
 .slider-field::-webkit-outer-spin-button,
 .slider-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+/* ---------- Progress bar ----------
+ * Determinate progress: an 8px pill track with an accent fill sized by width.
+ * Optional trailing percentage label (.progress-value).
+ *
+ *   <div class="progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+ *     <div class="progress-track"><div class="progress-fill" style="width: 50%"></div></div>
+ *     <span class="progress-value">50%</span>          ← optional
+ *   </div>
+ */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: var(--ic-space-3);
+  width: 100%;
+}
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--color-surface-sunken);
+  border-radius: var(--ic-radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+  border-radius: var(--ic-radius-full);
+  transition: width var(--ic-duration-base) var(--ic-ease);
+}
+.progress-value {
+  flex-shrink: 0;
+  min-width: 34px;
+  text-align: right;
+  font: var(--ic-weight-semibold) var(--ic-text-xs)/1 var(--ic-font-sans);
+  color: var(--ic-palette-graphite-700);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Modal ----------
  * Overlay + centered panel with header / body / footer. Sizes: xs/sm/md/lg/xl.
  *

@@ -767,6 +767,39 @@
       }
     },
     {
+      "id": "progress",
+      "name": "Progress bar",
+      "slug": "progress-bar",
+      "stampSelector": ".progress",
+      "designmd": {
+        "root": ".progress",
+        "shortcode": "example.html#progress",
+        "variants": [
+          ".progress-track",
+          ".progress-fill",
+          ".progress-value"
+        ],
+        "snippet": "<div class=\"progress\" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\"><div class=\"progress-track\"><div class=\"progress-fill\" style=\"width:50%\"></div></div></div>"
+      },
+      "figma": {
+        "component": "Progress Bars",
+        "nodeId": "180:3737",
+        "key": null,
+        "status": "mapped",
+        "note": "Show %=False → default; Show %=True adds .progress-value",
+        "propMap": {}
+      },
+      "react": {
+        "system": "picasso",
+        "component": "ProgressBar",
+        "import": "@toptal/picasso",
+        "storyId": "components-progressbar--default",
+        "status": "mapped",
+        "propMap": {},
+        "note": "value={n}; add showPercentage for the labelled variant"
+      }
+    },
+    {
       "id": "dropdowns",
       "name": "Dropdown menu",
       "slug": "dropdown",

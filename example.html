@@ -2156,6 +2156,43 @@
         </div>
       </section>
 
+      <section class="stack" id="progress">
+        <div>
+          <h3 class="h3">Progress bar</h3>
+          <p class="body-sm">Determinate progress — an 8px pill track with an accent fill sized by width. Two variants: default (bar only) and with a trailing percentage label (<code style="font: var(--type-mono); color: var(--color-text-muted)">.progress-value</code>). Add <code style="font: var(--type-mono); color: var(--color-text-muted)">role="progressbar"</code> with <code style="font: var(--type-mono); color: var(--color-text-muted)">aria-valuenow</code>.</p>
+        </div>
+
+        <div class="playground" data-progress-playground data-vp="desktop">
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Percentage</span>
+              <div class="segmented" role="group" aria-label="Percentage" data-progress-value>
+                <button class="segmented-item" type="button" data-val="0">0%</button>
+                <button class="segmented-item" type="button" data-val="25">25%</button>
+                <button class="segmented-item is-active" type="button" data-val="50">50%</button>
+                <button class="segmented-item" type="button" data-val="75">75%</button>
+                <button class="segmented-item" type="button" data-val="100">100%</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Label</span>
+              <div class="segmented" role="group" aria-label="Percentage label" data-progress-label>
+                <button class="segmented-item is-active" type="button" data-val="off">Hidden</button>
+                <button class="segmented-item" type="button" data-val="on">Shown</button>
+              </div>
+            </div>
+          </div>
+          <div class="device-stage">
+            <div class="playground-stage" style="max-width: 360px">
+              <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-progress-live>
+                <div class="progress-track"><div class="progress-fill" style="width: 50%"></div></div>
+                <span class="progress-value" hidden>50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="stack" id="modals">
         <h3 class="h3">Modal</h3>
         <p class="body-sm">Overlay + centered panel. 5 desktop sizes plus an edge-to-edge <code style="font: var(--type-mono); color: var(--color-text-muted)">.modal-full</code>. Click any size to open. Escape, overlay click, or Cancel closes.</p>
@@ -4356,6 +4393,23 @@
         label.classList.toggle('is-error', state === 'error');
         input.disabled = state === 'disabled';
         input.checked = val('checked') !== 'unchecked';
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
+      render();
+    });
+
+    // Progress-bar playground — set the fill percentage and toggle the label.
+    document.querySelectorAll('[data-progress-playground]').forEach(pg => {
+      const live = pg.querySelector('[data-progress-live]');
+      const fill = live.querySelector('.progress-fill');
+      const valueEl = live.querySelector('.progress-value');
+      const val = (name) => pg.querySelector(`[data-progress-${name}] .is-active`)?.dataset.val;
+      const render = () => {
+        const v = val('value') || '0';
+        fill.style.width = v + '%';
+        live.setAttribute('aria-valuenow', v);
+        valueEl.textContent = v + '%';
+        valueEl.hidden = val('label') !== 'on';
       };
       pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
       render();
