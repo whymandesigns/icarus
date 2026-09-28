@@ -590,8 +590,11 @@ textarea.input {
   white-space: nowrap;
 }
 
-/* Wide variant — generous row height with zebra striping. */
-.table-wide tbody td { padding: var(--ic-space-5) var(--ic-space-4); }
+/* Wide variant — fixed 80px rows with zebra striping. Every row is the same
+ * height whether its cells are one- or two-line; vertical-align:middle centers
+ * the content, so the trimmed vertical padding just guards tall content. */
+.table-wide tbody tr { height: 80px; }
+.table-wide tbody td { padding: var(--ic-space-4) var(--ic-space-4); }
 .table-wide tbody tr:nth-child(even) td { background: var(--color-surface-muted); }
 
 /* Scroll container — wraps a .table to enable both axes of scrolling.
@@ -1071,7 +1074,7 @@ textarea.input {
   color: var(--color-text);
   transition: background var(--ic-duration-fast) var(--ic-ease);
 }
-.accordion-summary:hover { background: var(--color-surface-muted); }
+.accordion-summary:hover { background: var(--color-bg); }
 .accordion-summary:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: -2px; }
 .accordion-title { min-width: 0; }
 .accordion-chevron {
@@ -2316,6 +2319,22 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .stepper-sep svg { font-size: 16px; }
 
+/* Label density variants.
+ * .stepper-current-only — numbers throughout, only the active step keeps its
+ *   label (a compact progress read that still names where you are).
+ * .stepper-compact — numbers only, no labels at all. */
+.stepper-current-only .stepper-label { display: none; }
+.stepper-current-only .stepper-step.is-current .stepper-label { display: inline; }
+.stepper-compact .stepper-label { display: none; }
+
+/* Responsive — on small screens collapse a full stepper to the current-only
+ * read (numbers throughout, label on the active step) so it fits without
+ * wrapping. Explicit .stepper-compact keeps its numbers-only form. */
+@media (max-width: 640px) {
+  .stepper:not(.stepper-compact) .stepper-label { display: none; }
+  .stepper:not(.stepper-compact) .stepper-step.is-current .stepper-label { display: inline; }
+}
+
 /* ---------- Tooltip ----------
  * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
  * is top; override with [data-placement="bottom"|"left"|"right"].
@@ -2659,7 +2678,29 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: 0 var(--ic-space-5);
   background: var(--ic-palette-graphite-800);
   color: var(--ic-palette-white);
+  /* Query container so the bar can collapse to a mobile layout based on its own
+   * width (works full-width in real use and inside the sized playground frame). */
+  container-type: inline-size;
 }
+/* Hamburger + page title + primary action — the collapsed mobile layout.
+ * Hidden on the wide bar, revealed by the container query below. */
+.topbar-menu {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 36px; height: 36px; padding: 0; flex-shrink: 0;
+  border: 0; background: transparent; cursor: pointer;
+  border-radius: var(--ic-radius-sm); color: inherit;
+}
+.topbar-menu:hover { background: rgba(255, 255, 255, 0.12); }
+.topbar-menu .icon { color: inherit; width: 24px; height: 24px; }
+.topbar-title {
+  display: none;
+  flex: 1; min-width: 0;
+  font: var(--ic-weight-semibold) var(--ic-text-md)/1 var(--ic-font-sans);
+  color: inherit;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.topbar-cta { display: none; flex-shrink: 0; }
 .topbar-brand {
   display: inline-flex;
   align-items: center;
@@ -2737,6 +2778,20 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 720px) {
   .topbar-search { width: 200px; }
+}
+
+/* Collapsed bar (≤768px, Picasso md edge): hamburger + page title on the left,
+ * a primary action on the right; the brand logo, search and account menu drop. */
+@container (max-width: 768px) {
+  /* Collapsed bar flips to a light surface with a dark H2 title. */
+  .topbar { background: var(--color-surface); color: var(--color-text); gap: var(--ic-space-3); }
+  .topbar .topbar-menu  { display: inline-flex; }
+  .topbar .topbar-menu:hover { background: var(--color-surface-muted); }
+  .topbar .topbar-title { display: block; font: var(--type-h2); }
+  .topbar .topbar-cta   { display: inline-flex; }
+  .topbar .topbar-brand,
+  .topbar .topbar-search,
+  .topbar .topbar-account { display: none; }
 }
 
 /* ---------- Dropdown menu ----------
@@ -2912,6 +2967,26 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   font: var(--type-caption);
   color: var(--color-text-muted);
   padding: var(--ic-space-1) var(--ic-space-2);
+}
+
+/* Search-in-menu — a filter field pinned above a scrollable item list. Put the
+ * items in a .dropdown-list (scrolls independently) and a .dropdown-empty row
+ * for the no-results state. Filtering is wired by the [data-dropdown-search]
+ * handler in example.html. */
+.dropdown-search { padding: var(--ic-space-1); }
+.dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  max-height: 240px;
+}
+.dropdown-empty {
+  margin: 0;
+  padding: var(--ic-space-3);
+  text-align: center;
+  font: var(--type-body-sm);
+  color: var(--color-text-muted);
 }
 
 /* Generic dropdown wrapper — pairs a `.dropdown-trigger` with a `.dropdown-menu` */

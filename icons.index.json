@@ -1,7 +1,7 @@
 {
- "source": "Figma \u00b7 Iconography (custom pack)",
+ "source": "Figma · Iconography (custom pack)",
  "fileKey": "TqaGgbpjGSUDf7qq153Isq",
- "count": 321,
+ "count": 324,
  "icons": [
   {
    "slug": "add-document",
@@ -778,6 +778,12 @@
    "viewBox": "0 0 24 24"
   },
   {
+   "slug": "google",
+   "name": "Google",
+   "section": "Brands",
+   "viewBox": "0 0 16 16"
+  },
+  {
    "slug": "grammar-check",
    "name": "Grammar Check",
    "section": "Interface Essentials",
@@ -890,6 +896,12 @@
    "name": "Italic",
    "section": "Interface Essentials",
    "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "jira-software",
+   "name": "Jira Software",
+   "section": "Brands",
+   "viewBox": "0 0 16 16"
   },
   {
    "slug": "job-change",
@@ -1562,6 +1574,12 @@
    "name": "Skype",
    "section": "Communication",
    "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "slack",
+   "name": "Slack",
+   "section": "Brands",
+   "viewBox": "0 0 16 16"
   },
   {
    "slug": "sleep",

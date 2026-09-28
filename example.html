@@ -240,6 +240,57 @@
       white-space: nowrap;
     }
 
+    /* ---- Motion (Foundations) ----
+       Easing + duration tokens with live, replayable previews. A dot slides
+       across a track using each token; cards autoplay once on first view and
+       replay on hover or via the Replay button. */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--ic-space-3);
+    }
+    .motion-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ic-space-3);
+      padding: var(--ic-space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      background: var(--color-surface);
+    }
+    .motion-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ic-space-3); }
+    .motion-name { font: var(--type-body-semibold); color: var(--color-text); }
+    .motion-sub { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-subtle); margin-left: 6px; }
+    .motion-curve {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-sm);
+      background: var(--color-surface-muted);
+      overflow: visible;
+    }
+    .motion-curve path { fill: none; stroke: var(--color-accent); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+    .motion-track {
+      position: relative;
+      height: 24px;
+      border-radius: var(--ic-radius-full);
+      background: var(--color-surface-sunken);
+      overflow: hidden;
+    }
+    .motion-dot {
+      position: absolute;
+      top: 50%; left: 4px;
+      width: 16px; height: 16px;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .motion-dot.run { animation: motion-slide var(--md-dur, 1200ms) var(--md-ease, var(--ic-ease)) both; }
+    @keyframes motion-slide { from { left: 4px; } to { left: calc(100% - 20px); } }
+    .motion-meta { display: flex; align-items: baseline; justify-content: space-between; gap: var(--ic-space-3); }
+    .motion-token { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-muted); }
+    .motion-val { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-subtle); }
+    @media (prefers-reduced-motion: reduce) { .motion-dot.run { animation: none; left: calc(100% - 20px); } }
+
     /* ---- Device preview (App shell template) ----
        Flip the app shell between Desktop / Tablet (768) / Mobile (375). The
        frame is a CSS container, so the app shell reflows by container width
@@ -363,6 +414,11 @@
        every viewport instead of stretching to the device frame. */
     #sliders .playground[data-vp="tablet"] .device-stage > *,
     #sliders .playground[data-vp="mobile"] .device-stage > * { width: 360px !important; max-width: 360px !important; }
+    /* Stepper responsive demo — the mobile viewport constrains width via the
+       container (not the real viewport), so mirror the component's max-width:640px
+       media query here so the mobile button shows the current-only collapse. */
+    .playground[data-vp="mobile"] .stepper:not(.stepper-compact) .stepper-label { display: none; }
+    .playground[data-vp="mobile"] .stepper:not(.stepper-compact) .stepper-step.is-current .stepper-label { display: inline; }
     /* The [hidden] attribute must win over component display rules like
        .btn { display: inline-flex } (used by the alert close button / CTAs). */
     [hidden] { display: none !important; }
@@ -589,6 +645,88 @@
           <div class="pictogram-card">
             <span class="pictogram is-filled"><svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path opacity="0.15" d="M16 27L48 27L43 19L21 19L16 27Z" fill="currentColor"/><path d="M16 27L12 57H52L48 27" stroke="currentColor" stroke-miterlimit="10"/><path d="M16 27L48 27L43 19L21 19L16 27Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M27 34H37C38.1046 34 39 34.8954 39 36C39 37.1046 38.1046 38 37 38H27C25.8954 38 25 37.1046 25 36C25 34.8954 25.8954 34 27 34Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M32 4V10" stroke="currentColor" stroke-miterlimit="10"/><path d="M23 7L26 12" stroke="currentColor" stroke-miterlimit="10"/><path d="M41 7L38 12" stroke="currentColor" stroke-miterlimit="10"/><path d="M15 14L19 17" stroke="currentColor" stroke-miterlimit="10"/><path d="M49 14L45 17" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
             <span class="pictogram-card-name">archive</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><path opacity="0.15" d="M35 103C41.6274 103 47 97.6274 47 91C47 84.3726 41.6274 79 35 79C28.3726 79 23 84.3726 23 91C23 97.6274 28.3726 103 35 103Z" fill="currentColor"/><path opacity="0.15" d="M35 103C21.74 103 11 113.74 11 127L12 128H58L59 127C59 113.74 48.26 103 35 103Z" fill="currentColor"/><path d="M35 103C41.6274 103 47 97.6274 47 91C47 84.3726 41.6274 79 35 79C28.3726 79 23 84.3726 23 91C23 97.6274 28.3726 103 35 103Z" stroke="currentColor" stroke-miterlimit="10"/><path opacity="0.15" d="M67.6835 36.5762H58.4007L50 46.6375H76.0842L67.6835 36.5762Z" fill="currentColor"/><path opacity="0.15" d="M113.102 36.5762H90V46.6375H113.102V36.5762Z" fill="currentColor"/><path opacity="0.15" d="M36.002 36.5762H12.9V46.6375H36.002V36.5762Z" fill="currentColor"/><path d="M11 127C11 113.74 21.74 103 35 103C48.26 103 59 113.74 59 127" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="square"/><path d="M91 103C97.6274 103 103 97.6274 103 91C103 84.3726 97.6274 79 91 79C84.3726 79 79 84.3726 79 91C79 97.6274 84.3726 103 91 103Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M67 127C67 113.74 77.74 103 91 103C104.26 103 115 113.74 115 127" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="square"/><path d="M113 1H13V47H35V63L51 47H75L91 63V47H113V1Z" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">communication</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><g opacity="0.15"><path d="M88 40L111 17" stroke="currentColor"/></g><g opacity="0.15"><path d="M100.24 60.4L110.74 64.82C110.74 64.82 110.36 55.06 106.68 49.02L99.7 58.46L98.44 58.8C93.54 41.04 77.3 28 58 28C34.8 28 16 46.8 16 70C16 93.2 34.8 112 58 112C81.2 112 100 93.2 100 70C100 66.82 99.62 63.72 98.94 60.74L100.24 60.4ZM88 70C88 86.56 74.56 100 58 100C41.44 100 28 86.56 28 70C28 53.44 41.44 40 58 40C71.76 40 83.34 49.28 86.86 61.92L75.28 65.04C73.12 57.52 66.2 52 57.98 52C48.04 52 39.98 60.06 39.98 70C39.98 79.94 48.04 88 57.98 88C67.92 88 75.98 79.94 75.98 70C75.98 68.98 75.88 67.98 75.7 67L87.34 63.86C87.76 65.84 87.98 67.9 87.98 70H88Z" fill="currentColor"/></g><path d="M101.681 39.9843C109.161 50.8692 112.307 64.1546 110.503 77.2379C108.7 90.3212 102.076 102.26 91.9307 110.715C81.7849 119.17 68.8478 123.533 55.6537 122.948C42.4596 122.363 29.9591 116.874 20.601 107.554C11.2429 98.2347 5.70143 85.7571 5.06213 72.5655C4.42283 59.3739 8.73176 46.4189 17.1449 36.2382C25.558 26.0575 37.469 19.3847 50.5447 17.527C63.6205 15.6692 76.9188 18.7603 87.8346 26.1948" stroke="currentColor"/><path d="M57 71L88 40M88 40H101.5L125 17H111V3.5L88 26V40Z" stroke="currentColor"/></g></svg></span>
+            <span class="pictogram-card-name">target</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><path opacity="0.15" d="M64 29C67.866 29 71 25.866 71 22C71 18.134 67.866 15 64 15C60.134 15 57 18.134 57 22C57 25.866 60.134 29 64 29Z" fill="currentColor"/><path opacity="0.15" d="M51 42C51 34.82 56.82 29 64 29C71.18 29 77 34.82 77 42" fill="currentColor"/><path d="M64 57C78.9117 57 91 44.9117 91 30C91 15.0883 78.9117 3 64 3C49.0883 3 37 15.0883 37 30C37 44.9117 49.0883 57 64 57Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M100 127C114.912 127 127 114.912 127 100C127 85.0883 114.912 73 100 73C85.0883 73 73 85.0883 73 100C73 114.912 85.0883 127 100 127Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M28 127C42.9117 127 55 114.912 55 100C55 85.0883 42.9117 73 28 73C13.0883 73 1 85.0883 1 100C1 114.912 13.0883 127 28 127Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M64 29C67.866 29 71 25.866 71 22C71 18.134 67.866 15 64 15C60.134 15 57 18.134 57 22C57 25.866 60.134 29 64 29Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M51 42C51 34.82 56.82 29 64 29C71.18 29 77 34.82 77 42" stroke="currentColor" stroke-miterlimit="10"/><path opacity="0.15" d="M100 99C103.866 99 107 95.866 107 92C107 88.134 103.866 85 100 85C96.134 85 93 88.134 93 92C93 95.866 96.134 99 100 99Z" fill="currentColor"/><path opacity="0.15" d="M87 112C87 104.82 92.82 99 100 99C107.18 99 113 104.82 113 112" fill="currentColor"/><path d="M100 99C103.866 99 107 95.866 107 92C107 88.134 103.866 85 100 85C96.134 85 93 88.134 93 92C93 95.866 96.134 99 100 99Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M87 112C87 104.82 92.82 99 100 99C107.18 99 113 104.82 113 112" stroke="currentColor" stroke-miterlimit="10"/><path opacity="0.15" d="M28 99C31.866 99 35 95.866 35 92C35 88.134 31.866 85 28 85C24.134 85 21 88.134 21 92C21 95.866 24.134 99 28 99Z" fill="currentColor"/><path opacity="0.15" d="M15 112C15 104.82 20.82 99 28 99C35.18 99 41 104.82 41 112" fill="currentColor"/><path d="M28 99C31.866 99 35 95.866 35 92C35 88.134 31.866 85 28 85C24.134 85 21 88.134 21 92C21 95.866 24.134 99 28 99Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M15 112C15 104.82 20.82 99 28 99C35.18 99 41 104.82 41 112" stroke="currentColor" stroke-miterlimit="10"/><path d="M56 101H68" stroke="currentColor" stroke-miterlimit="10"/><path d="M39 75L51 55" stroke="currentColor" stroke-miterlimit="10"/><path d="M77 55L87 75" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">hierarchy</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><path opacity="0.15" d="M63 41C50.84 41 41 50.84 41 63C41 75.16 50.84 85 63 85C75.16 85 85 75.16 85 63C85 50.84 75.16 41 63 41Z" fill="currentColor"/><path opacity="0.15" d="M99 39C105.627 39 111 33.6274 111 27C111 20.3726 105.627 15 99 15C92.3726 15 87 20.3726 87 27C87 33.6274 92.3726 39 99 39Z" fill="currentColor"/><path opacity="0.15" d="M27 111C33.6274 111 39 105.627 39 99C39 92.3726 33.6274 87 27 87C20.3726 87 15 92.3726 15 99C15 105.627 20.3726 111 27 111Z" fill="currentColor"/><path opacity="0.15" d="M27 4C14.3 4 4 14.3 4 27C4 39.7 14.3 50 27 50C39.7 50 50 39.7 50 27C50 14.3 39.7 4 27 4ZM27 39C20.38 39 15 33.62 15 27C15 20.38 20.38 15 27 15C33.62 15 39 20.38 39 27C39 33.62 33.62 39 27 39Z" fill="currentColor"/><path opacity="0.15" d="M99 76C86.3 76 76 86.3 76 99C76 111.7 86.3 122 99 122C111.7 122 122 111.7 122 99C122 86.3 111.7 76 99 76ZM99 111C92.38 111 87 105.62 87 99C87 92.38 92.38 87 99 87C105.62 87 111 92.38 111 99C111 105.62 105.62 111 99 111Z" fill="currentColor"/><path d="M39 45.44C35.54 47.7 31.42 49 27 49C14.84 49 5 39.16 5 27C5 14.84 14.84 5 27 5C39.16 5 49 14.84 49 27C49 31.42 47.7 35.54 45.44 39" stroke="currentColor" stroke-miterlimit="10"/><path d="M27 39C33.6274 39 39 33.6274 39 27C39 20.3726 33.6274 15 27 15C20.3726 15 15 20.3726 15 27C15 33.6274 20.3726 39 27 39Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M99 39C105.627 39 111 33.6274 111 27C111 20.3726 105.627 15 99 15C92.3726 15 87 20.3726 87 27C87 33.6274 92.3726 39 99 39Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M27 111C33.6274 111 39 105.627 39 99C39 92.3726 33.6274 87 27 87C20.3726 87 15 92.3726 15 99C15 105.627 20.3726 111 27 111Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M99 111C105.627 111 111 105.627 111 99C111 92.3726 105.627 87 99 87C92.3726 87 87 92.3726 87 99C87 105.627 92.3726 111 99 111Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M80.56 39C78.3 35.54 77 31.42 77 27C77 14.84 86.84 5 99 5C111.16 5 121 14.84 121 27C121 39.16 111.16 49 99 49C94.58 49 90.46 47.7 87 45.44" stroke="currentColor" stroke-miterlimit="10"/><path d="M45.44 87C47.7 90.46 49 94.58 49 99C49 111.16 39.16 121 27 121C14.84 121 5 111.16 5 99C5 86.84 14.84 77 27 77C31.42 77 35.54 78.3 39 80.56" stroke="currentColor" stroke-miterlimit="10"/><path d="M87 80.56C90.46 78.3 94.58 77 99 77C111.16 77 121 86.84 121 99C121 111.16 111.16 121 99 121C86.84 121 77 111.16 77 99C77 94.58 78.3 90.46 80.56 87" stroke="currentColor" stroke-miterlimit="10"/><path d="M63 85C75.1503 85 85 75.1503 85 63C85 50.8497 75.1503 41 63 41C50.8497 41 41 50.8497 41 63C41 75.1503 50.8497 85 63 85Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M78 78L91 91" stroke="currentColor" stroke-miterlimit="10"/><path d="M35 35L48 48" stroke="currentColor" stroke-miterlimit="10"/><path d="M48 78L35 91" stroke="currentColor" stroke-miterlimit="10"/><path d="M91 35L78 48" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">network</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><g opacity="0.15"><path d="M77 125V83L91 101H111V125H77Z" fill="currentColor"/></g><g opacity="0.15"><path d="M3 101H17V83L3 101Z" fill="currentColor"/></g><g opacity="0.15"><path d="M90.74 55.96C89.62 51.46 86.92 47.52 83.16 44.82C78.04 41.16 75 35.26 75 28.96C75 22.66 73.08 16.1 69.46 10.7L68 8.5V20.12C66.72 18.82 64.96 18 63 18C59.14 18 56 21.14 56 25C56 25 58.72 21.12 63 22.68C67.28 24.24 68 27.4 68 31.4V65H73V61L93 65L90.74 55.96Z" fill="currentColor"/></g><path d="M17 83H77V125.5L17 125V101H3L17 83Z" stroke="currentColor"/><path d="M62.9799 3.71997C64.3982 3.71997 65.7205 4.38506 66.5619 5.49048L66.724 5.71704L69.8636 10.4368C73.5296 15.9554 75.4798 22.3592 75.4799 28.9797C75.4799 35.1015 78.4581 40.8734 83.4291 44.427H83.4301C87.1716 47.0914 89.8706 50.9835 91.0824 55.4114L91.1947 55.8411L93.641 65.6448L74.098 61.7297L73.5004 61.6096V65.5002H52.5004V61.6096L51.9017 61.7297L32.3158 65.6536L34.765 55.8411C35.9164 51.2357 38.6676 47.1773 42.5297 44.427H42.5306C47.5016 40.8734 50.4799 35.1015 50.4799 28.9797C50.4799 22.5659 52.3107 16.3556 55.7582 10.9563L56.0961 10.4368L59.2367 5.71704L59.2377 5.71411C60.0626 4.45889 61.4636 3.72002 62.9799 3.71997Z" stroke="currentColor"/><path d="M57 68C57 70.1667 56.2 75.2 53 78" stroke="currentColor"/><path d="M69 68C69 70.1667 69.8 75.2 73 78" stroke="currentColor"/><path d="M63 68H62V78H63V68Z" fill="currentColor"/><path d="M77 125.5H111V100.5M111 100.5H124.5L111 83H77L91 100.5H111Z" stroke="currentColor"/><path d="M17 83V101.5" stroke="currentColor"/></g></svg></span>
+            <span class="pictogram-card-name">launch</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><path opacity="0.15" d="M87 64C87 62.32 86.8 60.68 86.46 59.12L97.18 52.94C95.66 48.42 93.26 44.32 90.16 40.82L79.44 47C77.02 44.8 74.16 43.12 70.98 42.1V29.72C68.72 29.26 66.38 29.02 63.98 29.02C61.58 29.02 59.24 29.26 56.98 29.72V42.1C53.8 43.12 50.94 44.82 48.54 47L37.82 40.82C34.72 44.32 32.32 48.4 30.8 52.94L41.52 59.12C41.18 60.7 40.98 62.32 40.98 64C40.98 65.68 41.18 67.32 41.52 68.88L30.8 75.06C32.32 79.58 34.72 83.68 37.82 87.18L48.54 81C50.94 83.2 53.82 84.88 56.98 85.9V98.28C59.24 98.74 61.58 98.98 63.98 98.98C66.38 98.98 68.72 98.74 70.98 98.28V85.9C74.16 84.88 77.02 83.18 79.44 81L90.16 87.18C93.26 83.68 95.66 79.6 97.18 75.06L86.46 68.88C86.8 67.3 87 65.68 87 64ZM64 73C59.02 73 55 68.98 55 64C55 59.02 59.02 55 64 55C68.98 55 73 59.02 73 64C73 68.98 68.98 73 64 73Z" fill="currentColor"/><path d="M64 73C68.9706 73 73 68.9706 73 64C73 59.0294 68.9706 55 64 55C59.0294 55 55 59.0294 55 64C55 68.9706 59.0294 73 64 73Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M90.16 40.82L79.44 47C77.02 44.8 74.16 43.12 70.98 42.1V29.72C68.72 29.26 66.38 29.02 63.98 29.02C61.58 29.02 59.24 29.26 56.98 29.72V42.1C53.8 43.12 50.94 44.82 48.54 47L37.82 40.82C34.72 44.32 32.32 48.4 30.8 52.94L41.52 59.12C41.18 60.7 40.98 62.32 40.98 64C40.98 65.68 41.18 67.32 41.52 68.88L30.8 75.06C32.32 79.58 34.72 83.68 37.82 87.18L48.54 81C50.94 83.2 53.82 84.88 56.98 85.9V98.28C59.24 98.74 61.58 98.98 63.98 98.98C66.38 98.98 68.72 98.74 70.98 98.28V85.9C74.16 84.88 77.02 83.18 79.44 81L90.16 87.18C93.26 83.68 95.66 79.6 97.18 75.06L86.46 68.88C86.8 67.3 87 65.68 87 64C87 62.32 86.8 60.68 86.46 59.12L97.18 52.94C95.66 48.42 93.26 44.32 90.16 40.82Z" stroke="currentColor" stroke-miterlimit="10"/><path d="M120.14 35.3999C124.52 43.9799 127 53.6999 127 63.9999C127 98.7999 98.8 127 64 127C46.6 127 30.86 119.94 19.46 108.54" stroke="currentColor" stroke-miterlimit="10"/><path d="M7.86 92.6C3.48 84.02 1 74.3 1 64C1 29.2 29.2 1 64 1C81.4 1 97.14 8.06 108.54 19.46" stroke="currentColor" stroke-miterlimit="10"/><path d="M109 2V21H90" stroke="currentColor" stroke-miterlimit="10"/><path d="M19 126V107H38" stroke="currentColor" stroke-miterlimit="10"/></g></svg></span>
+            <span class="pictogram-card-name">settings</span>
+          </div>
+          <div class="pictogram-card">
+            <span class="pictogram is-filled"><svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="3"><path d="M32 82V94.6159L36.3615 99.061L40.7231 104H63.5H95V23H64" stroke="currentColor"/><path opacity="0.15" d="M63.9998 81.9123H85.9778C85.9785 79.0254 85.4107 76.1666 84.3066 73.4991C83.2025 70.8316 81.5838 68.4077 79.5429 66.3658C77.5021 64.3239 75.079 62.7039 72.4121 61.5984C69.7452 60.493 66.8867 59.9236 63.9998 59.9229V81.9123Z" fill="currentColor"/><path d="M63.9998 81.9123H85.9778C85.9785 79.0254 85.4107 76.1666 84.3066 73.4991C83.2025 70.8316 81.5838 68.4077 79.5429 66.3658C77.5021 64.3239 75.079 62.7039 72.4121 61.5984C69.7452 60.493 66.8867 59.9236 63.9998 59.9229V81.9123Z" stroke="currentColor"/><path opacity="0.15" d="M95.4995 104.424H117.478C117.479 98.5933 115.164 93.0011 111.043 88.8773C106.921 84.7535 101.33 82.4359 95.4995 82.4343V104.424Z" fill="currentColor"/><path d="M95 103.989H116.978C116.979 98.159 114.665 92.5668 110.543 88.443C106.421 84.3192 100.83 82.0016 95 82V103.989Z" stroke="currentColor"/><path opacity="0.15" d="M95.4995 56.3823V78.1643C98.3844 78.1588 101.149 77.0089 103.187 74.967C105.225 72.9252 106.37 70.1582 106.37 67.2733C106.37 64.3884 105.225 61.6214 103.187 59.5796C101.149 57.5377 98.3844 56.3879 95.4995 56.3823V56.3823Z" fill="currentColor"/><path d="M95 56.3823V78.1643C97.8848 78.1588 100.65 77.0089 102.688 74.967C104.726 72.9252 105.87 70.1582 105.87 67.2733C105.87 64.3884 104.726 61.6214 102.688 59.5796C100.65 57.5377 97.8848 56.3879 95 56.3823V56.3823Z" stroke="currentColor"/><path opacity="0.15" d="M74.8852 44.762L77.8543 55.6531H63.9998V33.8711C66.8875 33.8718 69.6566 35.0197 71.698 37.0621C73.7394 39.1046 74.8859 41.8743 74.8852 44.762V44.762Z" fill="currentColor"/><path d="M74.8852 44.762L77.8543 55.6531H63.9998V33.8711C66.8875 33.8718 69.6566 35.0197 71.698 37.0621C73.7394 39.1046 74.8859 41.8743 74.8852 44.762Z" stroke="currentColor"/><path opacity="0.15" d="M43.3852 22.2505L46.3544 33.1415H18.6453L21.6144 22.2504C21.6144 20.8209 21.896 19.4054 22.443 18.0848C22.9901 16.7641 23.7919 15.5641 24.8027 14.5533C25.8135 13.5425 27.0135 12.7406 28.3342 12.1936C29.6549 11.6466 31.0703 11.365 32.4998 11.365C33.9293 11.365 35.3448 11.6466 36.6655 12.1936C37.9862 12.7406 39.1862 13.5425 40.197 14.5533C41.2078 15.5641 42.0096 16.7641 42.5566 18.0848C43.1037 19.4054 43.3852 20.8209 43.3852 22.2504V22.2505Z" fill="currentColor"/><path d="M43.3853 22.2505L46.3544 33.1415H18.6454L21.6145 22.2504C21.6145 20.8209 21.8961 19.4054 22.4431 18.0848C22.9901 16.7641 23.792 15.5641 24.8028 14.5533C25.8136 13.5425 27.0136 12.7406 28.3342 12.1936C29.6549 11.6466 31.0704 11.365 32.4999 11.365C33.9294 11.365 35.3449 11.6466 36.6656 12.1936C37.9862 12.7406 39.1862 13.5425 40.197 14.5533C41.2078 15.5641 42.0097 16.7641 42.5567 18.0848C43.1038 19.4054 43.3853 20.8209 43.3853 22.2504V22.2505Z" stroke="currentColor"/><path opacity="0.15" d="M32.4997 37.4165C26.6702 37.4165 21.0794 39.7324 16.9573 43.8545C12.8351 47.9767 10.5194 53.5675 10.5194 59.3971H54.4803C54.4803 56.5106 53.9117 53.6523 52.8071 50.9855C51.7025 48.3187 50.0834 45.8956 48.0423 43.8545C46.0013 41.8134 43.5781 40.1943 40.9113 39.0897C38.2445 37.985 35.3863 37.4165 32.4997 37.4165V37.4165Z" fill="currentColor"/><path d="M32.4999 37.9165C35.3205 37.9165 38.1136 38.4719 40.7196 39.5513C43.3257 40.6308 45.6937 42.2138 47.6884 44.2085C49.683 46.2032 51.2661 48.5711 52.3456 51.1772C53.3611 53.6291 53.9118 56.2467 53.9735 58.897H11.0262C11.1545 53.3814 13.4004 48.1188 17.3104 44.2085C21.3388 40.1801 26.8029 37.9165 32.4999 37.9165Z" stroke="currentColor"/><path d="M63 104V116.616L67.3615 121.061L71.7231 126H94.5H126V45H95" stroke="currentColor"/><path d="M126 103.5H95V104.5H126V103.5Z" fill="currentColor"/><path d="M108 115H83V116H108V115Z" fill="currentColor"/><path d="M95 81.5H64V82.5H95V81.5Z" fill="currentColor"/><path d="M76 92H52V93H76V92Z" fill="currentColor"/><path d="M1 1H64V82H32.5H9.72308L5.36154 77.061L1 72.6159V41.5V1Z" stroke="currentColor"/><path d="M63.9997 58.3999H1V59.3999H63.9997V58.3999Z" fill="currentColor"/><path d="M45 70H20V71H45V70Z" fill="currentColor"/></g></svg></span>
+            <span class="pictogram-card-name">talent</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stack" id="motion">
+        <div>
+          <h3 class="h3">Motion</h3>
+          <p class="body-sm">Easing curves and durations for transitions and animation. Easing tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-ease</code>, durations <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-duration-</code>. Pair one of each, e.g. <code style="font: var(--type-mono); color: var(--color-text-muted)">transition: transform var(--ic-duration-base) var(--ic-ease)</code>. <button class="btn btn-secondary btn-xs" type="button" data-motion-play><svg class="btn-icon"><use href="#i-play-solid"/></svg>Replay</button></p>
+        </div>
+
+        <h4 class="h4">Easing</h4>
+        <div class="motion-grid">
+          <div class="motion-card">
+            <div class="motion-card-head">
+              <span class="motion-name">Standard<span class="motion-sub">in-out</span></span>
+              <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C20,100 0,0 100,0"/></svg>
+            </div>
+            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-ease</code><span class="motion-val">cubic-bezier(.2, 0, 0, 1)</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head">
+              <span class="motion-name">Ease out<span class="motion-sub">decelerate</span></span>
+              <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C0,100 20,0 100,0"/></svg>
+            </div>
+            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease-out)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-ease-out</code><span class="motion-val">cubic-bezier(0, 0, .2, 1)</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head">
+              <span class="motion-name">Ease in<span class="motion-sub">accelerate</span></span>
+              <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C40,100 100,0 100,0"/></svg>
+            </div>
+            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease-in)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-ease-in</code><span class="motion-val">cubic-bezier(.4, 0, 1, 1)</span></div>
+          </div>
+        </div>
+
+        <h4 class="h4" style="margin-top: var(--ic-space-2)">Duration</h4>
+        <div class="motion-grid">
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Fast</span><span class="motion-val">120ms</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-fast)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-duration-fast</code><span class="motion-val">hovers, small state changes</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Base</span><span class="motion-val">200ms</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-base)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-duration-base</code><span class="motion-val">most transitions</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Slow</span><span class="motion-val">320ms</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-slow)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ic-duration-slow</code><span class="motion-val">large surfaces, modals</span></div>
           </div>
         </div>
       </section>
@@ -1224,6 +1362,9 @@
   <symbol id="i-vp-mobile" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect vector-effect="non-scaling-stroke" x="7.5" y="2" width="9" height="20" rx="2"/><path vector-effect="non-scaling-stroke" d="M10.5 19H13.5"/></g></symbol>
   <!-- Ellipses — the "More" dots turned horizontal -->
   <symbol id="i-ellipses" viewBox="0 0 24 24"><g transform="rotate(90 12 12)"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 4C15 5.65685 13.6569 7 12 7C10.3431 7 9 5.65685 9 4C9 2.34315 10.3431 1 12 1C13.6569 1 15 2.34315 15 4ZM10 4C10 5.10457 10.8954 6 12 6C13.1046 6 14 5.10457 14 4C14 2.89543 13.1046 2 12 2C10.8954 2 10 2.89543 10 4ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12ZM12 23C13.6569 23 15 21.6569 15 20C15 18.3431 13.6569 17 12 17C10.3431 17 9 18.3431 9 20C9 21.6569 10.3431 23 12 23ZM12 22C10.8954 22 10 21.1046 10 20C10 18.8954 10.8954 18 12 18C13.1046 18 14 18.8954 14 20C14 21.1046 13.1046 22 12 22Z" fill="currentColor"/></g></symbol>
+  <symbol id="i-slack" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.88929 3.36143C4.96429 3.36143 4.20857 2.60571 4.20857 1.68071C4.20857 0.755714 4.96429 0 5.88929 0C6.81429 0 7.57 0.755714 7.57 1.68071V3.36143H5.88929ZM1.68071 11.7914C2.60571 11.7914 3.36143 11.0357 3.36143 10.1107V8.43H1.68071C0.755714 8.43 0 9.18571 0 10.1107C0 11.0357 0.755714 11.7914 1.68071 11.7914ZM5.88929 8.43C4.96429 8.43 4.20857 9.18571 4.20857 10.1107V14.3193C4.20857 15.2443 4.96429 16 5.88929 16C6.81429 16 7.57 15.2443 7.57 14.3193V10.1107C7.57 9.18571 6.81429 8.43 5.88929 8.43ZM7.57 5.88929C7.57 4.96429 6.81429 4.20857 5.88929 4.20857H1.68071C0.755714 4.20857 0 4.96429 0 5.88929C0 6.81429 0.755714 7.57 1.68071 7.57H5.88929C6.81429 7.57 7.57 6.81429 7.57 5.88929ZM12.6386 5.88929C12.6386 4.96429 13.3943 4.20857 14.3193 4.20857C15.2443 4.20857 16 4.96429 16 5.88929C16 6.81429 15.2443 7.57 14.3193 7.57H12.6386V5.88929ZM10.1107 7.57C11.0357 7.57 11.7914 6.81429 11.7914 5.88929V1.68071C11.7914 0.755714 11.0357 0 10.1107 0C9.18571 0 8.43 0.755714 8.43 1.68071V5.88929C8.43 6.81429 9.18571 7.57 10.1107 7.57ZM10.1107 12.6386C11.0357 12.6386 11.7914 13.3943 11.7914 14.3193C11.7914 15.2443 11.0357 16 10.1107 16C9.18571 16 8.43 15.2443 8.43 14.3193V12.6386H10.1107ZM8.43 10.1107C8.43 11.0357 9.18571 11.7914 10.1107 11.7914H14.3193C15.2443 11.7914 16 11.0357 16 10.1107C16 9.18571 15.2443 8.43 14.3193 8.43H10.1107C9.18571 8.43 8.43 9.18571 8.43 10.1107Z" fill="currentColor"/></symbol>
+  <symbol id="i-jira-software" viewBox="0 0 16 16"><path d="M15.3204 7.55227L8.64688 0.667371L8 0L2.97644 5.18268L0.679604 7.55227C0.440132 7.79963 0.440132 8.20037 0.679604 8.44773L5.26918 13.1827L8 16L13.0236 10.8173L13.1013 10.7371L15.3204 8.44773C15.5599 8.20037 15.5599 7.79963 15.3204 7.55227ZM8 10.3654L5.70726 8L8 5.63464L10.2927 8L8 10.3654Z" fill="currentColor"/></symbol>
+  <symbol id="i-google" viewBox="0 0 16 16"><path d="M8.16318 6.54547V9.64367H12.5565C12.3636 10.64 11.7847 11.4837 10.9164 12.051L13.5658 14.0656C15.1094 12.6692 15.9999 10.6183 15.9999 8.18192C15.9999 7.61466 15.948 7.06915 15.8515 6.54556L8.16318 6.54547Z" fill="#4285F4"/><path d="M3.58823 9.52273L2.9907 9.97099L0.875629 11.5855C2.21886 14.1964 4.97192 16.0001 8.16301 16.0001C10.367 16.0001 12.2149 15.2874 13.5656 14.0656L10.9162 12.051C10.189 12.531 9.2613 12.8219 8.16301 12.8219C6.04056 12.8219 4.23726 11.4183 3.59157 9.52735L3.58823 9.52273Z" fill="#34A853"/><path d="M0.875637 4.41457C0.319078 5.4909 0 6.70547 0 8C0 9.29453 0.319078 10.5091 0.875637 11.5854C0.875637 11.5927 3.59184 9.51996 3.59184 9.51996C3.42857 9.03996 3.33207 8.5309 3.33207 7.99992C3.33207 7.46893 3.42857 6.95987 3.59184 6.47987L0.875637 4.41457Z" fill="#FBBC05"/><path d="M8.16317 3.18547C9.36542 3.18547 10.4341 3.59273 11.2875 4.3782L13.6251 2.08731C12.2077 0.792781 10.3673 0 8.16317 0C4.97209 0 2.21886 1.79637 0.875629 4.41458L3.59175 6.48004C4.23735 4.5891 6.04073 3.18547 8.16317 3.18547Z" fill="#EA4335"/></symbol>
         </svg>
 
         <div class="playground" data-btn-playground>
@@ -1722,6 +1863,17 @@
             </div>
           </div>
 
+          <!-- 6b. Multi-select (check + semibold selected) -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">Multi-select</span>
+            <div class="dropdown-menu" data-multiselect>
+              <button class="dropdown-item is-selected"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Design</button>
+              <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Engineering</button>
+              <button class="dropdown-item is-selected"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Marketing</button>
+              <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Sales</button>
+            </div>
+          </div>
+
           <!-- 7. With Switches -->
           <div class="stack" style="gap: var(--ic-space-2)">
             <span class="caption">With switches</span>
@@ -1757,6 +1909,35 @@
                 <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
                 <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
                 <span class="chip">Label<button class="chip-remove" aria-label="Remove"><svg><use href="#i-x"/></svg></button></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. With Search (filter a long list) -->
+          <div class="stack" style="gap: var(--ic-space-2)">
+            <span class="caption">With search</span>
+            <div class="dropdown-menu" data-dropdown-search>
+              <div class="dropdown-search">
+                <div class="input-icon input-icon-left">
+                  <svg class="icon input-icon-glyph"><use href="#i-search"/></svg>
+                  <input class="input input-xs" type="search" placeholder="Search…" aria-label="Search items" autocomplete="off" data-dropdown-search-input>
+                </div>
+              </div>
+              <div class="dropdown-list" data-dropdown-list>
+                <button class="dropdown-item">Argentina</button>
+                <button class="dropdown-item">Australia</button>
+                <button class="dropdown-item">Brazil</button>
+                <button class="dropdown-item">Canada</button>
+                <button class="dropdown-item">France</button>
+                <button class="dropdown-item">Germany</button>
+                <button class="dropdown-item">India</button>
+                <button class="dropdown-item">Japan</button>
+                <button class="dropdown-item">Mexico</button>
+                <button class="dropdown-item">Netherlands</button>
+                <button class="dropdown-item">Spain</button>
+                <button class="dropdown-item">United Kingdom</button>
+                <button class="dropdown-item">United States</button>
+                <p class="dropdown-empty" data-dropdown-empty hidden>No matches</p>
               </div>
             </div>
           </div>
@@ -2133,24 +2314,55 @@
         <h3 class="h3">Page heads</h3>
         <p class="body-sm">Top-of-page header — title (optional breadcrumbs + count + subtitle) on the left, actions on the right. Breadcrumbs, when present, sit as the first row above the title.</p>
 
-        <div class="playground" data-vp="desktop">
+        <div class="playground" data-pagehead-playground data-vp="desktop">
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Breadcrumbs</span>
+              <div class="segmented" role="group" aria-label="Breadcrumbs" data-ph-breadcrumbs>
+                <button class="segmented-item is-active" type="button" data-val="on">On</button>
+                <button class="segmented-item" type="button" data-val="off">Off</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Badge</span>
+              <div class="segmented" role="group" aria-label="Count badge" data-ph-badge>
+                <button class="segmented-item is-active" type="button" data-val="on">On</button>
+                <button class="segmented-item" type="button" data-val="off">Off</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Subtitle</span>
+              <div class="segmented" role="group" aria-label="Subtitle" data-ph-subtitle>
+                <button class="segmented-item is-active" type="button" data-val="on">On</button>
+                <button class="segmented-item" type="button" data-val="off">Off</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">CTAs</span>
+              <div class="segmented" role="group" aria-label="CTAs" data-ph-ctas>
+                <button class="segmented-item" type="button" data-val="0">None</button>
+                <button class="segmented-item" type="button" data-val="1">1 CTA</button>
+                <button class="segmented-item is-active" type="button" data-val="2">2 CTAs</button>
+              </div>
+            </div>
+          </div>
           <div class="device-stage">
             <div class="device-panel pagehead-demo">
               <div class="page-head" style="margin-bottom: 0">
                 <div class="page-head-main">
-                  <nav class="breadcrumbs" aria-label="Breadcrumb">
+                  <nav class="breadcrumbs" aria-label="Breadcrumb" data-ph-el="breadcrumbs">
                     <a class="breadcrumb" href="#page-heads">Workspace</a>
                     <span class="breadcrumb is-current" aria-current="page">Processes</span>
                   </nav>
                   <div class="page-head-title">
                     <h1 class="page-head-heading">Processes</h1>
-                    <span class="count-badge count-badge-lg count-badge-secondary">12</span>
+                    <span class="count-badge count-badge-lg count-badge-secondary" data-ph-el="badge">12</span>
                   </div>
-                  <p class="page-head-subtitle">Manage workflows across teams.</p>
+                  <p class="page-head-subtitle" data-ph-el="subtitle">Manage workflows across teams.</p>
                 </div>
-                <div class="page-head-actions" data-cta-source="page-head-primary">
-                  <button class="btn btn-secondary" aria-label="Export as CSV"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
-                  <button class="btn btn-primary" aria-label="Create new"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
+                <div class="page-head-actions" data-cta-source="page-head-primary" data-ph-el="actions">
+                  <button class="btn btn-secondary" aria-label="Export as CSV" data-ph-cta="secondary"><svg class="icon icon-16 btn-cta-icon"><use href="#i-download"/></svg><span class="btn-cta-label">Export as CSV</span></button>
+                  <button class="btn btn-primary" aria-label="Create new" data-ph-cta="primary"><svg class="icon icon-16 btn-cta-icon"><use href="#i-plus"/></svg><span class="btn-cta-label">Create new</span></button>
                 </div>
               </div>
             </div>
@@ -2327,38 +2539,41 @@
       <section class="stack" id="stepper">
         <div>
           <h3 class="h3">Stepper</h3>
-          <p class="body-sm">Horizontal step indicator for wizards / multi-step flows. Numbered circles + labels joined by carets; the current step's circle is filled with the accent. Mark done steps with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-complete</code> (check) and the active one with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-current</code>.</p>
+          <p class="body-sm">Horizontal step indicator for wizards / multi-step flows. Numbered circles + labels joined by carets; the current step's circle is filled with the accent. Mark done steps with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-complete</code> (check) and the active one with <code style="font: var(--type-mono); color: var(--color-text-muted)">.is-current</code>. Label density: full labels (default), <code style="font: var(--type-mono); color: var(--color-text-muted)">.stepper-current-only</code> (numbers throughout, label on the current step only) or <code style="font: var(--type-mono); color: var(--color-text-muted)">.stepper-compact</code> (numbers only). Responsive: a full stepper auto-collapses to the current-only read on small screens (≤640px) — switch the Viewport control to mobile to see it.</p>
         </div>
 
-        <div class="playground" data-playground>
-          <div class="segmented playground-tabs" role="tablist" aria-label="Stepper state">
-            <button class="segmented-item is-active" type="button" data-variant="start">On step 1</button>
-            <button class="segmented-item" type="button" data-variant="progress">In progress</button>
+        <div class="playground" data-stepper-playground data-vp="desktop">
+          <div class="playground-controls">
+            <div class="control">
+              <span class="control-label">Labels</span>
+              <div class="segmented" role="group" aria-label="Label density" data-step-labels>
+                <button class="segmented-item is-active" type="button" data-val="full">Full</button>
+                <button class="segmented-item" type="button" data-val="current">Current only</button>
+                <button class="segmented-item" type="button" data-val="compact">Compact</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Current step</span>
+              <div class="segmented" role="group" aria-label="Current step" data-step-current>
+                <button class="segmented-item" type="button" data-val="1">1</button>
+                <button class="segmented-item" type="button" data-val="2">2</button>
+                <button class="segmented-item is-active" type="button" data-val="3">3</button>
+                <button class="segmented-item" type="button" data-val="4">4</button>
+                <button class="segmented-item" type="button" data-val="done">Done</button>
+              </div>
+            </div>
           </div>
           <div class="device-stage">
             <div class="device-panel">
-              <div class="playground-variant" data-variant="start">
-                <ol class="stepper">
-                  <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Label</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Label</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Label</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Label</span></li>
-                </ol>
-              </div>
-              <div class="playground-variant" data-variant="progress" hidden>
-                <ol class="stepper">
-                  <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Account</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step is-complete"><span class="stepper-num"><svg class="icon"><use href="#i-check"/></svg></span><span class="stepper-label">Workspace</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step is-current"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
-                  <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
-                  <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Done</span></li>
-                </ol>
-              </div>
+              <ol class="stepper" data-step-live>
+                <li class="stepper-step"><span class="stepper-num">1</span><span class="stepper-label">Account</span></li>
+                <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Workspace</span></li>
+                <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                <li class="stepper-step"><span class="stepper-num">3</span><span class="stepper-label">Invite team</span></li>
+                <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
+                <li class="stepper-step"><span class="stepper-num">4</span><span class="stepper-label">Confirm</span></li>
+              </ol>
             </div>
           </div>
         </div>
@@ -3107,18 +3322,22 @@
 
       <section class="stack" id="topbar">
         <h3 class="h3">Top bar</h3>
-        <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar.</p>
-        <div class="device-stage">
+        <p class="body-sm">56px tall, graphite-800 surface. Brand · search · avatar. Below 768px it collapses to a hamburger + page title on the left and a primary action on the right — flip the Viewport control to tablet / mobile to see it.</p>
+        <div class="playground" data-vp="desktop">
+          <div class="device-stage">
+          <div class="playground-stage">
           <header class="topbar" style="border-radius: var(--ic-radius-sm); width: 100%; box-shadow: var(--ic-shadow-lg)">
+            <button class="topbar-menu" type="button" aria-label="Menu"><svg class="icon"><use href="#i-overview"/></svg></button>
             <a class="topbar-brand" href="#">
               <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
             </a>
+            <span class="topbar-title">Processes</span>
             <div class="topbar-actions">
               <div class="topbar-search">
                 <svg class="search-icon"><use href="#i-search"/></svg>
                 <input class="topbar-search-input" type="search" placeholder="Search Operationalize..." />
               </div>
-              <div class="dropdown">
+              <div class="dropdown topbar-account">
                 <button class="topbar-avatar dropdown-trigger" aria-label="Account" aria-expanded="false" type="button">MV</button>
                 <div class="dropdown-menu dropdown-menu-end" hidden>
                   <div class="dropdown-header">
@@ -3139,8 +3358,11 @@
                   <button class="dropdown-item" type="button">Sign Out</button>
                 </div>
               </div>
+              <button class="btn btn-primary btn-icon-only topbar-cta" type="button" aria-label="Create new"><svg class="btn-icon"><use href="#i-plus"/></svg></button>
             </div>
           </header>
+          </div>
+          </div>
         </div>
       </section>
     </section>
@@ -3849,11 +4071,15 @@
       });
     })();
 
-    // Single-select dropdowns — any menu whose items carry a .dropdown-item-check slot
+    // Select dropdowns — any menu whose items carry a .dropdown-item-check slot.
+    // Single-select by default (radio); add [data-multiselect] to toggle each
+    // item independently so several can be selected at once.
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
       if (!menu.querySelector('.dropdown-item-check')) return;
+      const multi = menu.hasAttribute('data-multiselect');
       const items = menu.querySelectorAll('.dropdown-item');
       items.forEach(item => item.addEventListener('click', () => {
+        if (multi) { item.classList.toggle('is-selected'); return; }
         items.forEach(i => i.classList.remove('is-selected'));
         item.classList.add('is-selected');
       }));
@@ -4047,6 +4273,54 @@
       render();
     });
 
+    // Page-head playground — toggle breadcrumbs / count badge / subtitle and the
+    // number of CTAs (0 / 1 / 2, primary kept for 1).
+    document.querySelectorAll('[data-pagehead-playground]').forEach(pg => {
+      const val = (name) => pg.querySelector(`[data-ph-${name}] .is-active`)?.dataset.val;
+      const bc        = pg.querySelector('[data-ph-el="breadcrumbs"]');
+      const badge     = pg.querySelector('[data-ph-el="badge"]');
+      const subtitle  = pg.querySelector('[data-ph-el="subtitle"]');
+      const actions   = pg.querySelector('[data-ph-el="actions"]');
+      const secondary = pg.querySelector('[data-ph-cta="secondary"]');
+      const primary   = pg.querySelector('[data-ph-cta="primary"]');
+      const render = () => {
+        if (bc) bc.hidden = val('breadcrumbs') === 'off';
+        if (badge) badge.hidden = val('badge') === 'off';
+        if (subtitle) subtitle.hidden = val('subtitle') === 'off';
+        const ctas = val('ctas') || '2';
+        if (actions) actions.hidden = ctas === '0';
+        if (primary) primary.hidden = ctas === '0';
+        if (secondary) secondary.hidden = ctas !== '2';
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
+      render();
+    });
+
+    // Stepper playground — one live stepper driven by two knobs: label density
+    // (full / current-only / compact) and which step is current (1–4 / done).
+    // Steps before current become complete (check); the rest show their number.
+    document.querySelectorAll('[data-stepper-playground]').forEach(pg => {
+      const ol = pg.querySelector('[data-step-live]');
+      const steps = [...ol.querySelectorAll('.stepper-step')];
+      const val = (name) => pg.querySelector(`[data-step-${name}] .is-active`)?.dataset.val;
+      const checkSvg = '<svg class="icon"><use href="#i-check"/></svg>';
+      const render = () => {
+        const density = val('labels') || 'full';
+        ol.classList.toggle('stepper-current-only', density === 'current');
+        ol.classList.toggle('stepper-compact', density === 'compact');
+        const raw = val('current') || '1';
+        const cur = raw === 'done' ? steps.length + 1 : parseInt(raw, 10);
+        steps.forEach((step, i) => {
+          const n = i + 1;
+          step.classList.toggle('is-complete', n < cur);
+          step.classList.toggle('is-current', n === cur);
+          step.querySelector('.stepper-num').innerHTML = n < cur ? checkSvg : String(n);
+        });
+      };
+      pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) render(); });
+      render();
+    });
+
     // Button playground — compose one live button: type · size · icons.
     document.querySelectorAll('[data-btn-playground]').forEach(pg => {
       const btn = pg.querySelector('[data-btn-live]');
@@ -4165,6 +4439,46 @@
         render();
         search && search.addEventListener('input', () => render(search.value));
       }).catch(() => { if (count) count.textContent = 'icons.index.json not found — run tools/export_icons.py'; });
+    })();
+
+    // Searchable dropdown menus — filter items live in any [data-dropdown-search]
+    // menu. Matches item text; toggles a [data-dropdown-empty] no-results row.
+    document.querySelectorAll('[data-dropdown-search]').forEach(menu => {
+      const input = menu.querySelector('[data-dropdown-search-input]');
+      if (!input) return;
+      const list = menu.querySelector('[data-dropdown-list]') || menu;
+      const empty = menu.querySelector('[data-dropdown-empty]');
+      input.addEventListener('input', () => {
+        const q = input.value.trim().toLowerCase();
+        let shown = 0;
+        list.querySelectorAll('.dropdown-item').forEach(item => {
+          const match = !q || item.textContent.toLowerCase().includes(q);
+          item.hidden = !match;
+          if (match) shown++;
+        });
+        if (empty) empty.hidden = shown !== 0;
+      });
+    });
+
+    // Motion previews — replay the sliding dot on each easing/duration card.
+    // Autoplays once when the section first scrolls into view; replays on card
+    // hover or via the Replay button.
+    (function () {
+      const sec = document.getElementById('motion');
+      if (!sec) return;
+      const dots = [...sec.querySelectorAll('.motion-dot')];
+      const run = dot => { dot.classList.remove('run'); void dot.offsetWidth; dot.classList.add('run'); };
+      const runAll = () => dots.forEach(run);
+      sec.querySelector('[data-motion-play]')?.addEventListener('click', runAll);
+      sec.querySelectorAll('.motion-card').forEach(card => {
+        card.addEventListener('mouseenter', () => { const d = card.querySelector('.motion-dot'); if (d) run(d); });
+      });
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) { runAll(); io.disconnect(); } });
+        }, { threshold: 0.35 });
+        io.observe(sec);
+      } else { runAll(); }
     })();
 
     // Generic .dropdown — pairs .dropdown-trigger with .dropdown-menu
