@@ -2797,19 +2797,8 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-color: rgba(255, 255, 255, 0.30);
 }
 
-.topbar-avatar {
-  width: 32px; height: 32px;
-  border-radius: var(--ic-radius-sm);
-  overflow: hidden;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  background: var(--ic-palette-gray-300);
-  display: inline-flex; align-items: center; justify-content: center;
-  font: var(--ic-weight-semibold) var(--ic-text-sm)/1 var(--ic-font-sans);
-  color: var(--ic-palette-graphite-800);
-}
-.topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+/* The account button is the avatar component (.avatar.avatar-md) — it already
+ * covers the button reset, hover dim and focus ring. */
 
 @media (max-width: 720px) {
   .topbar-search { width: 200px; }
