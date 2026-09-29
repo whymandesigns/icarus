@@ -2235,6 +2235,8 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   cursor: pointer;
   font: var(--ic-weight-semibold) var(--ic-text-sm)/1.25 var(--ic-font-sans);
   color: var(--color-text-muted);
+  /* No link underline when a tab is rendered as an <a> (cross-page tab). */
+  text-decoration: none;
   white-space: nowrap;
   transition: color var(--ic-duration-fast) var(--ic-ease),
               border-color var(--ic-duration-fast) var(--ic-ease);
