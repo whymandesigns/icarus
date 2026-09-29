@@ -13,6 +13,9 @@
   border-radius: var(--ic-radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
+  /* No link underline when a button is rendered as an <a>. The deliberate
+   * .btn-ghost:hover underline below still wins on hover. */
+  text-decoration: none;
   transition: background var(--ic-duration-fast) var(--ic-ease),
               transform var(--ic-duration-fast) var(--ic-ease),
               box-shadow var(--ic-duration-fast) var(--ic-ease);
