@@ -1,7 +1,7 @@
 {
- "source": "Figma · Iconography (custom pack)",
+ "source": "Figma \u00b7 Iconography (custom pack)",
  "fileKey": "TqaGgbpjGSUDf7qq153Isq",
- "count": 324,
+ "count": 325,
  "icons": [
   {
    "slug": "add-document",
@@ -1160,6 +1160,12 @@
    "name": "OKR",
    "section": "People, Faces, Profiles, Avatars, Groups",
    "viewBox": "0 0 24 24"
+  },
+  {
+   "slug": "okr-custom",
+   "name": "Okr Custom",
+   "section": "Custom",
+   "viewBox": "0 0 16 16"
   },
   {
    "slug": "org",
