@@ -127,8 +127,12 @@ BEFORE SHARING / DEPLOYING
 - Preview through the Icarus dev server so review comments persist to
   `features/{{FEATURE_NAME}}/feedback.json`: add a `.claude/launch.json` entry that runs
   `node /abs/path/designmd/tools/serve.mjs /abs/path/features 5733` (port 5733). When asked
-  to "apply the prototype comments", read that `feedback.json`, implement each open comment
-  in `index.html`, then mark it `resolved: true` with a short `resolution`.
+  to "apply the prototype comments", read that `feedback.json` (or, for the deployed site,
+  `GET /api/feedback?p=/{{FEATURE_NAME}}/`), implement each open comment in `index.html`,
+  then mark it `resolved: true` with a short `resolution`.
+- If the prototypes deploy on Vercel, the repo needs `api/feedback.js` (copy of
+  `designmd/tools/vercel-api-feedback.js`) plus an Upstash Redis database connected to the
+  project, so comments are shared on the live link. Do this once per repo, not per feature.
 - Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
 
 FILL IN
