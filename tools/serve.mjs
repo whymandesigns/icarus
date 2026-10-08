@@ -24,6 +24,23 @@ const safe = p => { const f = path.normalize(path.join(ROOT, decodeURIComponent(
 const json = (res, code, body) => { res.writeHead(code, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(body)); };
 const readDoc = async file => { try { return JSON.parse(await fs.readFile(file, 'utf8')); } catch { return EMPTY(); } };
 
+// Serialise read-modify-write per file: two reviewers posting at the same moment
+// would otherwise both read the old document and the second write would drop the
+// first one's op. Each file gets a promise chain; writes run one at a time.
+const chains = new Map();
+function withLock(key, fn) {
+  const run = (chains.get(key) || Promise.resolve()).then(fn, fn);
+  chains.set(key, run.then(() => {}, () => {}));
+  return run;
+}
+// Write through a temp file + rename so a crash mid-write can't truncate the store.
+async function writeDoc(file, doc) {
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  const tmp = file + '.tmp';
+  await fs.writeFile(tmp, JSON.stringify(doc, null, 2) + '\n');
+  await fs.rename(tmp, file);
+}
+
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   try {
@@ -34,9 +51,11 @@ http.createServer(async (req, res) => {
       if (!file) return json(res, 400, { error: 'bad prototype path' });
       if (req.method === 'GET') return json(res, 200, await readDoc(file));
       if (req.method === 'POST') {
-        const doc = applyOps(await readDoc(file), body.ops);
-        await fs.mkdir(path.dirname(file), { recursive: true });
-        await fs.writeFile(file, JSON.stringify(doc, null, 2) + '\n');
+        const doc = await withLock(file, async () => {
+          const next = applyOps(await readDoc(file), body.ops);
+          await writeDoc(file, next);
+          return next;
+        });
         return json(res, 200, doc);
       }
       res.writeHead(405); return res.end();
