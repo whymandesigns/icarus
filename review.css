@@ -1,0 +1,97 @@
+/* review.css — the review bar (author/reviewer tooling).
+ *
+ * Auto-inlined into every prototype by inline.py together with review.js, but
+ * NOT part of the three-layer design system chain. It is dormant until the
+ * prototype is opened with `?review=1` (the choice is remembered per page;
+ * `?review=0` turns it off again).
+ *
+ * What it gives reviewers, from a bar at the bottom of the page:
+ *   Interact   – use the prototype normally
+ *   Edit text  – click any text and retype it (persisted, reapplied after re-renders)
+ *   Comment    – click any element and leave a note on it; pins + side panel
+ *   Spotlight  – drag a rectangle; everything outside it is dimmed
+ *
+ * Everything is namespaced `.rv-*` and self-coloured (no dependency on the
+ * host page's tokens) so it works on any prototype, old or new.
+ */
+
+.rv-bar,.rv-side,.rv-hover,.rv-pin,.rv-outline,.rv-spot{
+  --rv-ink:#1d2433;--rv-ink-2:#455065;--rv-muted:#8a93a6;--rv-line:#d8d9dc;--rv-line-soft:#ebeced;
+  --rv-blue:#204ecf;--rv-blue-soft:#edf1fd;--rv-orange:#ff8a3d;--rv-green:#00cc83;--rv-red:#d93e3e;
+  font-family:"Proxima Nova",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--rv-ink);box-sizing:border-box;}
+.rv-bar *,.rv-side *{box-sizing:border-box;}
+.rv-hidden{display:none !important;}
+
+/* Bar */
+.rv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2000;display:flex;align-items:center;gap:4px;
+  background:#1d2433;border-radius:22px;padding:4px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:13px;}
+.rv-bar button{height:32px;border:none;border-radius:16px;background:none;color:#cfd4de;padding:0 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;cursor:pointer;}
+.rv-bar button:hover{background:rgba(255,255,255,.08);color:#fff;}
+.rv-bar button.on{background:#fff;color:#1d2433;font-weight:600;}
+.rv-bar .k{font-size:10px;opacity:.55;border:1px solid currentColor;border-radius:3px;padding:0 4px;line-height:14px;}
+.rv-bar .n{background:var(--rv-orange);color:#fff;border-radius:9px;font-size:10px;font-weight:700;padding:0 6px;line-height:16px;}
+.rv-bar .st{color:var(--rv-muted);font-size:11px;padding:0 10px 0 6px;white-space:nowrap;}
+.rv-bar .sep{width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 2px;}
+
+/* Hover highlight */
+.rv-hover{position:fixed;z-index:1900;pointer-events:none;border:2px solid var(--rv-blue);border-radius:3px;background:rgba(32,78,207,.06);transition:all .05s;}
+.rv-hover.c{border-color:var(--rv-orange);background:rgba(255,138,61,.08);}
+.rv-hover .lb{position:absolute;left:-2px;top:-20px;background:var(--rv-blue);color:#fff;font-size:10px;line-height:18px;padding:0 6px;border-radius:3px 3px 0 0;white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis;}
+.rv-hover.c .lb{background:var(--rv-orange);}
+
+/* Mode cursors (the review UI itself keeps its own cursors) */
+body.rv-edit,body.rv-edit *{cursor:text !important;}
+body.rv-comment,body.rv-comment *,body.rv-spotmode,body.rv-spotmode *{cursor:crosshair !important;}
+body.rv-edit .rv-bar *,body.rv-comment .rv-bar *,body.rv-spotmode .rv-bar *,body.rv-edit .rv-side *,body.rv-comment .rv-side *,body.rv-spotmode .rv-side *,.rv-pin{cursor:pointer !important;}
+body.rv-edit .rv-side textarea,body.rv-comment .rv-side textarea{cursor:text !important;}
+body.rv-spotmode{user-select:none;}
+.rv-editing{outline:2px solid var(--rv-blue);outline-offset:2px;border-radius:2px;background:rgba(32,78,207,.08);white-space:pre-wrap;min-width:8px;display:inline-block;}
+
+/* Pins */
+.rv-pins{position:fixed;inset:0;pointer-events:none;z-index:1800;}
+.rv-pin{position:fixed;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50% 50% 50% 2px;background:var(--rv-orange);color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;pointer-events:auto;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3);border:2px solid #fff;}
+.rv-pin.done{background:var(--rv-green);}
+.rv-pin.sel{transform:scale(1.2);}
+.rv-outline{position:fixed;z-index:1790;pointer-events:none;border:2px dashed var(--rv-orange);border-radius:3px;}
+
+/* Side panel */
+.rv-side{position:fixed;top:0;right:0;bottom:0;width:360px;z-index:2100;background:#fff;border-left:1px solid var(--rv-line);box-shadow:-8px 0 30px rgba(0,0,0,.12);
+  display:flex;flex-direction:column;font-size:13px;line-height:19px;animation:rvin .18s ease-out;}
+@keyframes rvin{from{transform:translateX(24px);}}
+.rv-side .h{display:flex;align-items:center;gap:8px;padding:16px 16px 12px;border-bottom:1px solid var(--rv-line-soft);}
+.rv-side .h b{font-size:15px;flex:1;}
+.rv-side .x{width:24px;height:24px;border:none;background:none;border-radius:4px;color:var(--rv-ink-2);font-size:16px;line-height:1;cursor:pointer;}
+.rv-side .x:hover{background:var(--rv-line-soft);}
+.rv-side .tabs2{display:flex;gap:4px;padding:8px 16px;border-bottom:1px solid var(--rv-line-soft);}
+.rv-side .tabs2 button{border:1px solid var(--rv-line);background:#fff;border-radius:12px;padding:0 10px;height:24px;font:inherit;font-size:12px;color:var(--rv-ink-2);cursor:pointer;}
+.rv-side .tabs2 button.on{background:#2b3446;border-color:#2b3446;color:#fff;}
+.rv-side .body{flex:1;overflow:auto;padding:12px 16px;}
+.rv-compose{border:1px solid #ffb98a;background:#fff8f3;border-radius:6px;padding:12px;margin-bottom:16px;}
+.rv-target{font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:16px;background:#fff;border:1px solid var(--rv-line);border-radius:4px;padding:6px 8px;color:var(--rv-ink-2);word-break:break-word;}
+.rv-compose textarea{width:100%;min-height:88px;margin-top:10px;border:1px solid var(--rv-line);border-radius:4px;padding:8px 10px;font:inherit;resize:vertical;outline:none;background:#fff;color:var(--rv-ink);}
+.rv-compose textarea:focus{border-color:var(--rv-orange);}
+.rv-compose .f{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;align-items:center;}
+.rv-compose .f .hint{margin:0 auto 0 0;color:var(--rv-muted);font-size:11px;}
+.rv-side .btn{height:32px;padding:0 14px;border:1px solid var(--rv-line);border-radius:4px;background:#fff;color:var(--rv-ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.rv-side .btn:hover{border-color:var(--rv-muted);}
+.rv-side .btn.primary{background:var(--rv-blue);border-color:var(--rv-blue);color:#fff;}
+.rv-c{border:1px solid var(--rv-line-soft);border-radius:6px;padding:10px 12px;margin-bottom:10px;cursor:pointer;}
+.rv-c:hover{border-color:var(--rv-line);}
+.rv-c.sel{border-color:var(--rv-orange);box-shadow:0 0 0 2px rgba(255,138,61,.15);}
+.rv-c .t{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.rv-c .num{width:20px;height:20px;border-radius:50% 50% 50% 2px;background:var(--rv-orange);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rv-c.done .num{background:var(--rv-green);}
+.rv-c .el{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--rv-ink-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rv-c .msg{white-space:pre-wrap;color:var(--rv-ink);}
+.rv-c .meta2{display:flex;gap:10px;align-items:center;margin-top:8px;font-size:11px;color:var(--rv-muted);}
+.rv-c .meta2 button{border:none;background:none;padding:0;font:inherit;font-size:11px;color:var(--rv-blue);cursor:pointer;}
+.rv-c .meta2 button.del{color:var(--rv-red);}
+.rv-c .res{margin-top:8px;padding:6px 8px;background:#e6faf2;border-radius:4px;font-size:12px;color:#05704f;}
+.rv-side .foot{border-top:1px solid var(--rv-line-soft);padding:12px 16px;font-size:12px;color:var(--rv-ink-2);}
+.rv-side .foot .btn{height:28px;font-size:12px;margin-top:8px;}
+.rv-empty{color:var(--rv-muted);text-align:center;padding:32px 8px;}
+
+/* Spotlight: the box stays clear, a huge spread shadow darkens the rest of the page */
+.rv-spot{position:fixed;z-index:1700;pointer-events:none;border-radius:6px;box-shadow:0 0 0 200vmax rgba(0,0,0,.7);transition:box-shadow .15s;}
+.rv-spot.drawing{outline:1.5px dashed rgba(255,255,255,.85);outline-offset:0;}

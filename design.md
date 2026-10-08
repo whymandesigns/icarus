@@ -36,7 +36,8 @@ Three layers. Don't skip them.
   - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--ic-palette-graphite-800)` because it's the one place a raw palette reference is intentional.
 - **Status colors are scarce.** Red/yellow/green only signal state — never decoration. (Note: green also doubles as the primary CTA color, which is why CTA placement is so disciplined.)
 - **Motion is functional.** `--ic-duration-fast` (120ms) for state, `--ic-duration-base` (200ms) for entry/exit. Nothing decorative.
-- **Every new prototype ships with the annotation tool wired up.** When scaffolding `features/<name>/index.html`, you MUST copy the `example.html` `<script>` block — that includes the `?notes=1` annotation IIFE alongside the universal handlers (modals, drawers, dropdowns, tabs, toasts, …). The matching CSS comes for free via `devtools.css` (inlined by `inline.py`). Skipping this leaves the prototype without batch annotation, which is the canonical way to iterate visually with an LLM. No exceptions — even a one-screen demo gets it.
+- **Every prototype ships with the review bar.** `inline.py` bakes `review.css` + `review.js` into every prototype it touches. Open any prototype with `?review=1` and a bar appears at the bottom: **Edit text** (retype any copy in place), **Comment** (click an element, leave a note — numbered pins + a side panel) and **Spotlight** (dim everything outside a dragged rectangle). Comments and edits are saved to `feedback.json` next to the prototype when it runs on `tools/serve.mjs`. This is the canonical way to review a prototype and hand the notes to an LLM — see §7 "Review bar". The older `?notes=1` annotation tool still works but is superseded.
+- **Copy the `example.html` `<script>` block** into every new prototype — it carries the universal handlers (modals, drawers, dropdowns, tabs, toasts, …).
 
 ---
 
@@ -226,7 +227,8 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). **Two sizes only: 16 & 24** (`.icon-16` / `.icon-24`). Default colour graphite-700 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
-| Annotation tool | `.annot-toolbar` | Append `?notes=1` to any prototype URL. Click "Inspect", click elements to queue notes, "Copy batch" → paste payload to your agent. Notes clear on reload. CSS lives in `devtools.css` (auto-inlined, but not part of the three-layer chain); JS is in the `example.html` script block (copy it with the rest of the delegated handlers). |
+| Review bar | `.rv-bar` | Append `?review=1` to any prototype URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
+| Annotation tool (legacy) | `.annot-toolbar` | Append `?notes=1`. Superseded by the review bar; kept for old prototypes. CSS in `devtools.css`, JS in the `example.html` script block. |
 
 ### Rules of thumb
 
@@ -304,7 +306,9 @@ Development/
 │   ├── tokens.css               ← primitives
 │   ├── semantic.css             ← aliases + reset
 │   ├── components.css           ← all component CSS
-│   ├── devtools.css             ← author tooling (annotation, debug overlays) — NOT in the layer chain
+│   ├── devtools.css             ← author tooling (legacy annotation, debug overlays) — NOT in the layer chain
+│   ├── review.css / review.js   ← the review bar (comments, text edits, spotlight) — auto-inlined, dormant until ?review=1
+│   ├── tools/serve.mjs          ← dev server: static files + feedback.json API for the review bar
 │   ├── design.md                ← this file (LLM context + reference)
 │   ├── assets/
 │   │   └── logo.svg
@@ -408,6 +412,37 @@ Why: when the project is checked out via a git worktree (which Claude Code does 
 
 The HTML inside each prototype is unaffected by this — the `<link rel="stylesheet" href="../../designmd/…">` tags resolve correctly under both the preview server and standalone `file://` use, and an inlined prototype has no dependencies at all.
 
+### Review bar — comments, inline text edits, spotlight
+
+Every inlined prototype carries the review bar. Enable it with `?review=1` on the prototype URL (the choice sticks per page in `localStorage`; `?review=0` turns it off). Modes, with single-letter shortcuts:
+
+- **Interact** (`I`) — use the prototype normally.
+- **Edit text** (`E`) — click any text and retype it. Edits are stored by element path and reapplied after the prototype re-renders, so they survive navigation inside the page.
+- **Comment** (`C`) — click any element to leave a note on it. Numbered pins mark commented elements; the side panel lists open / resolved comments, with Resolve, Delete and **Copy comments as prompt**.
+- **Spotlight** (`S`) — drag a rectangle; everything outside it is dimmed. Esc clears it.
+
+**Where it saves.** Run prototypes through the Icarus dev server and comments + edits persist to `feedback.json` next to the prototype's `index.html`:
+
+```bash
+node tools/serve.mjs /absolute/path/to/features 5733
+```
+
+(`.claude/launch.json` entry: `"runtimeExecutable": "node", "runtimeArgs": ["/abs/path/icarus/tools/serve.mjs", "/abs/path/features", "5733"], "port": 5733`.) On a plain static server or a deployed link the bar still works but keeps everything in that browser only.
+
+**`feedback.json` shape.** `edits` maps `"<root>/<child.index.path>#<textNodeIndex>"` → `{orig, text, screen}`; `comments` is a list of `{id, n, path, el, html, screen, screenId, url, rect, text, created, resolved, resolution?}`. `el` is a human label (`button.btn "Save"`), `html` the first 600 chars of the element's markup, `screen` whatever the prototype reports as the current screen (its `<title>` by default).
+
+**Applying comments with an LLM.** In a Claude Code session on the prototype folder, say *"apply the prototype comments"*: read `feedback.json`, implement every comment with `resolved: false` in `index.html` (use `el`, `html`, `screen` and `url` to find the spot), then set `resolved: true` and a one-line `resolution` on each. Inline `edits` are applied at runtime; bake them into the source only when asked. "Copy comments as prompt" in the side panel produces the same instructions as plain text for any other agent.
+
+**Optional host adapter.** A prototype with its own screen/flow model can tell the bar about it:
+
+```js
+window.REVIEW = {
+  screen: () => ({ id: state.step, name: SCREENS[state.step] }),   // stamped on every comment
+  goto: id => showStep(id),                                        // enables "Go to" on a comment
+  roots: '[data-layer], #main, .sidenav'                           // stable containers for element paths (default: <body> children)
+};
+```
+
 ### Two iteration modes
 
 - **Iterating on a prototype** (the common case): edit `features/feature-X/index.html` directly. CSS is already inlined — the `<style>` block sits at the top of the file, ignore it and edit the markup below.
@@ -448,7 +483,7 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
 > - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Inter font already loaded via `tokens.css`.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
-> - **Annotation tool is mandatory.** That same `<script>` block also includes the `?notes=1` annotation IIFE — copy the WHOLE block; do not strip out the annotation function. Append `?notes=1` to the prototype URL to enable the in-page batch annotation toolbar. The matching CSS lives in `devtools.css` and is auto-inlined by `inline.py`, so no extra `<link>` tag is needed.
+> - **The review bar comes for free.** `inline.py` adds `review.css` + `review.js` to every prototype; open it with `?review=1` to comment, edit text and spotlight. Don't build your own feedback tooling. Serve prototypes with `tools/serve.mjs` so comments persist to `feedback.json`.
 
 ## 9. Figma design — requirements & guidelines
 
