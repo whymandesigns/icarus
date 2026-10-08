@@ -22,6 +22,14 @@
 .rv-bar *,.rv-side *{box-sizing:border-box;}
 .rv-hidden{display:none !important;}
 
+/* Floating toggle — bottom right of every page, even when the bar is off */
+.rv-toggle{position:fixed;right:20px;bottom:20px;z-index:2200;width:44px;height:44px;border-radius:50%;border:1px solid #d8d9dc;background:#fff;color:#1d2433;
+  display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .12s,background .12s;}
+.rv-toggle:hover{transform:scale(1.06);}
+.rv-toggle.on{background:#1d2433;border-color:#1d2433;color:#fff;}
+body.rv-side-open .rv-toggle{display:none;}
+body.rv-edit .rv-toggle,body.rv-comment .rv-toggle,body.rv-spotmode .rv-toggle{cursor:pointer !important;}
+
 /* Bar */
 .rv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2000;display:flex;align-items:center;gap:4px;
   background:#1d2433;border-radius:22px;padding:4px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:13px;}
