@@ -1,8 +1,9 @@
 /* review.js — the review bar (author/reviewer tooling). Pairs with review.css.
  *
- * Auto-inlined into every prototype by inline.py. Dormant until the page is
- * opened with `?review=1`; the choice is remembered per page in localStorage,
- * `?review=0` turns it off again.
+ * Auto-inlined into every prototype by inline.py. Dormant until turned on
+ * with the floating circle button (bottom right of every page) or by opening
+ * the page with `?review=1`; the choice is remembered per page in
+ * localStorage, `?review=0` or the same button turns it off again.
  *
  * Modes (bottom bar, keyboard letters in brackets):
  *   Interact [I]   use the prototype normally
@@ -31,10 +32,21 @@
   const q = new URLSearchParams(location.search).get('review');
   try { if (q === '1' || q === '') localStorage.setItem(KEY + ':on', '1'); if (q === '0') localStorage.removeItem(KEY + ':on'); } catch {}
   let on = false; try { on = localStorage.getItem(KEY + ':on') === '1'; } catch {}
+
+  /* Floating toggle — present on every page, turns the bar on/off (reloads so the page starts clean) */
+  const ICON = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h9A2.5 2.5 0 0 1 17 5.5v6a2.5 2.5 0 0 1-2.5 2.5H9l-3.6 3v-3H5.5A2.5 2.5 0 0 1 3 11.5z"/><path d="M7 7.5h6M7 10.5h3.5"/></svg>';
+  const mountToggle = () => {
+    document.body.insertAdjacentHTML('beforeend', `<button type="button" id="rvToggle" class="rv-toggle${on ? ' on' : ''}" title="${on ? 'Turn the review bar off' : 'Review this page: comment, edit text, spotlight'}" aria-label="Review bar">${ICON}</button>`);
+    document.getElementById('rvToggle').addEventListener('click', () => {
+      try { on ? localStorage.removeItem(KEY + ':on') : localStorage.setItem(KEY + ':on', '1'); } catch {}
+      const u = new URL(location.href); u.searchParams.delete('review'); location.replace(u.href);
+    });
+  };
+  if (document.body) mountToggle(); else document.addEventListener('DOMContentLoaded', mountToggle);
   if (!on) return;
 
   const HOST = () => window.REVIEW || {};
-  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot';
+  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot,.rv-toggle';
   let FB = {edits:{}, comments:[]};
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;

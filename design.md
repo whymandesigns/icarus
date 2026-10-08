@@ -36,7 +36,7 @@ Three layers. Don't skip them.
   - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--ic-palette-graphite-800)` because it's the one place a raw palette reference is intentional.
 - **Status colors are scarce.** Red/yellow/green only signal state — never decoration. (Note: green also doubles as the primary CTA color, which is why CTA placement is so disciplined.)
 - **Motion is functional.** `--ic-duration-fast` (120ms) for state, `--ic-duration-base` (200ms) for entry/exit. Nothing decorative.
-- **Every prototype ships with the review bar.** `inline.py` bakes `review.css` + `review.js` into every prototype it touches. Open any prototype with `?review=1` and a bar appears at the bottom: **Edit text** (retype any copy in place), **Comment** (click an element, leave a note — numbered pins + a side panel) and **Spotlight** (dim everything outside a dragged rectangle). Comments and edits are saved to `feedback.json` next to the prototype when it runs on `tools/serve.mjs`. This is the canonical way to review a prototype and hand the notes to an LLM — see §7 "Review bar" and `review-bar.html`. The older `?notes=1` annotation tool still works but is superseded.
+- **Every prototype ships with the review bar.** `inline.py` bakes `review.css` + `review.js` into every prototype it touches. Click the circle button bottom-right on any prototype (or open it with `?review=1`) and a bar appears at the bottom: **Edit text** (retype any copy in place), **Comment** (click an element, leave a note — numbered pins + a side panel) and **Spotlight** (dim everything outside a dragged rectangle). Comments and edits are saved to `feedback.json` next to the prototype when it runs on `tools/serve.mjs`. This is the canonical way to review a prototype and hand the notes to an LLM — see §7 "Review bar" and `review-bar.html`. The older `?notes=1` annotation tool still works but is superseded.
 - **Copy the `example.html` `<script>` block** into every new prototype — it carries the universal handlers (modals, drawers, dropdowns, tabs, toasts, …).
 
 ---
@@ -227,7 +227,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). **Two sizes only: 16 & 24** (`.icon-16` / `.icon-24`). Default colour graphite-700 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
-| Review bar | `.rv-bar` | Append `?review=1` to any prototype URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
+| Review bar | `.rv-bar` | Circle button bottom-right on every prototype, or `?review=1` on the URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
 | Annotation tool (legacy) | `.annot-toolbar` | Append `?notes=1`. Superseded by the review bar; kept for old prototypes. CSS in `devtools.css`, JS in the `example.html` script block. |
 
 ### Rules of thumb
@@ -414,7 +414,7 @@ The HTML inside each prototype is unaffected by this — the `<link rel="stylesh
 
 ### Review bar — comments, inline text edits, spotlight
 
-Every inlined prototype carries the review bar. Enable it with `?review=1` on the prototype URL (the choice sticks per page in `localStorage`; `?review=0` turns it off). Modes, with single-letter shortcuts:
+Every inlined prototype carries the review bar. Turn it on with the circle button in the bottom-right corner of the page, or with `?review=1` on the URL (the choice sticks per page in `localStorage`; the button or `?review=0` turns it off). Modes, with single-letter shortcuts:
 
 - **Interact** (`I`) — use the prototype normally.
 - **Edit text** (`E`) — click any text and retype it. Edits are stored by element path and reapplied after the prototype re-renders, so they survive navigation inside the page.
