@@ -57,7 +57,7 @@
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;
   const $ = s => document.querySelector(s);
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   /* ── Mount the UI ─────────────────────────────────────────────────── */
   document.body.insertAdjacentHTML('beforeend',
@@ -329,7 +329,7 @@
     FB.comments.filter(c => filter === 'all' || (filter === 'open' ? !c.resolved : c.resolved)).forEach(c => {
       const el = resolve(c.path); if (!el) return;
       const b = el.getBoundingClientRect(); if (!b.width && !b.height) return;
-      html += `<div class="rv-pin ${c.resolved ? 'done' : ''} ${c.id === selId ? 'sel' : ''}" data-pin="${c.id}" style="left:${b.right}px;top:${b.top}px">${c.n}</div>`;
+      html += `<div class="rv-pin ${c.resolved ? 'done' : ''} ${c.id === selId ? 'sel' : ''}" data-pin="${esc(c.id)}" style="left:${b.right}px;top:${b.top}px">${esc(c.n)}</div>`;
       if (c.id === selId) html += outline(b);
     });
     if (draft) { const el = resolve(draft.path); if (el) html += outline(el.getBoundingClientRect()); }
@@ -337,7 +337,7 @@
   }
   let pinT = null; const schedulePins = () => { if (!pinT) pinT = setTimeout(() => { pinT = null; placePins(); }, 16); };
   document.addEventListener('scroll', schedulePins, true); window.addEventListener('resize', schedulePins);
-  document.addEventListener('click', e => { const p = e.target.closest('[data-pin]'); if (p) { selId = p.dataset.pin; sideOpen = true; draft = null; renderSide(); placePins(); document.querySelector(`[data-cid="${selId}"]`)?.scrollIntoView({block:'nearest'}); } });
+  document.addEventListener('click', e => { const p = e.target.closest('[data-pin]'); if (p) { selId = p.dataset.pin; sideOpen = true; draft = null; renderSide(); placePins(); [...document.querySelectorAll('[data-cid]')].find(n => n.dataset.cid === selId)?.scrollIntoView({block:'nearest'}); } });
 
   /* ── Bar ──────────────────────────────────────────────────────────── */
   function setMode(m) {
@@ -405,12 +405,12 @@
           <textarea id="rvDraft" placeholder="What should change here?"></textarea>
           <div class="f"><span class="hint">⌘↵ to post</span><button class="btn" data-rv="cancel">Cancel</button><button class="btn primary" data-rv="post">Comment</button></div></div>`
         : mode === 'comment' ? `<div class="rv-empty" style="padding:12px 8px 20px">Click any element in the prototype to leave a comment on it.</div>` : ''}
-        ${list.length ? list.map(c => `<div class="rv-c ${c.resolved ? 'done' : ''} ${c.id === selId ? 'sel' : ''}" data-cid="${c.id}">
-            <div class="t"><span class="num">${c.n}</span><span class="el" title="${esc(c.el)}">${esc(c.el)}</span></div>
+        ${list.length ? list.map(c => `<div class="rv-c ${c.resolved ? 'done' : ''} ${c.id === selId ? 'sel' : ''}" data-cid="${esc(c.id)}">
+            <div class="t"><span class="num">${esc(c.n)}</span><span class="el" title="${esc(c.el)}">${esc(c.el)}</span></div>
             <div class="msg">${esc(c.text)}</div>
             ${c.resolution ? `<div class="res">✓ ${esc(c.resolution)}</div>` : ''}
             <div class="meta2"><span>${c.author ? `<b>${esc(c.author)}</b> · ` : ''}${esc(c.screen || '')} · ${when(c)}</span><span style="flex:1"></span>
-              ${c.screenId != null && HOST().goto ? `<button data-rv="goto" data-id="${c.id}">Go to</button>` : ''}<button data-rv="resolve" data-id="${c.id}">${c.resolved ? 'Reopen' : 'Resolve'}</button><button class="del" data-rv="del" data-id="${c.id}">Delete</button></div>
+              ${c.screenId != null && HOST().goto ? `<button data-rv="goto" data-id="${esc(c.id)}">Go to</button>` : ''}<button data-rv="resolve" data-id="${esc(c.id)}">${c.resolved ? 'Reopen' : 'Resolve'}</button><button class="del" data-rv="del" data-id="${esc(c.id)}">Delete</button></div>
           </div>`).join('') : (!draft ? `<div class="rv-empty">No ${filter === 'all' ? '' : filter + ' '}comments yet.</div>` : '')}
       </div>
       <div class="foot">${online ? `Shared with everyone who opens this prototype. Commenting as <b>${esc(who() || 'anonymous')}</b> · <button data-rv="who">change</button>` : `Not connected to a shared store — kept in this browser only.`}
