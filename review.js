@@ -14,8 +14,8 @@
  * Storage: everything goes to `/api/feedback` as small operations and the
  * page polls it, so comments and edits are shared by everyone who opens the
  * same prototype. Locally that API is tools/serve.mjs (writes feedback.json
- * next to the prototype); deployed it is the hosted store described in
- * tools/vercel-api-feedback.js. Without either, the bar keeps everything in
+ * next to the prototype); deployed it is api/feedback.js in the prototypes
+ * repository, on Neon Postgres. Without either, the bar keeps everything in
  * this browser only and says "Local only". Reviewers are asked for a name the
  * first time they post. "Copy comments as prompt" turns the open comments into
  * a prompt for a coding agent.
@@ -34,6 +34,7 @@
 (() => {
   /* ── Enable / disable ─────────────────────────────────────────────── */
   const KEY = 'rv:' + location.pathname.replace(/index\.html$/, '');
+  const PKEY = KEY + ':pending';          // ops waiting to reach the store
   const q = new URLSearchParams(location.search).get('review');
   try { if (q === '1' || q === '') localStorage.setItem(KEY + ':on', '1'); if (q === '0') localStorage.removeItem(KEY + ':on'); } catch {}
   let on = false; try { on = localStorage.getItem(KEY + ':on') === '1'; } catch {}
@@ -67,42 +68,66 @@
   const API = HOST().api || '/api/feedback';
   const PATH = location.pathname.replace(/index\.html$/, '');
   const fetchFB = async () => { const r = await fetch(`${API}?p=${encodeURIComponent(PATH)}`, {cache:'no-store'}); if (!r.ok) throw 0; return r.json(); };
+  /* Optional write token — only when the store is configured with one (it answers
+     401). Reads are always open; the token is kept in this browser. */
+  const token = () => { try { return localStorage.getItem('rv:token') || ''; } catch { return ''; } };
+  const askToken = () => { const t = (prompt('This prototype needs a review token to post changes:') || '').trim(); try { if (t) localStorage.setItem('rv:token', t); } catch {} return t; };
   const remember = () => { try { localStorage.setItem(KEY, JSON.stringify(FB)); } catch {} };
   const sig = d => JSON.stringify([d.updated, d.comments.map(c => [c.id, c.text, c.resolved, c.resolution]), d.edits]);
   function adopt(doc) {
     doc.edits ||= {}; doc.comments ||= [];
     const changed = sig(doc) !== sig(FB); FB = doc; remember();
-    if (changed) { refresh(); renderSide(); renderBar(); }
+    if (changed) { quiet = 0; refresh(); renderSide(); renderBar(); } else quiet++;
   }
   async function load() {
+    try { pending = JSON.parse(localStorage.getItem(PKEY)) || []; } catch { pending = []; }
     try { adopt(await fetchFB()); saveState = 'Shared'; online = true; }
     catch { try { FB = JSON.parse(localStorage.getItem(KEY)) || FB; } catch {} saveState = 'Local only'; }
     FB.edits ||= {}; FB.comments ||= [];
     restoreSession(); refresh(); renderBar(); renderSide();
-    if (online) setInterval(poll, 4000);
+    schedulePoll();                            // always — lets an offline start recover on its own
+    if (pending.length) flush();               // replay anything queued while the store was away
   }
+  /* Polling is the only steady load this puts on the store, so it backs off:
+     4s while something is happening, stretching to 30s once the page has been
+     quiet, and nothing at all while the tab is in the background. Returning to
+     the tab checks immediately. */
+  let pollT = null, quiet = 0;
+  function schedulePoll() {
+    clearTimeout(pollT);
+    const delay = document.hidden ? 30000 : quiet > 6 ? 30000 : 4000;
+    pollT = setTimeout(async () => { if (!document.hidden) await poll(); schedulePoll(); }, delay);
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { quiet = 0; poll().then(schedulePoll); } });
   let pending = [], saveT = null, inflight = false;
+  // The queue outlives the page: ops made while the store is unreachable are
+  // replayed on the next load, so "Local only" work is never stranded.
+  const rememberPending = () => { try { pending.length ? localStorage.setItem(PKEY, JSON.stringify(pending)) : localStorage.removeItem(PKEY); } catch {} };
   function save(...ops) {                      // local state is already updated; ship the ops
-    remember(); pending.push(...ops);
+    remember(); pending.push(...ops); rememberPending(); quiet = 0; schedulePoll();
     clearTimeout(saveT); saveState = online ? 'Saving…' : 'Local only'; renderBar();
     saveT = setTimeout(flush, 150);
   }
   async function flush() {
     if (inflight || !pending.length) return;
-    const ops = pending; pending = []; inflight = true;
+    const ops = pending; pending = []; rememberPending(); inflight = true;
     try {
-      const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({p:PATH, ops})});
+      let r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json', ...(token() ? {'x-review-token':token()} : {})}, body:JSON.stringify({p:PATH, ops})});
+      if (r.status === 401 && askToken())      // the store wants a token — ask once, then retry
+        r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json', 'x-review-token':token()}, body:JSON.stringify({p:PATH, ops})});
       if (!r.ok) throw 0;
       const doc = await r.json(); online = true; saveState = 'Shared';
       if (!pending.length) adopt(doc);
-    } catch { pending = ops.concat(pending); saveState = online ? 'Save failed — retrying' : 'Local only'; }
+    } catch { pending = ops.concat(pending); rememberPending(); saveState = online ? 'Save failed — retrying' : 'Local only'; }
     inflight = false; renderBar();
     if (pending.length) saveT = setTimeout(flush, online ? 150 : 5000);
   }
   async function poll() {
-    if (inflight || pending.length || document.querySelector('.rv-editing')) return;
+    if (inflight || document.querySelector('.rv-editing')) return;
+    if (pending.length) return flush();        // drain queued ops before reading
     let doc; try { doc = await fetchFB(); } catch { return; }
-    adopt(doc);
+    if (!online) { online = true; saveState = 'Shared'; renderSide(); }   // the store came back
+    adopt(doc); renderBar();
   }
   /* Who is commenting — asked once, kept in this browser */
   function who(ask) {

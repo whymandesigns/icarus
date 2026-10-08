@@ -14,7 +14,9 @@
 export const EMPTY = () => ({ edits: {}, comments: [] });
 
 export function applyOps(doc, ops) {
-  doc = { edits: { ...(doc?.edits || {}) }, comments: [...(doc?.comments || [])] };
+  // Spread the original first so fields this store doesn't own (e.g. version,
+  // versions) survive a write instead of being dropped.
+  doc = { ...(doc || {}), edits: { ...(doc?.edits || {}) }, comments: [...(doc?.comments || [])] };
   for (const o of Array.isArray(ops) ? ops : []) {
     if (o?.t === 'comment' && o.c && typeof o.c.id === 'string') {
       const i = doc.comments.findIndex(c => c.id === o.c.id);

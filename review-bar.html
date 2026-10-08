@@ -264,20 +264,27 @@
 
       <h3 class="h3" style="margin-top: var(--ic-space-5)">On Vercel</h3>
       <p>Deployed prototypes need a hosted store, set up once per Vercel project:</p>
+      <p>The function and schema already live in the prototypes repository (<code>api/feedback.js</code>, <code>lib/feedback-db.mjs</code>, <code>db/schema.sql</code>). Connect the database once:</p>
       <ol class="doc-steps">
         <li>
-          <strong>Copy <code>tools/vercel-api-feedback.js</code> to <code>api/feedback.js</code> in the repository Vercel deploys.</strong>
-          <span>Vercel turns <code>api/*.js</code> into a serverless function on its own. No package.json or build step.</span>
+          <strong>Add a Neon Postgres database from the Vercel Marketplace.</strong>
+          <span>Vercel → the project → Storage → Create Database → Neon (the free plan is far more than enough) → connect it to the project. That injects <code>DATABASE_URL</code>.</span>
         </li>
         <li>
-          <strong>Add a Redis database from the Vercel Marketplace.</strong>
-          <span>Vercel → the project → Storage → Create Database → Upstash Redis (the free plan is plenty) → connect it to the project. This injects <code>KV_REST_API_URL</code> and <code>KV_REST_API_TOKEN</code>.</span>
+          <strong>Create the tables.</strong>
+          <span><code>psql "$DATABASE_URL" -f db/schema.sql</code> — one comment per row, one edit per row. Re-running is safe.</span>
         </li>
         <li>
           <strong>Redeploy.</strong>
-          <span>The bar switches from "Local only" to "Shared" on the live link. Until the database is connected the function answers 503 and the bar keeps working locally.</span>
+          <span>The bar switches from "Local only" to "Shared" on the live link. Until the database is connected the function answers 503 and the bar keeps working locally, queueing its changes until the store appears.</span>
+        </li>
+        <li>
+          <strong>Optional — gate writes.</strong>
+          <span>Set <code>REVIEW_TOKEN</code> in the Vercel project and the bar asks reviewers for it once before posting. Reads stay open. Without it, anyone with the link can comment.</span>
         </li>
       </ol>
+      <p>Each op writes a single row, so two reviewers posting at the same moment can no longer overwrite one another, and <strong>Delete is a soft delete</strong> — the row is kept with a <code>deleted_at</code> stamp so nothing is ever truly lost.</p>
+      <p>When a prototype is approved and the review is over, archive its comments back into the repository with <code>node tools/feedback-sync.mjs pull &lt;prototype&gt;</code> and commit the <code>feedback.json</code> it writes. The long-term record then lives in git, in a plain format no vendor owns — the database is only ever the live working copy. <code>push</code> does the reverse, migrating an existing <code>feedback.json</code> into the database.</p>
       <div class="doc-callout">
         <i class="ph ph-info"></i>
         <p>Anyone with the link can read and write comments; there is no login. Fine for a prototype review link shared inside the team, not for anything public.</p>

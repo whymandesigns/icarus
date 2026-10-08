@@ -429,7 +429,7 @@ node tools/serve.mjs /absolute/path/to/features 5733
 
 (`.claude/launch.json` entry: `"runtimeExecutable": "node", "runtimeArgs": ["/abs/path/icarus/tools/serve.mjs", "/abs/path/features", "5733"], "port": 5733`.)
 
-**Deployed on Vercel:** copy `tools/vercel-api-feedback.js` to `api/feedback.js` in the repo Vercel deploys, add an Upstash Redis database from the Vercel Marketplace to the project (injects `KV_REST_API_URL` / `KV_REST_API_TOKEN`), redeploy. Without a reachable store the bar says "Local only" and keeps everything in that browser. The ops contract is in `tools/feedback-store.mjs`; full setup in `review-bar.html`.
+**Deployed on Vercel:** the prototypes repo already carries `api/feedback.js` (+ `lib/feedback-db.mjs`, `db/schema.sql`). Add a Neon Postgres database from the Vercel Marketplace (injects `DATABASE_URL`), run `psql "$DATABASE_URL" -f db/schema.sql`, redeploy. One row per comment, so concurrent reviewers can't overwrite each other and Delete is a soft delete. Optionally set `REVIEW_TOKEN` to gate writes. Without a reachable store the bar says "Local only" and queues its changes until the store appears. The ops contract is in `tools/feedback-store.mjs`; full setup in `review-bar.html`. Archive an approved prototype's comments back into git with `node tools/feedback-sync.mjs pull <prototype>`.
 
 **`feedback.json` shape.** `edits` maps `"<root>/<child.index.path>#<textNodeIndex>"` → `{orig, text, screen}`; `comments` is a list of `{id, n, path, el, html, screen, screenId, url, rect, text, created, resolved, resolution?}`. `el` is a human label (`button.btn "Save"`), `html` the first 600 chars of the element's markup, `screen` whatever the prototype reports as the current screen (its `<title>` by default).
 

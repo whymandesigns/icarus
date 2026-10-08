@@ -130,9 +130,8 @@ BEFORE SHARING / DEPLOYING
   to "apply the prototype comments", read that `feedback.json` (or, for the deployed site,
   `GET /api/feedback?p=/{{FEATURE_NAME}}/`), implement each open comment in `index.html`,
   then mark it `resolved: true` with a short `resolution`.
-- If the prototypes deploy on Vercel, the repo needs `api/feedback.js` (copy of
-  `designmd/tools/vercel-api-feedback.js`) plus an Upstash Redis database connected to the
-  project, so comments are shared on the live link. Do this once per repo, not per feature.
+- Comments are shared through `api/feedback.js` (Neon Postgres) which already exists in
+  the prototypes repo. That is set up once per repo, not per feature — nothing to do here.
 - Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
 
 FILL IN
