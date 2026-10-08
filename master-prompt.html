@@ -121,7 +121,14 @@ RULES
 
 BEFORE SHARING / DEPLOYING
 - From the `designmd/` folder run: `python3 inline.py ../features/{{FEATURE_NAME}}/index.html`
-  to inline the whole system (zero external dependencies). It is idempotent.
+  to inline the whole system (zero external dependencies). It is idempotent. This also adds
+  the review bar (comments, inline text edits, spotlight) — open the prototype with
+  `?review=1` to use it; nothing to wire up by hand.
+- Preview through the Icarus dev server so review comments persist to
+  `features/{{FEATURE_NAME}}/feedback.json`: add a `.claude/launch.json` entry that runs
+  `node /abs/path/designmd/tools/serve.mjs /abs/path/features 5733` (port 5733). When asked
+  to "apply the prototype comments", read that `feedback.json`, implement each open comment
+  in `index.html`, then mark it `resolved: true` with a short `resolution`.
 - Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
 
 FILL IN

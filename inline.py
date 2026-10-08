@@ -16,6 +16,10 @@ What it deliberately does NOT touch:
 - The Phosphor icons CDN link (`https://unpkg.com/@phosphor-icons/web/...`).
   This is the one allowed remote dependency in inlined prototypes — features that
   use `<i class="ph ph-…">` icons keep them by loading Phosphor from unpkg.
+- Adds the review bar (review.css inside the style block + review.js in a
+  `<script>` before `</body>`). It is dormant until the prototype is opened
+  with `?review=1`. `--only-review` injects/refreshes just that, for prototypes
+  that do not use the design-system CSS at all.
 - Any additional inline `<style>` blocks in the prototype (e.g. one-off layout
   styles a feature needs). Only the design-system block bounded by the
   `/* === tokens.css === */` marker is replaced; everything else survives.
@@ -61,6 +65,7 @@ def build_style_block():
         '    /* === semantic.css === */\n' + read('semantic.css') + '\n'
         '    /* === components.css === */\n' + read('components.css') + '\n'
         '    /* === devtools.css === */\n' + read('devtools.css') + '\n'
+        '    /* === review.css === */\n' + read('review.css') + '\n'
         '  </style>'
     )
 
@@ -68,6 +73,20 @@ def build_inline_logo():
     logo = read('assets/logo.svg')
     # Apply the topbar-brand-logo class for sizing
     return logo.replace('<svg ', '<svg class="topbar-brand-logo" ', 1).replace('\n', '')
+
+REVIEW_OPEN = '<!-- === review.js === -->'
+REVIEW_CLOSE = '<!-- === /review.js === -->'
+
+def build_review_script():
+    # The review bar (comments, inline text edits, spotlight) — see review.js.
+    return REVIEW_OPEN + '\n<script>\n' + read('review.js').strip() + '\n</script>\n' + REVIEW_CLOSE
+
+# Standalone review-bar CSS for prototypes that don't carry the design system
+REVIEW_STYLE_OPEN = '<!-- === review.css === -->'
+REVIEW_STYLE_CLOSE = '<!-- === /review.css === -->'
+
+def build_review_style():
+    return REVIEW_STYLE_OPEN + '\n<style>\n' + read('review.css').strip() + '\n</style>\n' + REVIEW_STYLE_CLOSE
 
 SPRITE_OPEN = '<!-- === icons.svg === -->'
 SPRITE_CLOSE = '<!-- === /icons.svg === -->'
@@ -99,8 +118,39 @@ INLINE_LOGO_PATTERN = re.compile(r'<svg class="topbar-brand-logo"[^>]*>.*?</svg>
 # Icon sprite — previously-injected block (idempotent refresh) + <body> anchor
 SPRITE_PATTERN = re.compile(re.escape(SPRITE_OPEN) + r'.*?' + re.escape(SPRITE_CLOSE), re.DOTALL)
 BODY_PATTERN = re.compile(r'(<body[^>]*>)')
+BODY_END_PATTERN = re.compile(r'</body>')
+REVIEW_PATTERN = re.compile(re.escape(REVIEW_OPEN) + r'.*?' + re.escape(REVIEW_CLOSE), re.DOTALL)
+REVIEW_STYLE_PATTERN = re.compile(re.escape(REVIEW_STYLE_OPEN) + r'.*?' + re.escape(REVIEW_STYLE_CLOSE), re.DOTALL)
 # Phosphor CDN link — no longer used; strip it if present
 PHOSPHOR_PATTERN = re.compile(r'\s*<link[^>]*@phosphor-icons[^>]*>\s*\n?')
+
+def add_review(html, with_style):
+    # Review bar script — refresh an existing block, else inject before </body>.
+    # with_style also carries review.css standalone (prototypes without the system CSS).
+    parts = (build_review_style() + '\n' if with_style else '') + build_review_script()
+    if with_style and REVIEW_STYLE_PATTERN.search(html):
+        html = REVIEW_STYLE_PATTERN.sub(lambda _: build_review_style(), html)
+        if REVIEW_PATTERN.search(html):
+            html = REVIEW_PATTERN.sub(lambda _: build_review_script(), html)
+        else:
+            html = BODY_END_PATTERN.sub(lambda _: build_review_script() + '\n</body>', html, count=1)
+        return html, 'refreshed review bar (css + js)'
+    if REVIEW_PATTERN.search(html):
+        html, n = REVIEW_PATTERN.subn(lambda _: build_review_script(), html)
+        return html, f'refreshed review bar ({n} block)'
+    if BODY_END_PATTERN.search(html):
+        html = BODY_END_PATTERN.sub(lambda _: parts + '\n</body>', html, count=1)
+        return html, 'injected review bar before </body>'
+    return html, 'no </body> found — review bar NOT injected'
+
+def inline_review_only(path):
+    with open(path) as f:
+        html = f.read()
+    html, status = add_review(html, with_style=True)
+    with open(path, 'w') as f:
+        f.write(html)
+    print(f'  {status}')
+    print(f'  final size: {os.path.getsize(path):,} bytes')
 
 def inline(path):
     with open(path) as f:
@@ -141,6 +191,9 @@ def inline(path):
     if ph:
         sprite_status += f' · stripped {ph} Phosphor link(s)'
 
+    # Review bar — CSS already travels in the style block; add/refresh the script
+    html, review_status = add_review(html, with_style=False)
+
     with open(path, 'w') as f:
         f.write(html)
 
@@ -148,18 +201,21 @@ def inline(path):
     print(f'  {css_status}')
     print(f'  {logo_status}')
     print(f'  {sprite_status}')
+    print(f'  {review_status}')
     print(f'  final size: {size:,} bytes')
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: python3 inline.py <prototype.html> [more.html ...]')
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    only_review = '--only-review' in sys.argv
+    if not args:
+        print('Usage: python3 inline.py [--only-review] <prototype.html> [more.html ...]')
         sys.exit(1)
-    for path in sys.argv[1:]:
+    for path in args:
         print(f'\n{path}')
         if not os.path.exists(path):
             print('  not found, skipping')
             continue
-        inline(path)
+        (inline_review_only if only_review else inline)(path)
 
 if __name__ == '__main__':
     main()
