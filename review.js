@@ -11,12 +11,17 @@
  *   Comment  [C]   click any element, leave a note; numbered pins + a side panel (open / resolved)
  *   Spotlight [S]  drag a rectangle; everything outside it is dimmed
  *
- * Storage: `feedback.json` next to the prototype through `tools/serve.mjs`
- * (POST/GET `api/feedback`), with localStorage as a fallback when the page is
- * served statically. "Copy comments as prompt" turns the open comments into
+ * Storage: everything goes to `/api/feedback` as small operations and the
+ * page polls it, so comments and edits are shared by everyone who opens the
+ * same prototype. Locally that API is tools/serve.mjs (writes feedback.json
+ * next to the prototype); deployed it is the hosted store described in
+ * tools/vercel-api-feedback.js. Without either, the bar keeps everything in
+ * this browser only and says "Local only". Reviewers are asked for a name the
+ * first time they post. "Copy comments as prompt" turns the open comments into
  * a prompt for a coding agent.
  *
  * Optional host adapter — a prototype may define `window.REVIEW` with:
+ *   api:    '/api/feedback'        where the store lives (default shown)
  *   screen: () => ({ id, name })   name of the screen a comment is left on
  *   goto:   id => void             navigate to that screen ("Go to" button)
  *   roots:  'css selector'         stable containers used to address elements
@@ -58,25 +63,52 @@
     `<div id="rvPins" class="rv-pins"></div><div id="rvHover" class="rv-hover rv-hidden"><span class="lb"></span></div>` +
     `<div id="rvSpot" class="rv-spot rv-hidden"></div><div id="rvBar" class="rv-bar"></div><div id="rvSide"></div>`);
 
-  /* ── Store: feedback.json via the dev server, localStorage fallback ── */
-  const fetchFB = async () => { const r = await fetch('api/feedback', {cache:'no-store'}); if (!r.ok) throw 0; return r.json(); };
+  /* ── Store: shared through /api/feedback (ops in, merged document out), localStorage fallback ── */
+  const API = HOST().api || '/api/feedback';
+  const PATH = location.pathname.replace(/index\.html$/, '');
+  const fetchFB = async () => { const r = await fetch(`${API}?p=${encodeURIComponent(PATH)}`, {cache:'no-store'}); if (!r.ok) throw 0; return r.json(); };
+  const remember = () => { try { localStorage.setItem(KEY, JSON.stringify(FB)); } catch {} };
+  const sig = d => JSON.stringify([d.updated, d.comments.map(c => [c.id, c.text, c.resolved, c.resolution]), d.edits]);
+  function adopt(doc) {
+    doc.edits ||= {}; doc.comments ||= [];
+    const changed = sig(doc) !== sig(FB); FB = doc; remember();
+    if (changed) { refresh(); renderSide(); renderBar(); }
+  }
   async function load() {
-    try { FB = await fetchFB(); saveState = 'Synced'; online = true; }
+    try { adopt(await fetchFB()); saveState = 'Shared'; online = true; }
     catch { try { FB = JSON.parse(localStorage.getItem(KEY)) || FB; } catch {} saveState = 'Local only'; }
     FB.edits ||= {}; FB.comments ||= [];
     restoreSession(); refresh(); renderBar(); renderSide();
+    if (online) setInterval(poll, 4000);
   }
-  let saveT = null;
-  function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(FB)); } catch {}
-    clearTimeout(saveT); saveState = 'Saving…'; renderBar();
-    saveT = setTimeout(async () => {
-      try {
-        const r = await fetch('api/feedback', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(FB)}); if (!r.ok) throw 0;
-        saveState = 'Saved'; online = true;
-      } catch { saveState = online ? 'Save failed' : 'Saved locally'; }
-      renderBar();
-    }, 250);
+  let pending = [], saveT = null, inflight = false;
+  function save(...ops) {                      // local state is already updated; ship the ops
+    remember(); pending.push(...ops);
+    clearTimeout(saveT); saveState = online ? 'Saving…' : 'Local only'; renderBar();
+    saveT = setTimeout(flush, 150);
+  }
+  async function flush() {
+    if (inflight || !pending.length) return;
+    const ops = pending; pending = []; inflight = true;
+    try {
+      const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({p:PATH, ops})});
+      if (!r.ok) throw 0;
+      const doc = await r.json(); online = true; saveState = 'Shared';
+      if (!pending.length) adopt(doc);
+    } catch { pending = ops.concat(pending); saveState = online ? 'Save failed — retrying' : 'Local only'; }
+    inflight = false; renderBar();
+    if (pending.length) saveT = setTimeout(flush, online ? 150 : 5000);
+  }
+  async function poll() {
+    if (inflight || pending.length || document.querySelector('.rv-editing')) return;
+    let doc; try { doc = await fetchFB(); } catch { return; }
+    adopt(doc);
+  }
+  /* Who is commenting — asked once, kept in this browser */
+  function who(ask) {
+    let n = ''; try { n = localStorage.getItem('rv:author') || ''; } catch {}
+    if (!n && ask) { n = (prompt('Your name, so others know who left this:') || '').trim().slice(0, 60); try { if (n) localStorage.setItem('rv:author', n); } catch {} }
+    return n;
   }
   const screen = () => { try { return HOST().screen?.() || null; } catch { return null; } };
   function restoreSession() {
@@ -124,12 +156,21 @@
 
   /* ── Keep edits and pins in place when the prototype re-renders ───── */
   let applying = false;
+  const applied = new Map();                   // key → {tn, orig, text}: what we changed, so we can undo it
   function applyEdits() {
     applying = true;
+    for (const [k, a] of applied) {            // undo edits that were removed or changed elsewhere
+      const e = FB.edits[k];
+      if (e && e.text === a.text) continue;
+      if (a.tn.isConnected && a.tn.data.trim() === a.text) a.tn.data = a.tn.data.replace(a.text, a.orig);
+      applied.delete(k);
+    }
     for (const [k, e] of Object.entries(FB.edits)) {
+      if (!e || typeof e.orig !== 'string' || typeof e.text !== 'string') continue;
       const [p, ti] = k.split('#'); const el = resolve(p); if (!el) continue;
       const tn = textNodes(el)[Number(ti)];
-      if (tn && tn.data.trim() === e.orig.trim()) { const lead = tn.data.match(/^\s*/)[0], trail = tn.data.match(/\s*$/)[0]; tn.data = lead + e.text + trail; }
+      if (tn && tn.data.trim() === e.orig.trim()) { const lead = tn.data.match(/^\s*/)[0], trail = tn.data.match(/\s*$/)[0]; tn.data = lead + e.text + trail; applied.set(k, {tn, orig:e.orig, text:e.text}); }
+      else if (tn && tn.data.trim() === e.text && !applied.has(k)) applied.set(k, {tn, orig:e.orig, text:e.text});   // already showing the edit (e.g. just typed)
     }
     applying = false;
   }
@@ -167,7 +208,11 @@
       const val = commit ? span.textContent.replace(/\s+/g, ' ').trim() : (FB.edits[key]?.text ?? orig);
       const out = document.createTextNode(lead + (val || orig) + trail);
       applying = true; span.previousSibling?.remove(); span.nextSibling?.remove(); span.replaceWith(out); applying = false;
-      if (commit) { if (!val || val === orig) delete FB.edits[key]; else FB.edits[key] = {orig, text:val, screen:screen()?.name}; save(); }
+      if (commit) {
+        applied.delete(key);
+        if (!val || val === orig) { delete FB.edits[key]; save({t:'edit', k:key, v:null}); }
+        else { const v = {orig, text:val, screen:screen()?.name, author:who(true) || undefined}; FB.edits[key] = v; applied.set(key, {tn:out, orig, text:val}); save({t:'edit', k:key, v}); }
+      }
     };
     span.addEventListener('blur', () => finish(true));
     span.addEventListener('keydown', e => {
@@ -292,19 +337,20 @@
     const a = e.target.closest('[data-rv]'); if (!a) return;
     const act = a.dataset.rv, c = a.dataset.id && FB.comments.find(c => c.id === a.dataset.id);
     if (act === 'side') { sideOpen = !sideOpen; if (!sideOpen) draft = null; renderBar(); renderSide(); placePins(); }
-    if (act === 'reset' && confirm('Undo all inline text edits? The page reloads.')) { FB.edits = {}; save(); setTimeout(() => location.reload(), 300); }
+    if (act === 'reset' && confirm('Undo all inline text edits, for everyone?')) { FB.edits = {}; save({t:'edits:clear'}); refresh(); renderBar(); }
     if (act === 'close') { sideOpen = false; draft = null; selId = null; if (mode === 'comment') setMode('interact'); renderBar(); renderSide(); placePins(); }
     if (act === 'cancel') { draft = null; renderSide(); placePins(); }
     if (act === 'post') postDraft();
     if (act === 'clear-spot') clearSpot();
     if (act === 'filter') { filter = a.dataset.v; renderSide(); placePins(); }
-    if (act === 'del' && c) { e.stopPropagation(); FB.comments = FB.comments.filter(x => x !== c); save(); renderSide(); placePins(); renderBar(); }
-    if (act === 'resolve' && c) { e.stopPropagation(); c.resolved = !c.resolved; save(); renderSide(); placePins(); renderBar(); }
+    if (act === 'del' && c) { e.stopPropagation(); FB.comments = FB.comments.filter(x => x !== c); save({t:'del', id:c.id}); renderSide(); placePins(); renderBar(); }
+    if (act === 'resolve' && c) { e.stopPropagation(); c.resolved = !c.resolved; if (!c.resolved) delete c.resolution; save({t:'comment', c}); renderSide(); placePins(); renderBar(); }
+    if (act === 'who') { try { localStorage.removeItem('rv:author'); } catch {} who(true); renderSide(); }
     if (act === 'goto' && c) { e.stopPropagation(); try { HOST().goto?.(c.screenId); } catch {} selId = c.id; renderSide(); placePins(); }
     if (act === 'copy') {
       const open = FB.comments.filter(c => !c.resolved);
       const file = location.pathname.replace(/^\//, '').replace(/\/$/, '/index.html') || 'index.html';
-      const txt = `Apply these prototype comments in ${file}:\n\n` + open.map(c => `#${c.n} [${c.screen}] ${c.el}\n   → ${c.text}`).join('\n\n');
+      const txt = `Apply these prototype comments in ${file}:\n\n` + open.map(c => `#${c.n} [${c.screen}]${c.author ? ' ' + c.author + ':' : ''} ${c.el}\n   → ${c.text}`).join('\n\n');
       navigator.clipboard?.writeText(txt).then(() => { a.textContent = 'Copied ✓'; setTimeout(() => renderSide(), 1200); });
     }
   });
@@ -312,9 +358,10 @@
 
   function postDraft() {
     const t = $('#rvDraft')?.value.trim(); if (!t || !draft) return;
-    const n = FB.comments.reduce((m, c) => Math.max(m, c.n), 0) + 1;
-    const c = {id:'c' + Date.now().toString(36), n, ...draft, text:t, created:new Date().toISOString(), resolved:false};
-    FB.comments.push(c); draft = null; selId = c.id; save(); renderSide(); placePins(); renderBar();
+    const author = who(true);
+    const n = FB.comments.reduce((m, c) => Math.max(m, c.n || 0), 0) + 1;
+    const c = {id:'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), n, ...draft, text:t, author:author || undefined, created:new Date().toISOString(), resolved:false};
+    FB.comments.push(c); draft = null; selId = c.id; save({t:'comment', c}); renderSide(); placePins(); renderBar();
   }
 
   /* ── Side panel ───────────────────────────────────────────────────── */
@@ -337,11 +384,11 @@
             <div class="t"><span class="num">${c.n}</span><span class="el" title="${esc(c.el)}">${esc(c.el)}</span></div>
             <div class="msg">${esc(c.text)}</div>
             ${c.resolution ? `<div class="res">✓ ${esc(c.resolution)}</div>` : ''}
-            <div class="meta2"><span>${esc(c.screen || '')} · ${when(c)}</span><span style="flex:1"></span>
+            <div class="meta2"><span>${c.author ? `<b>${esc(c.author)}</b> · ` : ''}${esc(c.screen || '')} · ${when(c)}</span><span style="flex:1"></span>
               ${c.screenId != null && HOST().goto ? `<button data-rv="goto" data-id="${c.id}">Go to</button>` : ''}<button data-rv="resolve" data-id="${c.id}">${c.resolved ? 'Reopen' : 'Resolve'}</button><button class="del" data-rv="del" data-id="${c.id}">Delete</button></div>
           </div>`).join('') : (!draft ? `<div class="rv-empty">No ${filter === 'all' ? '' : filter + ' '}comments yet.</div>` : '')}
       </div>
-      <div class="foot">Comments are saved to <code>feedback.json</code> next to this prototype when it runs on the Icarus dev server, otherwise in this browser only.
+      <div class="foot">${online ? `Shared with everyone who opens this prototype. Commenting as <b>${esc(who() || 'anonymous')}</b> · <button data-rv="who">change</button>` : `Not connected to a shared store — kept in this browser only.`}
         <div><button class="btn" data-rv="copy">Copy comments as prompt</button></div></div>
     </div>`;
     const ta = $('#rvDraft');

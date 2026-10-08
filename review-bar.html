@@ -242,8 +242,11 @@
     </section>
 
     <section class="doc-section">
-      <h2 class="h2">Where comments go</h2>
-      <p>Serve prototypes through the Icarus dev server and every comment and text edit is written to <code>feedback.json</code> next to that prototype's <code>index.html</code>. On a plain static server or a deployed link the bar still works, but keeps everything in that browser only and says so in the status at the right end of the bar.</p>
+      <h2 class="h2">Shared with everyone</h2>
+      <p>Comments and text edits are not private. The bar sends every change to a small store at <code>/api/feedback</code> and polls it every few seconds, so anyone who opens the same prototype sees the same pins, the same comments and the same edited copy, and sees new ones appear while the page is open. The first time you post you are asked for your name; it is shown on your comments and edits. The status at the right end of the bar reads <strong>Shared</strong> when the store is reachable and <strong>Local only</strong> when it is not, in which case everything stays in that browser.</p>
+
+      <h3 class="h3" style="margin-top: var(--ic-space-5)">Locally</h3>
+      <p>The Icarus dev server is the store. It writes each prototype's feedback to <code>feedback.json</code> next to its <code>index.html</code>.</p>
       <div class="doc-code-wrap">
         <button class="doc-code-copy" type="button" data-copy aria-label="Copy command"><i class="ph ph-copy"></i><span>Copy</span></button>
         <div class="doc-code">node tools/serve.mjs /absolute/path/to/features 5733</div>
@@ -258,6 +261,27 @@
   "port": 5733
 }</div>
       </div>
+
+      <h3 class="h3" style="margin-top: var(--ic-space-5)">On Vercel</h3>
+      <p>Deployed prototypes need a hosted store, set up once per Vercel project:</p>
+      <ol class="doc-steps">
+        <li>
+          <strong>Copy <code>tools/vercel-api-feedback.js</code> to <code>api/feedback.js</code> in the repository Vercel deploys.</strong>
+          <span>Vercel turns <code>api/*.js</code> into a serverless function on its own. No package.json or build step.</span>
+        </li>
+        <li>
+          <strong>Add a Redis database from the Vercel Marketplace.</strong>
+          <span>Vercel → the project → Storage → Create Database → Upstash Redis (the free plan is plenty) → connect it to the project. This injects <code>KV_REST_API_URL</code> and <code>KV_REST_API_TOKEN</code>.</span>
+        </li>
+        <li>
+          <strong>Redeploy.</strong>
+          <span>The bar switches from "Local only" to "Shared" on the live link. Until the database is connected the function answers 503 and the bar keeps working locally.</span>
+        </li>
+      </ol>
+      <div class="doc-callout">
+        <i class="ph ph-info"></i>
+        <p>Anyone with the link can read and write comments; there is no login. Fine for a prototype review link shared inside the team, not for anything public.</p>
+      </div>
     </section>
 
     <section class="doc-section">
@@ -266,7 +290,7 @@
       <ol class="doc-steps">
         <li>
           <strong>Say “apply the prototype comments” in a Claude Code session on the prototype folder.</strong>
-          <span>It reads <code>feedback.json</code>, implements every comment with <code>resolved: false</code> in <code>index.html</code>, then marks each one <code>resolved: true</code> with a one-line <code>resolution</code>. Resolved comments turn green in the panel.</span>
+          <span>It reads the store (<code>feedback.json</code> locally, or <code>GET /api/feedback?p=/the-prototype/</code> on the live site), implements every comment with <code>resolved: false</code> in <code>index.html</code>, then marks each one <code>resolved: true</code> with a one-line <code>resolution</code>. Resolved comments turn green in everyone's panel.</span>
         </li>
         <li>
           <strong>Or press “Copy comments as prompt” in the side panel.</strong>
@@ -286,12 +310,12 @@
     </section>
 
     <section class="doc-section">
-      <h2 class="h2">feedback.json</h2>
-      <p>One file per prototype. <code>edits</code> is keyed by element path plus text-node index; <code>comments</code> is a list.</p>
+      <h2 class="h2">The document</h2>
+      <p>One document per prototype, the same shape in <code>feedback.json</code> and from the API. <code>edits</code> is keyed by element path plus text-node index; <code>comments</code> is a list. Writes are small operations (<code>POST /api/feedback</code> with <code>{ p, ops }</code>: upsert a comment, delete one, set or clear an edit) so several reviewers never overwrite each other. The operations are listed in <code>tools/feedback-store.mjs</code>.</p>
       <div class="doc-code-wrap">
         <div class="doc-code">{
   "edits": {
-    "layer:init/1.0.0.0#0": { "orig": "Supplier Invoice Management", "text": "Supplier invoices", "screen": "Screen 3 · ROB · Action Trace added" }
+    "layer:init/1.0.0.0#0": { "orig": "Supplier Invoice Management", "text": "Supplier invoices", "screen": "Screen 3 · ROB · Action Trace added", "author": "Roman" }
   },
   "comments": [
     {
@@ -300,7 +324,7 @@
       "html": "&lt;h3&gt;Supplier Invoice Management&lt;/h3&gt;",
       "screen": "Screen 3 · ROB · Action Trace added", "screenId": 3, "url": "/action-trace/",
       "rect": { "x": 532, "y": 24, "w": 240, "h": 24 },
-      "text": "Shorter title please", "created": "2026-10-08T12:47:00.000Z",
+      "text": "Shorter title please", "author": "Roman", "created": "2026-10-08T12:47:00.000Z",
       "resolved": false
     }
   ]
@@ -325,6 +349,7 @@
       <div class="doc-code-wrap">
         <button class="doc-code-copy" type="button" data-copy aria-label="Copy snippet"><i class="ph ph-copy"></i><span>Copy</span></button>
         <div class="doc-code">window.REVIEW = {
+  api:    '/api/feedback',                                         // where the store lives (default)
   screen: () =&gt; ({ id: state.step, name: SCREENS[state.step] }),  // stamped on every comment
   goto:   id =&gt; showStep(id),                                      // enables "Go to" on a comment
   roots:  '[data-layer], #main, .sidenav',                          // stable containers for element paths

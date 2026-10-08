@@ -103,3 +103,8 @@ body.rv-spotmode{user-select:none;}
 /* Spotlight: the box stays clear, a huge spread shadow darkens the rest of the page */
 .rv-spot{position:fixed;z-index:1700;pointer-events:none;border-radius:6px;box-shadow:0 0 0 200vmax rgba(0,0,0,.7);transition:box-shadow .15s;}
 .rv-spot.drawing{outline:1.5px dashed rgba(255,255,255,.85);outline-offset:0;}
+
+/* Side panel footer: author name + inline "change" button */
+.rv-side .foot b{color:var(--rv-ink);}
+.rv-side .foot button:not(.btn){border:none;background:none;padding:0;font:inherit;font-size:12px;color:var(--rv-blue);cursor:pointer;}
+.rv-c .meta2 b{color:var(--rv-ink-2);font-weight:600;}

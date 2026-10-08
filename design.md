@@ -421,17 +421,19 @@ Every inlined prototype carries the review bar. Turn it on with the circle butto
 - **Comment** (`C`) — click any element to leave a note on it. Numbered pins mark commented elements; the side panel lists open / resolved comments, with Resolve, Delete and **Copy comments as prompt**.
 - **Spotlight** (`S`) — drag a rectangle; everything outside it is dimmed. Esc clears it.
 
-**Where it saves.** Run prototypes through the Icarus dev server and comments + edits persist to `feedback.json` next to the prototype's `index.html`:
+**Shared, not private.** Every comment and edit is sent as a small operation to `/api/feedback` and the page polls it, so everyone who opens the same prototype sees the same comments and edited copy (reviewers are asked for a name once). Locally the Icarus dev server is that API and persists to `feedback.json` next to the prototype's `index.html`:
 
 ```bash
 node tools/serve.mjs /absolute/path/to/features 5733
 ```
 
-(`.claude/launch.json` entry: `"runtimeExecutable": "node", "runtimeArgs": ["/abs/path/icarus/tools/serve.mjs", "/abs/path/features", "5733"], "port": 5733`.) On a plain static server or a deployed link the bar still works but keeps everything in that browser only.
+(`.claude/launch.json` entry: `"runtimeExecutable": "node", "runtimeArgs": ["/abs/path/icarus/tools/serve.mjs", "/abs/path/features", "5733"], "port": 5733`.)
+
+**Deployed on Vercel:** copy `tools/vercel-api-feedback.js` to `api/feedback.js` in the repo Vercel deploys, add an Upstash Redis database from the Vercel Marketplace to the project (injects `KV_REST_API_URL` / `KV_REST_API_TOKEN`), redeploy. Without a reachable store the bar says "Local only" and keeps everything in that browser. The ops contract is in `tools/feedback-store.mjs`; full setup in `review-bar.html`.
 
 **`feedback.json` shape.** `edits` maps `"<root>/<child.index.path>#<textNodeIndex>"` → `{orig, text, screen}`; `comments` is a list of `{id, n, path, el, html, screen, screenId, url, rect, text, created, resolved, resolution?}`. `el` is a human label (`button.btn "Save"`), `html` the first 600 chars of the element's markup, `screen` whatever the prototype reports as the current screen (its `<title>` by default).
 
-**Applying comments with an LLM.** In a Claude Code session on the prototype folder, say *"apply the prototype comments"*: read `feedback.json`, implement every comment with `resolved: false` in `index.html` (use `el`, `html`, `screen` and `url` to find the spot), then set `resolved: true` and a one-line `resolution` on each. Inline `edits` are applied at runtime; bake them into the source only when asked. "Copy comments as prompt" in the side panel produces the same instructions as plain text for any other agent.
+**Applying comments with an LLM.** In a Claude Code session on the prototype folder, say *"apply the prototype comments"*: read the store (`feedback.json` locally, or `GET https://<site>/api/feedback?p=/<prototype>/` for the live link), implement every comment with `resolved: false` in `index.html` (use `el`, `html`, `screen` and `url` to find the spot), then set `resolved: true` and a one-line `resolution` on each (on the live store: `POST /api/feedback` with `{p, ops:[{t:'comment', c:{id, resolved:true, resolution}}]}`). Inline `edits` are applied at runtime; bake them into the source only when asked. "Copy comments as prompt" in the side panel produces the same instructions as plain text for any other agent.
 
 **Optional host adapter.** A prototype with its own screen/flow model can tell the bar about it:
 
