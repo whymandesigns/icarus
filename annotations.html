@@ -198,26 +198,14 @@
     <a class="doc-back" href="./index.html"><i class="ph ph-arrow-left"></i>designmd</a>
 
     <header class="doc-hero">
-      <h1 class="h1">Review bar &amp; annotation devtools</h1>
-      <p>Tooling for reviewing prototypes with people and with a coding agent. The review bar is built into every inlined prototype; the older batch annotation overlay below it is kept for existing prototypes.</p>
+      <h1 class="h1">Annotation devtools</h1>
+      <p>An in-page batch annotation overlay for iterating on prototypes with a coding agent. Click multiple UI elements, leave a note on each, then copy a single structured payload to paste into your agent.</p>
     </header>
 
-    <section class="doc-section">
-      <h2 class="h2">Review bar</h2>
-      <p>Append <code>?review=1</code> to any prototype URL. The choice is remembered for that page; <code>?review=0</code> turns it off again. A bar appears at the bottom with four modes, each with a single-letter shortcut:</p>
-      <ul>
-        <li><strong>Interact</strong> (<code>I</code>) — use the prototype normally.</li>
-        <li><strong>Edit text</strong> (<code>E</code>) — click any text and retype it. Edits are stored by element path and reapplied after the prototype re-renders.</li>
-        <li><strong>Comment</strong> (<code>C</code>) — click any element and leave a note. Numbered pins mark commented elements; the side panel lists open and resolved comments, with Resolve, Delete and “Copy comments as prompt”.</li>
-        <li><strong>Spotlight</strong> (<code>S</code>) — drag a rectangle; everything outside it is dimmed. Esc clears it.</li>
-      </ul>
-      <p>Comments and edits persist to <code>feedback.json</code> next to the prototype when it runs on the Icarus dev server (<code>node tools/serve.mjs /abs/path/features 5733</code>). On a plain static server or a deployed link they stay in that browser only. Nothing needs copying into a prototype: <code>inline.py</code> bakes <code>review.css</code> and <code>review.js</code> into every file it touches (<code>--only-review</code> for prototypes that don't use the system CSS). See design.md §7 for the <code>feedback.json</code> shape, the “apply the prototype comments” workflow and the optional <code>window.REVIEW</code> host adapter.</p>
-    </section>
-
-    <section class="doc-section">
-      <h2 class="h2">Annotation overlay (legacy)</h2>
-      <p>An in-page batch annotation overlay for iterating on prototypes with a coding agent. Click multiple UI elements, leave a note on each, then copy a single structured payload to paste into your agent. Superseded by the review bar; kept for prototypes that already carry it.</p>
-    </section>
+    <div class="doc-callout" style="margin-bottom: var(--ic-space-7)">
+      <i class="ph ph-info"></i>
+      <p>Superseded by the <a href="./review-bar.html">review bar</a>, which every inlined prototype now carries (<code>?review=1</code>). This page is kept for prototypes that still use <code>?notes=1</code>.</p>
+    </div>
 
     <section class="doc-section">
       <h2 class="h2">Enable it</h2>
