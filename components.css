@@ -3013,6 +3013,97 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   color: var(--color-text-muted);
 }
 
+/* ---------- Date picker ----------
+ * Calendar popover on a date field. The field is the usual .input-icon
+ * (calendar glyph left); the panel is built and wired by the [data-datepicker]
+ * handler in example.html — header (‹ Month Year ›), weekday row, a 6×7 day
+ * grid, and a Today / Clear footer.
+ *
+ *   <div class="datepicker" data-datepicker>
+ *     <div class="input-icon input-icon-left">
+ *       <svg class="icon input-icon-glyph"><use href="#i-calendar-blank"/></svg>
+ *       <input class="input datepicker-input" type="text" placeholder="Select date" autocomplete="off" />
+ *     </div>
+ *   </div>
+ *
+ * Options (attributes on .datepicker):
+ *   data-min="2026-10-01"      earliest pickable day (ISO)
+ *   data-min-from="#start-id"  earliest = the date in another date field (ranges)
+ *   data-align="end"           right-align the panel to the field
+ * Picking a day writes "Oct 12, 2026" into the input and fires input + change,
+ * so form logic listening to the field reacts as if it were typed.
+ * States: day .is-today · .is-selected · .is-outside (other month) · :disabled.
+ */
+.datepicker { position: relative; }
+.datepicker > .input-icon,
+.datepicker .datepicker-input { width: 100%; }
+.datepicker-panel {
+  position: absolute;
+  top: calc(100% + var(--ic-space-1));
+  left: 0;
+  z-index: var(--ic-z-dropdown);
+  width: 280px;
+  padding: var(--ic-space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--ic-radius-md);
+  box-shadow: var(--ic-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ic-space-2);
+}
+.datepicker-panel[hidden] { display: none; }
+.datepicker[data-align="end"] .datepicker-panel { left: auto; right: 0; }
+.datepicker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ic-space-2);
+}
+.datepicker-month {
+  font: var(--type-body-sm-semibold);
+  color: var(--color-text);
+}
+/* Next arrow is the left chevron flipped — the sprite has no chevron-right. */
+.datepicker-next .icon { transform: scaleX(-1); }
+.datepicker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.datepicker-dow {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--type-caption);
+  color: var(--color-text-subtle);
+}
+.datepicker-day {
+  height: 32px;
+  border: 0;
+  border-radius: var(--ic-radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font: var(--type-body-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--ic-duration-fast) var(--ic-ease);
+}
+.datepicker-day:hover { background: var(--color-surface-muted); }
+.datepicker-day:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: -2px; }
+.datepicker-day.is-outside { color: var(--color-text-subtle); }
+.datepicker-day.is-today { font-weight: var(--ic-weight-semibold); box-shadow: inset 0 0 0 1px var(--color-border-strong); }
+.datepicker-day.is-selected,
+.datepicker-day.is-selected:hover { background: var(--color-accent); color: var(--color-text-inverse); box-shadow: none; }
+.datepicker-day:disabled { color: var(--color-text-subtle); opacity: 0.4; cursor: not-allowed; background: transparent; }
+.datepicker-foot {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--ic-space-2);
+}
+
 /* Generic dropdown wrapper — pairs a `.dropdown-trigger` with a `.dropdown-menu` */
 .dropdown {
   position: relative;

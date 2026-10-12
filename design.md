@@ -193,6 +193,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | Component | Root | Variants / parts |
 |---|---|---|
 | [Buttons](./example.html#buttons) | `.btn` | `.btn-primary` · `.btn-secondary` · `.btn-ghost` · `.btn-danger` · `.btn-xs` · `.btn-icon-only` |
+| [Date picker](./example.html#datepicker) | `.datepicker` + `data-datepicker` | Wraps an `.input-icon` field with `.datepicker-input`; the `[data-datepicker]` handler in `example.html` builds `.datepicker-panel` (`.datepicker-head` · `.datepicker-month` · `.datepicker-grid` · `.datepicker-dow` · `.datepicker-day` · `.datepicker-foot`). Options: `data-min` (ISO), `data-min-from` (selector of another date field), `data-align="end"`. Day states: `.is-today` · `.is-selected` · `.is-outside` · `:disabled`. Picking fires `input` + `change`. |
 | [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` · `.input-icon` wrapper (`.input-icon-left` / `.input-icon-right`) with a `.input-icon-glyph` for an inset icon |
 | [Select](./example.html#inputs) | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
 | [Tag input](./example.html#inputs) | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |

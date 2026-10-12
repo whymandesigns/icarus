@@ -1570,6 +1570,36 @@
         </div>
       </section>
 
+      <section class="stack" id="datepicker">
+        <h3 class="h3">Date picker</h3>
+        <p class="body-sm">Calendar popover on a date field — <code style="font: var(--type-mono); color: var(--color-text-muted)">.datepicker</code> wrapping an <code style="font: var(--type-mono); color: var(--color-text-muted)">.input-icon</code> field. Opens on focus or click; arrows move by day / week, PageUp / PageDown by month, Enter picks, Escape closes. Picking writes “Oct 12, 2026” and fires <code style="font: var(--type-mono); color: var(--color-text-muted)">input</code> + <code style="font: var(--type-mono); color: var(--color-text-muted)">change</code>. Use <code style="font: var(--type-mono); color: var(--color-text-muted)">data-min-from</code> to keep an end date on or after a start date.</p>
+
+        <div class="device-stage" style="overflow: visible">
+          <div class="device-panel" style="overflow: visible">
+            <div class="grid-2" style="max-width: 600px; width: 100%">
+              <label class="field">
+                <span class="field-label">Start date</span>
+                <div class="datepicker" data-datepicker>
+                  <div class="input-icon input-icon-left">
+                    <svg class="icon input-icon-glyph"><use href="#i-calendar-blank"/></svg>
+                    <input class="input datepicker-input" type="text" id="dp-demo-start" placeholder="Select date" autocomplete="off" />
+                  </div>
+                </div>
+              </label>
+              <label class="field">
+                <span class="field-label">End date</span>
+                <div class="datepicker" data-datepicker data-min-from="#dp-demo-start" data-align="end">
+                  <div class="input-icon input-icon-left">
+                    <svg class="icon input-icon-glyph"><use href="#i-calendar-blank"/></svg>
+                    <input class="input datepicker-input" type="text" placeholder="Select date" autocomplete="off" />
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="stack" id="drawers">
         <h3 class="h3">Drawer</h3>
         <p class="body-sm">Right-anchored side panel. 5 sizes. Same open/close model as Modal — overlay click, Cancel, or Escape closes. For an edge-to-edge panel, use the <a href="#modals">full-screen Modal</a>.</p>
@@ -4553,6 +4583,147 @@
         if (empty) empty.hidden = shown !== 0;
       });
     });
+
+    // Date picker — calendar popover on any [data-datepicker] field (see the
+    // .datepicker block in components.css). Self-contained: copy this block
+    // into a prototype as-is. Opens on focus / click / ↓; ←↑→↓ move by day /
+    // week, PageUp/PageDown by month, Home/End to week edges, Enter picks,
+    // Escape closes. Picking writes "Oct 12, 2026" and fires input + change.
+    (function () {
+      const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const DOW = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']; // weeks start Monday
+      const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const day0 = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      const parse = v => {
+        if (!v || !String(v).trim()) return null;
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(v).trim());
+        const d = m ? new Date(+m[1], m[2] - 1, +m[3]) : new Date(Date.parse(v));
+        return isNaN(d) ? null : day0(d);
+      };
+
+      document.querySelectorAll('[data-datepicker]').forEach(dp => {
+        const input = dp.querySelector('.datepicker-input') || dp.querySelector('input');
+        if (!input || dp.dataset.dpReady) return;
+        dp.dataset.dpReady = '1';
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('aria-haspopup', 'dialog');
+        input.setAttribute('aria-expanded', 'false');
+
+        const panel = document.createElement('div');
+        panel.className = 'datepicker-panel';
+        panel.setAttribute('role', 'dialog');
+        panel.setAttribute('aria-label', 'Choose date');
+        panel.hidden = true;
+        panel.innerHTML = `
+          <div class="datepicker-head">
+            <button class="btn btn-icon-only btn-ghost btn-xs datepicker-prev" type="button" aria-label="Previous month"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+            <span class="datepicker-month" aria-live="polite"></span>
+            <button class="btn btn-icon-only btn-ghost btn-xs datepicker-next" type="button" aria-label="Next month"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+          </div>
+          <div class="datepicker-grid" role="grid"></div>
+          <div class="datepicker-foot">
+            <button class="btn btn-ghost btn-xs" type="button" data-dp-today>Today</button>
+            <button class="btn btn-ghost btn-xs" type="button" data-dp-clear>Clear</button>
+          </div>`;
+        dp.appendChild(panel);
+        const grid = panel.querySelector('.datepicker-grid');
+        const label = panel.querySelector('.datepicker-month');
+        let view = null;   // first of the month on show
+        let focus = null;  // day with the roving focus
+
+        const minDate = () => {
+          if (dp.dataset.minFrom) return parse(document.querySelector(dp.dataset.minFrom)?.value);
+          return parse(dp.dataset.min);
+        };
+        const render = () => {
+          const sel = parse(input.value), today = day0(new Date()), min = minDate();
+          label.textContent = `${MONTHS[view.getMonth()]} ${view.getFullYear()}`;
+          const lead = (view.getDay() + 6) % 7; // Monday-first offset
+          const start = new Date(view.getFullYear(), view.getMonth(), 1 - lead);
+          let html = DOW.map(d => `<span class="datepicker-dow" aria-hidden="true">${d}</span>`).join('');
+          for (let i = 0; i < 42; i++) {
+            const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+            const cls = ['datepicker-day'];
+            if (d.getMonth() !== view.getMonth()) cls.push('is-outside');
+            if (+d === +today) cls.push('is-today');
+            if (sel && +d === +sel) cls.push('is-selected');
+            const off = min && d < min;
+            const isFocus = focus && +d === +focus;
+            html += `<button class="${cls.join(' ')}" type="button" data-date="${iso(d)}" tabindex="${isFocus ? 0 : -1}"${off ? ' disabled' : ''} aria-label="${fmt(d)}"${sel && +d === +sel ? ' aria-selected="true"' : ''}>${d.getDate()}</button>`;
+          }
+          grid.innerHTML = html;
+          const prevEnd = new Date(view.getFullYear(), view.getMonth(), 0);
+          panel.querySelector('.datepicker-prev').disabled = !!(min && prevEnd < min);
+          panel.querySelector('[data-dp-today]').disabled = !!(min && today < min);
+        };
+        const open = (focusGrid = false) => {
+          if (!panel.hidden) return;
+          document.querySelectorAll('.datepicker-panel:not([hidden])').forEach(p => { p.hidden = true; });
+          const sel = parse(input.value), min = minDate(), today = day0(new Date());
+          focus = sel || (min && today < min ? min : today);
+          view = new Date(focus.getFullYear(), focus.getMonth(), 1);
+          render();
+          panel.hidden = false;
+          input.setAttribute('aria-expanded', 'true');
+          if (focusGrid) grid.querySelector('[tabindex="0"]')?.focus();
+        };
+        const close = (refocus = false) => {
+          if (panel.hidden) return;
+          panel.hidden = true;
+          input.setAttribute('aria-expanded', 'false');
+          if (refocus) input.focus();
+        };
+        const pick = d => {
+          input.value = d ? fmt(d) : '';
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          close(true);
+        };
+        const moveFocus = d => {
+          const min = minDate();
+          if (min && d < min) d = min;
+          focus = d;
+          if (d.getMonth() !== view.getMonth() || d.getFullYear() !== view.getFullYear()) view = new Date(d.getFullYear(), d.getMonth(), 1);
+          render();
+          grid.querySelector('[tabindex="0"]')?.focus();
+        };
+
+        input.addEventListener('focus', () => open());
+        input.addEventListener('click', () => open());
+        dp.querySelector('.input-icon-glyph')?.addEventListener('click', () => { input.focus(); open(); });
+        input.addEventListener('keydown', e => {
+          if (e.key === 'ArrowDown') { e.preventDefault(); panel.hidden ? open(true) : grid.querySelector('[tabindex="0"]')?.focus(); }
+          else if (e.key === 'Escape' && !panel.hidden) { e.stopPropagation(); close(); }
+        });
+        // Typing a valid date jumps the open calendar to it.
+        input.addEventListener('input', e => {
+          if (!e.isTrusted || panel.hidden) return;
+          const d = parse(input.value);
+          if (d) { focus = d; view = new Date(d.getFullYear(), d.getMonth(), 1); render(); }
+        });
+        panel.addEventListener('click', e => {
+          const day = e.target.closest('.datepicker-day');
+          if (day && !day.disabled) { pick(parse(day.dataset.date)); return; }
+          if (e.target.closest('.datepicker-prev')) { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); render(); return; }
+          if (e.target.closest('.datepicker-next')) { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); render(); return; }
+          if (e.target.closest('[data-dp-today]')) { pick(day0(new Date())); return; }
+          if (e.target.closest('[data-dp-clear]')) pick(null);
+        });
+        grid.addEventListener('keydown', e => {
+          if (!e.target.matches('.datepicker-day')) return;
+          const d = parse(e.target.dataset.date);
+          const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+          if (step) { e.preventDefault(); moveFocus(new Date(d.getFullYear(), d.getMonth(), d.getDate() + step)); }
+          else if (e.key === 'PageUp' || e.key === 'PageDown') { e.preventDefault(); moveFocus(new Date(d.getFullYear(), d.getMonth() + (e.key === 'PageUp' ? -1 : 1), d.getDate())); }
+          else if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); const dow = (d.getDay() + 6) % 7; moveFocus(new Date(d.getFullYear(), d.getMonth(), d.getDate() + (e.key === 'Home' ? -dow : 6 - dow))); }
+          else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true); }
+        });
+        panel.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true); } });
+        document.addEventListener('click', e => { if (!dp.contains(e.target)) close(); });
+        dp.addEventListener('focusout', e => { if (!dp.contains(e.relatedTarget) && e.relatedTarget) close(); });
+      });
+    })();
 
     // Motion previews — replay the sliding dot on each easing/duration card.
     // Autoplays once when the section first scrolls into view; replays on card
