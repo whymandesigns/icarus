@@ -56,6 +56,7 @@
   let FB = {edits:{}, comments:[]};
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;
+  let sideShown = false;                 // panel already on screen — re-render without replaying the entrance
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -397,11 +398,16 @@
   /* ── Side panel ───────────────────────────────────────────────────── */
   function renderSide() {
     document.body.classList.toggle('rv-side-open', sideOpen);
-    if (!sideOpen) { $('#rvSide').innerHTML = ''; return; }
+    if (!sideOpen) { $('#rvSide').innerHTML = ''; sideShown = false; return; }
+    // Every render rebuilds the panel, so switching tabs would otherwise replay
+    // the slide-in and throw the list back to the top. Animate only the first
+    // render after opening, and put the scroll position back afterwards.
+    const entering = !sideShown;
+    const keepScroll = entering ? 0 : ($('#rvSide .body')?.scrollTop || 0);
     const list = FB.comments.filter(c => filter === 'all' || (filter === 'open' ? !c.resolved : c.resolved)).slice().reverse();
     const counts = {open:FB.comments.filter(c => !c.resolved).length, resolved:FB.comments.filter(c => c.resolved).length, all:FB.comments.length};
     const when = c => new Date(c.created).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
-    $('#rvSide').innerHTML = `<div class="rv-side">
+    $('#rvSide').innerHTML = `<div class="rv-side${entering ? ' rv-side-enter' : ''}">
       <div class="h"><b>Comments</b><button class="x" data-rv="close" title="Close">×</button></div>
       <div class="tabs2">${['open','resolved','all'].map(f => `<button class="${filter === f ? 'on' : ''}" data-rv="filter" data-v="${f}">${f[0].toUpperCase() + f.slice(1)} ${counts[f]}</button>`).join('')}</div>
       <div class="body">
@@ -421,6 +427,8 @@
       <div class="foot">${online ? `Shared with everyone who opens this prototype. Commenting as <b>${esc(who() || 'anonymous')}</b> · <button data-rv="who">change</button>` : `Not connected to a shared store — kept in this browser only.`}
         <div><button class="btn" data-rv="copy">Copy comments as prompt</button></div></div>
     </div>`;
+    sideShown = true;
+    if (keepScroll) { const b = $('#rvSide .body'); if (b) b.scrollTop = keepScroll; }
     const ta = $('#rvDraft');
     ta?.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) postDraft(); if (e.key === 'Escape') { draft = null; renderSide(); placePins(); } });
   }
