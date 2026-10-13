@@ -6,7 +6,7 @@
  * localStorage, `?review=0` or the same button turns it off again.
  *
  * Modes (bottom bar, keyboard letters in brackets):
- *   Interact [I]   use the prototype normally
+ *   View [V]       use the prototype normally
  *   Edit text [E]  click any text and retype it — edits persist and are reapplied after re-renders
  *   Comment  [C]   click any element, leave a note; numbered pins + a side panel (open / resolved)
  *   Spotlight [S]  drag a rectangle; everything outside it is dimmed
@@ -56,6 +56,7 @@
   let FB = {edits:{}, comments:[]};
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;
+  let sideShown = false;                 // panel already on screen — re-render without replaying the entrance
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -340,14 +341,19 @@
   document.addEventListener('click', e => { const p = e.target.closest('[data-pin]'); if (p) { selId = p.dataset.pin; sideOpen = true; draft = null; renderSide(); placePins(); [...document.querySelectorAll('[data-cid]')].find(n => n.dataset.cid === selId)?.scrollIntoView({block:'nearest'}); } });
 
   /* ── Bar ──────────────────────────────────────────────────────────── */
+  // Entering comment mode leaves the drawer alone — it is opened by "Show
+  // comments", by picking an element to comment on, or by clicking a pin.
   function setMode(m) {
     mode = m; document.body.classList.toggle('rv-edit', m === 'edit'); document.body.classList.toggle('rv-comment', m === 'comment'); document.body.classList.toggle('rv-spotmode', m === 'spot');
-    showHover(null); if (m === 'comment') sideOpen = true; renderBar(); renderSide();
+    showHover(null); renderBar(); renderSide();
   }
+  // The status at the right end only appears when it has something to say:
+  // "Shared" is the steady state, so it is left out; Local only, Saving… and
+  // Save failed — retrying still show.
   function renderBar() {
     const open = FB.comments.filter(c => !c.resolved).length, edits = Object.keys(FB.edits).length;
     $('#rvBar').innerHTML = `
-      <button class="${mode === 'interact' ? 'on' : ''}" data-rv-mode="interact">Interact <span class="k">I</span></button>
+      <button class="${mode === 'interact' ? 'on' : ''}" data-rv-mode="interact">View <span class="k">V</span></button>
       <button class="${mode === 'edit' ? 'on' : ''}" data-rv-mode="edit">Edit text <span class="k">E</span></button>
       <button class="${mode === 'comment' ? 'on' : ''}" data-rv-mode="comment">Comment <span class="k">C</span>${open ? `<span class="n">${open}</span>` : ''}</button>
       <button class="${mode === 'spot' ? 'on' : ''}" data-rv-mode="spot">Spotlight <span class="k">S</span></button>
@@ -355,7 +361,7 @@
       <span class="sep"></span>
       <button data-rv="side">${sideOpen ? 'Hide' : 'Show'} comments</button>
       ${edits ? `<button data-rv="reset" title="Undo all text edits">↺ ${edits} edit${edits > 1 ? 's' : ''}</button>` : ''}
-      <span class="st">${saveState}</span>`;
+      ${saveState && saveState !== 'Shared' ? `<span class="st">${saveState}</span>` : ''}`;
   }
   document.addEventListener('click', e => {
     const m = e.target.closest('[data-rv-mode]'); if (m) return setMode(m.dataset.rvMode);
@@ -392,11 +398,16 @@
   /* ── Side panel ───────────────────────────────────────────────────── */
   function renderSide() {
     document.body.classList.toggle('rv-side-open', sideOpen);
-    if (!sideOpen) { $('#rvSide').innerHTML = ''; return; }
+    if (!sideOpen) { $('#rvSide').innerHTML = ''; sideShown = false; return; }
+    // Every render rebuilds the panel, so switching tabs would otherwise replay
+    // the slide-in and throw the list back to the top. Animate only the first
+    // render after opening, and put the scroll position back afterwards.
+    const entering = !sideShown;
+    const keepScroll = entering ? 0 : ($('#rvSide .body')?.scrollTop || 0);
     const list = FB.comments.filter(c => filter === 'all' || (filter === 'open' ? !c.resolved : c.resolved)).slice().reverse();
     const counts = {open:FB.comments.filter(c => !c.resolved).length, resolved:FB.comments.filter(c => c.resolved).length, all:FB.comments.length};
     const when = c => new Date(c.created).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
-    $('#rvSide').innerHTML = `<div class="rv-side">
+    $('#rvSide').innerHTML = `<div class="rv-side${entering ? ' rv-side-enter' : ''}">
       <div class="h"><b>Comments</b><button class="x" data-rv="close" title="Close">×</button></div>
       <div class="tabs2">${['open','resolved','all'].map(f => `<button class="${filter === f ? 'on' : ''}" data-rv="filter" data-v="${f}">${f[0].toUpperCase() + f.slice(1)} ${counts[f]}</button>`).join('')}</div>
       <div class="body">
@@ -416,6 +427,8 @@
       <div class="foot">${online ? `Shared with everyone who opens this prototype. Commenting as <b>${esc(who() || 'anonymous')}</b> · <button data-rv="who">change</button>` : `Not connected to a shared store — kept in this browser only.`}
         <div><button class="btn" data-rv="copy">Copy comments as prompt</button></div></div>
     </div>`;
+    sideShown = true;
+    if (keepScroll) { const b = $('#rvSide .body'); if (b) b.scrollTop = keepScroll; }
     const ta = $('#rvDraft');
     ta?.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) postDraft(); if (e.key === 'Escape') { draft = null; renderSide(); placePins(); } });
   }
@@ -426,7 +439,7 @@
     const k = e.key.toLowerCase();
     if (k === 'e') setMode(mode === 'edit' ? 'interact' : 'edit');
     if (k === 'c') setMode(mode === 'comment' ? 'interact' : 'comment');
-    if (k === 'i') setMode('interact');
+    if (k === 'v' || k === 'i') setMode('interact');   // I kept working for muscle memory
     if (k === 's') setMode(mode === 'spot' ? 'interact' : 'spot');
     if (e.key === 'Escape' && spot) { e.stopImmediatePropagation(); clearSpot(); return; }   // spotlight first, then the mode
     if (e.key === 'Escape' && mode !== 'interact') { e.stopImmediatePropagation(); draft = null; setMode('interact'); placePins(); }

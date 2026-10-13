@@ -6,7 +6,7 @@
  * `?review=0` turns it off again).
  *
  * What it gives reviewers, from a bar at the bottom of the page:
- *   Interact   – use the prototype normally
+ *   View       – use the prototype normally
  *   Edit text  – click any text and retype it (persisted, reapplied after re-renders)
  *   Comment    – click any element and leave a note on it; pins + side panel
  *   Spotlight  – drag a rectangle; everything outside it is dimmed
@@ -65,7 +65,11 @@ body.rv-spotmode{user-select:none;}
 
 /* Side panel */
 .rv-side{position:fixed;top:0;right:0;bottom:0;width:360px;z-index:2100;background:#fff;border-left:1px solid var(--rv-line);box-shadow:-8px 0 30px rgba(0,0,0,.12);
-  display:flex;flex-direction:column;font-size:13px;line-height:19px;animation:rvin .18s ease-out;}
+  display:flex;flex-direction:column;font-size:13px;line-height:19px;}
+/* Entrance only — the panel is rebuilt on every render (tab switch, new comment),
+   and animating those made the drawer jump about. JS adds this class on the first
+   render after opening and not after. */
+.rv-side.rv-side-enter{animation:rvin .18s ease-out;}
 @keyframes rvin{from{transform:translateX(24px);}}
 .rv-side .h{display:flex;align-items:center;gap:8px;padding:16px 16px 12px;border-bottom:1px solid var(--rv-line-soft);}
 .rv-side .h b{font-size:15px;flex:1;}

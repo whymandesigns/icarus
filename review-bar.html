@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="./review.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--ic-space-2);
@@ -98,6 +99,19 @@
       border: 1px solid var(--color-border-strong); border-radius: 3px;
       padding: 0 4px; margin-left: 6px; color: var(--color-text-muted);
     }
+
+    /* "Try it here" — the real bar, running on this page */
+    .doc-try {
+      display: flex; align-items: center; gap: var(--ic-space-3);
+      flex-wrap: wrap;
+      padding: var(--ic-space-4);
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      margin: var(--ic-space-4) 0;
+    }
+    .doc-try p { margin: 0; font: var(--type-body-sm); color: var(--color-text-muted); flex: 1 1 260px; }
+    .doc-try .doc-try-state { font-weight: 600; color: var(--color-text); }
 
     /* Mock illustration of the bar, a pinned comment and the side panel */
     .mock {
@@ -199,6 +213,11 @@
         <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><i class="ph ph-copy"></i><span>Copy</span></button>
         <div class="doc-code">https://opz-prototypes.vercel.app/action-trace/<span class="arrow">?review=1</span></div>
       </div>
+
+      <div class="doc-try">
+        <p>This page is running the bar too. Turn it on and comment on this documentation, retype a heading or spotlight a paragraph — the same tooling a prototype gets. Comments made here stay in <span class="doc-try-state">your browser only</span>, since the docs have no store behind them.</p>
+        <button class="btn btn-primary" type="button" id="docTry">Turn the review bar on</button>
+      </div>
     </section>
 
     <section class="doc-section">
@@ -224,7 +243,7 @@
           </div>
         </div>
         <div class="mock-bar">
-          <span>Interact</span><span>Edit text</span><span class="on">Comment <i class="n">1</i></span><span>Spotlight</span>
+          <span>View</span><span>Edit text</span><span class="on">Comment <i class="n">1</i></span><span>Spotlight</span>
           <span class="sep"></span><span>Hide comments</span>
         </div>
       </div>
@@ -232,18 +251,18 @@
       <table class="doc-table">
         <thead><tr><th>Mode</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td>Interact <kbd>I</kbd></td><td>Use the prototype normally. The bar stays out of the way.</td></tr>
+          <tr><td>View <kbd>V</kbd></td><td>Read the prototype and use it normally. The bar stays out of the way. <kbd>I</kbd> still works, from when this mode was called Interact.</td></tr>
           <tr><td>Edit text <kbd>E</kbd></td><td>Hover highlights any text; click it and retype. Enter saves, Esc cancels. Edits are stored by element path and reapplied whenever the prototype re-renders, so they survive navigation inside the page. The bar shows an edit counter with an undo-all button.</td></tr>
-          <tr><td>Comment <kbd>C</kbd></td><td>Hover outlines elements; click one and type a note in the side panel (⌘↵ posts). A numbered pin marks the element. The panel lists Open / Resolved / All with Resolve, Delete and “Go to” when the prototype reports screens.</td></tr>
+          <tr><td>Comment <kbd>C</kbd></td><td>Hover outlines elements; click one and type a note in the panel that opens beside it (⌘↵ posts). A numbered pin marks the element. Switching to this mode leaves the panel alone — it opens when you pick an element, click a pin, or press <strong>Show comments</strong>. The panel lists Open / Resolved / All with Resolve, Delete and “Go to” when the prototype reports screens.</td></tr>
           <tr><td>Spotlight <kbd>S</kbd></td><td>Drag a rectangle and everything outside it is dimmed, for screenshots and walkthroughs. A plain click or Esc clears it.</td></tr>
         </tbody>
       </table>
-      <p>Esc always steps back: it clears a spotlight first, then returns to Interact.</p>
+      <p>Esc always steps back: it clears a spotlight first, then returns to View.</p>
     </section>
 
     <section class="doc-section">
       <h2 class="h2">Shared with everyone</h2>
-      <p>Comments and text edits are not private. The bar sends every change to a small store at <code>/api/feedback</code> and polls it every few seconds, so anyone who opens the same prototype sees the same pins, the same comments and the same edited copy, and sees new ones appear while the page is open. The first time you post you are asked for your name; it is shown on your comments and edits. The status at the right end of the bar reads <strong>Shared</strong> when the store is reachable and <strong>Local only</strong> when it is not, in which case everything stays in that browser.</p>
+      <p>Comments and text edits are not private. The bar sends every change to a small store at <code>/api/feedback</code> and polls it every few seconds, so anyone who opens the same prototype sees the same pins, the same comments and the same edited copy, and sees new ones appear while the page is open. The first time you post you are asked for your name; it is shown on your comments and edits. The right end of the bar stays empty while this is working, and speaks up only when something needs saying: <strong>Local only</strong> when the store cannot be reached, in which case everything stays in that browser until it returns, and <strong>Saving…</strong> or <strong>Save failed — retrying</strong> around a write.</p>
 
       <h3 class="h3" style="margin-top: var(--ic-space-5)">Locally</h3>
       <p>The Icarus dev server is the store. It writes each prototype's feedback to <code>feedback.json</code> next to its <code>index.html</code>.</p>
@@ -276,7 +295,7 @@
         </li>
         <li>
           <strong>Redeploy.</strong>
-          <span>The bar switches from "Local only" to "Shared" on the live link. Until the database is connected the function answers 503 and the bar keeps working locally, queueing its changes until the store appears.</span>
+          <span>The "Local only" warning disappears from the live link once the store answers. Until the database is connected the function answers 503 and the bar keeps working locally, queueing its changes until the store appears.</span>
         </li>
         <li>
           <strong>Optional — gate writes.</strong>
@@ -397,6 +416,25 @@
         setTimeout(() => code.classList.remove('is-flash'), 600);
       });
     });
+  </script>
+
+  <!-- The review bar itself, so the page it documents can be reviewed with it.
+       review.js mounts its own circle button bottom-right and reads ?review=1;
+       the button above is the same switch, said in words. -->
+  <script src="./review.js"></script>
+  <script>
+    (() => {
+      const btn = document.getElementById('docTry');
+      const KEY = 'rv:' + location.pathname.replace(/index\.html$/, '') + ':on';
+      const isOn = () => { try { return localStorage.getItem(KEY) === '1'; } catch { return false; } };
+      const paint = () => { btn.textContent = isOn() ? 'Turn the review bar off' : 'Turn the review bar on'; };
+      btn.addEventListener('click', () => {
+        const u = new URL(location.href);
+        u.searchParams.set('review', isOn() ? '0' : '1');
+        location.href = u.href;                 // review.js persists the choice on load
+      });
+      paint();
+    })();
   </script>
 </body>
 </html>
