@@ -344,6 +344,9 @@
     mode = m; document.body.classList.toggle('rv-edit', m === 'edit'); document.body.classList.toggle('rv-comment', m === 'comment'); document.body.classList.toggle('rv-spotmode', m === 'spot');
     showHover(null); if (m === 'comment') sideOpen = true; renderBar(); renderSide();
   }
+  // The status at the right end only appears when it has something to say:
+  // "Shared" is the steady state, so it is left out; Local only, Saving… and
+  // Save failed — retrying still show.
   function renderBar() {
     const open = FB.comments.filter(c => !c.resolved).length, edits = Object.keys(FB.edits).length;
     $('#rvBar').innerHTML = `
@@ -355,7 +358,7 @@
       <span class="sep"></span>
       <button data-rv="side">${sideOpen ? 'Hide' : 'Show'} comments</button>
       ${edits ? `<button data-rv="reset" title="Undo all text edits">↺ ${edits} edit${edits > 1 ? 's' : ''}</button>` : ''}
-      <span class="st">${saveState}</span>`;
+      ${saveState && saveState !== 'Shared' ? `<span class="st">${saveState}</span>` : ''}`;
   }
   document.addEventListener('click', e => {
     const m = e.target.closest('[data-rv-mode]'); if (m) return setMode(m.dataset.rvMode);
