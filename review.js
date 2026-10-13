@@ -340,9 +340,11 @@
   document.addEventListener('click', e => { const p = e.target.closest('[data-pin]'); if (p) { selId = p.dataset.pin; sideOpen = true; draft = null; renderSide(); placePins(); [...document.querySelectorAll('[data-cid]')].find(n => n.dataset.cid === selId)?.scrollIntoView({block:'nearest'}); } });
 
   /* ── Bar ──────────────────────────────────────────────────────────── */
+  // Entering comment mode leaves the drawer alone — it is opened by "Show
+  // comments", by picking an element to comment on, or by clicking a pin.
   function setMode(m) {
     mode = m; document.body.classList.toggle('rv-edit', m === 'edit'); document.body.classList.toggle('rv-comment', m === 'comment'); document.body.classList.toggle('rv-spotmode', m === 'spot');
-    showHover(null); if (m === 'comment') sideOpen = true; renderBar(); renderSide();
+    showHover(null); renderBar(); renderSide();
   }
   // The status at the right end only appears when it has something to say:
   // "Shared" is the steady state, so it is left out; Local only, Saving… and
