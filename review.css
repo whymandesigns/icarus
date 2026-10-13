@@ -6,7 +6,7 @@
  * `?review=0` turns it off again).
  *
  * What it gives reviewers, from a bar at the bottom of the page:
- *   Interact   – use the prototype normally
+ *   View       – use the prototype normally
  *   Edit text  – click any text and retype it (persisted, reapplied after re-renders)
  *   Comment    – click any element and leave a note on it; pins + side panel
  *   Spotlight  – drag a rectangle; everything outside it is dimmed

@@ -6,7 +6,7 @@
  * localStorage, `?review=0` or the same button turns it off again.
  *
  * Modes (bottom bar, keyboard letters in brackets):
- *   Interact [I]   use the prototype normally
+ *   View [V]       use the prototype normally
  *   Edit text [E]  click any text and retype it — edits persist and are reapplied after re-renders
  *   Comment  [C]   click any element, leave a note; numbered pins + a side panel (open / resolved)
  *   Spotlight [S]  drag a rectangle; everything outside it is dimmed
@@ -353,7 +353,7 @@
   function renderBar() {
     const open = FB.comments.filter(c => !c.resolved).length, edits = Object.keys(FB.edits).length;
     $('#rvBar').innerHTML = `
-      <button class="${mode === 'interact' ? 'on' : ''}" data-rv-mode="interact">Interact <span class="k">I</span></button>
+      <button class="${mode === 'interact' ? 'on' : ''}" data-rv-mode="interact">View <span class="k">V</span></button>
       <button class="${mode === 'edit' ? 'on' : ''}" data-rv-mode="edit">Edit text <span class="k">E</span></button>
       <button class="${mode === 'comment' ? 'on' : ''}" data-rv-mode="comment">Comment <span class="k">C</span>${open ? `<span class="n">${open}</span>` : ''}</button>
       <button class="${mode === 'spot' ? 'on' : ''}" data-rv-mode="spot">Spotlight <span class="k">S</span></button>
@@ -439,7 +439,7 @@
     const k = e.key.toLowerCase();
     if (k === 'e') setMode(mode === 'edit' ? 'interact' : 'edit');
     if (k === 'c') setMode(mode === 'comment' ? 'interact' : 'comment');
-    if (k === 'i') setMode('interact');
+    if (k === 'v' || k === 'i') setMode('interact');   // I kept working for muscle memory
     if (k === 's') setMode(mode === 'spot' ? 'interact' : 'spot');
     if (e.key === 'Escape' && spot) { e.stopImmediatePropagation(); clearSpot(); return; }   // spotlight first, then the mode
     if (e.key === 'Escape' && mode !== 'interact') { e.stopImmediatePropagation(); draft = null; setMode('interact'); placePins(); }
