@@ -3183,6 +3183,3 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
-
-/* The annotation tool's CSS lives in devtools.css — author tooling, not a
- * user-facing UI primitive. See design.md §7 for the four-file inline order. */
