@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
   <link rel="stylesheet" href="./devtools.css" />
+  <link rel="stylesheet" href="./plugins.css" />
   <style>
     /* .stack, .row, .grid-2 live in components.css (Layout helpers section).
        This block holds example.html's own demo-only chrome below. */
@@ -5754,7 +5755,8 @@
     // (Picasso) mapping on hover. Registry is the single source of truth; CSS
     // lives in devtools.css.
     (function componentMap() {
-      const active = new URLSearchParams(location.search).has('map');
+      const active = new URLSearchParams(location.search).get('map') === '1';
+      window.__icarusComponentMap = true;   // the launcher lists this page as carrying the map
       // Nav goggles toggle — flips ?map=1 on/off (reloads). Wired independently
       // of the registry fetch so it always works.
       const toggleBtn = document.querySelector('.map-toggle');
@@ -5763,7 +5765,7 @@
         toggleBtn.classList.toggle('is-active', active);
         toggleBtn.addEventListener('click', () => {
           const p = new URLSearchParams(location.search);
-          if (p.has('map')) p.delete('map'); else p.set('map', '1');
+          p.set('map', p.get('map') === '1' ? '0' : '1');
           location.search = p.toString();
         });
       }
@@ -6042,5 +6044,6 @@
       }).catch(() => {});
     })();
   </script>
+  <script src="./plugins.js"></script>
 </body>
 </html>
