@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>States switcher — designmd</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <style>
+    .doc-back {
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      font: var(--type-body-sm); color: var(--color-text-muted);
+      text-decoration: none; margin-bottom: var(--ic-space-4);
+    }
+    .doc-back:hover { color: var(--color-text); }
+    .doc-hero {
+      padding: var(--ic-space-6) 0 var(--ic-space-7);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--ic-space-7);
+    }
+    .doc-hero h1 { margin: 0 0 var(--ic-space-3); }
+    .doc-hero p  { font: var(--type-body-lg); color: var(--color-text-muted); margin: 0; max-width: 60ch; }
+
+    .doc-section { margin-bottom: var(--ic-space-7); }
+    .doc-section h2 { margin: 0 0 var(--ic-space-3); }
+    .doc-section h3 { margin: var(--ic-space-5) 0 var(--ic-space-2); }
+    .doc-section p  { color: var(--color-text-muted); }
+    .doc-section p > code,
+    .doc-section li > code,
+    .doc-section li span > code,
+    .doc-section td > code {
+      font: var(--type-mono); font-size: 12px;
+      background: var(--color-surface-muted);
+      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      color: var(--color-text);
+    }
+
+    .doc-steps { padding-left: var(--ic-space-5); }
+    .doc-steps li { margin-bottom: var(--ic-space-3); color: var(--color-text); }
+    .doc-steps li strong { display: block; margin-bottom: 2px; }
+    .doc-steps li span   { color: var(--color-text-muted); font: var(--type-body-sm); }
+
+    .doc-code-wrap { position: relative; margin: var(--ic-space-4) 0; }
+    .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
+    .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
+    .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code {
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-4);
+      font: var(--type-mono); font-size: 13px;
+      color: var(--color-text);
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.6;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .doc-code .arrow { color: var(--color-accent); }
+    .doc-code .cm { color: var(--color-text-subtle); }
+    .doc-code-copy {
+      position: absolute;
+      top: var(--ic-space-2);
+      right: var(--ic-space-2);
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 4px 10px;
+      border-radius: var(--ic-radius-sm);
+      font: var(--type-body-sm); font-weight: 500;
+      cursor: pointer;
+      transition: background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .doc-code-copy:hover { background: var(--color-surface-muted); }
+    .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
+    .doc-code-copy .icon { width: 14px; height: 14px; }
+
+    .doc-callout {
+      display: flex; gap: var(--ic-space-3);
+      padding: var(--ic-space-4);
+      background: var(--color-info-subtle);
+      border: 1px solid var(--color-info);
+      border-radius: var(--ic-radius-md);
+      color: var(--color-text);
+      margin: var(--ic-space-4) 0;
+    }
+    .doc-callout.is-warning { background: var(--color-warning-subtle); border-color: var(--color-warning); }
+    .doc-callout .icon { color: var(--color-info); width: 20px; height: 20px; flex-shrink: 0; }
+    .doc-callout.is-warning .icon { color: var(--color-warning); }
+    .doc-callout p { margin: 0; font: var(--type-body-sm); color: var(--color-text); }
+
+    .doc-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); margin: var(--ic-space-4) 0; }
+    .doc-table th, .doc-table td { text-align: left; padding: var(--ic-space-2) var(--ic-space-3); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    .doc-table th { color: var(--color-text-muted); font-weight: 500; }
+    .doc-table td { color: var(--color-text); }
+    .doc-table td:first-child { white-space: nowrap; font-weight: 600; }
+    .doc-table a { color: var(--color-text-link); text-decoration: none; }
+    .doc-table a:hover { text-decoration: underline; }
+
+    /* Mock: a prototype page with the switcher sitting bottom-left, drawn with
+       the same classes the prototypes use (prefix "sw-" here). */
+    .mock {
+      position: relative;
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      height: 360px;
+      overflow: hidden;
+      margin: var(--ic-space-4) 0;
+    }
+    .mock-page {
+      position: absolute; inset: var(--ic-space-5);
+      background: var(--color-surface);
+      border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-sm);
+      padding: var(--ic-space-4);
+      display: flex; flex-direction: column; gap: var(--ic-space-3);
+    }
+    .mock-page .mock-h { width: 140px; height: 14px; background: var(--color-text); opacity: 0.85; border-radius: 3px; }
+    .mock-page .mock-row { width: 60%; height: 8px; background: var(--color-border-strong); border-radius: 3px; }
+    .mock-page .mock-row.wide { width: 80%; }
+    .mock-page .mock-alert {
+      margin-top: auto; align-self: flex-end; width: 260px;
+      padding: var(--ic-space-3); border-radius: var(--ic-radius-sm);
+      background: var(--color-warning-subtle); border: 1px solid var(--color-warning);
+      font: var(--type-body-sm); color: var(--color-text);
+    }
+    .mock-url {
+      position: absolute; top: var(--ic-space-2); left: 50%; transform: translateX(-50%);
+      font: var(--type-mono); font-size: 11px; color: var(--color-text-subtle);
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 2px 10px;
+    }
+
+    /* The switcher itself, exactly as the prototypes style it (initiatives / toptrack flavour). */
+    .sw-switcher { position: absolute; left: 16px; bottom: 16px; z-index: 5; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--ic-radius-lg); box-shadow: var(--ic-shadow-lg); overflow: hidden; }
+    .sw-switcher-head { display: flex; align-items: center; justify-content: space-between; padding: var(--ic-space-2) var(--ic-space-3); background: var(--ic-palette-graphite-800); color: var(--color-text-inverse); font: var(--ic-weight-semibold) var(--ic-text-xxs)/1.4 var(--ic-font-sans); letter-spacing: .06em; text-transform: uppercase; }
+    .sw-switcher-toggle { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; }
+    .sw-switcher-body { max-height: 240px; overflow: auto; padding: var(--ic-space-2); display: flex; flex-direction: column; gap: var(--ic-space-3); }
+    .sw-switcher.is-collapsed .sw-switcher-body { display: none; }
+    .sw-switcher-group { display: flex; flex-direction: column; gap: 4px; }
+    .sw-switcher-group > span { font-size: var(--ic-text-xxs); text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-subtle); font-weight: var(--ic-weight-semibold); padding: 2px 4px 0; }
+    .sw-switcher-group button { text-align: left; padding: 5px 8px; border: 1px solid var(--color-border); border-radius: var(--ic-radius-sm); background: var(--color-surface); color: var(--color-text); cursor: pointer; font: var(--type-body-sm); }
+    .sw-switcher-group button:hover { background: var(--color-surface-muted); border-color: var(--color-border-strong); }
+    .sw-switcher-group button.is-current { border-color: var(--color-accent); color: var(--color-accent); font-weight: var(--ic-weight-semibold); }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+
+    <header class="doc-hero">
+      <h1 class="h1">States switcher</h1>
+      <p>A floating panel in the bottom-left corner of a prototype that jumps between its designed states: default, empty, loading, error, long text, each step of a flow. Hidden until the page is opened with <code>?states=1</code>, so shared links stay clean. A prototype convention, copied into each prototype that needs it.</p>
+    </header>
+
+    <section class="doc-section">
+      <h2 class="h2">Enable it</h2>
+      <p>Open any prototype that carries the switcher with <code>?states=1</code> and the panel appears bottom-left. Click a state to show it; the current one is outlined in the accent colour. The <strong>–</strong> button in the header collapses the panel to its title bar, and that choice is remembered for the session. Without the parameter the panel is not rendered at all.</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">https://opz-prototypes.vercel.app/initiatives/<span class="arrow">?states=1</span></div>
+      </div>
+      <p>Each state also has a direct link. Add <code>&amp;state=&lt;key&gt;</code> to land on it straight away, which is how states are shared, screenshotted or compared side by side. The keys are the <code>data-state</code> values listed below.</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">https://opz-prototypes.vercel.app/initiatives/<span class="arrow">?states=1&amp;state=create-errors</span></div>
+      </div>
+      <p>The switcher and the <a href="./review-bar.html" style="color: var(--color-text-link)">review bar</a> are independent and stack: <code>?states=1&amp;review=1</code> lets a reviewer comment on a specific state.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">How it looks</h2>
+      <div class="mock" aria-hidden="true">
+        <div class="mock-url">/initiatives/?states=1&amp;state=create-duplicate</div>
+        <div class="mock-page">
+          <div class="mock-h"></div>
+          <div class="mock-row wide"></div>
+          <div class="mock-row"></div>
+          <div class="mock-row wide"></div>
+          <div class="mock-alert">An initiative called “Partner portal” already exists.</div>
+        </div>
+        <div class="sw-switcher" id="sw-demo">
+          <div class="sw-switcher-head"><span>States</span><button class="sw-switcher-toggle" type="button" aria-label="Collapse states">–</button></div>
+          <div class="sw-switcher-body">
+            <div class="sw-switcher-group"><span>Table</span>
+              <button type="button" data-state="default">Default</button>
+              <button type="button" data-state="with-rows">Drafts + created rows</button>
+            </div>
+            <div class="sw-switcher-group"><span>Create drawer</span>
+              <button type="button" data-state="create-blank">Blank</button>
+              <button type="button" data-state="create-errors">Required errors</button>
+              <button type="button" data-state="create-duplicate" class="is-current">Duplicate notice</button>
+              <button type="button" data-state="create-filled">Filled, ready to create</button>
+            </div>
+            <div class="sw-switcher-group"><span>View mode</span>
+              <button type="button" data-state="view-full">View — all fields</button>
+              <button type="button" data-state="view-activity">View — activity log</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>The panel is 232px wide, dark title bar, white body, buttons grouped under small uppercase labels. It sits bottom-left on purpose: the drawers, modals and side panels it drives open on the right, and the review bar's circle button owns the bottom-right corner. The mock above is interactive, try the buttons and the collapse toggle.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">How it works</h2>
+      <p>Three parts live in the prototype's <code>index.html</code>, each under the prototype's own class prefix (<code>in-</code>, <code>tt-</code>, <code>pr-</code>, <code>ig-</code>, <code>imp-</code>): a block of CSS, the panel markup with one <code>data-state</code> button per state, and a script with a <code>STATES</code> map keyed by those same names. The script does nothing unless <code>?states=1</code> is in the URL, then reveals the panel, wires the buttons and runs the entry for <code>?state=</code> (or <code>default</code>).</p>
+      <p>There are two ways a state gets produced, and prototypes pick whichever fits:</p>
+      <table class="doc-table">
+        <thead><tr><th>Approach</th><th>How a click works</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Reload and replay</td>
+            <td>The button sets <code>?states=1&amp;state=&lt;key&gt;</code> and reloads. On load the state's entry drives the real UI step by step: opens the drawer, types into fields, picks from selects, clicks Create. Every state therefore starts from a clean page and exercises the real code paths, which keeps it honest as the prototype evolves.</td>
+            <td>Initiatives, Initiatives full screen</td>
+          </tr>
+          <tr>
+            <td>In-page re-render</td>
+            <td>The button swaps the content region without reloading: either by re-rendering from data (TopTrack sets loading / error / empty flags and re-renders the dashboard) or by swapping in markup kept in <code>&lt;template&gt;</code> elements (Integrations v3, CSV export, Performance reviews). Fast, and the markup for each state is captured once rather than rebuilt by script.</td>
+            <td>TopTrack, Integrations v3, CSV export, Performance reviews</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="doc-callout">
+        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <p>A state can be kept but hidden from the panel by commenting its button out. It stays reachable through <code>&amp;state=&lt;key&gt;</code>, which is what Initiatives does for <code>empty</code>, <code>no-results</code> and <code>long-text</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Where it is today</h2>
+      <p>The switcher is not part of <code>inline.py</code> and the master prompt does not scaffold it, so a prototype only has it if it was added by hand. These do, as of 14 Oct 2026:</p>
+      <table class="doc-table">
+        <thead><tr><th>Prototype</th><th>Prefix</th><th>States</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://opz-prototypes.vercel.app/initiatives/?states=1">Initiatives</a></td><td><code>in-</code></td><td>Table (default, with-rows), create drawer (blank, required errors, duplicate notice, filled), draft reopened, edit mode, view (all fields, required only, activity log). Hidden: empty, no-results, long-text.</td></tr>
+          <tr><td><a href="https://opz-prototypes.vercel.app/initiatives-full-screen/?states=1">Initiatives full screen</a></td><td><code>in-</code></td><td>Same set as Initiatives plus <code>create-leave</code> (unsaved-changes guard).</td></tr>
+          <tr><td><a href="https://opz-prototypes.vercel.app/toptrack/?states=1">TopTrack</a></td><td><code>tt-</code></td><td>default, loading, error, empty, no-core, long, no-results.</td></tr>
+          <tr><td><a href="https://opz-prototypes.vercel.app/csv-export/?states=1">CSV export</a></td><td><code>imp-</code></td><td>Every step of the import flow (upload, validating, preview, committing, result) and its failure cases (too large, over limit, no data, duplicate, all invalid, nothing changed, permission, timeout, stale, conflict) plus the three resume states.</td></tr>
+          <tr><td><a href="https://opz-prototypes.vercel.app/performance-reviews/?states=1">Performance reviews</a></td><td><code>pr-</code></td><td>My Reports populated, empty (no assessments).</td></tr>
+          <tr><td><a href="https://opz-prototypes.vercel.app/integrations-v3/?states=1">Integrations v3</a></td><td><code>ig-</code></td><td>default only; the state machine is in place for more.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Add it to a prototype</h2>
+      <ol class="doc-steps">
+        <li><strong>Pick a prefix.</strong><span>Use the prototype's existing class prefix so the switcher's CSS cannot collide with the design system or another prototype's inlined block.</span></li>
+        <li><strong>Paste the three blocks below.</strong><span>CSS into the prototype's own <code>&lt;style&gt;</code> (not the design-system block, which <code>inline.py</code> rewrites), the panel markup at the end of <code>&lt;body&gt;</code>, the script after it.</span></li>
+        <li><strong>Add one button and one <code>STATES</code> entry per designed state.</strong><span>Keep the key identical in both places. Group buttons by screen or flow step. Cover the states the system asks for: empty, loading, error, at scale, long text.</span></li>
+        <li><strong>Make each state reproducible.</strong><span>Drive the real UI (click, type, pick) or re-render from data; avoid hand-editing DOM into a shape the prototype could never reach on its own.</span></li>
+        <li><strong>Mention it on the feature's card.</strong><span>Reviewers only find the panel if they know about <code>?states=1</code>. Link the most useful states directly with <code>&amp;state=</code>.</span></li>
+      </ol>
+
+      <h3 class="h3">Snippet (reload-and-replay flavour)</h3>
+      <p>Replace <code>xx</code> with the prototype's prefix. The reload approach is shown because it works for any prototype without knowing how it renders; swap the body of <code>go()</code> for an in-page re-render if the prototype re-renders from data anyway.</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy snippet"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">&lt;style&gt;
+  <span class="cm">/* Prototype state switcher (?states=1). Bottom-left so it stays clear of drawers. */</span>
+  .xx-switcher { position: fixed; left: 16px; bottom: 16px; z-index: 999; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--ic-radius-lg); box-shadow: var(--ic-shadow-lg); overflow: hidden; }
+  .xx-switcher[hidden] { display: none; }
+  .xx-switcher-head { display: flex; align-items: center; justify-content: space-between; padding: var(--ic-space-2) var(--ic-space-3); background: var(--ic-palette-graphite-800); color: var(--color-text-inverse); font: var(--ic-weight-semibold) var(--ic-text-xxs)/1.4 var(--ic-font-sans); letter-spacing: .06em; text-transform: uppercase; }
+  .xx-switcher-toggle { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; }
+  .xx-switcher-body { max-height: 64vh; overflow: auto; padding: var(--ic-space-2); display: flex; flex-direction: column; gap: var(--ic-space-3); }
+  .xx-switcher.is-collapsed .xx-switcher-body { display: none; }
+  .xx-switcher-group { display: flex; flex-direction: column; gap: 4px; }
+  .xx-switcher-group &gt; span { font-size: var(--ic-text-xxs); text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-subtle); font-weight: var(--ic-weight-semibold); padding: 2px 4px 0; }
+  .xx-switcher-group button { text-align: left; padding: 5px 8px; border: 1px solid var(--color-border); border-radius: var(--ic-radius-sm); background: var(--color-surface); color: var(--color-text); cursor: pointer; font: var(--type-body-sm); }
+  .xx-switcher-group button:hover { background: var(--color-surface-muted); border-color: var(--color-border-strong); }
+  .xx-switcher-group button.is-current { border-color: var(--color-accent); color: var(--color-accent); font-weight: var(--ic-weight-semibold); }
+&lt;/style&gt;
+
+&lt;!-- Prototype state switcher — ?states=1. One button per state; keys match STATES below. --&gt;
+&lt;div class="xx-switcher" id="xx-switcher" hidden&gt;
+  &lt;div class="xx-switcher-head"&gt;&lt;span&gt;States&lt;/span&gt;&lt;button class="xx-switcher-toggle" type="button" aria-label="Collapse states"&gt;–&lt;/button&gt;&lt;/div&gt;
+  &lt;div class="xx-switcher-body"&gt;
+    &lt;div class="xx-switcher-group"&gt;&lt;span&gt;Page&lt;/span&gt;
+      &lt;button type="button" data-state="default"&gt;Default&lt;/button&gt;
+      &lt;button type="button" data-state="empty"&gt;Empty&lt;/button&gt;
+      &lt;button type="button" data-state="loading"&gt;Loading&lt;/button&gt;
+      &lt;button type="button" data-state="error"&gt;Load error&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function () {
+    const params = new URLSearchParams(location.search);
+    if (params.get('states') !== '1') return;              <span class="cm">// dormant unless asked for</span>
+    const sw = document.getElementById('xx-switcher');
+    sw.hidden = false;
+    const current = params.get('state') || 'default';
+    sw.querySelectorAll('[data-state]').forEach(b =&gt; {
+      b.classList.toggle('is-current', b.dataset.state === current);
+      b.addEventListener('click', () =&gt; {                  <span class="cm">// reload with the state in the URL</span>
+        const p = new URLSearchParams(location.search);
+        p.set('states', '1'); p.set('state', b.dataset.state);
+        location.search = p.toString();
+      });
+    });
+    const toggle = sw.querySelector('.xx-switcher-toggle');
+    const setCollapsed = on =&gt; { sw.classList.toggle('is-collapsed', on); toggle.textContent = on ? '+' : '–'; try { sessionStorage.setItem('xx-switcher-collapsed', on ? '1' : ''); } catch (_) {} };
+    try { if (sessionStorage.getItem('xx-switcher-collapsed')) setCollapsed(true); } catch (_) {}
+    toggle.addEventListener('click', () =&gt; setCollapsed(!sw.classList.contains('is-collapsed')));
+
+    <span class="cm">// One entry per state. Reach each one through the prototype's real UI.</span>
+    const W = ms =&gt; new Promise(r =&gt; setTimeout(r, ms));
+    const STATES = {
+      default: async () =&gt; {},
+      empty:   async () =&gt; { ROWS.length = 0; render(); },
+      loading: async () =&gt; { document.body.classList.add('is-loading'); },
+      error:   async () =&gt; { document.body.classList.add('is-load-error'); },
+    };
+    (STATES[current] || STATES.default)();
+  })();
+&lt;/script&gt;</div>
+      </div>
+      <div class="doc-callout is-warning">
+        <svg class="icon"><use href="./icons.svg#i-warning"/></svg>
+        <p>Keep the switcher's CSS out of the design-system <code>&lt;style&gt;</code> block. <code>inline.py</code> replaces that block on every sync and would drop the switcher's styles with it.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Copy-to-clipboard for the page's .doc-code blocks
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.parentElement.querySelector('.doc-code');
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        btn.classList.add('is-copied');
+        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('span').textContent = 'Copied';
+        setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('span').textContent = 'Copy';
+        }, 1500);
+      });
+    });
+    document.querySelectorAll('.doc-code-wrap > .doc-code').forEach(code => {
+      code.addEventListener('click', async () => {
+        if (window.getSelection().toString()) return;
+        const btn = code.parentElement.querySelector('[data-copy]');
+        if (btn) { btn.click(); return; }
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        code.classList.add('is-flash');
+        setTimeout(() => code.classList.remove('is-flash'), 600);
+      });
+    });
+
+    // The mock switcher: same behaviour as the real one, minus the reload.
+    (() => {
+      const sw = document.getElementById('sw-demo');
+      const url = document.querySelector('.mock-url');
+      sw.querySelectorAll('[data-state]').forEach(b => b.addEventListener('click', () => {
+        sw.querySelectorAll('[data-state]').forEach(x => x.classList.toggle('is-current', x === b));
+        url.textContent = '/initiatives/?states=1&state=' + b.dataset.state;
+      }));
+      const toggle = sw.querySelector('.sw-switcher-toggle');
+      toggle.addEventListener('click', () => {
+        const on = !sw.classList.contains('is-collapsed');
+        sw.classList.toggle('is-collapsed', on);
+        toggle.textContent = on ? '+' : '–';
+      });
+    })();
+  </script>
+</body>
+</html>
