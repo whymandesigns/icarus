@@ -324,6 +324,7 @@
   <symbol id="i-check-circle" viewBox="0 0 24 24"><use href="#i-check"/></symbol>
   <symbol id="i-chevron-down" viewBox="0 0 24 24"><use href="#i-chevron" transform="rotate(90 12 12)"/></symbol>
   <symbol id="i-chevron-left" viewBox="0 0 24 24"><use href="#i-chevron" transform="rotate(180 12 12)"/></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24"><use href="#i-chevron"/></symbol>
   <symbol id="i-code" viewBox="0 0 24 24"><use href="#i-code-block"/></symbol>
   <symbol id="i-cycle" viewBox="0 0 24 24"><use href="#i-rotate"/></symbol>
   <symbol id="i-dots-three" viewBox="0 0 24 24"><use href="#i-more"/></symbol>
