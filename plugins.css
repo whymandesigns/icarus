@@ -113,6 +113,12 @@ body:has(#rvBar) .pg-panel { bottom: 130px; }
    then, and the launcher does the same rather than float over the comments. */
 body.rv-side-open .pg-fab, body.rv-side-open .pg-panel { display: none; }
 
+/* Same courtesy for the states switcher, which sits bottom-left and is tall:
+   with the bar on, its last few states ended up behind it. The rule lives here
+   rather than in each prototype because the switcher is hand-copied with a
+   different prefix every time, and this file already reaches all of them. */
+body:has(#rvBar) [id$="-switcher"] { bottom: 76px; }
+
 @media (max-width: 520px) {
   .pg-panel { right: 12px; left: 12px; width: auto; }
   .pg-fab { right: 12px; bottom: 12px; }
