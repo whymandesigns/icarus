@@ -31,15 +31,14 @@ body.rv-side-open .rv-toggle{display:none;}
 body.rv-edit .rv-toggle,body.rv-comment .rv-toggle,body.rv-spotmode .rv-toggle{cursor:pointer !important;}
 
 /* Bar */
-.rv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2000;display:flex;align-items:center;gap:4px;
+.rv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2000;display:flex;align-items:center;gap:0;
   background:#1d2433;border-radius:22px;padding:4px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:13px;}
-.rv-bar button{height:32px;border:none;border-radius:16px;background:none;color:#cfd4de;padding:0 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;cursor:pointer;}
+.rv-bar button{height:32px;border:none;border-radius:16px;background:none;color:#cfd4de;padding:0 10px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;cursor:pointer;}
 .rv-bar button:hover{background:rgba(255,255,255,.08);color:#fff;}
 .rv-bar button.on{background:#fff;color:#1d2433;font-weight:600;}
 .rv-bar .k{font-size:10px;opacity:.55;border:1px solid currentColor;border-radius:3px;padding:0 4px;line-height:14px;}
 .rv-bar .n{background:var(--rv-orange);color:#fff;border-radius:9px;font-size:10px;font-weight:700;padding:0 6px;line-height:16px;}
 .rv-bar .st{color:var(--rv-muted);font-size:11px;padding:0 10px 0 6px;white-space:nowrap;}
-.rv-bar .sep{width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 2px;}
 
 /* Hover highlight */
 .rv-hover{position:fixed;z-index:1900;pointer-events:none;border:2px solid var(--rv-blue);border-radius:3px;background:rgba(32,78,207,.06);transition:all .05s;}

@@ -364,7 +364,6 @@
       <button class="${mode === 'comment' ? 'on' : ''}" data-rv-mode="comment">Comment <span class="k">C</span>${open ? `<span class="n">${open}</span>` : ''}</button>
       <button class="${mode === 'spot' ? 'on' : ''}" data-rv-mode="spot">Spotlight <span class="k">S</span></button>
       ${spot ? `<button data-rv="clear-spot" title="Remove the spotlight">✕ Clear spotlight</button>` : ''}
-      <span class="sep"></span>
       <button data-rv="side">${sideOpen ? 'Hide' : 'Show'} comments</button>
       ${edits ? `<button data-rv="reset" title="Undo all text edits">↺ ${edits} edit${edits > 1 ? 's' : ''}</button>` : ''}
       ${saveState && saveState !== 'Shared' ? `<span class="st">${saveState}</span>` : ''}`;
