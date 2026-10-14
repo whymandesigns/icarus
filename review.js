@@ -39,7 +39,11 @@
   try { if (q === '1' || q === '') localStorage.setItem(KEY + ':on', '1'); if (q === '0') localStorage.removeItem(KEY + ':on'); } catch {}
   let on = false; try { on = localStorage.getItem(KEY + ':on') === '1'; } catch {}
 
-  /* Floating toggle — present on every page, turns the bar on/off (reloads so the page starts clean) */
+  window.__icarusReview = true;          // the launcher looks for this when listing plugins
+
+  /* Floating toggle — the fallback trigger. plugins.js owns this corner when it
+     is present (it hides this button via .pg-has-launcher), so the bar keeps its
+     own switch for pages that carry the bar alone. */
   const ICON = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h9A2.5 2.5 0 0 1 17 5.5v6a2.5 2.5 0 0 1-2.5 2.5H9l-3.6 3v-3H5.5A2.5 2.5 0 0 1 3 11.5z"/><path d="M7 7.5h6M7 10.5h3.5"/></svg>';
   const mountToggle = () => {
     document.body.insertAdjacentHTML('beforeend', `<button type="button" id="rvToggle" class="rv-toggle${on ? ' on' : ''}" title="${on ? 'Turn the review bar off' : 'Review this page: comment, edit text, spotlight'}" aria-label="Review bar">${ICON}</button>`);
@@ -52,7 +56,9 @@
   if (!on) return;
 
   const HOST = () => window.REVIEW || {};
-  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot,.rv-toggle';
+  // Author tooling the bar must never treat as page content — its own
+  // furniture plus the plugin launcher, which shares the screen with it.
+  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot,.rv-toggle,.pg-fab,.pg-panel';
   let FB = {edits:{}, comments:[]};
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;

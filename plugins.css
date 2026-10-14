@@ -1,0 +1,111 @@
+/* plugins.css — the plugin launcher (author/reviewer tooling). Pairs with plugins.js.
+ *
+ * One floating button, bottom right, that owns every author plugin on the page:
+ * the review bar, the states switcher and the component map. Before this, each
+ * plugin had its own trigger in its own corner (or none at all), which is what
+ * made them feel like clutter rather than tools.
+ *
+ * Self-contained on purpose: colours are literal, not tokens, so the launcher
+ * looks the same on a prototype that does not load the design system — the same
+ * rule review.css follows. Nothing here is a user-facing UI primitive.
+ */
+
+.pg-fab, .pg-panel, .pg-panel * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+/* ── The button ───────────────────────────────────────────────────── */
+.pg-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 2300;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid #d8d9dc; background: #fff; color: #1d2433;
+  display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.pg-fab:hover { transform: scale(1.06); }
+.pg-fab.on    { background: #1d2433; border-color: #1d2433; color: #fff; }
+
+/* How many plugins are running right now — only when at least one is */
+.pg-fab .pg-count {
+  position: absolute; top: -2px; right: -2px;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  background: #ff8a3d; color: #fff;
+  border: 2px solid #fff; border-radius: 9px;
+  font: 700 10px/14px ui-sans-serif, system-ui, sans-serif;
+  display: grid; place-items: center;
+}
+
+/* The bar and the switcher get out of the way of the launcher */
+body.pg-open .pg-fab { background: #1d2433; border-color: #1d2433; color: #fff; }
+
+/* ── The panel ────────────────────────────────────────────────────── */
+.pg-panel {
+  position: fixed; right: 20px; bottom: 74px; z-index: 2300;
+  width: 290px; background: #fff; color: #1d2433;
+  border: 1px solid #d8d9dc; border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.22);
+  overflow: hidden;
+  font-size: 13px; line-height: 19px;
+  animation: pgin .16s ease-out;
+}
+@keyframes pgin { from { opacity: 0; transform: translateY(6px); } }
+
+.pg-panel .pg-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; background: #1d2433; color: #fff;
+  font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+}
+.pg-panel .pg-head button {
+  border: 0; background: transparent; color: inherit; cursor: pointer;
+  font-size: 15px; line-height: 1; padding: 2px 4px;
+}
+
+.pg-panel .pg-list { padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+
+/* One plugin */
+.pg-item {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: 10px; padding: 9px 10px; border-radius: 8px;
+  background: transparent; border: 0; width: 100%; text-align: left;
+  color: inherit; font: inherit; cursor: pointer;
+}
+.pg-item:hover:not(:disabled) { background: #f4f5f6; }
+.pg-item:disabled { cursor: default; opacity: .5; }
+.pg-item .pg-name { font-weight: 600; }
+.pg-item .pg-why  { display: block; margin-top: 1px; font-size: 11px; line-height: 15px; color: #6b7280; font-weight: 400; }
+
+/* The switch — a plain one so it never depends on components.css */
+.pg-switch {
+  width: 34px; height: 20px; border-radius: 10px;
+  background: #d8d9dc; position: relative; flex-shrink: 0;
+  transition: background .15s ease;
+}
+.pg-switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  transition: transform .15s ease;
+}
+.pg-item.is-on .pg-switch { background: #204ecf; }
+.pg-item.is-on .pg-switch::after { transform: translateX(14px); }
+
+.pg-panel .pg-foot {
+  padding: 8px 12px 10px; border-top: 1px solid #ebecef;
+  font-size: 11px; line-height: 16px; color: #6b7280;
+}
+
+/* review.js mounts its own circle button; the launcher owns that corner now.
+   Kept as a rule rather than deleted in review.js so an older inlined bar that
+   has not been refreshed yet still gets tidied up. */
+.pg-has-launcher .rv-toggle { display: none !important; }
+
+/* The review bar's own corner cases: its bar runs along the bottom, so lift the
+   button clear of it, and its drawer covers this corner entirely — review.css
+   hides its own toggle then, and the launcher does the same rather than float
+   on top of the comments. */
+body.rv-comment .pg-fab, body.rv-edit .pg-fab, body.rv-spotmode .pg-fab { bottom: 76px; }
+body.rv-side-open .pg-fab, body.rv-side-open .pg-panel { display: none; }
+
+@media (max-width: 520px) {
+  .pg-panel { right: 12px; left: 12px; width: auto; }
+  .pg-fab { right: 12px; bottom: 12px; }
+}

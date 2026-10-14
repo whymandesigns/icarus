@@ -78,15 +78,21 @@ REVIEW_OPEN = '<!-- === review.js === -->'
 REVIEW_CLOSE = '<!-- === /review.js === -->'
 
 def build_review_script():
-    # The review bar (comments, inline text edits, spotlight) — see review.js.
-    return REVIEW_OPEN + '\n<script>\n' + read('review.js').strip() + '\n</script>\n' + REVIEW_CLOSE
+    # The author plugins. review.js (the bar) comes first so it has announced
+    # itself and mounted before plugins.js (the launcher) takes stock of the
+    # page. The markers still say review.js: they are what every already-inlined
+    # prototype carries, and keeping them means a plain --only-review picks the
+    # launcher up in place rather than needing a migration.
+    return (REVIEW_OPEN + '\n<script>\n' + read('review.js').strip() + '\n</script>\n'
+            + '<script>\n' + read('plugins.js').strip() + '\n</script>\n' + REVIEW_CLOSE)
 
-# Standalone review-bar CSS for prototypes that don't carry the design system
+# Standalone review-bar + launcher CSS for prototypes without the design system
 REVIEW_STYLE_OPEN = '<!-- === review.css === -->'
 REVIEW_STYLE_CLOSE = '<!-- === /review.css === -->'
 
 def build_review_style():
-    return REVIEW_STYLE_OPEN + '\n<style>\n' + read('review.css').strip() + '\n</style>\n' + REVIEW_STYLE_CLOSE
+    return (REVIEW_STYLE_OPEN + '\n<style>\n' + read('review.css').strip() + '\n</style>\n'
+            + '<style>\n' + read('plugins.css').strip() + '\n</style>\n' + REVIEW_STYLE_CLOSE)
 
 SPRITE_OPEN = '<!-- === icons.svg === -->'
 SPRITE_CLOSE = '<!-- === /icons.svg === -->'

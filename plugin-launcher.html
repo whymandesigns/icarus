@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plugin launcher — designmd</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="./plugins.css" />
+  <style>
+    .doc-back {
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      font: var(--type-body-sm); color: var(--color-text-muted);
+      text-decoration: none; margin-bottom: var(--ic-space-4);
+    }
+    .doc-back:hover { color: var(--color-text); }
+    .doc-hero {
+      padding: var(--ic-space-6) 0 var(--ic-space-7);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--ic-space-7);
+    }
+    .doc-hero h1 { margin: 0 0 var(--ic-space-3); }
+    .doc-hero p  { font: var(--type-body-lg); color: var(--color-text-muted); margin: 0; max-width: 60ch; }
+
+    .doc-section { margin-bottom: var(--ic-space-7); }
+    .doc-section h2 { margin: 0 0 var(--ic-space-3); }
+    .doc-section h3 { margin: var(--ic-space-5) 0 var(--ic-space-2); }
+    .doc-section p  { color: var(--color-text-muted); }
+    .doc-section p > code,
+    .doc-section li > code,
+    .doc-section li span > code,
+    .doc-section td > code {
+      font: var(--type-mono); font-size: 12px;
+      background: var(--color-surface-muted);
+      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      color: var(--color-text);
+    }
+
+    .doc-steps { padding-left: var(--ic-space-5); }
+    .doc-steps li { margin-bottom: var(--ic-space-3); color: var(--color-text); }
+    .doc-steps li strong { display: block; margin-bottom: 2px; }
+    .doc-steps li span   { color: var(--color-text-muted); font: var(--type-body-sm); }
+
+    .doc-code-wrap { position: relative; margin: var(--ic-space-4) 0; }
+    .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
+    .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
+    .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code {
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-4);
+      font: var(--type-mono); font-size: 13px;
+      color: var(--color-text);
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.6;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .doc-code .arrow { color: var(--color-accent); }
+    .doc-code .cm { color: var(--color-text-subtle); }
+    .doc-code-copy {
+      position: absolute;
+      top: var(--ic-space-2);
+      right: var(--ic-space-2);
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 4px 10px;
+      border-radius: var(--ic-radius-sm);
+      font: var(--type-body-sm); font-weight: 500;
+      cursor: pointer;
+      transition: background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .doc-code-copy:hover { background: var(--color-surface-muted); }
+    .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
+    .doc-code-copy .icon { width: 14px; height: 14px; }
+
+    .doc-callout {
+      display: flex; gap: var(--ic-space-3);
+      padding: var(--ic-space-4);
+      background: var(--color-info-subtle);
+      border: 1px solid var(--color-info);
+      border-radius: var(--ic-radius-md);
+      color: var(--color-text);
+      margin: var(--ic-space-4) 0;
+    }
+    .doc-callout.is-warning { background: var(--color-warning-subtle); border-color: var(--color-warning); }
+    .doc-callout .icon { color: var(--color-info); width: 20px; height: 20px; flex-shrink: 0; }
+    .doc-callout.is-warning .icon { color: var(--color-warning); }
+    .doc-callout p { margin: 0; font: var(--type-body-sm); color: var(--color-text); }
+
+    .doc-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); margin: var(--ic-space-4) 0; }
+    .doc-table th, .doc-table td { text-align: left; padding: var(--ic-space-2) var(--ic-space-3); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    .doc-table th { color: var(--color-text-muted); font-weight: 500; }
+    .doc-table td { color: var(--color-text); }
+    .doc-table td:first-child { white-space: nowrap; font-weight: 600; }
+    .doc-table a { color: var(--color-text-link); text-decoration: none; }
+    .doc-table a:hover { text-decoration: underline; }
+
+
+    .mock {
+      position: relative; background: var(--color-surface-muted);
+      border: 1px solid var(--color-border); border-radius: var(--ic-radius-lg);
+      height: 400px; overflow: hidden; margin: var(--ic-space-4) 0;
+    }
+    .mock-page {
+      position: absolute; inset: var(--ic-space-5);
+      background: var(--color-surface); border-radius: var(--ic-radius-md);
+      box-shadow: var(--ic-shadow-sm); padding: var(--ic-space-4);
+      display: flex; flex-direction: column; gap: var(--ic-space-3);
+    }
+    .mock-page .mock-h { width: 140px; height: 14px; background: var(--color-text); opacity: .85; border-radius: 3px; }
+    .mock-page .mock-row { width: 60%; height: 8px; background: var(--color-border-strong); border-radius: 3px; }
+    .mock-page .mock-row.wide { width: 80%; }
+    /* the launcher drawn with its own classes, pinned inside the mock */
+    .mock .pg-fab, .mock .pg-panel { position: absolute; }
+    .mock .pg-fab { right: 16px; bottom: 16px; }
+    .mock .pg-panel { right: 16px; bottom: 70px; animation: none; }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+
+    <header class="doc-hero">
+      <h1 class="h1">Plugin launcher</h1>
+      <p>One button, bottom right of every prototype, that owns all the author plugins. Before it, each plugin had grown its own trigger in its own corner — and the component map had none at all outside the kit — so there was no way to tell what a page even carried.</p>
+    </header>
+
+    <section class="doc-section">
+      <h2 class="h2">What it looks like</h2>
+      <div class="mock" aria-hidden="true">
+        <div class="mock-page">
+          <div class="mock-h"></div>
+          <div class="mock-row wide"></div>
+          <div class="mock-row"></div>
+        </div>
+        <div class="pg-panel">
+          <div class="pg-head">Plugins<button type="button">×</button></div>
+          <div class="pg-list">
+            <span class="pg-item is-on"><span><span class="pg-name">Review bar</span><span class="pg-why">Comment, retype copy, spotlight a region.</span></span><span class="pg-switch"></span></span>
+            <span class="pg-item"><span><span class="pg-name">States switcher</span><span class="pg-why">Jump between this prototype's designed states.</span></span><span class="pg-switch"></span></span>
+            <span class="pg-item" style="opacity:.5"><span><span class="pg-name">Component map</span><span class="pg-why">Only on the component kit for now.</span></span><span class="pg-switch"></span></span>
+          </div>
+          <div class="pg-foot">Switching one reloads the page, so it starts clean.</div>
+        </div>
+        <span class="pg-fab on"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3h-3A1.5 1.5 0 0 0 3 4.5v3A1.5 1.5 0 0 0 4.5 9h3A1.5 1.5 0 0 0 9 7.5v-3A1.5 1.5 0 0 0 7.5 3Z"/><path d="M15.5 3h-3A1.5 1.5 0 0 0 11 4.5v3A1.5 1.5 0 0 0 12.5 9h3A1.5 1.5 0 0 0 17 7.5v-3A1.5 1.5 0 0 0 15.5 3Z"/><path d="M7.5 11h-3A1.5 1.5 0 0 0 3 12.5v3A1.5 1.5 0 0 0 4.5 17h3A1.5 1.5 0 0 0 9 15.5v-3A1.5 1.5 0 0 0 7.5 11Z"/><path d="M14 11.5v5M11.5 14h5"/></svg><span class="pg-count">1</span></span>
+      </div>
+      <p>The badge counts what is running. A plugin the page does not carry is listed greyed out with the reason rather than hidden, so the panel is an honest inventory — you can tell at a glance whether a prototype has states defined, or whether the bar simply has not been inlined yet.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">What it switches</h2>
+      <table class="doc-table">
+        <thead><tr><th>Plugin</th><th>Parameter</th><th>Detected by</th></tr></thead>
+        <tbody>
+          <tr><td><a href="./review-bar.html">Review bar</a></td><td><code>?review=1</code></td><td><code>review.js</code> announcing itself, or the bar it leaves behind.</td></tr>
+          <tr><td><a href="./states-switcher.html">States switcher</a></td><td><code>?states=1</code></td><td>An element whose id ends <code>-switcher</code> containing <code>[data-state]</code> buttons.</td></tr>
+          <tr><td><a href="./component-map.html">Component map</a></td><td><code>?map=1</code></td><td>The kit's goggles button, or a page that ships the registry.</td></tr>
+        </tbody>
+      </table>
+      <p>Detection is structural rather than a flag each plugin sets, so prototypes built long before the launcher still light up correctly without being edited. The states check looks for <code>[data-state]</code> on purpose: switchers are hand-copied with a per-prototype prefix (<code>in-</code>, <code>pr-</code>, <code>tt-</code>, …) so there is no common class, and a product-level control like the workspace switcher would otherwise be mistaken for one.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Why it reloads</h2>
+      <p>Each plugin decides what to do at boot — stamp the page, replay a state, render a bar. Flipping one live would mean three teardown paths that only ever run in author tooling, so the launcher reloads instead: one path, and the page always starts in a known state.</p>
+      <p>It always writes an explicit <code>=1</code> or <code>=0</code> rather than deleting the parameter, because the plugins disagree about what a missing one means — the review bar remembers its last state in <code>localStorage</code>, so it needs a literal <code>review=0</code> to be told to stop. Everything else in the URL, the hash and any <code>&amp;state=</code> included, is carried across.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">Nothing to wire up</h2>
+      <p><code>inline.py</code> carries <code>plugins.css</code> and <code>plugins.js</code> into every prototype alongside the review bar, inside the same markers, so refreshing an existing prototype picks the launcher up in place:</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy command"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">python3 inline.py --only-review ../features/my-feature/index.html</div>
+      </div>
+      <div class="doc-callout">
+        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <p>A prototype that carries the review bar gets the launcher automatically. One that does not — because it was never inlined — gets neither; run the command above and it gets both.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.parentElement.querySelector('.doc-code');
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        btn.classList.add('is-copied');
+        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('span').textContent = 'Copied';
+        setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('span').textContent = 'Copy';
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>

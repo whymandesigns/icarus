@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Component map — designmd</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./semantic.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="./devtools.css" />
+  <link rel="stylesheet" href="./plugins.css" />
+  <style>
+    .doc-back {
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      font: var(--type-body-sm); color: var(--color-text-muted);
+      text-decoration: none; margin-bottom: var(--ic-space-4);
+    }
+    .doc-back:hover { color: var(--color-text); }
+    .doc-hero {
+      padding: var(--ic-space-6) 0 var(--ic-space-7);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--ic-space-7);
+    }
+    .doc-hero h1 { margin: 0 0 var(--ic-space-3); }
+    .doc-hero p  { font: var(--type-body-lg); color: var(--color-text-muted); margin: 0; max-width: 60ch; }
+
+    .doc-section { margin-bottom: var(--ic-space-7); }
+    .doc-section h2 { margin: 0 0 var(--ic-space-3); }
+    .doc-section h3 { margin: var(--ic-space-5) 0 var(--ic-space-2); }
+    .doc-section p  { color: var(--color-text-muted); }
+    .doc-section p > code,
+    .doc-section li > code,
+    .doc-section li span > code,
+    .doc-section td > code {
+      font: var(--type-mono); font-size: 12px;
+      background: var(--color-surface-muted);
+      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      color: var(--color-text);
+    }
+
+    .doc-steps { padding-left: var(--ic-space-5); }
+    .doc-steps li { margin-bottom: var(--ic-space-3); color: var(--color-text); }
+    .doc-steps li strong { display: block; margin-bottom: 2px; }
+    .doc-steps li span   { color: var(--color-text-muted); font: var(--type-body-sm); }
+
+    .doc-code-wrap { position: relative; margin: var(--ic-space-4) 0; }
+    .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
+    .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
+    .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code {
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+      padding: var(--ic-space-4);
+      font: var(--type-mono); font-size: 13px;
+      color: var(--color-text);
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.6;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .doc-code .arrow { color: var(--color-accent); }
+    .doc-code .cm { color: var(--color-text-subtle); }
+    .doc-code-copy {
+      position: absolute;
+      top: var(--ic-space-2);
+      right: var(--ic-space-2);
+      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 4px 10px;
+      border-radius: var(--ic-radius-sm);
+      font: var(--type-body-sm); font-weight: 500;
+      cursor: pointer;
+      transition: background var(--ic-duration-fast) var(--ic-ease);
+    }
+    .doc-code-copy:hover { background: var(--color-surface-muted); }
+    .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
+    .doc-code-copy .icon { width: 14px; height: 14px; }
+
+    .doc-callout {
+      display: flex; gap: var(--ic-space-3);
+      padding: var(--ic-space-4);
+      background: var(--color-info-subtle);
+      border: 1px solid var(--color-info);
+      border-radius: var(--ic-radius-md);
+      color: var(--color-text);
+      margin: var(--ic-space-4) 0;
+    }
+    .doc-callout.is-warning { background: var(--color-warning-subtle); border-color: var(--color-warning); }
+    .doc-callout .icon { color: var(--color-info); width: 20px; height: 20px; flex-shrink: 0; }
+    .doc-callout.is-warning .icon { color: var(--color-warning); }
+    .doc-callout p { margin: 0; font: var(--type-body-sm); color: var(--color-text); }
+
+    .doc-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); margin: var(--ic-space-4) 0; }
+    .doc-table th, .doc-table td { text-align: left; padding: var(--ic-space-2) var(--ic-space-3); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    .doc-table th { color: var(--color-text-muted); font-weight: 500; }
+    .doc-table td { color: var(--color-text); }
+    .doc-table td:first-child { white-space: nowrap; font-weight: 600; }
+    .doc-table a { color: var(--color-text-link); text-decoration: none; }
+    .doc-table a:hover { text-decoration: underline; }
+
+
+    /* Mock: a slice of the kit under the goggles, drawn with the real
+       devtools.css classes (.is-map-mode outlines, .map-pop popover) so this
+       page shows the actual styling rather than an approximation. */
+    .mock {
+      position: relative;
+      background: var(--color-surface-muted);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-lg);
+      padding: var(--ic-space-6);
+      margin: var(--ic-space-4) 0;
+      min-height: 260px;
+    }
+    .mock-row { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
+    .mock .map-pop {
+      position: static; display: block; width: 280px; margin-top: var(--ic-space-5);
+    }
+    .stat-row { display: flex; gap: var(--ic-space-5); flex-wrap: wrap; margin: var(--ic-space-4) 0; }
+    .stat {
+      flex: 1 1 120px; padding: var(--ic-space-4);
+      background: var(--color-surface-sunken);
+      border: 1px solid var(--color-border);
+      border-radius: var(--ic-radius-md);
+    }
+    .stat b { display: block; font: var(--type-h2); color: var(--color-text); }
+    .stat span { font: var(--type-body-sm); color: var(--color-text-muted); }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+
+    <header class="doc-hero">
+      <h1 class="h1">Component map</h1>
+      <p>Goggles for the component kit. Turn them on and every component that has a React counterpart is outlined, with its Picasso import, resolved props and a Storybook link a hover away. The mapping lives in <code>figma-map.json</code> — the binding layer between this HTML/CSS library, the Figma Product Library and Picasso.</p>
+    </header>
+
+    <div class="doc-callout is-warning">
+      <svg class="icon"><use href="./icons.svg#i-warning"/></svg>
+      <p><strong>Kit only for now.</strong> The inspector runs in <code>example.html</code>, where the registry sits beside it. Prototypes carry the CSS but neither the script nor the registry, so <code>?map=1</code> does nothing there yet — see <a href="#prototypes">Taking it to prototypes</a>.</p>
+    </div>
+
+    <section class="doc-section">
+      <h2 class="h2">Enable it</h2>
+      <p>Open the kit with <code>?map=1</code>, switch <strong>Component map</strong> on in the plugin launcher bottom-right, or press the goggles button in the kit's toolbar next to the theme toggle — all three do the same thing. Each flips the parameter and reloads, so the page always starts in a known state. Without it nothing is stamped, outlined or fetched.</p>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">example.html<span class="arrow">?map=1</span></div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">What you get</h2>
+      <p>Every mapped element picks up a dotted pink outline — deliberately off-brand, so it never reads as part of the UI being designed. Hovering one opens a popover with the cross-reference:</p>
+
+      <div class="mock is-map-mode">
+        <div class="mock-row">
+          <button class="btn btn-primary" data-component="button">Create token</button>
+          <span class="badge badge-success" data-component="status-pill">Connected</span>
+          <span class="tag" data-component="tag">Finance</span>
+        </div>
+        <div class="map-pop">
+          <div class="map-pop-head">Button → Button</div>
+          <code class="map-pop-code">&lt;Button variant="primary"&gt;Create token&lt;/Button&gt;</code>
+          <div class="map-pop-meta">import { Button } from '@toptal/picasso'</div>
+          <a class="map-pop-link" href="https://toptal.github.io/picasso/?path=/story/components-button--button" target="_blank" rel="noopener">Open in Storybook ↗</a>
+          <div class="map-pop-note">btn-icon-only → Button Icon (110:252)</div>
+        </div>
+      </div>
+
+      <p>The JSX is not canned — it is built from the element in front of you. Each registry entry carries a <code>propMap</code> from designmd variant classes to Picasso props, so <code>.btn-primary</code> becomes <code>variant="primary"</code> and <code>.accordion.is-open</code> becomes <code>expanded</code>. Change the markup and the snippet changes with it.</p>
+
+      <p>Four more attributes annotate the foundations rather than components: <code>data-picasso-color</code>, <code>data-picasso-font</code>, <code>data-picasso-radius</code> and <code>data-picasso-icon</code>. These cross-reference the palette, type scale, radii and icon set against Picasso's Tailwind tokens, verified by value — so a shade with no Picasso equivalent stays unlinked rather than being given a plausible-looking one.</p>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="h2">The registry</h2>
+      <p><code>figma-map.json</code> is the single source of truth; the inspector only renders what it finds there. Forty components are described today:</p>
+
+      <div class="stat-row">
+        <div class="stat"><b>33</b><span>mapped — clean 1:1</span></div>
+        <div class="stat"><b>6</b><span>partial — close, with caveats</span></div>
+        <div class="stat"><b>1</b><span>gap — no Picasso equivalent</span></div>
+        <div class="stat"><b>34</b><span>carry a Figma node id</span></div>
+      </div>
+
+      <p>A <code>gap</code> entry still earns its outline: hovering it says so in warning colour rather than staying silent, which is how the holes stay visible instead of being quietly forgotten.</p>
+
+      <h3 class="h3">One entry</h3>
+      <div class="doc-code-wrap">
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy entry"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <div class="doc-code">{
+  "id": "accordion",
+  "name": "Accordion",
+  "slug": "accordion",
+  "stampSelector": ".accordion",              <span class="cm">// what gets outlined</span>
+  "designmd": {
+    "root": ".accordion-group &gt; .accordion",
+    "shortcode": "example.html#accordion"
+  },
+  "react": {
+    "system": "picasso",
+    "component": "Accordion",
+    "import": "@toptal/picasso",
+    "storyId": "components-accordion--accordion",
+    "status": "mapped",                       <span class="cm">// mapped | partial | gap</span>
+    "propMap": {
+      "is-open":     { "expanded": true },    <span class="cm">// class → prop</span>
+      "is-disabled": { "disabled": true }
+    },
+    "note": "borders set on .accordion-group = the `borders` prop in Picasso."
+  }
+}</div>
+      </div>
+
+      <table class="doc-table">
+        <thead><tr><th>Field</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><code>stampSelector</code></td><td>Selector the inspector stamps <code>data-component</code> onto. Anything inside <code>[data-no-map]</code> opts out — the type-scale cards do this, so the fonts get annotated rather than the card around them.</td></tr>
+          <tr><td><code>designmd.root</code></td><td>The primary class that identifies the component in HTML.</td></tr>
+          <tr><td><code>react.propMap</code></td><td>designmd variant class → Picasso prop, used to build the live JSX.</td></tr>
+          <tr><td><code>react.status</code></td><td><code>mapped</code> · <code>partial</code> · <code>gap</code>. Drives what the popover says.</td></tr>
+          <tr><td><code>figma.nodeId</code></td><td>Node id in Product Library v2.0, colon form (<code>16828:7595</code>).</td></tr>
+        </tbody>
+      </table>
+      <p>Adding a component is a registry edit and nothing else: give it a <code>slug</code> and a <code>stampSelector</code> and it starts outlining on the next reload. No JS to touch.</p>
+    </section>
+
+    <section class="doc-section" id="prototypes">
+      <h2 class="h2">Taking it to prototypes</h2>
+      <p>The other two plugins reach prototypes: the review bar is baked in by <code>inline.py</code>, the states switcher is pasted in by hand. This one has not made that trip. What a prototype has today is the <code>.map-*</code> CSS, which rides along inside <code>devtools.css</code> — about fifteen inert rules, since nothing adds <code>.is-map-mode</code> and no script is present.</p>
+      <p>Three things would have to land for it to work there:</p>
+      <ol class="doc-steps">
+        <li><strong>Ship the script.</strong><span>Lift the inspector out of <code>example.html</code>'s script block into its own <code>map.js</code>, the way <code>review.js</code> already is, so <code>inline.py</code> can bake it in and refresh it in place.</span></li>
+        <li><strong>Ship the registry.</strong><span>The script fetches <code>./figma-map.json</code> relative to the page. A prototype would need it inlined, or fetched from a known path, rather than expecting a sibling file.</span></li>
+        <li><strong>Decide what gets stamped.</strong><span>Selectors are written against the kit's markup. A prototype composes the same components, so most should match — but that is an assumption worth testing on a real prototype before trusting it.</span></li>
+      </ol>
+      <div class="doc-callout">
+        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <p>Until then the honest description is the one at the top of this page: a tool for the kit, used while mapping the library to Picasso — not something a reviewer opens on a prototype.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Copy-to-clipboard for the page's .doc-code blocks
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.parentElement.querySelector('.doc-code');
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        btn.classList.add('is-copied');
+        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('span').textContent = 'Copied';
+        setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('span').textContent = 'Copy';
+        }, 1500);
+      });
+    });
+    document.querySelectorAll('.doc-code-wrap > .doc-code').forEach(code => {
+      code.addEventListener('click', async () => {
+        if (window.getSelection().toString()) return;
+        const btn = code.parentElement.querySelector('[data-copy]');
+        if (btn) { btn.click(); return; }
+        try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
+        code.classList.add('is-flash');
+        setTimeout(() => code.classList.remove('is-flash'), 600);
+      });
+    });
+  </script>
+  <script src="./plugins.js"></script>
+</body>
+</html>
