@@ -56,7 +56,9 @@
   if (!on) return;
 
   const HOST = () => window.REVIEW || {};
-  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot,.rv-toggle';
+  // Author tooling the bar must never treat as page content — its own
+  // furniture plus the plugin launcher, which shares the screen with it.
+  const REVIEW_UI = '.rv-bar,.rv-side,.rv-pins,.rv-hover,.rv-spot,.rv-toggle,.pg-fab,.pg-panel';
   let FB = {edits:{}, comments:[]};
   let mode = 'interact';                 // interact | edit | comment | spot
   let sideOpen = false, draft = null, selId = null, filter = 'open', saveState = '', online = false;

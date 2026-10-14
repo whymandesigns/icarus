@@ -228,7 +228,8 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). **Two sizes only: 16 & 24** (`.icon-16` / `.icon-24`). Default colour graphite-700 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
-| Review bar | `.rv-bar` | Circle button bottom-right on every prototype, or `?review=1` on the URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
+| Plugin launcher | `.pg-fab` | One button, bottom-right of every prototype, that switches the plugins below on and off. Lists only what the page carries; the rest are greyed out with the reason. CSS in `plugins.css`, JS in `plugins.js`, both inlined by `inline.py` alongside the review bar. |
+| Review bar | `.rv-bar` | Switched on from the plugin launcher bottom-right, or with `?review=1` on the URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
 
 ### Rules of thumb
 
@@ -307,6 +308,7 @@ Development/
 │   ├── semantic.css             ← aliases + reset
 │   ├── components.css           ← all component CSS
 │   ├── devtools.css             ← author tooling (debug overlays) — NOT in the layer chain
+│   ├── plugins.css / plugins.js ← the plugin launcher (one button for every plugin)
 │   ├── review.css / review.js   ← the review bar (comments, text edits, spotlight) — auto-inlined, dormant until ?review=1
 │   ├── tools/serve.mjs          ← dev server: static files + feedback.json API for the review bar
 │   ├── design.md                ← this file (LLM context + reference)

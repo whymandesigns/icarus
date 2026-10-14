@@ -36,8 +36,10 @@
     // review.js announces itself; fall back to the bar/toggle it leaves behind
     review: () => !!(window.__icarusReview || document.querySelector('.rv-toggle, #rvBar')),
     // switchers are hand-copied with a per-prototype prefix (in-, ws-, pr-, …),
-    // so the stable hook is the id suffix rather than a class
-    states: () => !!document.querySelector('[id$="-switcher"]'),
+    // so the stable hook is the id suffix rather than a class. The [data-state]
+    // check keeps an unrelated "…-switcher" (a theme toggle, say) from
+    // masquerading as one.
+    states: () => !!document.querySelector('[id$="-switcher"] [data-state]'),
     // the kit's goggles button, or a page that ships the registry
     map:    () => !!document.querySelector('.map-toggle') || !!window.__icarusComponentMap,
   };
@@ -92,11 +94,12 @@
         <div class="pg-list">${rows}</div>
         <div class="pg-foot">Switching one reloads the page, so it starts clean.</div>
       </div>`);
+    document.querySelector('.pg-item:not(:disabled)')?.focus();
   }
 
   function mount() {
     document.body.insertAdjacentHTML('beforeend',
-      `<button type="button" id="pgFab" class="pg-fab" aria-label="Plugins" aria-expanded="false" title="Plugins — review bar, states, component map">${ICON}</button>`);
+      `<button type="button" id="pgFab" class="pg-fab" aria-label="Plugins" aria-expanded="false" aria-controls="pgPanel" title="Plugins — review bar, states, component map">${ICON}</button>`);
     render();
   }
 
@@ -109,7 +112,7 @@
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && open) { open = false; render(); }
+    if (e.key === 'Escape' && open) { open = false; render(); document.getElementById('pgFab')?.focus(); }
   });
 
   if (document.body) mount();
