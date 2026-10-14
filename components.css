@@ -2801,6 +2801,18 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Collapsed bar (≤768px, Picasso md edge): hamburger + page title on the left,
  * a primary action on the right; the brand logo, search and account menu drop. */
+/* The bar's own appearance when collapsed.
+ *
+ * This cannot live in the @container block below: .topbar carries
+ * container-type itself, and a container query styles a container's
+ * descendants, never the container. Inside a prototype the topbar spans the
+ * viewport, so a media query says the same thing; in the kit's playground the
+ * surrounding .playground-stage is the container, and the rule below covers it
+ * there. Both paths land on the same result. */
+@media (max-width: 768px) {
+  .topbar { background: var(--color-surface); color: var(--color-text); gap: var(--ic-space-3); }
+}
+
 @container (max-width: 768px) {
   /* Collapsed bar flips to a light surface with a dark H2 title. */
   .topbar { background: var(--color-surface); color: var(--color-text); gap: var(--ic-space-3); }
