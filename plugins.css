@@ -98,11 +98,19 @@ body.pg-open .pg-fab { background: #1d2433; border-color: #1d2433; color: #fff; 
    has not been refreshed yet still gets tidied up. */
 .pg-has-launcher .rv-toggle { display: none !important; }
 
-/* The review bar's own corner cases: its bar runs along the bottom, so lift the
-   button clear of it, and its drawer covers this corner entirely — review.css
-   hides its own toggle then, and the launcher does the same rather than float
-   on top of the comments. */
-body.rv-comment .pg-fab, body.rv-edit .pg-fab, body.rv-spotmode .pg-fab { bottom: 76px; }
+/* The review bar's own corner cases.
+
+   The bar runs along the bottom, so the button sits above it — keyed to the bar
+   being on screen, never to which mode it is in. The modes do not move the bar,
+   so anything mode-dependent here just makes the button jump about as you switch
+   between them. It has to clear the bar in every mode, too: the bar is centred
+   and grows with its buttons, and on a narrow viewport it runs the full width
+   and would sit under the button even in View. */
+body:has(#rvBar) .pg-fab { bottom: 76px; }
+body:has(#rvBar) .pg-panel { bottom: 130px; }
+
+/* The drawer covers this corner completely. review.css hides its own toggle
+   then, and the launcher does the same rather than float over the comments. */
 body.rv-side-open .pg-fab, body.rv-side-open .pg-panel { display: none; }
 
 @media (max-width: 520px) {
