@@ -3159,6 +3159,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
  */
 .stack  { display: flex; flex-direction: column; gap: var(--ic-space-4); }
 .row    { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
+.row-end { justify-content: flex-end; }   /* actions pushed to the trailing edge */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ic-space-5); }
 
 @media (max-width: 720px) {
