@@ -5,18 +5,23 @@
 // small operations from review.js rather than whole documents, so several
 // reviewers can work on the same prototype without overwriting each other.
 //
-// Document: { edits: { "<path>#<i>": {orig, text, screen, author} }, comments: [...], updated }
+// Document: { edits: { "<path>#<i>": {orig, text, screen, author} }, comments: [...], links: [...], updated }
 // Ops:      { t:'comment', c }      upsert a comment by id (server assigns n when missing)
 //           { t:'del', id }         delete a comment
 //           { t:'edit', k, v }      set (v) or clear (v null) one text edit
-//           { t:'edits:clear' }     clear every text edit
+//           { t:'edits:clear' }     clear every text edit (links are untouched)
+//           { t:'link', l }         upsert a flow-canvas arrow by l.id ({ id, from, to, label, author, created })
+//           { t:'link-del', id }    delete an arrow
+// Arrows are the hand-drawn connections on the prototype's flow canvas (lib/flow.js):
+// shared state like comments, so they live here and everyone sees them.
 
-export const EMPTY = () => ({ edits: {}, comments: [] });
+export const EMPTY = () => ({ edits: {}, comments: [], links: [] });
+const ID_OK = id => typeof id === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(id);
 
 export function applyOps(doc, ops) {
   // Spread the original first so fields this store doesn't own (e.g. version,
   // versions) survive a write instead of being dropped.
-  doc = { ...(doc || {}), edits: { ...(doc?.edits || {}) }, comments: [...(doc?.comments || [])] };
+  doc = { ...(doc || {}), edits: { ...(doc?.edits || {}) }, comments: [...(doc?.comments || [])], links: [...(doc?.links || [])] };
   for (const o of Array.isArray(ops) ? ops : []) {
     if (o?.t === 'comment' && o.c && typeof o.c.id === 'string') {
       const i = doc.comments.findIndex(c => c.id === o.c.id);
@@ -31,6 +36,13 @@ export function applyOps(doc, ops) {
       else delete doc.edits[o.k];
     } else if (o?.t === 'edits:clear') {
       doc.edits = {};
+    } else if (o?.t === 'link' && o.l && ID_OK(o.l.id)) {
+      const i = doc.links.findIndex(l => l.id === o.l.id);
+      const l = { ...(doc.links[i] || {}), ...o.l };
+      if (typeof l.label === 'string') l.label = l.label.slice(0, 300);
+      if (i < 0) { if (doc.links.length < 500) doc.links.push(l); } else doc.links[i] = l;
+    } else if (o?.t === 'link-del' && ID_OK(o.id)) {
+      doc.links = doc.links.filter(l => l.id !== o.id);
     }
   }
   doc.updated = new Date().toISOString();

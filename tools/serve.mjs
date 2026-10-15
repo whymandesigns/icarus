@@ -12,6 +12,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyOps, cleanPath, EMPTY } from './feedback-store.mjs';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+const run = promisify(execFile);
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(process.argv[2] || path.join(HERE, '..', '..', 'features'));
@@ -23,6 +26,24 @@ const TYPES = { '.html':'text/html; charset=utf-8', '.js':'text/javascript', '.m
 const safe = p => { const f = path.normalize(path.join(ROOT, decodeURIComponent(p))); return f.startsWith(ROOT) ? f : null; };
 const json = (res, code, body) => { res.writeHead(code, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(body)); };
 const readDoc = async file => { try { return JSON.parse(await fs.readFile(file, 'utf8')); } catch { return EMPTY(); } };
+
+// `/api/version` mirrors the hosted route (api/version.js on Vercel): which
+// commit of `dir` is being served. Read from git on every request so the badge
+// follows the checkout as you commit; `dirty` flags uncommitted changes.
+async function version() {
+  const git = async (...a) => (await run('git', ['-C', ROOT, ...a])).stdout.trim();
+  try {
+    const [sha, ref, message, status, remote] = await Promise.all([
+      git('rev-parse', 'HEAD'), git('branch', '--show-current'), git('log', '-1', '--format=%s'), git('status', '--porcelain'),
+      git('remote', 'get-url', 'origin').catch(() => ''),
+    ]);
+    // "git@github.com:owner/repo.git" or "https://github.com/owner/repo.git" -> "owner/repo"
+    const repo = remote.match(/github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?$/)?.[1] || null;
+    return { sha, short: sha.slice(0, 7), ref: ref || null, message, env: 'local', deployment: null, dirty: status.length > 0, repo };
+  } catch {
+    return { sha: null, short: null, ref: null, message: null, env: 'local', deployment: null, dirty: false, repo: null };
+  }
+}
 
 // Serialise read-modify-write per file: two reviewers posting at the same moment
 // would otherwise both read the old document and the second write would drop the
@@ -44,6 +65,7 @@ async function writeDoc(file, doc) {
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   try {
+    if (url.pathname === '/api/version') return json(res, 200, await version());
     if (url.pathname === '/api/feedback') {
       let body = {}; if (req.method === 'POST') { let raw = ''; for await (const c of req) raw += c; body = JSON.parse(raw || '{}'); }
       const p = cleanPath(req.method === 'POST' ? body.p : url.searchParams.get('p'));
