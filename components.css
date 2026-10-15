@@ -3095,7 +3095,22 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .datepicker-day:hover { background: var(--color-surface-muted); }
 .datepicker-day:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: -2px; }
 .datepicker-day.is-outside { color: var(--color-text-subtle); }
-.datepicker-day.is-today { font-weight: var(--ic-weight-semibold); box-shadow: inset 0 0 0 1px var(--color-border-strong); }
+/* Today is marked with a dot under the date rather than a ring around it: the
+   ring read as a selection, which is the one thing today is not. */
+.datepicker-day.is-today { font-weight: var(--ic-weight-semibold); position: relative; }
+.datepicker-day.is-today::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: var(--ic-radius-full);
+  background: var(--color-accent);
+}
+/* On the selected day the accent becomes the background, so the dot flips */
+.datepicker-day.is-today.is-selected::after { background: var(--color-text-inverse); }
 .datepicker-day.is-selected,
 .datepicker-day.is-selected:hover { background: var(--color-accent); color: var(--color-text-inverse); box-shadow: none; }
 .datepicker-day:disabled { color: var(--color-text-subtle); opacity: 0.4; cursor: not-allowed; background: transparent; }
