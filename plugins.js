@@ -5,6 +5,8 @@
  *   Review bar      ?review=1   comment, retype copy, spotlight          (review.js)
  *   States switcher ?states=1   jump between a prototype's designed states
  *   Component map   ?map=1      cross-reference components to Picasso
+ *   Versions        ?versions=1 flip between a feature's versions      (versions.js)
+ *   Changes         ?changes=1  outline what changed vs the version before (versions.js)
  *
  * Each plugin still owns its own behaviour and its own URL parameter; this only
  * gathers the switches into one place, so a prototype shows one unobtrusive
@@ -42,6 +44,10 @@
     states: () => !!document.querySelector('[id$="-switcher"] [data-state]'),
     // the kit's goggles button, or a page that ships the registry
     map:    () => !!document.querySelector('.map-toggle') || !!window.__icarusComponentMap,
+    // Versions / Changes exist only on features prototyped in versions — a
+    // version declares its family with <meta name="icarus-versions">.
+    versions: () => !!document.querySelector('meta[name="icarus-versions"]'),
+    changes:  () => !!document.querySelector('meta[name="icarus-versions"]') && !!document.querySelector('[data-change]'),
   };
 
   const PLUGINS = [
@@ -51,6 +57,10 @@
       off: 'This prototype has no states defined.' },
     { key: 'map',    name: 'Component map',   on: 'Cross-reference components to React / Storybook.',
       off: 'Only on the component kit for now.' },
+    { key: 'versions', name: 'Versions',      on: "Flip between this feature's versions (Alt+← / Alt+→).",
+      off: 'Only on features prototyped in versions.' },
+    { key: 'changes',  name: 'Changes',       on: 'Outline what is new, moved or changed vs the previous version.',
+      off: 'Only on a version that marks its changes.' },
   ];
 
   const ICON = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3h-3A1.5 1.5 0 0 0 3 4.5v3A1.5 1.5 0 0 0 4.5 9h3A1.5 1.5 0 0 0 9 7.5v-3A1.5 1.5 0 0 0 7.5 3Z"/><path d="M15.5 3h-3A1.5 1.5 0 0 0 11 4.5v3A1.5 1.5 0 0 0 12.5 9h3A1.5 1.5 0 0 0 17 7.5v-3A1.5 1.5 0 0 0 15.5 3Z"/><path d="M7.5 11h-3A1.5 1.5 0 0 0 3 12.5v3A1.5 1.5 0 0 0 4.5 17h3A1.5 1.5 0 0 0 9 15.5v-3A1.5 1.5 0 0 0 7.5 11Z"/><path d="M14 11.5v5M11.5 14h5"/></svg>';
@@ -99,7 +109,7 @@
 
   function mount() {
     document.body.insertAdjacentHTML('beforeend',
-      `<button type="button" id="pgFab" class="pg-fab" aria-label="Plugins" aria-expanded="false" aria-controls="pgPanel" title="Plugins — review bar, states, component map">${ICON}</button>`);
+      `<button type="button" id="pgFab" class="pg-fab" aria-label="Plugins" aria-expanded="false" aria-controls="pgPanel" title="Plugins — review bar, states, component map, versions">${ICON}</button>`);
     render();
   }
 

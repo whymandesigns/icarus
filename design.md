@@ -230,6 +230,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Plugin launcher | `.pg-fab` | One button, bottom-right of every prototype, that switches the plugins below on and off. Lists only what the page carries; the rest are greyed out with the reason. CSS in `plugins.css`, JS in `plugins.js`, both inlined by `inline.py` alongside the review bar. |
 | Review bar | `.rv-bar` | Switched on from the plugin launcher bottom-right, or with `?review=1` on the URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
+| [Versions & changes](./versions.html) | `.vr-bar` · `.vr-legend` · `[data-change]` | Only on features prototyped in versions (`features/<feature>/vN-<name>/` + `versions.json`), declared per version with `<meta name="icarus-versions" content="../versions.json">`. **Versions** (`?versions=1`) — bar bottom-centre to flip between versions, state carries over, Alt+← / Alt+→. **Changes** (`?changes=1`) — outlines elements marked `data-change="new\|moved\|changed"` + `data-change-note` vs the version in `basedOn`. `versions.css` + `versions.js` are auto-inlined with the review bar. |
 
 ### Rules of thumb
 
@@ -309,6 +310,7 @@ Development/
 │   ├── components.css           ← all component CSS
 │   ├── devtools.css             ← author tooling (debug overlays) — NOT in the layer chain
 │   ├── plugins.css / plugins.js ← the plugin launcher (one button for every plugin)
+│   ├── versions.css / versions.js ← Versions + Changes plugins (versioned features only) — auto-inlined
 │   ├── review.css / review.js   ← the review bar (comments, text edits, spotlight) — auto-inlined, dormant until ?review=1
 │   ├── tools/serve.mjs          ← dev server: static files + feedback.json API for the review bar
 │   ├── design.md                ← this file (LLM context + reference)

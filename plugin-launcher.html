@@ -147,6 +147,8 @@
             <span class="pg-item is-on"><span><span class="pg-name">Review bar</span><span class="pg-why">Comment, retype copy, spotlight a region.</span></span><span class="pg-switch"></span></span>
             <span class="pg-item"><span><span class="pg-name">States switcher</span><span class="pg-why">Jump between this prototype's designed states.</span></span><span class="pg-switch"></span></span>
             <span class="pg-item" style="opacity:.5"><span><span class="pg-name">Component map</span><span class="pg-why">Only on the component kit for now.</span></span><span class="pg-switch"></span></span>
+            <span class="pg-item" style="opacity:.5"><span><span class="pg-name">Versions</span><span class="pg-why">Only on features prototyped in versions.</span></span><span class="pg-switch"></span></span>
+            <span class="pg-item" style="opacity:.5"><span><span class="pg-name">Changes</span><span class="pg-why">Only on a version that marks its changes.</span></span><span class="pg-switch"></span></span>
           </div>
           <div class="pg-foot">Switching one reloads the page, so it starts clean.</div>
         </div>
@@ -163,6 +165,8 @@
           <tr><td><a href="./review-bar.html">Review bar</a></td><td><code>?review=1</code></td><td><code>review.js</code> announcing itself, or the bar it leaves behind.</td></tr>
           <tr><td><a href="./states-switcher.html">States switcher</a></td><td><code>?states=1</code></td><td>An element whose id ends <code>-switcher</code> containing <code>[data-state]</code> buttons.</td></tr>
           <tr><td><a href="./component-map.html">Component map</a></td><td><code>?map=1</code></td><td>The kit's goggles button, or a page that ships the registry.</td></tr>
+          <tr><td><a href="./versions.html">Versions</a></td><td><code>?versions=1</code></td><td><code>&lt;meta name="icarus-versions"&gt;</code> in the page head (a versioned feature).</td></tr>
+          <tr><td><a href="./versions.html">Changes</a></td><td><code>?changes=1</code></td><td>The same meta tag, plus at least one <code>[data-change]</code> marker.</td></tr>
         </tbody>
       </table>
       <p>Detection is structural rather than a flag each plugin sets, so prototypes built long before the launcher still light up correctly without being edited. The states check looks for <code>[data-state]</code> on purpose: switchers are hand-copied with a per-prototype prefix (<code>in-</code>, <code>pr-</code>, <code>tt-</code>, …) so there is no common class, and a product-level control like the workspace switcher would otherwise be mistaken for one.</p>
