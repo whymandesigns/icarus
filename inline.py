@@ -65,7 +65,9 @@ def build_style_block():
         '    /* === semantic.css === */\n' + read('semantic.css') + '\n'
         '    /* === components.css === */\n' + read('components.css') + '\n'
         '    /* === devtools.css === */\n' + read('devtools.css') + '\n'
-        '    /* === review.css === */\n' + read('review.css') + '\n'
+        # review.css / plugins.css / versions.css are NOT here: they ride in the
+        # review block (see build_review_style), which --only-review refreshes.
+        # Carrying them twice left a stale copy behind every partial refresh.
         '  </style>'
     )
 
@@ -84,6 +86,7 @@ def build_review_script():
     # prototype carries, and keeping them means a plain --only-review picks the
     # launcher up in place rather than needing a migration.
     return (REVIEW_OPEN + '\n<script>\n' + read('review.js').strip() + '\n</script>\n'
+            + '<script>\n' + read('versions.js').strip() + '\n</script>\n'
             + '<script>\n' + read('plugins.js').strip() + '\n</script>\n' + REVIEW_CLOSE)
 
 # Standalone review-bar + launcher CSS for prototypes without the design system
@@ -92,7 +95,8 @@ REVIEW_STYLE_CLOSE = '<!-- === /review.css === -->'
 
 def build_review_style():
     return (REVIEW_STYLE_OPEN + '\n<style>\n' + read('review.css').strip() + '\n</style>\n'
-            + '<style>\n' + read('plugins.css').strip() + '\n</style>\n' + REVIEW_STYLE_CLOSE)
+            + '<style>\n' + read('plugins.css').strip() + '\n</style>\n'
+            + '<style>\n' + read('versions.css').strip() + '\n</style>\n' + REVIEW_STYLE_CLOSE)
 
 SPRITE_OPEN = '<!-- === icons.svg === -->'
 SPRITE_CLOSE = '<!-- === /icons.svg === -->'
