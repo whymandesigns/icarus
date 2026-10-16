@@ -212,7 +212,7 @@
 
   <main class="page stack" style="gap: var(--ic-space-8)">
     <section id="patterns" class="stack" style="gap: var(--ic-space-7)">
-      <h2 class="section-head">Patterns</h2>
+      <h2 class="section-head">Pattern labs</h2>
 
       <section class="stack" id="pattern-destructive" data-pattern-lab="destructive">
         <h3 class="h3">Destructive actions</h3>
@@ -221,15 +221,8 @@
             <div class="pattern-control">
               <span class="pattern-control-label">Approach</span>
               <div class="segmented" data-pattern-approach role="tablist">
-                <button class="segmented-item" data-value="modal" type="button">Confirm modal<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
-                <button class="segmented-item is-active" data-value="undo" type="button">Undo toast<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
-              </div>
-            </div>
-            <div class="pattern-control">
-              <span class="pattern-control-label">Reversibility</span>
-              <div class="segmented" data-pattern-reversibility>
-                <button class="segmented-item is-active" data-value="recoverable" type="button">Recoverable</button>
-                <button class="segmented-item" data-value="permanent" type="button">Permanent</button>
+                <button class="segmented-item is-active" data-value="modal" type="button">Confirm modal<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item" data-value="undo" type="button">Undo toast<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
               </div>
             </div>
             <button class="btn btn-xs btn-ghost pattern-reset" type="button" data-pattern-reset>Reset</button>
@@ -376,8 +369,13 @@
     })();
 
     // Interaction pattern lab — destructive actions playground. The approach
-    // control picks the interaction to preview; reversibility changes the
-    // confirm copy and marks the recommended approach with an accent dot.
+    // control picks the interaction to preview, and the recommended one is
+    // marked with an accent dot.
+    //
+    // There is no Trash in this product: a delete is permanent, so the confirm
+    // modal is always the right answer and the undo toast is kept only to show
+    // why. A Reversibility control used to sit beside Approach, but with one
+    // value it was asking a question that had no second answer.
     document.querySelectorAll('[data-pattern-lab="destructive"]').forEach(lab => {
       const listEl  = lab.querySelector('[data-pattern-list]');
       const confirm = lab.querySelector('#pattern-confirm');
@@ -391,17 +389,13 @@
       let items = initial.map(i => ({ ...i }));
 
       // Recommendation: permanent → confirm modal; recoverable → undo toast.
-      const recommend = () => val('[data-pattern-reversibility]') === 'permanent' ? 'modal' : 'undo';
-      // The rule, written out. A dot and a tooltip were the only places it was
-      // stated, and with Undo toast selected the reversibility control changed
-      // nothing visible at all — so the one case worth warning about, offering
-      // undo for something that cannot be undone, passed in silence.
+      const recommend = () => 'modal';
+      // The rule, written out — a dot and a tooltip were the only places it
+      // appeared before.
       const guidanceEl = lab.querySelector('[data-pattern-guidance]');
       const GUIDANCE = {
-        'permanent:modal':   'Nothing survives a permanent delete, so <b>ask first</b>. The modal carries the warning.',
-        'recoverable:undo':  'The action is recoverable, so <b>let it happen</b> and offer undo. A modal would tax every delete to guard a cheap mistake.',
-        'permanent:undo':    'This one is a trap: the toast offers an undo the system cannot honour. <b>Permanent deletes need a confirm modal.</b>',
-        'recoverable:modal': 'A modal for a recoverable action asks people to stop and think about something Trash already covers. <b>An undo toast is lighter.</b>',
+        modal: 'Deleting here is permanent — there is no Trash to fall back on — so <b>ask first</b>. The modal carries the warning.',
+        undo:  'A trap: the toast offers an undo this product cannot honour, because the delete has already happened for good. <b>Use a confirm modal.</b>',
       };
 
       const updateReco = () => {
@@ -413,8 +407,7 @@
           if (on) item.title = 'Recommended for this situation'; else item.removeAttribute('title');
         });
         const approach = val('[data-pattern-approach]');
-        const key = val('[data-pattern-reversibility]') + ':' + approach;
-        guidanceEl.innerHTML = GUIDANCE[key] || '';
+        guidanceEl.innerHTML = GUIDANCE[approach] || '';
         guidanceEl.classList.toggle('is-mismatch', approach !== rec);
       };
 
@@ -437,7 +430,7 @@
         });
       };
 
-      // Confirm modal — reused for the "modal" approach; copy reflects reversibility.
+      // Confirm modal — reused for the "modal" approach.
       let pending = null;
       const cTitle = confirm.querySelector('[data-confirm-title]');
       const cBody  = confirm.querySelector('[data-confirm-body]');
@@ -451,9 +444,7 @@
         const item = items[idx];
         if (val('[data-pattern-approach]') === 'modal') {
           cTitle.textContent = `Delete “${item.name}”?`;
-          cBody.textContent = val('[data-pattern-reversibility]') === 'permanent'
-            ? 'This can’t be undone. It will be permanently removed.'
-            : 'You can restore it from Trash for 30 days.';
+          cBody.textContent = 'This can’t be undone. It will be permanently removed.';
           pending = () => {
             items.splice(idx, 1); render();
             toast({ variant: 'success', message: `Deleted “${item.name}”.` });
@@ -471,9 +462,8 @@
         }
       };
 
-      // Either control changes the verdict, so both refresh it.
       lab.addEventListener('click', (e) => {
-        if (e.target.closest('[data-pattern-reversibility] .segmented-item, [data-pattern-approach] .segmented-item')) updateReco();
+        if (e.target.closest('[data-pattern-approach] .segmented-item')) updateReco();
       });
       lab.querySelector('[data-pattern-reset]').addEventListener('click', () => { items = initial.map(i => ({ ...i })); render(); });
 
