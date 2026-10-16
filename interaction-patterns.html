@@ -152,7 +152,39 @@
     }
     .pattern-guidance b { font-weight: var(--ic-weight-semibold); }
 
+    /* Governed settings card — a master row whose switch decides whether the
+       rows under it have anything to act on. */
+    .pattern-gov { width: 100%; max-width: 420px; padding: 0; overflow: hidden; }
+    .pattern-gov-row {
+      display: flex; align-items: center; gap: var(--ic-space-4);
+      padding: var(--ic-space-4) var(--ic-space-5);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .pattern-gov-row:last-child { border-bottom: 0; }
+    .pattern-gov-main { flex: 1; min-width: 0; }
+    .pattern-gov-title { margin: 0; font: var(--type-body-sm-semibold); color: var(--color-text); }
+    .pattern-gov-caption { margin: 2px 0 0; font: var(--type-body-xs); color: var(--color-text-muted); }
+
+    /* Inert, but still clickable: the click is what triggers the explanation,
+       which a pointer-events:none row could never do. */
+    .pattern-gov-row.is-inert { opacity: 0.5; }
+    .pattern-gov-row.is-inert .switch,
+    .pattern-gov-row.is-inert .btn { cursor: not-allowed; }
+
+    .pattern-snack {
+      position: absolute; left: 50%; bottom: var(--ic-space-5); transform: translateX(-50%) translateY(8px);
+      max-width: 90%;
+      padding: var(--ic-space-2) var(--ic-space-4);
+      background: var(--ic-palette-graphite-800); color: var(--color-text-inverse);
+      border-radius: var(--ic-radius-full);
+      font: var(--type-body-sm);
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--ic-duration-fast) var(--ic-ease), transform var(--ic-duration-fast) var(--ic-ease);
+    }
+    .pattern-snack.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     .pattern-stage {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -247,6 +279,54 @@
           </div>
         </div>
       </section>
+
+      <section class="stack" id="pattern-disabled-context" data-pattern-lab="disabled">
+        <h3 class="h3">Disabled controls</h3>
+        <div class="pattern-lab">
+          <div class="pattern-lab-bar">
+            <div class="pattern-control">
+              <span class="pattern-control-label">Approach</span>
+              <div class="segmented" data-pattern-disabled-approach role="tablist">
+                <button class="segmented-item is-active" data-value="explain" type="button">Explain on click<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item" data-value="hard" type="button">Hard disabled<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+              </div>
+            </div>
+            <button class="btn btn-xs btn-ghost pattern-reset" type="button" data-disabled-reset>Reset</button>
+          </div>
+          <p class="pattern-guidance" data-disabled-guidance></p>
+          <div class="pattern-stage">
+            <div class="card pattern-gov" data-governed="OKRs are disabled. Turn OKRs on to change these settings.">
+
+              <div class="pattern-gov-row">
+                <div class="pattern-gov-main">
+                  <p class="pattern-gov-title">Enable OKRs</p>
+                  <p class="pattern-gov-caption">Visible to everyone and shown in the navigation</p>
+                </div>
+                <label class="switch"><input type="checkbox" class="switch-input" data-gov-master checked /><span class="switch-track"></span></label>
+              </div>
+
+              <div class="pattern-gov-row">
+                <div class="pattern-gov-main">
+                  <p class="pattern-gov-title">Approval workflow</p>
+                  <p class="pattern-gov-caption">A sign-off step before an OKR is published</p>
+                </div>
+                <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
+              </div>
+
+              <div class="pattern-gov-row">
+                <div class="pattern-gov-main">
+                  <p class="pattern-gov-title">Escalation rules</p>
+                  <p class="pattern-gov-caption">Unapproved for 3 days, escalate to the sponsor</p>
+                </div>
+                <button class="btn btn-secondary btn-xs" type="button">Configure</button>
+              </div>
+
+            </div>
+            <div class="pattern-snack" data-disabled-snack role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
     </section>
   </main>
 
@@ -367,6 +447,79 @@
         panel.addEventListener('click', e => { if (e.target.closest('.page-toc-item')) setOpen(false); });
       }
     })();
+
+    // Disabled-controls lab — borrowed from the OKRs card in the admin-toc
+    // prototype. A master switch governs the rows beneath it. The question the
+    // lab asks is what a governed row should do when someone clicks it.
+    //
+    //   Explain on click  the row is dimmed and marked aria-disabled, but it
+    //                     still receives the click, and answers it. The control
+    //                     keeps the `disabled` attribute off on purpose: a
+    //                     disabled control fires no events, so there would be
+    //                     nothing to answer.
+    //   Hard disabled     the real attribute. The click goes nowhere and the
+    //                     reason is never given.
+    document.querySelectorAll('[data-pattern-lab="disabled"]').forEach(lab => {
+      const card   = lab.querySelector('[data-governed]');
+      const snack  = lab.querySelector('[data-disabled-snack]');
+      const guide  = lab.querySelector('[data-disabled-guidance]');
+      const master = lab.querySelector('[data-gov-master]');
+      const rows   = [...card.querySelectorAll('.pattern-gov-row')].slice(1);
+      const approach = () => lab.querySelector('[data-pattern-disabled-approach] .segmented-item.is-active')?.dataset.value;
+
+      const GUIDANCE = {
+        explain: 'Dimmed, but it still answers a click — the row says <b>why</b> it is inert and what would turn it back on. Mark it <code>aria-disabled</code> and keep it in the page.',
+        hard:    'A trap: <code>disabled</code> fires no events, so the click lands nowhere and the reason is never given. <b>Someone has to guess.</b>',
+      };
+
+      let timer = null;
+      const explain = () => {
+        snack.textContent = card.dataset.governed;
+        snack.classList.add('is-visible');
+        clearTimeout(timer);
+        timer = setTimeout(() => snack.classList.remove('is-visible'), 3200);
+      };
+
+      const apply = () => {
+        const off = !master.checked;
+        const hard = approach() === 'hard';
+        rows.forEach(row => {
+          row.classList.toggle('is-inert', off);
+          row.querySelectorAll('.switch-input, .btn').forEach(c => {
+            c.disabled = off && hard;
+            if (off && !hard) { c.setAttribute('aria-disabled', 'true'); c.setAttribute('tabindex', '-1'); }
+            else { c.removeAttribute('aria-disabled'); c.removeAttribute('tabindex'); }
+          });
+        });
+        lab.querySelectorAll('[data-pattern-disabled-approach] .segmented-item').forEach(item => {
+          const on = item.dataset.value === 'explain';
+          const dot = item.querySelector('[data-reco-badge]');
+          if (dot) dot.hidden = !on;
+          if (on) item.title = 'Recommended for this situation'; else item.removeAttribute('title');
+        });
+        guide.innerHTML = GUIDANCE[approach()] || '';
+        guide.classList.toggle('is-mismatch', hard);
+        if (!off) snack.classList.remove('is-visible');
+      };
+
+      // Capture, so the click is swallowed before the control acts on it.
+      rows.forEach(row => row.addEventListener('click', e => {
+        if (!row.classList.contains('is-inert') || approach() === 'hard') return;
+        e.preventDefault(); e.stopPropagation();
+        explain();
+      }, true));
+
+      master.addEventListener('change', apply);
+      lab.addEventListener('click', e => {
+        if (e.target.closest('[data-pattern-disabled-approach] .segmented-item')) apply();
+      });
+      lab.querySelector('[data-disabled-reset]').addEventListener('click', () => {
+        master.checked = true;
+        rows.forEach(r => r.querySelectorAll('.switch-input').forEach(c => { c.checked = true; }));
+        apply();
+      });
+      apply();
+    });
 
     // Interaction pattern lab — destructive actions playground. The approach
     // control picks the interaction to preview, and the recommended one is
