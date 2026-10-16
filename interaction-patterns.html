@@ -136,6 +136,22 @@
     .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--ic-radius-full); background: var(--color-accent); display: inline-block; }
     .pattern-reco-dot[hidden] { display: none; }
 
+    /* The rule the two controls exist to teach, stated rather than implied by
+       a dot. Turns warning-coloured when the chosen approach contradicts it. */
+    .pattern-guidance {
+      margin: 0;
+      padding: var(--ic-space-3) var(--ic-space-5);
+      border-bottom: 1px solid var(--color-border);
+      font: var(--type-body-sm);
+      color: var(--color-text-muted);
+    }
+    .pattern-guidance.is-mismatch {
+      background: var(--color-warning-subtle);
+      border-bottom-color: var(--color-warning);
+      color: var(--color-text);
+    }
+    .pattern-guidance b { font-weight: var(--ic-weight-semibold); }
+
     .pattern-stage {
       display: flex;
       align-items: center;
@@ -205,8 +221,8 @@
             <div class="pattern-control">
               <span class="pattern-control-label">Approach</span>
               <div class="segmented" data-pattern-approach role="tablist">
-                <button class="segmented-item is-active" data-value="modal" type="button">Confirm modal<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
-                <button class="segmented-item" data-value="undo" type="button">Undo toast<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item" data-value="modal" type="button">Confirm modal<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item is-active" data-value="undo" type="button">Undo toast<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
               </div>
             </div>
             <div class="pattern-control">
@@ -218,6 +234,7 @@
             </div>
             <button class="btn btn-xs btn-ghost pattern-reset" type="button" data-pattern-reset>Reset</button>
           </div>
+          <p class="pattern-guidance" data-pattern-guidance></p>
           <div class="pattern-stage">
             <ul class="pattern-demo-list" data-pattern-list></ul>
           </div>
@@ -375,6 +392,18 @@
 
       // Recommendation: permanent → confirm modal; recoverable → undo toast.
       const recommend = () => val('[data-pattern-reversibility]') === 'permanent' ? 'modal' : 'undo';
+      // The rule, written out. A dot and a tooltip were the only places it was
+      // stated, and with Undo toast selected the reversibility control changed
+      // nothing visible at all — so the one case worth warning about, offering
+      // undo for something that cannot be undone, passed in silence.
+      const guidanceEl = lab.querySelector('[data-pattern-guidance]');
+      const GUIDANCE = {
+        'permanent:modal':   'Nothing survives a permanent delete, so <b>ask first</b>. The modal carries the warning.',
+        'recoverable:undo':  'The action is recoverable, so <b>let it happen</b> and offer undo. A modal would tax every delete to guard a cheap mistake.',
+        'permanent:undo':    'This one is a trap: the toast offers an undo the system cannot honour. <b>Permanent deletes need a confirm modal.</b>',
+        'recoverable:modal': 'A modal for a recoverable action asks people to stop and think about something Trash already covers. <b>An undo toast is lighter.</b>',
+      };
+
       const updateReco = () => {
         const rec = recommend();
         lab.querySelectorAll('[data-pattern-approach] .segmented-item').forEach(item => {
@@ -383,6 +412,10 @@
           if (dot) dot.hidden = !on;
           if (on) item.title = 'Recommended for this situation'; else item.removeAttribute('title');
         });
+        const approach = val('[data-pattern-approach]');
+        const key = val('[data-pattern-reversibility]') + ':' + approach;
+        guidanceEl.innerHTML = GUIDANCE[key] || '';
+        guidanceEl.classList.toggle('is-mismatch', approach !== rec);
       };
 
       const render = () => {
@@ -438,7 +471,10 @@
         }
       };
 
-      lab.addEventListener('click', (e) => { if (e.target.closest('[data-pattern-reversibility] .segmented-item')) updateReco(); });
+      // Either control changes the verdict, so both refresh it.
+      lab.addEventListener('click', (e) => {
+        if (e.target.closest('[data-pattern-reversibility] .segmented-item, [data-pattern-approach] .segmented-item')) updateReco();
+      });
       lab.querySelector('[data-pattern-reset]').addEventListener('click', () => { items = initial.map(i => ({ ...i })); render(); });
 
       render();
