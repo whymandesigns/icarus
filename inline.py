@@ -134,6 +134,59 @@ REVIEW_STYLE_PATTERN = re.compile(re.escape(REVIEW_STYLE_OPEN) + r'.*?' + re.esc
 # Phosphor CDN link — no longer used; strip it if present
 PHOSPHOR_PATTERN = re.compile(r'\s*<link[^>]*@phosphor-icons[^>]*>\s*\n?')
 
+# ── Retired tooling ───────────────────────────────────────────────────
+# The ?notes=1 annotation overlay was superseded by the review bar. Copies
+# of it linger in prototypes built from older templates, and in any file
+# restored from a commit that predates its removal, so every refresh strips
+# it rather than waiting for someone to notice. Same spirit as the Phosphor
+# link above: inline.py is where obsolete tooling goes to die.
+ANNOT_PROSE = [
+    ("/* The annotation tool's CSS lives in devtools.css — author tooling, not a\n"
+     " * user-facing UI primitive. See design.md §7 for the four-file inline order. */\n", ''),
+    (' * (e.g. ?notes=1 in the URL for the annotation tool).', " * (e.g. the map overlay's toggle)."),
+    (' *   prototypes (annotation overlays, grid debug toggles, coachmark editors,',
+     ' *   prototypes (debug overlays, grid toggles, coachmark editors,'),
+    (' * - Keep selectors namespaced (`.annot-*`, `.grid-debug-*`, …) so they',
+     ' * - Keep selectors namespaced (`.map-*`, `.grid-debug-*`, …) so they'),
+    ('no reason to carry and threw on load when copied verbatim, and the\n'
+     '       annotation tool is duplicated in the source — one copy is kept. */',
+     'no reason to carry and threw on load when copied verbatim. */'),
+]
+
+def strip_annotation_tool(html):
+    """Remove the retired ?notes=1 overlay — CSS block, script block, prose."""
+    for head in ('/* ---------- Annotation tool ----------',
+                 '    /* ---------- Annotation tool (dev tooling) ----------'):
+        i = html.find(head)
+        if i == -1:
+            continue
+        rules = [m.start() for m in re.finditer(r'^\s*\.annot-[^\n]*', html, re.M) if m.start() > i]
+        if not rules:
+            continue
+        end = html.index('}', rules[-1]) + 1
+        while end < len(html) and html[end] == '\n':
+            end += 1
+        block = html[i:end]
+        # never eat the .map-* inspector, which shares devtools.css
+        if '.map-' in block or 'is-map-mode' in block or block.count('{') != block.count('}'):
+            continue
+        html = html[:i] + html[end:]
+
+    while True:
+        j = html.find('// === Annotation tool — append ?notes=1')
+        if j == -1:
+            break
+        k = html.index('\n    })();', j) + len('\n    })();')
+        if 'annotationTool' not in html[j:k]:
+            break
+        while k < len(html) and html[k] == '\n':
+            k += 1
+        html = html[:j] + html[k:]
+
+    for old, new in ANNOT_PROSE:
+        html = html.replace(old, new)
+    return html
+
 def add_review(html, with_style):
     # Review bar script — refresh an existing block, else inject before </body>.
     # with_style also carries review.css standalone (prototypes without the system CSS).
@@ -163,6 +216,7 @@ def add_review(html, with_style):
 def inline_review_only(path):
     with open(path) as f:
         html = f.read()
+    html = strip_annotation_tool(html)
     html, status = add_review(html, with_style=True)
     with open(path, 'w') as f:
         f.write(html)
@@ -194,6 +248,7 @@ def inline(path):
 
     # Phosphor CDN is retired — strip any leftover link
     html, ph = PHOSPHOR_PATTERN.subn('\n', html)
+    html = strip_annotation_tool(html)
 
     # Icon sprite — refresh an existing injected block, else inject right after <body>
     sprite = build_icon_sprite()
