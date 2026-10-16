@@ -144,6 +144,13 @@ def add_review(html, with_style):
             html = REVIEW_PATTERN.sub(lambda _: build_review_script(), html)
         else:
             html = BODY_END_PATTERN.sub(lambda _: build_review_script() + '\n</body>', html, count=1)
+    elif with_style and REVIEW_PATTERN.search(html):
+        # Script block but no style block — a prototype inlined back when the
+        # plugin CSS still rode in the design-system block. Refresh the script
+        # and give it the style block it never had, or the launcher and the
+        # versions panel come through unstyled.
+        html = REVIEW_PATTERN.sub(lambda _: build_review_style() + '\n' + build_review_script(), html)
+        return html, 'refreshed review bar (added the missing css block)'
         return html, 'refreshed review bar (css + js)'
     if REVIEW_PATTERN.search(html):
         html, n = REVIEW_PATTERN.subn(lambda _: build_review_script(), html)
