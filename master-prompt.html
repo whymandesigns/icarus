@@ -104,6 +104,14 @@ TASK — create `features/{{FEATURE_NAME}}/index.html`
    labels; leave the substance for a follow-up prompt.
 
 RULES
+- CHECK THE SYSTEM BEFORE YOU BUILD. Open `designmd/example.html` and look for the
+  thing you are about to make. Most of it is already there — toasts, modals, drawers,
+  switches, empty states, banners, tables. Build bespoke only after looking and not
+  finding it, and say so when you do. A hand-rolled copy of a component that already
+  exists is drift the moment the real one changes.
+  The order is: find the component -&gt; if it is close, add a variant to
+  `components.css` -&gt; only then write something new, in `components.css` so the next
+  prototype inherits it, never as a one-off in a single page.
 - Use ONLY semantic tokens and existing component classes — never hardcode a hex or px
   that a token covers. Colors: `var(--color-*)`. Spacing: `var(--ic-space-*)`.
   Type: `var(--type-*)`. Components: `.btn`, `.card`, `.table`, `.alert`, `.tabs`,
