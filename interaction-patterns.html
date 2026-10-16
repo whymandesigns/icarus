@@ -285,17 +285,19 @@
         <div class="pattern-lab">
           <div class="pattern-lab-bar">
             <div class="pattern-control">
-              <span class="pattern-control-label">Approach</span>
+              <span class="pattern-control-label">Why it is off</span>
               <div class="segmented" data-pattern-disabled-approach role="tablist">
-                <button class="segmented-item is-active" data-value="explain" type="button">Explain on click<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
-                <button class="segmented-item" data-value="hard" type="button">Hard disabled<span class="pattern-reco-dot" data-reco-badge hidden></span></button>
+                <button class="segmented-item is-active" data-value="feature" type="button">Feature off</button>
+                <button class="segmented-item" data-value="permission" type="button">No permission</button>
               </div>
             </div>
             <button class="btn btn-xs btn-ghost pattern-reset" type="button" data-disabled-reset>Reset</button>
           </div>
           <p class="pattern-guidance" data-disabled-guidance></p>
           <div class="pattern-stage">
-            <div class="card pattern-gov" data-governed="OKRs are disabled. Turn OKRs on to change these settings.">
+            <div class="card pattern-gov"
+                 data-reason-feature="OKRs are disabled. Turn OKRs on to change these settings."
+                 data-reason-permission="You do not have rights to change this. Contact your workspace admin.">
 
               <div class="pattern-gov-row">
                 <div class="pattern-gov-main">
@@ -448,63 +450,62 @@
       }
     })();
 
-    // Disabled-controls lab — borrowed from the OKRs card in the admin-toc
-    // prototype. A master switch governs the rows beneath it. The question the
-    // lab asks is what a governed row should do when someone clicks it.
+    // Disabled-controls lab — the governed OKRs card from the admin-toc
+    // prototype. A row that cannot act is dimmed but stays clickable, and the
+    // click is answered in a dark bar along the bottom of the stage.
     //
-    //   Explain on click  the row is dimmed and marked aria-disabled, but it
-    //                     still receives the click, and answers it. The control
-    //                     keeps the `disabled` attribute off on purpose: a
-    //                     disabled control fires no events, so there would be
-    //                     nothing to answer.
-    //   Hard disabled     the real attribute. The click goes nowhere and the
-    //                     reason is never given.
+    // The control picks why the rows are off, because the reason changes the
+    // words, not the mechanics:
+    //   Feature off     a setting on this page governs them — the master switch
+    //                   is still live, so the reader can fix it themselves.
+    //   No permission   the whole card is inert, master included. Nothing here
+    //                   is theirs to change, so the message points elsewhere.
+    //
+    // Neither case uses the disabled attribute. A disabled control fires no
+    // events, so the click it swallows could never be answered — the person is
+    // left guessing. aria-disabled plus tabindex="-1" says the same thing to
+    // assistive tech while leaving something to respond with.
     document.querySelectorAll('[data-pattern-lab="disabled"]').forEach(lab => {
-      const card   = lab.querySelector('[data-governed]');
+      const card   = lab.querySelector('.pattern-gov');
       const snack  = lab.querySelector('[data-disabled-snack]');
       const guide  = lab.querySelector('[data-disabled-guidance]');
       const master = lab.querySelector('[data-gov-master]');
-      const rows   = [...card.querySelectorAll('.pattern-gov-row')].slice(1);
-      const approach = () => lab.querySelector('[data-pattern-disabled-approach] .segmented-item.is-active')?.dataset.value;
+      const masterRow = master.closest('.pattern-gov-row');
+      const rows   = [...card.querySelectorAll('.pattern-gov-row')];
+      const reason = () => lab.querySelector('[data-pattern-disabled-approach] .segmented-item.is-active')?.dataset.value;
 
       const GUIDANCE = {
-        explain: 'Dimmed, but it still answers a click — the row says <b>why</b> it is inert and what would turn it back on. Mark it <code>aria-disabled</code> and keep it in the page.',
-        hard:    'A trap: <code>disabled</code> fires no events, so the click lands nowhere and the reason is never given. <b>Someone has to guess.</b>',
+        feature:    'A setting on this page governs these rows, so the message names it and the master switch stays live — the reader can put it right without leaving.',
+        permission: 'Nothing here is theirs to change, so the whole card goes inert and the message <b>points them somewhere they can act</b>. Never a bare greyed-out row.',
       };
 
       let timer = null;
       const explain = () => {
-        snack.textContent = card.dataset.governed;
+        snack.textContent = card.dataset[reason() === 'permission' ? 'reasonPermission' : 'reasonFeature'];
         snack.classList.add('is-visible');
         clearTimeout(timer);
         timer = setTimeout(() => snack.classList.remove('is-visible'), 3200);
       };
 
       const apply = () => {
-        const off = !master.checked;
-        const hard = approach() === 'hard';
+        const byPermission = reason() === 'permission';
+        // Permission takes the whole card; a feature switch only takes what it governs.
+        const inert = r => byPermission || (r !== masterRow && !master.checked);
         rows.forEach(row => {
+          const off = inert(row);
           row.classList.toggle('is-inert', off);
           row.querySelectorAll('.switch-input, .btn').forEach(c => {
-            c.disabled = off && hard;
-            if (off && !hard) { c.setAttribute('aria-disabled', 'true'); c.setAttribute('tabindex', '-1'); }
+            if (off) { c.setAttribute('aria-disabled', 'true'); c.setAttribute('tabindex', '-1'); }
             else { c.removeAttribute('aria-disabled'); c.removeAttribute('tabindex'); }
           });
         });
-        lab.querySelectorAll('[data-pattern-disabled-approach] .segmented-item').forEach(item => {
-          const on = item.dataset.value === 'explain';
-          const dot = item.querySelector('[data-reco-badge]');
-          if (dot) dot.hidden = !on;
-          if (on) item.title = 'Recommended for this situation'; else item.removeAttribute('title');
-        });
-        guide.innerHTML = GUIDANCE[approach()] || '';
-        guide.classList.toggle('is-mismatch', hard);
-        if (!off) snack.classList.remove('is-visible');
+        guide.innerHTML = GUIDANCE[reason()] || '';
+        snack.classList.remove('is-visible');
       };
 
       // Capture, so the click is swallowed before the control acts on it.
       rows.forEach(row => row.addEventListener('click', e => {
-        if (!row.classList.contains('is-inert') || approach() === 'hard') return;
+        if (!row.classList.contains('is-inert')) return;
         e.preventDefault(); e.stopPropagation();
         explain();
       }, true));
@@ -515,7 +516,7 @@
       });
       lab.querySelector('[data-disabled-reset]').addEventListener('click', () => {
         master.checked = true;
-        rows.forEach(r => r.querySelectorAll('.switch-input').forEach(c => { c.checked = true; }));
+        rows.forEach(r => r.querySelectorAll('.switch-input:not([data-gov-master])').forEach(c => { c.checked = true; }));
         apply();
       });
       apply();
