@@ -171,17 +171,18 @@
     .pattern-gov-row.is-inert .switch,
     .pattern-gov-row.is-inert .btn { cursor: not-allowed; }
 
-    .pattern-snack {
-      position: absolute; left: 50%; bottom: var(--ic-space-5); transform: translateX(-50%) translateY(8px);
-      max-width: 90%;
-      padding: var(--ic-space-2) var(--ic-space-4);
-      background: var(--ic-palette-graphite-800); color: var(--color-text-inverse);
-      border-radius: var(--ic-radius-full);
-      font: var(--type-body-sm);
+    /* The toast component, parked at the foot of the stage instead of the
+       page's top-right region — the explanation belongs with the demo it
+       answers, not in the corner of the browser. Styling is the component's. */
+    .pattern-toast {
+      position: absolute; left: 50%; bottom: var(--ic-space-5);
+      transform: translateX(-50%) translateY(8px);
       opacity: 0; pointer-events: none;
       transition: opacity var(--ic-duration-fast) var(--ic-ease), transform var(--ic-duration-fast) var(--ic-ease);
     }
-    .pattern-snack.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .pattern-toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+    /* room for the toast to sit under the card rather than across it */
+    #pattern-disabled-context .pattern-stage { padding-bottom: calc(var(--ic-space-8) + 56px); }
 
     .pattern-stage {
       position: relative;
@@ -324,7 +325,10 @@
               </div>
 
             </div>
-            <div class="pattern-snack" data-disabled-snack role="status" aria-live="polite"></div>
+            <div class="toast toast-neutral pattern-toast" data-disabled-snack role="status" aria-live="polite">
+              <svg class="icon toast-icon"><use href="#i-info"/></svg>
+              <p class="toast-message"></p>
+            </div>
           </div>
         </div>
       </section>
@@ -452,7 +456,7 @@
 
     // Disabled-controls lab — the governed OKRs card from the admin-toc
     // prototype. A row that cannot act is dimmed but stays clickable, and the
-    // click is answered in a dark bar along the bottom of the stage.
+    // click is answered by a neutral toast at the foot of the stage.
     //
     // The control picks why the rows are off, because the reason changes the
     // words, not the mechanics:
@@ -481,7 +485,7 @@
 
       let timer = null;
       const explain = () => {
-        snack.textContent = card.dataset[reason() === 'permission' ? 'reasonPermission' : 'reasonFeature'];
+        snack.querySelector('.toast-message').textContent = card.dataset[reason() === 'permission' ? 'reasonPermission' : 'reasonFeature'];
         snack.classList.add('is-visible');
         clearTimeout(timer);
         timer = setTimeout(() => snack.classList.remove('is-visible'), 3200);

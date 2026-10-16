@@ -234,6 +234,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 ### Rules of thumb
 
+- **Check the system before you build.** Nothing bespoke until `example.html` has been looked at and found wanting. Most of what a prototype needs is already a component — toasts, snackbars, modals, drawers, switches, empty states, banners — and a hand-rolled version of something that exists is drift the moment the real one changes. The order is: find the component → if it is close, add a variant to `components.css` → only then write something new, and write it in `components.css` so the next prototype inherits it, not inline in one file. A one-off that lives in a single page is the thing this system exists to prevent.
 - **Compose, don't override.** Stack variants on the root class (`<button class="btn btn-xs btn-primary">`). Don't write new CSS in a feature file — if a variant is missing, add it to `components.css` and re-inline.
 - **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--ic-space-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
 - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, tag inputs, character counters) get their behavior from the `<script>` block in `example.html`. When you build a new prototype, copy that whole block — the handlers are delegated and idempotent, so they activate on any markup that uses the right classes / data attributes.
