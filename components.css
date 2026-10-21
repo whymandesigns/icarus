@@ -2375,12 +2375,14 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
  * CSS-only tooltip on any element via [data-tooltip="…"]. Default placement
  * is top; override with [data-placement="bottom"|"left"|"right"].
  *
- * Two styles:
- *   Compact (default) — dark pill, caption text, single line. For icon
- *     buttons and short labels.
+ * Two styles. The dark pill does not wrap, so anything that reads as a
+ * sentence belongs in the regular one — a long string in the compact pill
+ * runs off as a single line.
+ *   Compact (default) — dark pill, caption text, single line. Reserved for
+ *     one-word labels on icon buttons: Copy, Delete, Filter.
  *   Regular — add [data-tooltip-style="regular"]. White surface, 13/20 body
  *     text that wraps (max 240px), soft shadow, caret pointing at the
- *     trigger. For longer explanatory copy.
+ *     trigger. Everything that explains rather than names.
  *
  *   <button class="btn" data-tooltip="Copied!" data-placement="bottom">Copy</button>
  *   <button class="btn" data-tooltip="Longer explanation…" data-tooltip-style="regular">Help</button>
