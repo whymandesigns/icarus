@@ -271,9 +271,50 @@
   --ease-out: cubic-bezier(0, 0, 0.2, 1);  /* extension */
   --ease-in: cubic-bezier(0.4, 0, 1, 1);   /* extension */
 
+  /* ---- Animation ----
+   * Tailwind v4 names an animation --animate-{name}; the keyframes it points at
+   * are defined below this block. Picasso contributes circle-spin; the other
+   * four come from the Operationalize Tailwind config, which is the only place
+   * the product extends Picasso. The duration and easing tokens above stay —
+   * they are what hand-written transitions use.
+   */
+  --animate-circle-spin: stroke-dash 1.4s ease-in-out infinite;  /* picasso */
+  --animate-highlight: highlight 3s ease-in-out;                 /* operationalize */
+  --animate-fade-in: fadeIn ease-in 1s;                          /* operationalize */
+  --animate-slider-progress: sliderProgress linear 10s forwards; /* operationalize */
+  --animate-card-land: cardLand 250ms ease-out;                  /* operationalize */
+
   /* ---- Layout — extensions. Picasso has breakpoints, not container widths. */
   --container-sm: 640px;            /* extension */
   --container-md: 768px;            /* extension */
   --container-lg: 1024px;           /* extension */
   --container-xl: 1280px;           /* extension */
+}
+
+/* Keyframes behind the --animate-* tokens. Names and values are verbatim from
+ * the Picasso and Operationalize Tailwind configs, so an animation a prototype
+ * uses is the same one the product ships. */
+@keyframes stroke-dash {
+  0%   { stroke-dasharray: 1px, 200px;   stroke-dashoffset: 0px; }
+  50%  { stroke-dasharray: 100px, 200px; stroke-dashoffset: -15px; }
+  100% { stroke-dasharray: 100px, 200px; stroke-dashoffset: -125px; }
+}
+/* rgba(37,169,239,.5) is blue-400 at 50% — written out as the config has it */
+@keyframes highlight { 50% { background-color: rgba(37, 169, 239, 50%); } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sliderProgress { from { width: 0px; } to { width: 100%; } }
+@keyframes cardLand {
+  0%   { transform: scale(1.04); filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2)); }
+  100% { transform: scale(1);    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0)); }
+}
+
+/* Motion is functional. Anything decorative respects a user who asked for less. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animate-circle-spin: none;
+    --animate-highlight: none;
+    --animate-fade-in: none;
+    --animate-slider-progress: none;
+    --animate-card-land: none;
+  }
 }

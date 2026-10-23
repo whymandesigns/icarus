@@ -2615,14 +2615,14 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .chase, .chase-cw { display: block; height: auto; }
 .chase path, .chase-cw path { fill: currentColor; }
 .chase { color: var(--color-accent); }
-.chase path { animation: ic-chase-fade 1.1s linear infinite; }
+.chase path { animation: chase-fade 1.1s linear infinite; }
 .chase-cw { color: var(--color-graphite-300); }
-.chase-cw path { animation: ic-chase-fade-cw 1.1s linear infinite; }
+.chase-cw path { animation: chase-fade-cw 1.1s linear infinite; }
 .chase.size-sm, .chase-cw.size-sm { width: 24px; }
 .chase.size-md, .chase-cw.size-md { width: 32px; }
 .chase.size-lg, .chase-cw.size-lg { width: 48px; }
-@keyframes ic-chase-fade { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; } }
-@keyframes ic-chase-fade-cw { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; color: var(--color-accent); } }
+@keyframes chase-fade { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; } }
+@keyframes chase-fade-cw { 0%, 100% { opacity: 0.15; } 12% { opacity: 1; color: var(--color-accent); } }
 @media (prefers-reduced-motion: reduce) {
   .chase path, .chase-cw path { animation: none; opacity: 0.55; }
 }

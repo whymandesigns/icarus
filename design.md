@@ -178,11 +178,13 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 
 | Group | Tokens |
 |---|---|
-| Radii (t-shirt) | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-lg` 12 · `-xl` 16 · `-2xl` 24 · `-full` 9999 |
-| Shadow | `--shadow-0` … `--shadow-5` (Picasso's roles: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu) |
-| Motion | `--duration-fast` 120 · `-base` 200 · `-slow` 320 — paired with `--ease`, `--ease-out`, `--ease-in` |
-| Z-index | `--z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
-| Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
+| Radii | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-full` 9999 are Picasso's; `-lg` 12 · `-xl` 16 · `-2xl` 24 are extensions |
+| Shadow | `--shadow-0` … `--shadow-5`, Picasso's values. They are **roles, not a ramp**: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu. Pick by what the surface *is*. |
+| Motion | `--duration-350` (Picasso) · `--duration-fast` 120 · `-base` 200 · `-slow` 320, paired with `--ease`, `--ease-out`, `--ease-in` (extensions). Use these for hand-written transitions. |
+| Animation | `--animate-circle-spin` (Picasso) · `--animate-highlight` · `-fade-in` · `-slider-progress` · `-card-land` (from the Operationalize config). Apply whole: `animation: var(--animate-fade-in)`. All five collapse to `none` under `prefers-reduced-motion`. |
+| Z-index | Picasso's: `--z-drawer` 1200 · `-modal` 1300 · `-tooltip` 1300 · `-snackbar` 1400. Extensions: `--z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 |
+| Breakpoints | `--breakpoint-xs` 0 · `-sm` 480 · `-md` 768 · `-lg` 1024 · `-xl` 1440 — Picasso's screens |
+| Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 — extensions; Picasso has breakpoints, not container widths |
 
 ### Breakpoints
 
