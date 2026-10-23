@@ -185,8 +185,12 @@
    * 700 into 600. designmd's old `medium` (500) and `bold` (700) therefore
    * already rendered as regular and semibold, and are gone. */
   --font-weight-inherit: inherit;   /* picasso */
-  --font-weight-thin: 100;          /* picasso */
-  --font-weight-light: 300;         /* picasso */
+  /* thin and light are keys in Picasso's preset, so the classes generate — but
+   * no Picasso component uses them (Typography exposes regular, semibold and
+   * inherit only) and Proxima ships no face at 100 or 300, so a browser
+   * synthesises them. Kept because the preset defines them; treat as unusable. */
+  --font-weight-thin: 100;          /* picasso - preset only, unused */
+  --font-weight-light: 300;         /* picasso - preset only, unused */
   --font-weight-regular: 400;       /* picasso */
   --font-weight-semibold: 600;      /* picasso */
 

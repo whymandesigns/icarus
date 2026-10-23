@@ -676,7 +676,7 @@
         <div class="tok-list" id="type-root"></div>
 
         <h4 class="h4" style="margin-top: var(--spacing-2)">Weight tokens</h4>
-        <p class="body-sm">Picasso ships four plus <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>. The self-hosted Proxima only carries Regular and Semibold, so 100 and 300 fall back to the nearest face until those weights are licensed.</p>
+        <p class="body-sm">Picasso uses <strong>two</strong>: regular and semibold. Its <code style="font: var(--type-mono); color: var(--color-text-muted)">Typography</code> exposes only <code style="font: var(--type-mono); color: var(--color-text-muted)">regular</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">semibold</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>, and no component reaches for anything else. <code style="font: var(--type-mono); color: var(--color-text-muted)">thin</code> (100) and <code style="font: var(--type-mono); color: var(--color-text-muted)">light</code> (300) are keys in the Tailwind preset, so the classes generate — but nothing uses them and Proxima has no face at those weights, so they render synthesised. Treat them as unavailable.</p>
         <div class="tok-list" id="weight-root"></div>
       </section>
 
@@ -5911,15 +5911,18 @@
     }).join('');
 
     // Weight — same specimen, so the faces can be compared directly
-    const WEIGHTS = ['thin','light','regular','semibold'];
-    document.getElementById('weight-root').innerHTML = WEIGHTS.map(k => {
+    // Only regular and semibold are real: Picasso's Typography exposes those two
+    // plus inherit, no component uses thin or light, and Proxima ships no face
+    // for them. They stay listed because the preset defines them.
+    const WEIGHTS = [['thin', false], ['light', false], ['regular', true], ['semibold', true]];
+    document.getElementById('weight-root').innerHTML = WEIGHTS.map(([k, real]) => {
       const w = css.getPropertyValue(`--font-weight-${k}`).trim();
       return `
         <div class="tok-row">
           <code class="tok-name">--font-weight-${k}</code>
           <span class="type-specimen" style="font-weight: var(--font-weight-${k})">Ag</span>
           <span class="tok-val">${w}</span>
-          <code class="tok-src is-picasso">font-${k}</code>
+          <code class="tok-src${real ? ' is-picasso' : ''}">${real ? 'font-' + k : 'preset only · unused'}</code>
         </div>`;
     }).join('');
 
