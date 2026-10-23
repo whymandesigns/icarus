@@ -11,7 +11,7 @@ Three layers. Don't skip them.
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │  tokens.css        Primitives — palette, scale, raw values   │  ← never reference directly in components
-│                    (--ic-palette-*, --ic-text-*, --spacing-*) │
+│                    (--color-*, --text-*, --spacing-*)         │
 ├──────────────────────────────────────────────────────────────┤
 │  semantic.css      Intent aliases — bg, text, brand, danger  │  ← what components and prototypes USE
 │                    (--color-bg, --color-text, --type-h1)     │
@@ -23,7 +23,7 @@ Three layers. Don't skip them.
        prototype.html      ← consumes components + semantic tokens
 ```
 
-**Rule:** components and prototypes reference **semantic** aliases (`--color-bg`, `--type-h1`), never primitives (`--ic-palette-blue-500`). This makes theme swaps and brand changes one-file edits.
+**Rule:** components and prototypes reference **semantic** aliases (`--color-bg`, `--type-h1`), never primitives (`--color-blue-500`). This makes theme swaps and brand changes one-file edits.
 
 ---
 
@@ -33,9 +33,9 @@ Three layers. Don't skip them.
 - **Three color roles, kept distinct:**
   - **Brand mark = Blue-500** (`--color-accent`). The logo color. White-on-graphite lockup in the topbar. Rarely surfaces elsewhere in the UI.
   - **Primary CTA = Green-500** (`--color-brand`). The attention-grabbing action color on dense data pages. Used **diligently** — ideally one `btn-primary` per page; every other CTA is `.btn-secondary`. Never decorative.
-  - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--ic-palette-graphite-800)` because it's the one place a raw palette reference is intentional.
+  - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--color-graphite-800)` because it's the one place a raw palette reference is intentional.
 - **Status colors are scarce.** Red/yellow/green only signal state — never decoration. (Note: green also doubles as the primary CTA color, which is why CTA placement is so disciplined.)
-- **Motion is functional.** `--ic-duration-fast` (120ms) for state, `--ic-duration-base` (200ms) for entry/exit. Nothing decorative.
+- **Motion is functional.** `--duration-fast` (120ms) for state, `--duration-base` (200ms) for entry/exit. Nothing decorative.
 - **Every prototype ships with the review bar.** `inline.py` bakes `review.css` + `review.js` into every prototype it touches. Click the circle button bottom-right on any prototype (or open it with `?review=1`) and a bar appears at the bottom: **Edit text** (retype any copy in place), **Comment** (click an element, leave a note — numbered pins + a side panel) and **Spotlight** (dim everything outside a dragged rectangle). Comments and edits are saved to `feedback.json` next to the prototype when it runs on `tools/serve.mjs`. This is the canonical way to review a prototype and hand the notes to an LLM — see §7 "Review bar" and `review-bar.html`.
 - **Copy the `example.html` `<script>` block** into every new prototype — it carries the universal handlers (modals, drawers, dropdowns, tabs, toasts, …).
 
@@ -90,22 +90,22 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--ic-font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
 
 ### Size primitives
 
 | Token | Size | Used in |
 |---|---|---|
-| `--ic-text-xxs` | 11px | tiny labels |
-| `--ic-text-xs`  | 12px | captions |
-| `--ic-text-sm`  | 13px | body small |
-| `--ic-text-base`| 14px | **default body**, H4 |
-| `--ic-text-md`  | 16px | body large, H3 |
-| `--ic-text-lg`  | 18px | utility |
-| `--ic-text-xl`  | 20px | H2 |
-| `--ic-text-2xl` | 28px | H1 |
+| `--text-2xs` | 11px | tiny labels |
+| `--text-xxs`  | 12px | captions |
+| `--text-sm`  | 13px | body small |
+| `--text-md`| 14px | **default body**, H4 |
+| `--text-lg`  | 16px | body large, H3 |
+| `--text-18`  | 18px | utility |
+| `--text-xl`  | 20px | H2 |
+| `--text-2xl` | 28px | H1 |
 
-> ⚠️ **Naming gotcha:** `-md` is **not** the default size — it's the *step above* default. The default body size is `--ic-text-base` (14px). Think of the scale as `base → md → lg → xl → 2xl` rather than `sm → md → lg`.
+> ⚠️ **Naming gotcha:** `-md` is **not** the default size — it's the *step above* default. The default body size is `--text-md` (14px). Think of the scale as `base → md → lg → xl → 2xl` rather than `sm → md → lg`.
 
 ### Type roles (use these as `font:` shorthand)
 
@@ -153,7 +153,7 @@ Numbered on the same `n × 0.25rem` rule, so they stay consistent with Tailwind:
 Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 
 > **If you remember the old scale, re-read the numbers.** designmd used to be index-based —
-> sequential steps — which collided with Picasso above step 4: the old `--ic-space-8` was 48px
+> sequential steps — which collided with Picasso above step 4: the old step 8 was 48px
 > where Picasso's `8` is 32px. Old → new: `5→6 · 6→8 · 7→10 · 8→12 · 10→16 · 12→20 · 16→32`.
 > Steps 0–4 are unchanged.
 
@@ -163,12 +163,11 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 
 | Group | Tokens |
 |---|---|
-| Radii (t-shirt) | `--ic-radius-none` 0 · `-sm` 4 · `-md` 8 · `-lg` 12 · `-xl` 16 · `-2xl` 24 · `-full` 9999 |
-| Radii (numeric) | `--ic-radius-0` · `-4` · `-8` · `-12` (aliases for none/sm/md/lg) |
-| Shadow | `--ic-shadow-xs` · `-sm` · `-md` · `-lg` · `-xl` |
-| Motion | `--ic-duration-fast` 120 · `-base` 200 · `-slow` 320 — paired with `--ic-ease`, `--ic-ease-out`, `--ic-ease-in` |
-| Z-index | `--ic-z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
-| Container | `--ic-container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
+| Radii (t-shirt) | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-lg` 12 · `-xl` 16 · `-2xl` 24 · `-full` 9999 |
+| Shadow | `--shadow-0` … `--shadow-5` (Picasso's roles: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu) |
+| Motion | `--duration-fast` 120 · `-base` 200 · `-slow` 320 — paired with `--ease`, `--ease-out`, `--ease-in` |
+| Z-index | `--z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
+| Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
 
 ### Breakpoints
 
@@ -248,7 +247,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 - **Check the system before you build.** Nothing bespoke until `example.html` has been looked at and found wanting. Most of what a prototype needs is already a component — toasts, snackbars, modals, drawers, switches, empty states, banners — and a hand-rolled version of something that exists is drift the moment the real one changes. The order is: find the component → if it is close, add a variant to `components.css` → only then write something new, and write it in `components.css` so the next prototype inherits it, not inline in one file. A one-off that lives in a single page is the thing this system exists to prevent.
 - **Compose, don't override.** Stack variants on the root class (`<button class="btn btn-xs btn-primary">`). Don't write new CSS in a feature file — if a variant is missing, add it to `components.css` and re-inline.
-- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--spacing-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
+- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--spacing-*)` / `var(--type-*)` — never raw palette tokens like `var(--color-blue-500)`.
 - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, tag inputs, character counters) get their behavior from the `<script>` block in `example.html`. When you build a new prototype, copy that whole block — the handlers are delegated and idempotent, so they activate on any markup that uses the right classes / data attributes.
 - **Page structure:** wrap content in `<main class="page">` to get the 1024px max-width centered layout.
 - **Wide vs. sheet tables.** Both share the `.table` base, so a prototype can offer a view toggle by swapping the modifier. Use `.table-wide` for read-heavy lists (tall rows, zebra striping, rich cell content). Use `.table-sheet` + `data-sheet` for editable, dense, Airtable/Linear-style grids where every cell is inline-editable through the shared cell state machine. Drive columns and cell values off `data-*` attributes — the module renders and wires everything; you don't hand-author cell inner markup (except the Name cell's `.sheet-tree` scaffold for the row toggle).
@@ -493,10 +492,10 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS **and the icon sprite** into the file. Result: zero external dependencies.
 >
 > **Rules:**
-> - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--ic-palette-*` directly.
+> - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--color-blue-500` directly.
 > - **Three color roles:** brand mark = blue-500 (`--color-accent`, logo only); primary CTA = green-500 (`--color-brand`, ONE per page — every other CTA is `.btn-secondary`); chrome = graphite-800 (topbar only).
 > - Reuse component classes from the §6 shortcode reference (`.btn`, `.card`, `.input`/`.field`, `.alert`, `.tabs`, `.toast`, `.tooltip` via `[data-tooltip]`, `.avatar`, `.table` (+ `.table-sheet` editable grid via `data-sheet`), `.dropdown`, `.modal`, `.drawer`, `.page-head`, `.sidenav`, `.topbar`, `.badge`, `.tag`, `.chip`, `.switch`, `.radio`, `.checkbox`, etc.). Compose variants on the root (`<button class="btn btn-xs btn-primary">`). Don't author new component CSS in the prototype — if a variant is missing, add it to `components.css` and re-inline.
-> - All spacing via `--spacing-*`. All radii via `--ic-radius-*`. All motion via `--ic-duration-*` + `--ic-ease*`.
+> - All spacing via `--spacing-*`. All radii via `--radius-*`. All motion via `--duration-*` + `--ease*`.
 > - Status colors (red/yellow/green) only signal state, never decoration.
 > - Type is the visual hierarchy. Avoid extra borders, dividers, or background fills.
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).

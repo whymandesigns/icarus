@@ -34,7 +34,7 @@
     .doc-section td > code {
       font: var(--type-mono); font-size: 12px;
       background: var(--color-surface-muted);
-      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      padding: 2px 6px; border-radius: var(--radius-sm);
       color: var(--color-text);
     }
 
@@ -47,11 +47,11 @@
     .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
     .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
     .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
-    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--duration-fast) var(--ease); }
     .doc-code {
       background: var(--color-surface-sunken);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       padding: var(--spacing-4);
       font: var(--type-mono); font-size: 13px;
       color: var(--color-text);
@@ -72,10 +72,10 @@
       border: 1px solid var(--color-border);
       color: var(--color-text);
       padding: 4px 10px;
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       font: var(--type-body-sm); font-weight: 500;
       cursor: pointer;
-      transition: background var(--ic-duration-fast) var(--ic-ease);
+      transition: background var(--duration-fast) var(--ease);
     }
     .doc-code-copy:hover { background: var(--color-surface-muted); }
     .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
@@ -86,7 +86,7 @@
       padding: var(--spacing-4);
       background: var(--color-info-subtle);
       border: 1px solid var(--color-info);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       color: var(--color-text);
       margin: var(--spacing-4) 0;
     }
@@ -104,8 +104,8 @@
     .doc-table a:hover { text-decoration: underline; }
 
     /* Live demo: the real versions.css classes inside a mock page. */
-    .vr-mock { position: relative; min-height: 420px; background: var(--color-surface-muted); border: 1px solid var(--color-border); border-radius: var(--ic-radius-lg); padding: var(--spacing-10) var(--spacing-6) var(--spacing-6); margin: var(--spacing-4) 0; }
-    .vr-mock-page { max-width: 420px; margin: 0 0 var(--spacing-8) auto; background: var(--color-surface); border-radius: var(--ic-radius-md); box-shadow: var(--ic-shadow-sm); padding: var(--spacing-10) var(--spacing-6) var(--spacing-6); display: flex; flex-direction: column; gap: var(--spacing-8); }
+    .vr-mock { position: relative; min-height: 420px; background: var(--color-surface-muted); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-10) var(--spacing-6) var(--spacing-6); margin: var(--spacing-4) 0; }
+    .vr-mock-page { max-width: 420px; margin: 0 0 var(--spacing-8) auto; background: var(--color-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-1); padding: var(--spacing-10) var(--spacing-6) var(--spacing-6); display: flex; flex-direction: column; gap: var(--spacing-8); }
     .vr-mock-row { display: flex; justify-content: space-between; gap: var(--spacing-4); font: var(--type-body-sm); }
     .vr-mock-row span:last-child { color: var(--color-text-subtle); }
     /* the panel is position:fixed in the wild; pin it inside the frame here */

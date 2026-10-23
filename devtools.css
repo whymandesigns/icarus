@@ -53,8 +53,8 @@
   background: var(--color-surface);
   color: var(--color-text);
   border: 1px solid var(--color-border);
-  border-radius: var(--ic-radius-md);
-  box-shadow: var(--ic-shadow-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-5);
   font: var(--type-body-sm);
 }
 .map-pop-head { font: var(--type-body-sm-semibold); }
@@ -63,7 +63,7 @@
   background: var(--color-surface-sunken);
   color: var(--color-text);
   padding: 4px 6px;
-  border-radius: var(--ic-radius-sm);
+  border-radius: var(--radius-sm);
   display: block;
   white-space: pre-wrap;
   word-break: break-word;

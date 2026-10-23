@@ -12,7 +12,7 @@
     .topnav {
       position: sticky;
       top: 0;
-      z-index: var(--ic-z-sticky);
+      z-index: var(--z-sticky);
       padding: var(--spacing-2) var(--spacing-6);
       background: color-mix(in srgb, var(--color-bg) 88%, transparent);
       backdrop-filter: blur(12px);
@@ -24,18 +24,18 @@
       align-items: center;
       justify-content: space-between;
       gap: var(--spacing-4);
-      max-width: var(--ic-container-lg);
+      max-width: var(--container-lg);
       margin: 0 auto;
     }
     .topnav-links { display: flex; gap: var(--spacing-2); }
     .topnav-links a {
-      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      font: var(--font-weight-regular) var(--text-md)/1 var(--font-sans);
       color: var(--color-text-muted);
       text-decoration: none;
       padding: var(--spacing-2) var(--spacing-3);
-      border-radius: var(--ic-radius-md);
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  background var(--ic-duration-fast) var(--ic-ease);
+      border-radius: var(--radius-md);
+      transition: color var(--duration-fast) var(--ease),
+                  background var(--duration-fast) var(--ease);
     }
     .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
     .topnav-actions { display: flex; gap: var(--spacing-2); align-items: center; }
@@ -64,13 +64,13 @@
       width: 220px;
       max-height: calc(100vh - var(--spacing-16) - var(--spacing-6));
       overflow-y: auto;
-      z-index: var(--ic-z-sticky);
+      z-index: var(--z-sticky);
       padding: var(--spacing-3) 0;
     }
     .page-toc-section { margin-bottom: var(--spacing-4); }
     .page-toc-section:last-child { margin-bottom: 0; }
     .page-toc-section-label {
-      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      font: var(--font-weight-semibold) var(--text-2xs)/1 var(--font-sans);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
@@ -84,26 +84,26 @@
       color: var(--color-text-muted);
       text-decoration: none;
       border-left: 2px solid transparent;
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  border-color var(--ic-duration-fast) var(--ic-ease);
+      transition: color var(--duration-fast) var(--ease),
+                  border-color var(--duration-fast) var(--ease);
     }
     .page-toc-item:hover { color: var(--color-text); }
     .page-toc-item.is-active { color: var(--color-accent); border-left-color: var(--color-accent); }
     .page-toc-toggle { display: none; }
 
     @media (max-width: 1320px) {
-      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--ic-z-sticky) + 1); }
+      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--z-sticky) + 1); }
       .page-toc {
         top: var(--spacing-16);
         right: var(--spacing-3);
         max-height: calc(100vh - var(--spacing-16) - var(--spacing-3));
         background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--ic-radius-md);
-        box-shadow: var(--ic-shadow-lg);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-5);
         padding: var(--spacing-4) 0;
         transform: translateX(calc(100% + var(--spacing-6)));
-        transition: transform var(--ic-duration-base) var(--ic-ease);
+        transition: transform var(--duration-base) var(--ease);
       }
       .page-toc.is-open { transform: translateX(0); }
     }
@@ -113,7 +113,7 @@
        preview stage. Not a product component. */
     .pattern-lab {
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-lg);
+      border-radius: var(--radius-lg);
       background: var(--color-surface);
       overflow: hidden;
     }
@@ -127,13 +127,13 @@
     }
     .pattern-control { display: flex; flex-direction: column; gap: var(--spacing-2); }
     .pattern-control-label {
-      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      font: var(--font-weight-semibold) var(--text-2xs)/1 var(--font-sans);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
     }
     .pattern-reset { margin-left: auto; align-self: center; }
-    .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--ic-radius-full); background: var(--color-accent); display: inline-block; }
+    .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-accent); display: inline-block; }
     .pattern-reco-dot[hidden] { display: none; }
 
     /* The rule the two controls exist to teach, stated rather than implied by
@@ -150,7 +150,7 @@
       border-bottom-color: var(--color-warning);
       color: var(--color-text);
     }
-    .pattern-guidance b { font-weight: var(--ic-weight-semibold); }
+    .pattern-guidance b { font-weight: var(--font-weight-semibold); }
 
     /* Governed settings card — a master row whose switch decides whether the
        rows under it have anything to act on. */
@@ -178,7 +178,7 @@
       position: absolute; left: 50%; bottom: var(--spacing-6);
       transform: translateX(-50%) translateY(8px);
       opacity: 0; pointer-events: none;
-      transition: opacity var(--ic-duration-fast) var(--ic-ease), transform var(--ic-duration-fast) var(--ic-ease);
+      transition: opacity var(--duration-fast) var(--ease), transform var(--duration-fast) var(--ease);
     }
     .pattern-toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
     /* room for the toast to sit under the card rather than across it */
@@ -198,7 +198,7 @@
       display: flex; align-items: center; gap: var(--spacing-3);
       padding: var(--spacing-2) var(--spacing-2) var(--spacing-2) var(--spacing-4);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       background: var(--color-surface);
     }
     .pattern-demo-name { flex: 1; min-width: 0; font: var(--type-body-sm); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -209,7 +209,7 @@
       color: var(--color-text-subtle);
       font: var(--type-body-sm);
       border: 1px dashed var(--color-border-strong);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
     }
   </style>
 </head>
