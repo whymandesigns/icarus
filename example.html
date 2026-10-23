@@ -291,6 +291,26 @@
     .motion-token { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text-muted); }
     .motion-val { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text-subtle); }
     @media (prefers-reduced-motion: reduce) { .motion-dot.run { animation: none; left: calc(100% - 20px); } }
+    /* Animation-token demos. Each plays the token itself, so what you see is
+       exactly the value --animate-* holds. */
+    .anim-demo {
+      position: absolute; top: 50%; left: 4px; transform: translateY(-50%);
+      width: 20px; height: 20px; border-radius: var(--radius-sm);
+      background: var(--color-accent);
+    }
+    .anim-demo.anim-slider { width: 0; left: 4px; right: 4px; border-radius: var(--radius-full); }
+    .anim-demo.anim-highlight { background: var(--color-surface-sunken); width: calc(100% - 8px); }
+    .anim-demo.anim-spin { background: none; border: 2px solid var(--color-border); border-top-color: var(--color-accent); border-radius: var(--radius-full); }
+    .anim-demo.run.anim-spin   { animation: anim-spin-demo 1.4s ease-in-out infinite; }
+    .anim-demo.run.anim-highlight { animation: var(--animate-highlight); }
+    .anim-demo.run.anim-fade      { animation: var(--animate-fade-in); }
+    .anim-demo.run.anim-slider    { animation: anim-slider-demo 10s linear forwards; }
+    .anim-demo.run.anim-card      { animation: var(--animate-card-land); }
+    /* the two width-based ones are shown at demo scale; the tokens themselves
+       animate to 100% / spin an SVG dash, which needs the real component */
+    @keyframes anim-spin-demo { to { transform: translateY(-50%) rotate(360deg); } }
+    @keyframes anim-slider-demo { from { width: 0; } to { width: calc(100% - 8px); } }
+    @media (prefers-reduced-motion: reduce) { .anim-demo.run { animation: none; } }
 
     /* ---- Device preview (App shell template) ----
        Flip the app shell between Desktop / Tablet (768) / Mobile (375). The
@@ -568,7 +588,7 @@
       <section class="stack" id="radii">
         <div>
           <h3 class="h3">Radii</h3>
-          <p class="body-sm">Numeric aliases (<code style="font: var(--type-mono); color: var(--color-text-muted)">-0</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-4</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-8</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-12</code>) point to the same values as the t-shirt scale.</p>
+          <p class="body-sm">Picasso's scale is <code style="font: var(--type-mono); color: var(--color-text-muted)">none</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">sm</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">md</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">full</code> — those four map to a <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-*</code> class. <code style="font: var(--type-mono); color: var(--color-text-muted)">lg</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">xl</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">2xl</code> are designmd extensions with no Tailwind class behind them.</p>
         </div>
         <div class="radii-row" id="radii-root"></div>
       </section>
@@ -721,6 +741,36 @@
             <div class="motion-card-head"><span class="motion-name">Slow</span><span class="motion-val">320ms</span></div>
             <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--duration-slow)"></span></div>
             <div class="motion-meta"><code class="motion-token">--duration-slow</code><span class="motion-val">large surfaces, modals</span></div>
+          </div>
+        </div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Animation</h4>
+        <p class="body-sm">Complete named animations, applied whole: <code style="font: var(--type-mono); color: var(--color-text-muted)">animation: var(--animate-fade-in)</code>. Values come from the Picasso and Operationalize Tailwind configs, so a prototype plays what the product plays. All five collapse to <code style="font: var(--type-mono); color: var(--color-text-muted)">none</code> under <code style="font: var(--type-mono); color: var(--color-text-muted)">prefers-reduced-motion</code>.</p>
+        <div class="motion-grid">
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Circle spin<span class="motion-sub">picasso</span></span><span class="motion-val">1.4s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-spin" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-circle-spin</code><span class="motion-val">loaders</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Highlight<span class="motion-sub">operationalize</span></span><span class="motion-val">3s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-highlight" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-highlight</code><span class="motion-val">flash a row that just changed</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Fade in<span class="motion-sub">operationalize</span></span><span class="motion-val">1s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-fade" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-fade-in</code><span class="motion-val">content arriving</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Slider progress<span class="motion-sub">operationalize</span></span><span class="motion-val">10s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-slider" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-slider-progress</code><span class="motion-val">timed fill</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Card land<span class="motion-sub">operationalize</span></span><span class="motion-val">250ms</span></div>
+            <div class="motion-track"><span class="anim-demo anim-card" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-card-land</code><span class="motion-val">a dropped card settling</span></div>
           </div>
         </div>
       </section>
@@ -4723,12 +4773,12 @@
     (function () {
       const sec = document.getElementById('motion');
       if (!sec) return;
-      const dots = [...sec.querySelectorAll('.motion-dot')];
+      const dots = [...sec.querySelectorAll('.motion-dot, .anim-demo')];
       const run = dot => { dot.classList.remove('run'); void dot.offsetWidth; dot.classList.add('run'); };
       const runAll = () => dots.forEach(run);
       sec.querySelector('[data-motion-play]')?.addEventListener('click', runAll);
       sec.querySelectorAll('.motion-card').forEach(card => {
-        card.addEventListener('mouseenter', () => { const d = card.querySelector('.motion-dot'); if (d) run(d); });
+        card.addEventListener('mouseenter', () => { const d = card.querySelector('.motion-dot, .anim-demo'); if (d) run(d); });
       });
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver(entries => {
@@ -5700,9 +5750,10 @@
     };
 
     // Radii
-    const radii = ['none','sm','md','lg','xl'].map(k => `--radius-${k}`);
-    // Picasso Tailwind border-radius tokens (only none/sm/md/full exist there);
-    // lg & xl are intentional extras and stay unlinked.
+    const radii = ['none','sm','md','lg','xl','2xl','full'].map(k => `--radius-${k}`);
+    // Picasso's border-radius scale is only none/sm/md/full. lg, xl and 2xl are
+    // designmd extensions and stay unlinked — the inspector outlines the mapped
+    // ones only, so an unlinked card means "no Tailwind class waiting for this".
     const PICASSO_RADIUS = {
       '--radius-none': 'rounded-none',
       '--radius-sm': 'rounded-sm',
