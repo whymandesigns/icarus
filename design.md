@@ -62,7 +62,7 @@ reds, three yellows and a single purple.
 | `red` | 100, 150, 500 | Danger / destructive |
 | `yellow` | 100, 150, 500 | Warning |
 | `purple` | 500 | Reserved |
-| `zinc` | *none* | Dark-theme neutrals — entirely a designmd extension |
+| `zinc` | *none* | Dark-theme neutrals — entirely a designmd extension, and **hidden from the palette gallery**. It exists only to back `[data-theme="dark"]`; never reach for it in a prototype. Picasso ships real dark values, and rebuilding dark mode on those retires this ramp. |
 
 Shades outside those lists (gray-700+, the graphite 100–400 range, every
 mid-ramp red/yellow/green/blue/purple) are extensions.

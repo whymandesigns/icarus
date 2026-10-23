@@ -40,6 +40,14 @@
   --color-gray-900: #24272D;        /* extension */
 
   /* Zinc — dark-theme neutrals */
+  /* Zinc — NOT Picasso. Picasso has no zinc at all. These nine exist for one
+   * reason: they are the entire foundation of the dark theme in semantic.css.
+   * Hidden from the palette gallery in example.html so nobody reaches for them
+   * when building, and they should never appear in a prototype directly.
+   * They cannot simply be deleted — the [data-theme="dark"] block resolves to
+   * nothing without them and the theme toggle breaks. Picasso ships real dark
+   * values for every token; rebuilding dark mode on those is what retires this
+   * ramp for good. */
   --color-zinc-100: #D1D2D3;        /* extension */
   --color-zinc-200: #949597;        /* extension */
   --color-zinc-300: #636466;        /* extension */
