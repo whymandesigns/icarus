@@ -74,7 +74,7 @@
        token name, a proportional bar, the value, and where the token comes from. */
     .tok-list { display: flex; flex-direction: column; gap: var(--spacing-1); }
     .tok-row {
-      display: grid; grid-template-columns: 11rem 1fr 5rem 7rem;
+      display: grid; grid-template-columns: 11rem 1fr 5rem 9.5rem;
       gap: var(--spacing-3); align-items: center;
       padding: var(--spacing-1) 0;
     }
@@ -83,6 +83,7 @@
     .tok-val { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); text-align: right; }
     .tok-src { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); }
     .tok-src.is-picasso { color: var(--color-brand); }
+    .type-specimen { color: var(--color-text); font-family: var(--font-sans); white-space: nowrap; }
     .shadow-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-6); }
     .shadow-card { display: flex; flex-direction: column; gap: var(--spacing-2); }
     .shadow-chip {
@@ -669,6 +670,14 @@
           <p class="body-xs-semibold">Body xsmall semibold — 12/18, dense emphasis and small buttons.</p>
           <p class="body-xxs-semibold">Body xxsmall semibold — 11/16, the smallest emphasised label.</p>
         </div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Size tokens</h4>
+        <p class="body-sm">The sizes those roles are built from. Picasso pairs each with a line-height, so the token travels as a pair — <code style="font: var(--type-mono); color: var(--color-text-muted)">--text-md</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">--text-md--line-height</code>.</p>
+        <div class="tok-list" id="type-root"></div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Weight tokens</h4>
+        <p class="body-sm">Picasso ships four plus <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>. The self-hosted Proxima only carries Regular and Semibold, so 100 and 300 fall back to the nearest face until those weights are licensed.</p>
+        <div class="tok-list" id="weight-root"></div>
       </section>
 
       <section class="stack" id="iconography">
@@ -5881,6 +5890,37 @@
       const next = i < BPS.length - 1 ? px(css.getPropertyValue(`--breakpoint-${BPS[i+1]}`)) : null;
       const range = next ? `${v}–${next - 1}` : `≥ ${v}`;
       return row(`--breakpoint-${k}`, `${Math.max(2, (v / 1440) * 100)}%`, range, 'picasso');
+    }).join('');
+
+    // Type — specimen rendered at the token's own size, with the class it becomes
+    const TYPE = ['2xs','xxs','sm','md','lg','xl','2xl','xxl','18',
+                  'button-small','button-medium','button-large'];
+    const TYPE_EXT = new Set(['18']);   // 18px has no Picasso size
+    document.getElementById('type-root').innerHTML = TYPE.map(k => {
+      const size = css.getPropertyValue(`--text-${k}`).trim();
+      const lh = css.getPropertyValue(`--text-${k}--line-height`).trim();
+      if (!size) return '';
+      const ext = TYPE_EXT.has(k);
+      return `
+        <div class="tok-row">
+          <code class="tok-name">--text-${k}</code>
+          <span class="type-specimen" style="font-size: var(--text-${k}); line-height: ${lh || 'normal'}">Ag</span>
+          <span class="tok-val">${px(size)}${lh ? '/' + px(lh) : ''}</span>
+          <code class="tok-src${ext ? '' : ' is-picasso'}">${ext ? 'extension' : 'text-' + k}</code>
+        </div>`;
+    }).join('');
+
+    // Weight — same specimen, so the faces can be compared directly
+    const WEIGHTS = ['thin','light','regular','semibold'];
+    document.getElementById('weight-root').innerHTML = WEIGHTS.map(k => {
+      const w = css.getPropertyValue(`--font-weight-${k}`).trim();
+      return `
+        <div class="tok-row">
+          <code class="tok-name">--font-weight-${k}</code>
+          <span class="type-specimen" style="font-weight: var(--font-weight-${k})">Ag</span>
+          <span class="tok-val">${w}</span>
+          <code class="tok-src is-picasso">font-${k}</code>
+        </div>`;
     }).join('');
 
     // Shadow — the role each one plays, straight from Picasso's own source comments
