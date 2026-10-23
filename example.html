@@ -49,7 +49,7 @@
 
     .radii-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
       gap: var(--spacing-4);
     }
     .radius-card {
@@ -5824,10 +5824,14 @@
         : '';
       const card = document.createElement('div');
       card.className = 'radius-card';
+      // Show the full token, then the Tailwind class it becomes. The three
+      // extensions get no class, because Picasso sets theme.borderRadius rather
+      // than extending it — rounded-lg genuinely does not exist there.
       card.innerHTML = `
         <div class="radius-shape" style="border-radius: var(${token})"${dataAttrs}></div>
-        <code class="radius-token">${label}</code>
+        <code class="radius-token">${token}</code>
         <code class="radius-value">${display}</code>
+        <code class="tok-src${rounded ? ' is-picasso' : ''}">${rounded || 'extension · no class'}</code>
       `;
       radiiRoot.appendChild(card);
     });
