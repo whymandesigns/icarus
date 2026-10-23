@@ -70,6 +70,28 @@
       color: var(--color-text-subtle);
     }
 
+    /* Shared rows for the spacing / z-index / breakpoint galleries. Each row is
+       token name, a proportional bar, the value, and where the token comes from. */
+    .tok-list { display: flex; flex-direction: column; gap: var(--spacing-1); }
+    .tok-row {
+      display: grid; grid-template-columns: 11rem 1fr 5rem 7rem;
+      gap: var(--spacing-3); align-items: center;
+      padding: var(--spacing-1) 0;
+    }
+    .tok-name { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text); }
+    .tok-bar { height: 12px; border-radius: var(--radius-sm); background: var(--color-brand-subtle); border: 1px solid var(--color-border); }
+    .tok-val { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); text-align: right; }
+    .tok-src { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); }
+    .tok-src.is-picasso { color: var(--color-brand); }
+    .shadow-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-6); }
+    .shadow-card { display: flex; flex-direction: column; gap: var(--spacing-2); }
+    .shadow-chip {
+      height: 72px; border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+    .shadow-role { font: var(--font-weight-semibold) var(--text-2xs)/1.2 var(--font-sans); color: var(--color-text); }
+    @media (max-width: 720px) { .tok-row { grid-template-columns: 8rem 1fr 4rem; } .tok-src { display: none; } }
+
     @media (max-width: 720px) {
       /* .grid-2 collapse handled in components.css */
       .ramp { grid-template-columns: 1fr; gap: var(--spacing-2); }
@@ -591,6 +613,38 @@
           <p class="body-sm">Picasso's scale is <code style="font: var(--type-mono); color: var(--color-text-muted)">none</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">sm</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">md</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">full</code> — those four map to a <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-*</code> class. <code style="font: var(--type-mono); color: var(--color-text-muted)">lg</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">xl</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">2xl</code> are designmd extensions with no Tailwind class behind them.</p>
         </div>
         <div class="radii-row" id="radii-root"></div>
+      </section>
+
+      <section class="stack" id="spacing">
+        <div>
+          <h3 class="h3">Spacing</h3>
+          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px); the three above it are extensions, numbered on the same rule.</p>
+        </div>
+        <div class="tok-list" id="spacing-root"></div>
+      </section>
+
+      <section class="stack" id="shadows">
+        <div>
+          <h3 class="h3">Shadow</h3>
+          <p class="body-sm">Picasso's shadows are <strong>roles, not a ramp</strong> — pick by what the surface <em>is</em>, not by how heavy you want it. All six are Picasso's values. (Picasso also defines 6–24, Material UI elevations its own source marks for deprecation; those are not carried.)</p>
+        </div>
+        <div class="shadow-row" id="shadow-root"></div>
+      </section>
+
+      <section class="stack" id="layers">
+        <div>
+          <h3 class="h3">Z-index</h3>
+          <p class="body-sm">Picasso fixes the four that matter for overlays. The rest are designmd extensions sitting below them — anything above 1400 is prototype tooling, not product.</p>
+        </div>
+        <div class="tok-list" id="layer-root"></div>
+      </section>
+
+      <section class="stack" id="breakpoints">
+        <div>
+          <h3 class="h3">Breakpoints</h3>
+          <p class="body-sm">Picasso's screens. Author mobile-first and layer upward with <code style="font: var(--type-mono); color: var(--color-text-muted)">min-width</code>; the four edges are 480 · 768 · 1024 · 1440.</p>
+        </div>
+        <div class="tok-list" id="bp-root"></div>
       </section>
 
       <section class="stack" id="type">
@@ -5778,6 +5832,62 @@
       `;
       radiiRoot.appendChild(card);
     });
+
+    // Spacing, z-index, breakpoints and shadows are all read from the live
+    // tokens rather than listed here, so the galleries cannot drift from
+    // tokens.css the way the radii list did.
+    const px = v => { v = v.trim();
+      if (v.endsWith('rem')) return Math.round(parseFloat(v) * 16);
+      if (v.endsWith('px')) return Math.round(parseFloat(v));
+      return parseFloat(v) || 0; };
+    const row = (name, barPct, value, src) => `
+      <div class="tok-row">
+        <code class="tok-name">${name}</code>
+        <div><div class="tok-bar" style="width: ${barPct}"></div></div>
+        <span class="tok-val">${value}</span>
+        <span class="tok-src${src === 'picasso' ? ' is-picasso' : ''}">${src}</span>
+      </div>`;
+
+    // Spacing — bar width is the step itself, so the scale is literally to scale
+    const SPACING = [0,1,2,3,4,6,8,10,12,16,20,32];
+    const SPACING_PICASSO = new Set([0,1,2,3,4,6,8,10,12]);
+    document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
+      const v = css.getPropertyValue(`--spacing-${n}`).trim();
+      const p = px(v);
+      return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0',
+                 SPACING_PICASSO.has(n) ? 'picasso' : 'extension');
+    }).join('');
+
+    // Z-index — ordered by the value it actually resolves to
+    const LAYERS = ['base','dropdown','sticky','overlay','drawer','modal','tooltip','snackbar'];
+    const LAYER_PICASSO = new Set(['drawer','modal','tooltip','snackbar']);
+    document.getElementById('layer-root').innerHTML = LAYERS
+      .map(k => ({ k, v: parseInt(css.getPropertyValue(`--z-${k}`).trim(), 10) || 0 }))
+      .sort((a, b) => a.v - b.v)
+      .map(({ k, v }) => row(`--z-${k}`, `${Math.max(2, (v / 1400) * 100)}%`, v,
+                             LAYER_PICASSO.has(k) ? 'picasso' : 'extension'))
+      .join('');
+
+    // Breakpoints — bar is the edge against the widest screen
+    const BPS = ['xs','sm','md','lg','xl'];
+    document.getElementById('bp-root').innerHTML = BPS.map((k, i) => {
+      const v = px(css.getPropertyValue(`--breakpoint-${k}`));
+      const next = i < BPS.length - 1 ? px(css.getPropertyValue(`--breakpoint-${BPS[i+1]}`)) : null;
+      const range = next ? `${v}–${next - 1}` : `≥ ${v}`;
+      return row(`--breakpoint-${k}`, `${Math.max(2, (v / 1440) * 100)}%`, range, 'picasso');
+    }).join('');
+
+    // Shadow — the role each one plays, straight from Picasso's own source comments
+    const SHADOW_ROLE = {
+      0: 'none', 1: 'paper · notification centre', 2: 'modal',
+      3: 'notification growl', 4: 'tooltip', 5: 'scroll menu · popovers',
+    };
+    document.getElementById('shadow-root').innerHTML = Object.entries(SHADOW_ROLE).map(([n, role]) => `
+      <div class="shadow-card">
+        <div class="shadow-chip" style="box-shadow: var(--shadow-${n})"></div>
+        <span class="shadow-role">${role}</span>
+        <code class="radius-token">--shadow-${n}</code>
+      </div>`).join('');
 
     ramps.forEach(ramp => {
       const tokens = ramp.tokens
