@@ -5840,7 +5840,12 @@
         const resolveProps = (el, c) => {
           const pm = (c.react && c.react.propMap) || {};
           const props = {};
-          el.classList.forEach(cls => { if (pm[cls]) Object.assign(props, pm[cls]); });
+          // Walk the propMap in its own order, not the element's. The map lists the
+          // root class first and modifiers after, so .btn then .btn-xs resolves to
+          // size="small" whichever order the markup happens to write them in.
+          Object.keys(pm).forEach(cls => {
+            if (el.classList.contains(cls)) Object.assign(props, pm[cls]);
+          });
           return props;
         };
         const jsx = (comp, props) => {

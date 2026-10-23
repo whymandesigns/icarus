@@ -16,7 +16,8 @@
     "react.block": "Cross-reference to the React/Storybook library (Picasso). Fields: component, import, storyId, status, propMap, note.",
     "react.status": "mapped = clean 1:1 · partial = closest fit, see note · gap = no single Picasso component (compose).",
     "slug": "Stable key stamped as data-component=\"<slug>\"; the ?map=1 inspector resolves it to this entry.",
-    "stampSelector": "CSS selector the inspector uses to auto-stamp data-component; omit to register without auto-stamping."
+    "stampSelector": "CSS selector the inspector uses to auto-stamp data-component; omit to register without auto-stamping.",
+    "react.propMap": "designmd class -> Picasso props. Key order is precedence: the root class comes first and modifiers after, so the result does not depend on the order a prototype writes its classes. Keys that are not classes (e.g. tooltip's \"data-placement=top\") document the binding but are not resolved by the ?map=1 inspector, which matches on classList."
   },
   "reactLibrary": {
     "name": "Picasso",
@@ -24,7 +25,9 @@
     "version": "102.0.0",
     "registry": "https://registry.npmjs.org/@toptal/picasso",
     "auditedOn": "2026-10-23",
-    "method": "Component names and prop unions read from the published .d.ts of @toptal/picasso@102.0.0 and its per-component packages; every propMap value below is checked against the declared union."
+    "method": "Component names and prop unions read from the published .d.ts of @toptal/picasso@102.0.0; prop VALUES confirmed against the component implementations in packages/base at toptal/picasso@bcaacbb8ec3b (styles.ts / *.tsx), not inferred from designmd's CSS. The repo also ships Code Connect files (<Component>.figma.ts) that the Figma side of this map should be built from.",
+    "sourceRepo": "https://github.com/toptal/picasso",
+    "sourceCommit": "bcaacbb8ec3bac1c9b49a7864a84bb8b145846c6"
   },
   "components": [
     {
@@ -127,6 +130,12 @@
         "storyId": "components-button--button",
         "status": "mapped",
         "propMap": {
+          "btn": {
+            "size": "medium"
+          },
+          "btn-xs": {
+            "size": "small"
+          },
           "btn-primary": {
             "variant": "positive"
           },
@@ -138,13 +147,10 @@
           },
           "btn-ghost": {
             "variant": "transparent"
-          },
-          "btn-xs": {
-            "size": "small"
           }
         },
-        "note": "Verified against @toptal/picasso@102.0.0: variant is primary|negative|positive|secondary|transparent. designmd's primary CTA is green, so .btn-primary maps to positive, not primary (Picasso's primary is blue). .btn-icon-only has no variant prop — pass icon with no children.",
-        "verifiedAgainst": "102.0.0"
+        "note": "Confirmed against Button/styles.ts, which resolves the variants to real colours: primary = bg-blue-500, positive = bg-green-500, negative = bg-red-500, secondary = bg-white/bg-gray-200, transparent = bg-transparent. designmd's primary CTA is green, so .btn-primary is positive, not primary. Sizes match on height — small h-6 = 24px = .btn-xs, medium h-8 = 32px = base .btn — though Picasso pads wider (px-4/px-3 vs designmd space-3/space-2). Picasso large (h-12, 48px) has no designmd equivalent. .btn-icon-only has no variant prop: pass icon with no children.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
@@ -670,6 +676,10 @@
         "storyId": "components-badge--badge",
         "status": "mapped",
         "propMap": {
+          "count-badge": {
+            "variant": "red",
+            "size": "medium"
+          },
           "count-badge-sm": {
             "size": "small"
           },
@@ -680,8 +690,8 @@
             "variant": "white"
           }
         },
-        "note": "Picasso Badge: variant white|red, size small|medium|large. designmd default = red; .count-badge-secondary (white fill, bordered) = variant white.",
-        "verifiedAgainst": "102.0.0"
+        "note": "Confirmed against Badge/styles.ts. Sizes line up exactly: small h-3 = 12px, medium h-4 = 16px, large 1.25rem = 20px, matching .count-badge-sm / base / -lg. white = 'bg-white text-graphite-700 border-gray-400' = .count-badge-secondary (designmd's border is gray-300, one step lighter). NOTE the defaults differ: a bare .count-badge is red at 16px, but Picasso defaults to variant white at size large — so the base class must be emitted explicitly, never as <Badge />.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
@@ -717,8 +727,22 @@
         "import": "@toptal/picasso",
         "storyId": "components-avatar--avatar",
         "status": "mapped",
-        "propMap": {},
-        "verifiedAgainst": "102.0.0"
+        "propMap": {
+          "avatar-md": {
+            "size": "xxsmall"
+          },
+          "avatar-lg": {
+            "size": "xsmall"
+          },
+          "avatar-xl": {
+            "size": "small"
+          },
+          "avatar-2xl": {
+            "size": "medium"
+          }
+        },
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)",
+        "note": "WARNING — the names are shifted two steps. Picasso sizes are em-based (AvatarWrapper/styles.ts): xxsmall 2em=32px, xsmall 2.5em=40px, small 5em=80px, medium 7.5em=120px, large 10em=160px. designmd .avatar-md is 32px, so it is Picasso xxsmall, NOT medium — translating .avatar-md to size=\"medium\" gives 120px, nearly 4x too big. .avatar-xs (16px) and .avatar-sm (24px) are below Picasso's smallest; Picasso large (160px) has no designmd equivalent."
       }
     },
     {
@@ -1341,8 +1365,8 @@
             "spacing": "compact"
           }
         },
-        "note": "Picasso Table: spacing compact|narrow|regular, variant clear|bordered|striped. .table-wide is zebra-striped = striped; .table-sheet is the dense editable grid, nearest is spacing compact.",
-        "verifiedAgainst": "102.0.0"
+        "note": "Confirmed against Table.tsx (defaults spacing regular, variant bordered), TableBody (striped calls stripeRows) and TableCell (compact = h-6/24px, regular = px-4). .table-wide is zebra-striped = striped, but its 80px rows have no Picasso equivalent. .table-sheet is 28px rows; compact (24px) is the nearest fit, not an exact one.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
