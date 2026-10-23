@@ -24,110 +24,110 @@
      ================================================================ */
 
   /* Neutral */
-  --color-white: #FFFFFF;
-  --color-black: #000000;
+  --color-white: #FFFFFF;           /* picasso */
+  --color-black: #000000;           /* picasso */
 
   /* Gray */
-  --color-gray-50: #FCFCFC;   /* Picasso grey.lightest */
-  --color-gray-100: #F3F4F6;   /* Picasso grey.lighter */
-  --color-gray-200: #EBECED;   /* Picasso grey.lighter2 */
-  --color-gray-300: #E5E7EA;   /* Picasso grey.light */
-  --color-gray-400: #D8D9DC;   /* Picasso grey.light2 */
-  --color-gray-500: #C4C6CA;   /* Picasso grey.main */
-  --color-gray-600: #84888E;   /* Picasso grey.main2 */
-  --color-gray-700: #5F636A;
-  --color-gray-800: #3D4149;
-  --color-gray-900: #24272D;
+  --color-gray-50: #FCFCFC;         /* picasso */
+  --color-gray-100: #F3F4F6;        /* picasso */
+  --color-gray-200: #EBECED;        /* picasso */
+  --color-gray-300: #E5E7EA;        /* picasso */
+  --color-gray-400: #D8D9DC;        /* picasso */
+  --color-gray-500: #C4C6CA;        /* picasso */
+  --color-gray-600: #84888E;        /* picasso */
+  --color-gray-700: #5F636A;        /* extension */
+  --color-gray-800: #3D4149;        /* extension */
+  --color-gray-900: #24272D;        /* extension */
 
   /* Zinc — dark-theme neutrals */
-  --color-zinc-100: #D1D2D3;
-  --color-zinc-200: #949597;
-  --color-zinc-300: #636466;
-  --color-zinc-400: #484A4C;
-  --color-zinc-500: #343536;
-  --color-zinc-600: #282829;
-  --color-zinc-700: #1E1E1F;
-  --color-zinc-800: #141415;
-  --color-zinc-900: #0A0A0A;
+  --color-zinc-100: #D1D2D3;        /* extension */
+  --color-zinc-200: #949597;        /* extension */
+  --color-zinc-300: #636466;        /* extension */
+  --color-zinc-400: #484A4C;        /* extension */
+  --color-zinc-500: #343536;        /* extension */
+  --color-zinc-600: #282829;        /* extension */
+  --color-zinc-700: #1E1E1F;        /* extension */
+  --color-zinc-800: #141415;        /* extension */
+  --color-zinc-900: #0A0A0A;        /* extension */
 
   /* Graphite (Operationalize brand) */
-  --color-graphite-100: #E0E3EA;
-  --color-graphite-150: #CDD1DC;
-  --color-graphite-200: #B3B9C8;
-  --color-graphite-300: #8F96AA;
-  --color-graphite-400: #6A7389;
-  --color-graphite-700: #455065;
-  --color-graphite-725: #3A4457;
-  --color-graphite-750: #303A4A;
-  --color-graphite-800: #262D3D;
-  --color-graphite-900: #191E28;
+  --color-graphite-100: #E0E3EA;    /* extension */
+  --color-graphite-150: #CDD1DC;    /* extension */
+  --color-graphite-200: #B3B9C8;    /* extension */
+  --color-graphite-300: #8F96AA;    /* extension */
+  --color-graphite-400: #6A7389;    /* extension */
+  --color-graphite-700: #455065;    /* picasso */
+  --color-graphite-725: #3A4457;    /* extension */
+  --color-graphite-750: #303A4A;    /* extension */
+  --color-graphite-800: #262D3D;    /* picasso */
+  --color-graphite-900: #191E28;    /* picasso */
 
   /* Red */
-  --color-red-100: #FBEDF1;
-  --color-red-150: #F5D8E0;
-  --color-red-200: #F0B8C4;
-  --color-red-300: #E5637D;
-  --color-red-400: #DA3F62;
-  --color-red-500: #D42551;
-  --color-red-600: #A81D41;
-  --color-red-700: #7D1530;
-  --color-red-800: #5C0F24;
-  --color-red-900: #3D0A18;
+  --color-red-100: #FBEDF1;         /* picasso */
+  --color-red-150: #F5D8E0;         /* picasso */
+  --color-red-200: #F0B8C4;         /* extension */
+  --color-red-300: #E5637D;         /* extension */
+  --color-red-400: #DA3F62;         /* extension */
+  --color-red-500: #D42551;         /* picasso */
+  --color-red-600: #A81D41;         /* extension */
+  --color-red-700: #7D1530;         /* extension */
+  --color-red-800: #5C0F24;         /* extension */
+  --color-red-900: #3D0A18;         /* extension */
 
   /* Yellow */
-  --color-yellow-100: #FFF5E3;
-  --color-yellow-150: #F8E7C8;
-  --color-yellow-200: #F2D9A6;
-  --color-yellow-300: #EDCA7E;
-  --color-yellow-400: #E9B340;
-  --color-yellow-500: #E59C01;
-  --color-yellow-600: #C08301;
-  --color-yellow-700: #9A6A01;
-  --color-yellow-800: #704D01;
-  --color-yellow-900: #4A3301;
+  --color-yellow-100: #FFF5E3;      /* picasso */
+  --color-yellow-150: #F8E7C8;      /* picasso */
+  --color-yellow-200: #F2D9A6;      /* extension */
+  --color-yellow-300: #EDCA7E;      /* extension */
+  --color-yellow-400: #E9B340;      /* extension */
+  --color-yellow-500: #E59C01;      /* picasso */
+  --color-yellow-600: #C08301;      /* extension */
+  --color-yellow-700: #9A6A01;      /* extension */
+  --color-yellow-800: #704D01;      /* extension */
+  --color-yellow-900: #4A3301;      /* extension */
 
 
   /* Green */
-  --color-green-100: #EAFBF5;
-  --color-green-150: #D7F3E9;
-  --color-green-200: #A8E6D0;
-  --color-green-300: #66D4AB;
-  --color-green-400: #33D097;
-  --color-green-500: #00CC83;
-  --color-green-600: #03B080;
-  --color-green-700: #05947C;
-  --color-green-800: #046B5A;
-  --color-green-900: #034539;
+  --color-green-100: #EAFBF5;       /* picasso */
+  --color-green-150: #D7F3E9;       /* picasso */
+  --color-green-200: #A8E6D0;       /* extension */
+  --color-green-300: #66D4AB;       /* extension */
+  --color-green-400: #33D097;       /* extension */
+  --color-green-500: #00CC83;       /* picasso */
+  --color-green-600: #03B080;       /* picasso */
+  --color-green-700: #05947C;       /* picasso */
+  --color-green-800: #046B5A;       /* extension */
+  --color-green-900: #034539;       /* extension */
 
   /* Cyan — single shade. Pending removal: components currently using
      cyan-500 (.tag-blue-light, .badge-info text, --color-info) will
      migrate to a blue shade in the next pass, after which the ramp goes
      away entirely. */
-  --color-blue-400: #25A9EF;
+  --color-blue-400: #25A9EF;        /* picasso */
 
   /* Blue */
-  --color-blue-100: #EDF1FD;
-  --color-blue-150: #D5DEFA;
-  --color-blue-200: #B0C1F5;
-  --color-blue-300: #7B9AEE;
-  --color-blue-450: #4A6FE0;
-  --color-blue-500: #204ECF;
-  --color-blue-600: #183A9E;
-  --color-blue-700: #0F256E;
-  --color-blue-800: #0A1A50;
-  --color-blue-900: #061035;
+  --color-blue-100: #EDF1FD;        /* picasso */
+  --color-blue-150: #D5DEFA;        /* picasso */
+  --color-blue-200: #B0C1F5;        /* extension */
+  --color-blue-300: #7B9AEE;        /* extension */
+  --color-blue-450: #4A6FE0;        /* extension */
+  --color-blue-500: #204ECF;        /* picasso */
+  --color-blue-600: #183A9E;        /* picasso */
+  --color-blue-700: #0F256E;        /* picasso */
+  --color-blue-800: #0A1A50;        /* extension */
+  --color-blue-900: #061035;        /* extension */
 
   /* Purple */
-  --color-purple-100: #F1ECFD;
-  --color-purple-150: #DFD3F9;
-  --color-purple-200: #C9B5F4;
-  --color-purple-300: #A47DE2;
-  --color-purple-400: #8552D9;
-  --color-purple-500: #6727CF;
-  --color-purple-600: #5019A8;
-  --color-purple-700: #3A1280;
-  --color-purple-800: #280D5C;
-  --color-purple-900: #1A0840;
+  --color-purple-100: #F1ECFD;      /* extension */
+  --color-purple-150: #DFD3F9;      /* extension */
+  --color-purple-200: #C9B5F4;      /* extension */
+  --color-purple-300: #A47DE2;      /* extension */
+  --color-purple-400: #8552D9;      /* extension */
+  --color-purple-500: #6727CF;      /* picasso */
+  --color-purple-600: #5019A8;      /* extension */
+  --color-purple-700: #3A1280;      /* extension */
+  --color-purple-800: #280D5C;      /* extension */
+  --color-purple-900: #1A0840;      /* extension */
 
 
   /* ---- Typography — Picasso's names and values, verbatim ----
@@ -136,7 +136,7 @@
    * family name 'Proxima Nova', so that comes first and Picasso's kit id follows
    * — same typeface either way, and the prototype renders without the kit.
    */
-  --font-sans: 'Proxima Nova', proxima-nova, Arial, sans-serif;
+  --font-sans: 'Proxima Nova', proxima-nova, Arial, sans-serif;/* picasso + self-hosted */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; /* picasso */
   --font-display: var(--font-sans);  /* extension */
 
@@ -208,14 +208,13 @@
   --spacing-32: 8rem;               /* extension - 128px */
 
   /* ---- Radii ---- */
-  --radius-none: 0;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
-
+  --radius-none: 0;                 /* picasso */
+  --radius-sm: 4px;                 /* picasso */
+  --radius-md: 8px;                 /* picasso */
+  --radius-lg: 12px;                /* extension */
+  --radius-xl: 16px;                /* extension */
+  --radius-2xl: 24px;               /* extension */
+  --radius-full: 9999px;            /* picasso */
   /* Numeric aliases — reach for these by px value */
 
   /* ---- Shadows — Picasso's values, verbatim ----

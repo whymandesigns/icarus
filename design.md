@@ -45,44 +45,59 @@ Three layers. Don't skip them.
 
 ### Primitive palette (`tokens.css`)
 
-9 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
+Every token is either **Picasso's**, name and value verbatim, or an **extension**
+designmd adds — and each declaration in `tokens.css` says which. 93 Picasso, 77
+extensions. If a prototype uses an extension, that colour has no Tailwind class
+waiting for it in production; reach for a Picasso one unless you mean it.
 
-| Ramp | Role |
-|---|---|
-| `gray` | Neutrals for surfaces, borders, text |
-| `zinc` | Dark theme neutrals |
-| `graphite` | Dark chrome — topbar background, inverse text on dark surfaces |
-| `red` | Danger / destructive |
-| `yellow` | Warning |
-| `green` | **Primary CTA** (`--color-brand`) — and success |
-| `cyan` | Single shade only (`cyan-500`) — backs `.tag-blue-light` and `.badge-info` text. Pending removal: those components migrate to blue, then the ramp goes away. |
-| `blue` | **Brand mark** (logo, `--color-accent`) — also focus rings and links |
-| `purple` | Reserved |
+Picasso's palette is deliberately small: 30 colours, with three graphites, three
+reds, three yellows and a single purple.
+
+| Ramp | Picasso has | Role |
+|---|---|---|
+| `gray` | 50–600 | Neutrals for surfaces, borders, text |
+| `graphite` | 700, 800, 900 | Dark chrome — topbar background, inverse text |
+| `blue` | 100, 150, 400, 500, 600, 700 | **Brand mark** (logo, `--color-accent`), focus rings, links, info |
+| `green` | 100, 150, 500, 600, 700 | **Primary CTA** (`--color-brand`) — and success |
+| `red` | 100, 150, 500 | Danger / destructive |
+| `yellow` | 100, 150, 500 | Warning |
+| `purple` | 500 | Reserved |
+| `zinc` | *none* | Dark-theme neutrals — entirely a designmd extension |
+
+Shades outside those lists (gray-700+, the graphite 100–400 range, every
+mid-ramp red/yellow/green/blue/purple) are extensions.
+
+> **If you remember the old names.** `gray-100`→`gray-50`, `gray-150`→`gray-100`,
+> `graphite-500`→`graphite-700`, `graphite-600/700`→`graphite-725/750`, and the
+> cyan ramp is gone: `cyan-500` was always Picasso's `blue-400`. The old
+> `blue-400` was not Picasso's, and is now `blue-450`.
 
 ### Semantic aliases (`semantic.css`) — **use these in prototypes**
 
+Picasso has no semantic layer — these roles are designmd's, mapped onto Picasso
+primitives so a prototype reads by intent and still translates to a real class.
+
 | Token | Light | Dark |
 |---|---|---|
-| `--color-bg` | gray-100 | zinc-900 |
+| `--color-bg` | gray-50 | zinc-900 |
 | `--color-surface` | white | zinc-800 |
-| `--color-surface-muted` | gray-150 | zinc-700 |
+| `--color-surface-muted` | gray-100 | zinc-700 |
 | `--color-surface-sunken` | gray-200 | zinc-900 |
 | `--color-border` | gray-200 | zinc-600 |
 | `--color-border-strong` | gray-300 | zinc-500 |
-| `--color-border-focus` | blue-500 | blue-500 |
-| `--color-text` | graphite-900 | gray-100 |
+| `--color-border-focus` | blue-500 | — |
+| `--color-text` | graphite-900 | gray-50 |
 | `--color-text-muted` | gray-700 | gray-400 |
 | `--color-text-subtle` | gray-500 | gray-600 |
 | `--color-text-inverse` | white | zinc-900 |
-| `--color-text-link` | blue-500 | blue-500 |
-| `--color-brand` | green-500 | green-400 |
-| `--color-brand-hover` | green-600 | green-300 |
-| `--color-brand-active` | green-700 | green-200 |
-| `--color-accent` | blue-500 | blue-500 |
+| `--color-text-link` | blue-500 | — |
+| `--color-icon` | graphite-750 | graphite-300 |
+| `--color-brand` / `-hover` / `-active` / `-subtle` | green-500 / 600 / 700 / 100 | green-400 / 300 / 200 / 800 |
+| `--color-accent` / `-hover` / `-subtle` | blue-500 / 600 / 100 | — |
 | `--color-success` / `-subtle` | green-500 / green-100 | — |
 | `--color-warning` / `-subtle` | yellow-500 / yellow-100 | — |
-| `--color-danger` / `-subtle` | red-500 / red-100 | — |
-| `--color-info` / `-subtle` | cyan-500 / cyan-100 | — |
+| `--color-danger` / `-hover` / `-subtle` | red-500 / 600 / 100 | — |
+| `--color-info` / `-subtle` | blue-400 / blue-100 | — |
 
 Switch theme: `<html data-theme="dark">`.
 
