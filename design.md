@@ -92,11 +92,15 @@ primitives so a prototype reads by intent and still translates to a real class.
 | `--color-text-inverse` | white | zinc-900 |
 | `--color-text-link` | blue-500 | — |
 | `--color-icon` | graphite-750 | graphite-300 |
-| `--color-brand` / `-hover` / `-active` / `-subtle` | green-500 / 600 / 700 / 100 | green-400 / 300 / 200 / 800 |
-| `--color-accent` / `-hover` / `-subtle` | blue-500 / 600 / 100 | — |
+| `--color-brand` / `-hover` / `-active` / `-subtle` | green-500 / #27D496 / #00A96C / green-100 | green-400 / 300 / 200 / 800 |
+| `--color-accent` / `-hover` / `-active` / `-subtle` | blue-500 / #4269D6 / #1A41AB / blue-100 | — |
 | `--color-success` / `-subtle` | green-500 / green-100 | — |
 | `--color-warning` / `-subtle` | yellow-500 / yellow-100 | — |
-| `--color-danger` / `-hover` / `-subtle` | red-500 / 600 / 100 | — |
+| `--color-danger` / `-hover` / `-active` / `-subtle` | red-500 / #DB466B / #B01F43 / red-100 | — |
+
+**Hover goes lighter, active goes darker.** Picasso's Button hardcodes those six values rather than using palette shades, so designmd carries them as `--color-{blue,green,red}-500-{hover,active}`. designmd used to darken on hover, which was backwards from the product.
+
+Two aliases point at extensions on purpose. `--color-text-muted` is gray-700 because Picasso's darkest text grey, gray-600, is 3.56:1 on white — below AA for body text; gray-700 is 6.04:1. `--color-icon` is designmd's own call: Picasso icons carry no colour at all, they inherit `currentColor`.
 | `--color-info` / `-subtle` | blue-400 / blue-100 | — |
 
 Switch theme: `<html data-theme="dark">`.

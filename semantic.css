@@ -17,21 +17,22 @@
 
   /* ---- Text ---- */
   --color-text:           var(--color-graphite-900);
-  --color-text-muted:     var(--color-gray-700);
+  --color-text-muted:     var(--color-gray-700);   /* extension on purpose: Picasso's darkest text grey is gray-600 at 3.56:1 on white, below AA for body. gray-700 is 6.04:1. */
   --color-text-subtle:    var(--color-gray-500);
   --color-text-inverse:   var(--color-white);
   --color-text-link:      var(--color-blue-500);
-  --color-icon:           var(--color-graphite-750);   /* default resting colour for .icon */
+  --color-icon:           var(--color-graphite-750);   /* designmd's own: Picasso icons carry no colour, they inherit currentColor (fill-current / text-inherit). Nearest Picasso name is graphite-700 (Typography 'dark-grey'). */
 
   /* ---- Brand / primary action ---- */
   --color-brand:          var(--color-green-500);
-  --color-brand-hover:    var(--color-green-600);
-  --color-brand-active:   var(--color-green-700);
+  --color-brand-hover:    var(--color-green-500-hover);   /* picasso lightens on hover */
+  --color-brand-active:   var(--color-green-500-active);
   --color-brand-subtle:   var(--color-green-100);
 
   /* ---- Accent (interactive secondary, links) ---- */
   --color-accent:         var(--color-blue-500);
-  --color-accent-hover:   var(--color-blue-600);
+  --color-accent-hover:   var(--color-blue-500-hover);
+  --color-accent-active:  var(--color-blue-500-active);
   --color-accent-subtle:  var(--color-blue-100);
 
   /* ---- Status ---- */
@@ -40,7 +41,8 @@
   --color-warning:        var(--color-yellow-500);
   --color-warning-subtle: var(--color-yellow-100);
   --color-danger:         var(--color-red-500);
-  --color-danger-hover:   var(--color-red-600);
+  --color-danger-hover:   var(--color-red-500-hover);
+  --color-danger-active:  var(--color-red-500-active);
   --color-danger-subtle:  var(--color-red-100);
   --color-info:           var(--color-blue-400);
   /* --color-info-subtle is en route to blue. cyan-100 was retired in the

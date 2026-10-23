@@ -182,6 +182,19 @@
   --font-weight-regular: 400;       /* picasso */
   --font-weight-semibold: 600;      /* picasso */
 
+  /* Interaction states for the three action colours. Picasso's Button hardcodes
+   * these as arbitrary hex rather than palette shades, so there is no Picasso
+   * token to point at — but the VALUES are Picasso's, read from
+   * Button/src/Button/styles.ts. Note the direction: hover goes LIGHTER,
+   * active goes darker. designmd used to darken on hover, which is backwards
+   * from what the product does. */
+  --color-blue-500-hover: #4269D6;  /* extension - picasso Button primary hover */
+  --color-blue-500-active: #1A41AB; /* extension - picasso Button primary active */
+  --color-green-500-hover: #27D496; /* extension - picasso Button positive hover */
+  --color-green-500-active: #00A96C;/* extension - picasso Button positive active */
+  --color-red-500-hover: #DB466B;   /* extension - picasso Button negative hover */
+  --color-red-500-active: #B01F43;  /* extension - picasso Button negative active */
+
   /* ---- Spacing — Picasso's scale, names and values verbatim ----
    * The number IS the value: n x 0.25rem, the Tailwind convention, so
    * --spacing-4 is what a developer writes as p-4. designmd's old scale was
