@@ -11,22 +11,22 @@
   <link rel="stylesheet" href="./plugins.css" />
   <style>
     .doc-back {
-      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      display: inline-flex; align-items: center; gap: var(--spacing-1);
       font: var(--type-body-sm); color: var(--color-text-muted);
-      text-decoration: none; margin-bottom: var(--ic-space-4);
+      text-decoration: none; margin-bottom: var(--spacing-4);
     }
     .doc-back:hover { color: var(--color-text); }
     .doc-hero {
-      padding: var(--ic-space-6) 0 var(--ic-space-7);
+      padding: var(--spacing-8) 0 var(--spacing-10);
       border-bottom: 1px solid var(--color-border);
-      margin-bottom: var(--ic-space-7);
+      margin-bottom: var(--spacing-10);
     }
-    .doc-hero h1 { margin: 0 0 var(--ic-space-3); }
+    .doc-hero h1 { margin: 0 0 var(--spacing-3); }
     .doc-hero p  { font: var(--type-body-lg); color: var(--color-text-muted); margin: 0; max-width: 60ch; }
 
-    .doc-section { margin-bottom: var(--ic-space-7); }
-    .doc-section h2 { margin: 0 0 var(--ic-space-3); }
-    .doc-section h3 { margin: var(--ic-space-5) 0 var(--ic-space-2); }
+    .doc-section { margin-bottom: var(--spacing-10); }
+    .doc-section h2 { margin: 0 0 var(--spacing-3); }
+    .doc-section h3 { margin: var(--spacing-6) 0 var(--spacing-2); }
     .doc-section p  { color: var(--color-text-muted); }
     .doc-section p > code,
     .doc-section li > code,
@@ -34,25 +34,25 @@
     .doc-section td > code {
       font: var(--type-mono); font-size: 12px;
       background: var(--color-surface-muted);
-      padding: 2px 6px; border-radius: var(--ic-radius-sm);
+      padding: 2px 6px; border-radius: var(--radius-sm);
       color: var(--color-text);
     }
 
-    .doc-steps { padding-left: var(--ic-space-5); }
-    .doc-steps li { margin-bottom: var(--ic-space-3); color: var(--color-text); }
+    .doc-steps { padding-left: var(--spacing-6); }
+    .doc-steps li { margin-bottom: var(--spacing-3); color: var(--color-text); }
     .doc-steps li strong { display: block; margin-bottom: 2px; }
     .doc-steps li span   { color: var(--color-text-muted); font: var(--type-body-sm); }
 
-    .doc-code-wrap { position: relative; margin: var(--ic-space-4) 0; }
+    .doc-code-wrap { position: relative; margin: var(--spacing-4) 0; }
     .doc-code-wrap > .doc-code { margin: 0; cursor: pointer; }
     .doc-code-wrap:has([data-copy]) > .doc-code { padding-right: 96px; }
     .doc-code-wrap > .doc-code:hover { background: var(--color-surface-muted); }
-    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--ic-duration-fast) var(--ic-ease); }
+    .doc-code.is-flash { background: var(--color-success-subtle); transition: background var(--duration-fast) var(--ease); }
     .doc-code {
       background: var(--color-surface-sunken);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
-      padding: var(--ic-space-4);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
       font: var(--type-mono); font-size: 13px;
       color: var(--color-text);
       overflow-x: auto;
@@ -65,38 +65,38 @@
     .doc-code .cm { color: var(--color-text-subtle); }
     .doc-code-copy {
       position: absolute;
-      top: var(--ic-space-2);
-      right: var(--ic-space-2);
-      display: inline-flex; align-items: center; gap: var(--ic-space-1);
+      top: var(--spacing-2);
+      right: var(--spacing-2);
+      display: inline-flex; align-items: center; gap: var(--spacing-1);
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       color: var(--color-text);
       padding: 4px 10px;
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       font: var(--type-body-sm); font-weight: 500;
       cursor: pointer;
-      transition: background var(--ic-duration-fast) var(--ic-ease);
+      transition: background var(--duration-fast) var(--ease);
     }
     .doc-code-copy:hover { background: var(--color-surface-muted); }
     .doc-code-copy.is-copied { background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success); }
     .doc-code-copy .icon { width: 14px; height: 14px; }
 
     .doc-callout {
-      display: flex; gap: var(--ic-space-3);
-      padding: var(--ic-space-4);
+      display: flex; gap: var(--spacing-3);
+      padding: var(--spacing-4);
       background: var(--color-info-subtle);
       border: 1px solid var(--color-info);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       color: var(--color-text);
-      margin: var(--ic-space-4) 0;
+      margin: var(--spacing-4) 0;
     }
     .doc-callout.is-warning { background: var(--color-warning-subtle); border-color: var(--color-warning); }
     .doc-callout .icon { color: var(--color-info); width: 20px; height: 20px; flex-shrink: 0; }
     .doc-callout.is-warning .icon { color: var(--color-warning); }
     .doc-callout p { margin: 0; font: var(--type-body-sm); color: var(--color-text); }
 
-    .doc-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); margin: var(--ic-space-4) 0; }
-    .doc-table th, .doc-table td { text-align: left; padding: var(--ic-space-2) var(--ic-space-3); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    .doc-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); margin: var(--spacing-4) 0; }
+    .doc-table th, .doc-table td { text-align: left; padding: var(--spacing-2) var(--spacing-3); border-bottom: 1px solid var(--color-border); vertical-align: top; }
     .doc-table th { color: var(--color-text-muted); font-weight: 500; }
     .doc-table td { color: var(--color-text); }
     .doc-table td:first-child { white-space: nowrap; font-weight: 600; }
@@ -111,21 +111,21 @@
       position: relative;
       background: var(--color-surface-muted);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-lg);
-      padding: var(--ic-space-6);
-      margin: var(--ic-space-4) 0;
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      margin: var(--spacing-4) 0;
       min-height: 260px;
     }
-    .mock-row { display: flex; gap: var(--ic-space-3); align-items: center; flex-wrap: wrap; }
+    .mock-row { display: flex; gap: var(--spacing-3); align-items: center; flex-wrap: wrap; }
     .mock .map-pop {
-      position: static; display: block; width: 280px; margin-top: var(--ic-space-5);
+      position: static; display: block; width: 280px; margin-top: var(--spacing-6);
     }
-    .stat-row { display: flex; gap: var(--ic-space-5); flex-wrap: wrap; margin: var(--ic-space-4) 0; }
+    .stat-row { display: flex; gap: var(--spacing-6); flex-wrap: wrap; margin: var(--spacing-4) 0; }
     .stat {
-      flex: 1 1 120px; padding: var(--ic-space-4);
+      flex: 1 1 120px; padding: var(--spacing-4);
       background: var(--color-surface-sunken);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
     }
     .stat b { display: block; font: var(--type-h2); color: var(--color-text); }
     .stat span { font: var(--type-body-sm); color: var(--color-text-muted); }
@@ -174,7 +174,7 @@
         </div>
       </div>
 
-      <p>The JSX is not canned — it is built from the element in front of you. Each registry entry carries a <code>propMap</code> from designmd variant classes to Picasso props, so <code>.btn-primary</code> becomes <code>variant="primary"</code> and <code>.accordion.is-open</code> becomes <code>expanded</code>. Change the markup and the snippet changes with it.</p>
+      <p>The JSX is not canned — it is built from the element in front of you. Each registry entry carries a <code>propMap</code> from designmd variant classes to Picasso props, so <code>.btn-primary</code> becomes <code>variant="positive"</code> and <code>.accordion.is-open</code> becomes <code>expanded</code>. Change the markup and the snippet changes with it.</p>
 
       <p>Four more attributes annotate the foundations rather than components: <code>data-picasso-color</code>, <code>data-picasso-font</code>, <code>data-picasso-radius</code> and <code>data-picasso-icon</code>. These cross-reference the palette, type scale, radii and icon set against Picasso's Tailwind tokens, verified by value — so a shade with no Picasso equivalent stays unlinked rather than being given a plausible-looking one.</p>
     </section>

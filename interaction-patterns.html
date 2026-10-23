@@ -12,8 +12,8 @@
     .topnav {
       position: sticky;
       top: 0;
-      z-index: var(--ic-z-sticky);
-      padding: var(--ic-space-2) var(--ic-space-5);
+      z-index: var(--z-sticky);
+      padding: var(--spacing-2) var(--spacing-6);
       background: color-mix(in srgb, var(--color-bg) 88%, transparent);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -23,24 +23,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--ic-space-4);
-      max-width: var(--ic-container-lg);
+      gap: var(--spacing-4);
+      max-width: var(--container-lg);
       margin: 0 auto;
     }
-    .topnav-links { display: flex; gap: var(--ic-space-2); }
+    .topnav-links { display: flex; gap: var(--spacing-2); }
     .topnav-links a {
-      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      font: var(--font-weight-regular) var(--text-md)/1 var(--font-sans);
       color: var(--color-text-muted);
       text-decoration: none;
-      padding: var(--ic-space-2) var(--ic-space-3);
-      border-radius: var(--ic-radius-md);
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  background var(--ic-duration-fast) var(--ic-ease);
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      transition: color var(--duration-fast) var(--ease),
+                  background var(--duration-fast) var(--ease);
     }
     .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
-    .topnav-actions { display: flex; gap: var(--ic-space-2); align-items: center; }
+    .topnav-actions { display: flex; gap: var(--spacing-2); align-items: center; }
 
-    [id] { scroll-margin-top: calc(var(--ic-space-7) + var(--ic-space-4)); }
+    [id] { scroll-margin-top: calc(var(--spacing-10) + var(--spacing-4)); }
 
     /* Theme toggle — sun in light mode, moon in dark mode */
     .theme-icon-moon { display: none; }
@@ -52,58 +52,58 @@
       font: var(--type-h1);
       color: var(--color-text);
       margin: 0;
-      padding-bottom: var(--ic-space-3);
+      padding-bottom: var(--spacing-3);
       border-bottom: 1px solid var(--color-border);
     }
 
     /* ---- Right-side sidebar TOC (ported from the component kit) ---- */
     .page-toc {
       position: fixed;
-      top: var(--ic-space-10);
-      right: var(--ic-space-5);
+      top: var(--spacing-16);
+      right: var(--spacing-6);
       width: 220px;
-      max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-5));
+      max-height: calc(100vh - var(--spacing-16) - var(--spacing-6));
       overflow-y: auto;
-      z-index: var(--ic-z-sticky);
-      padding: var(--ic-space-3) 0;
+      z-index: var(--z-sticky);
+      padding: var(--spacing-3) 0;
     }
-    .page-toc-section { margin-bottom: var(--ic-space-4); }
+    .page-toc-section { margin-bottom: var(--spacing-4); }
     .page-toc-section:last-child { margin-bottom: 0; }
     .page-toc-section-label {
-      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      font: var(--font-weight-semibold) var(--text-2xs)/1 var(--font-sans);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
-      padding: 0 var(--ic-space-3);
-      margin-bottom: var(--ic-space-2);
+      padding: 0 var(--spacing-3);
+      margin-bottom: var(--spacing-2);
     }
     .page-toc-item {
       display: block;
-      padding: var(--ic-space-1) var(--ic-space-3);
+      padding: var(--spacing-1) var(--spacing-3);
       font: var(--type-body-sm);
       color: var(--color-text-muted);
       text-decoration: none;
       border-left: 2px solid transparent;
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  border-color var(--ic-duration-fast) var(--ic-ease);
+      transition: color var(--duration-fast) var(--ease),
+                  border-color var(--duration-fast) var(--ease);
     }
     .page-toc-item:hover { color: var(--color-text); }
     .page-toc-item.is-active { color: var(--color-accent); border-left-color: var(--color-accent); }
     .page-toc-toggle { display: none; }
 
     @media (max-width: 1320px) {
-      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--ic-z-sticky) + 1); }
+      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--z-sticky) + 1); }
       .page-toc {
-        top: var(--ic-space-10);
-        right: var(--ic-space-3);
-        max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-3));
+        top: var(--spacing-16);
+        right: var(--spacing-3);
+        max-height: calc(100vh - var(--spacing-16) - var(--spacing-3));
         background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--ic-radius-md);
-        box-shadow: var(--ic-shadow-lg);
-        padding: var(--ic-space-4) 0;
-        transform: translateX(calc(100% + var(--ic-space-5)));
-        transition: transform var(--ic-duration-base) var(--ic-ease);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-5);
+        padding: var(--spacing-4) 0;
+        transform: translateX(calc(100% + var(--spacing-6)));
+        transition: transform var(--duration-base) var(--ease);
       }
       .page-toc.is-open { transform: translateX(0); }
     }
@@ -113,34 +113,34 @@
        preview stage. Not a product component. */
     .pattern-lab {
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-lg);
+      border-radius: var(--radius-lg);
       background: var(--color-surface);
       overflow: hidden;
     }
     .pattern-lab-bar {
       display: flex;
       align-items: flex-end;
-      gap: var(--ic-space-5);
+      gap: var(--spacing-6);
       flex-wrap: wrap;
-      padding: var(--ic-space-4) var(--ic-space-5);
+      padding: var(--spacing-4) var(--spacing-6);
       border-bottom: 1px solid var(--color-border);
     }
-    .pattern-control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-control { display: flex; flex-direction: column; gap: var(--spacing-2); }
     .pattern-control-label {
-      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      font: var(--font-weight-semibold) var(--text-2xs)/1 var(--font-sans);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
     }
     .pattern-reset { margin-left: auto; align-self: center; }
-    .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--ic-radius-full); background: var(--color-accent); display: inline-block; }
+    .pattern-reco-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-accent); display: inline-block; }
     .pattern-reco-dot[hidden] { display: none; }
 
     /* The rule the two controls exist to teach, stated rather than implied by
        a dot. Turns warning-coloured when the chosen approach contradicts it. */
     .pattern-guidance {
       margin: 0;
-      padding: var(--ic-space-3) var(--ic-space-5);
+      padding: var(--spacing-3) var(--spacing-6);
       border-bottom: 1px solid var(--color-border);
       font: var(--type-body-sm);
       color: var(--color-text-muted);
@@ -150,14 +150,14 @@
       border-bottom-color: var(--color-warning);
       color: var(--color-text);
     }
-    .pattern-guidance b { font-weight: var(--ic-weight-semibold); }
+    .pattern-guidance b { font-weight: var(--font-weight-semibold); }
 
     /* Governed settings card — a master row whose switch decides whether the
        rows under it have anything to act on. */
     .pattern-gov { width: 100%; max-width: 420px; padding: 0; overflow: hidden; }
     .pattern-gov-row {
-      display: flex; align-items: center; gap: var(--ic-space-4);
-      padding: var(--ic-space-4) var(--ic-space-5);
+      display: flex; align-items: center; gap: var(--spacing-4);
+      padding: var(--spacing-4) var(--spacing-6);
       border-bottom: 1px solid var(--color-border);
     }
     .pattern-gov-row:last-child { border-bottom: 0; }
@@ -175,41 +175,41 @@
        page's top-right region — the explanation belongs with the demo it
        answers, not in the corner of the browser. Styling is the component's. */
     .pattern-toast {
-      position: absolute; left: 50%; bottom: var(--ic-space-5);
+      position: absolute; left: 50%; bottom: var(--spacing-6);
       transform: translateX(-50%) translateY(8px);
       opacity: 0; pointer-events: none;
-      transition: opacity var(--ic-duration-fast) var(--ic-ease), transform var(--ic-duration-fast) var(--ic-ease);
+      transition: opacity var(--duration-fast) var(--ease), transform var(--duration-fast) var(--ease);
     }
     .pattern-toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
     /* room for the toast to sit under the card rather than across it */
-    #pattern-disabled-context .pattern-stage { padding-bottom: calc(var(--ic-space-8) + 56px); }
+    #pattern-disabled-context .pattern-stage { padding-bottom: calc(var(--spacing-12) + 56px); }
 
     .pattern-stage {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: var(--ic-space-8) var(--ic-space-5);
+      padding: var(--spacing-12) var(--spacing-6);
       min-height: 300px;
       background: var(--color-bg);
     }
-    .pattern-demo-list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .pattern-demo-list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: var(--spacing-2); }
     .pattern-demo-item {
-      display: flex; align-items: center; gap: var(--ic-space-3);
-      padding: var(--ic-space-2) var(--ic-space-2) var(--ic-space-2) var(--ic-space-4);
+      display: flex; align-items: center; gap: var(--spacing-3);
+      padding: var(--spacing-2) var(--spacing-2) var(--spacing-2) var(--spacing-4);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       background: var(--color-surface);
     }
     .pattern-demo-name { flex: 1; min-width: 0; font: var(--type-body-sm); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .pattern-demo-empty {
       width: 100%; max-width: 380px;
-      padding: var(--ic-space-6) var(--ic-space-4);
+      padding: var(--spacing-8) var(--spacing-4);
       text-align: center;
       color: var(--color-text-subtle);
       font: var(--type-body-sm);
       border: 1px dashed var(--color-border-strong);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
     }
   </style>
 </head>
@@ -243,8 +243,8 @@
     </div>
   </nav>
 
-  <main class="page stack" style="gap: var(--ic-space-8)">
-    <section id="patterns" class="stack" style="gap: var(--ic-space-7)">
+  <main class="page stack" style="gap: var(--spacing-12)">
+    <section id="patterns" class="stack" style="gap: var(--spacing-10)">
       <h2 class="section-head">Pattern labs</h2>
 
       <section class="stack" id="pattern-destructive" data-pattern-lab="destructive">

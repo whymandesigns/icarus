@@ -12,66 +12,66 @@
   width: 232px;
   background: var(--color-surface, #fff);
   border: 1px solid var(--color-border-strong, #D8D9DC);
-  border-radius: var(--ic-radius-lg, 12px);
-  box-shadow: var(--ic-shadow-lg, 0 8px 30px rgba(0,0,0,.18));
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-5, 0 8px 30px rgba(0,0,0,.18));
   overflow: hidden;
-  font: var(--type-body-sm, 400 13px/20px var(--ic-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
+  font: var(--type-body-sm, 400 13px/20px var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
   color: var(--color-text, #191E28);
 }
 body:has([id$="-switcher"]:not([hidden])) .vr-dock { left: 264px; }
 
 .vr-head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: var(--ic-space-2, 8px) var(--ic-space-3, 12px);
-  background: var(--ic-palette-graphite-800, #262C38);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  background: var(--color-graphite-800, #262C38);
   color: var(--color-text-inverse, #fff);
-  font: var(--ic-weight-semibold, 600) var(--ic-text-xxs, 11px)/1.4 var(--ic-font-sans, -apple-system, sans-serif);
+  font: var(--font-weight-semibold, 600) var(--text-2xs, 11px)/1.4 var(--font-sans, -apple-system, sans-serif);
   letter-spacing: .06em; text-transform: uppercase; gap: 8px;
 }
 /* Family names run long; keep the title bar one line like the switcher's */
 .vr-head > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vr-collapse { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; font: inherit; }
-.vr-body { max-height: 64vh; overflow: auto; padding: var(--ic-space-2, 8px); display: flex; flex-direction: column; gap: var(--ic-space-3, 12px); }
+.vr-body { max-height: 64vh; overflow: auto; padding: var(--spacing-2, 8px); display: flex; flex-direction: column; gap: var(--spacing-3, 12px); }
 .vr-dock.is-collapsed .vr-body { display: none; }
 
 .vr-group { display: flex; flex-direction: column; gap: 4px; }
 .vr-group > span {
-  font-size: var(--ic-text-xxs, 11px); text-transform: uppercase; letter-spacing: .05em;
-  color: var(--color-text-subtle, #8A8F98); font-weight: var(--ic-weight-semibold, 600); padding: 2px 4px 0;
+  font-size: var(--text-2xs, 11px); text-transform: uppercase; letter-spacing: .05em;
+  color: var(--color-text-subtle, #8A8F98); font-weight: var(--font-weight-semibold, 600); padding: 2px 4px 0;
 }
 .vr-item, .vr-changes-toggle {
   display: block; width: 100%; text-align: left; padding: 5px 8px;
-  border: 1px solid var(--color-border, #EBECED); border-radius: var(--ic-radius-sm, 4px);
+  border: 1px solid var(--color-border, #EBECED); border-radius: var(--radius-sm, 4px);
   background: var(--color-surface, #fff); color: var(--color-text, #191E28);
   cursor: pointer; font: inherit; text-decoration: none;
 }
 .vr-item:hover, .vr-changes-toggle:hover { background: var(--color-surface-muted, #F4F5F6); border-color: var(--color-border-strong, #D8D9DC); }
-.vr-item.is-current { border-color: var(--color-accent, #204ECF); color: var(--color-accent, #204ECF); font-weight: var(--ic-weight-semibold, 600); }
+.vr-item.is-current { border-color: var(--color-accent, #204ECF); color: var(--color-accent, #204ECF); font-weight: var(--font-weight-semibold, 600); }
 .vr-item small { display: block; font-weight: 400; font-size: 11px; line-height: 15px; color: var(--color-text-muted, #5F636A); }
 .vr-item.is-current small { color: var(--color-text-muted, #5F636A); }
-.vr-changes-toggle.is-on { background: var(--color-surface, #fff); border-color: var(--ic-palette-purple-500, #6727CF); color: var(--ic-palette-purple-500, #6727CF); font-weight: var(--ic-weight-semibold, 600); }
+.vr-changes-toggle.is-on { background: var(--color-surface, #fff); border-color: var(--color-purple-500, #6727CF); color: var(--color-purple-500, #6727CF); font-weight: var(--font-weight-semibold, 600); }
 .vr-item:focus-visible, .vr-changes-toggle:focus-visible, .vr-collapse:focus-visible { outline: 2px solid var(--color-border-focus, #204ECF); outline-offset: 1px; }
 
 /* The legend lives in the panel now, not on its own pill */
 .vr-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 2px 4px; font-size: 11px; line-height: 16px; color: var(--color-text-muted, #5F636A); }
-.vr-legend strong { color: var(--color-text, #191E28); font-weight: var(--ic-weight-semibold, 600); }
+.vr-legend strong { color: var(--color-text, #191E28); font-weight: var(--font-weight-semibold, 600); }
 .vr-legend span { display: inline-flex; align-items: center; gap: 4px; }
 .vr-legend i { width: 8px; height: 8px; border-radius: 2px; }
-.vr-new { background: var(--ic-palette-green-500, #00CC83); }
-.vr-moved { background: var(--ic-palette-blue-500, #204ECF); }
-.vr-changed { background: var(--ic-palette-purple-500, #6727CF); }
+.vr-new { background: var(--color-green-500, #00CC83); }
+.vr-moved { background: var(--color-blue-500, #204ECF); }
+.vr-changed { background: var(--color-purple-500, #6727CF); }
 
 /* ── Change markers (?changes=1) ── */
 .vr-changes [data-change] { position: relative; outline: 2px dashed var(--vr-chg); outline-offset: 4px; border-radius: 2px; }
 .vr-changes [data-change]::after {
   position: absolute; top: -6px; right: 0; transform: translateY(-100%); z-index: 6;
   padding: 1px 6px; border-radius: 4px; background: var(--vr-chg); color: var(--vr-chg-text, #fff);
-  font: 600 11px/16px var(--ic-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  font: 600 11px/16px var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
   white-space: nowrap; pointer-events: none;
 }
-.vr-changes [data-change="new"]     { --vr-chg: var(--ic-palette-green-500, #00CC83); --vr-chg-text: #0B3B2A; }
-.vr-changes [data-change="moved"]   { --vr-chg: var(--ic-palette-blue-500, #204ECF); }
-.vr-changes [data-change="changed"] { --vr-chg: var(--ic-palette-purple-500, #6727CF); }
+.vr-changes [data-change="new"]     { --vr-chg: var(--color-green-500, #00CC83); --vr-chg-text: #0B3B2A; }
+.vr-changes [data-change="moved"]   { --vr-chg: var(--color-blue-500, #204ECF); }
+.vr-changes [data-change="changed"] { --vr-chg: var(--color-purple-500, #6727CF); }
 .vr-changes [data-change="new"]::after     { content: "New · " attr(data-change-note); }
 .vr-changes [data-change="moved"]::after   { content: "Moved · " attr(data-change-note); }
 .vr-changes [data-change="changed"]::after { content: "Changed · " attr(data-change-note); }

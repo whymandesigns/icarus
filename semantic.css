@@ -5,92 +5,94 @@
 
 :root {
   /* ---- Surfaces ---- */
-  --color-bg:             var(--ic-palette-gray-100);   /* page background */
-  --color-surface:        var(--ic-palette-white);      /* cards, panels */
-  --color-surface-muted:  var(--ic-palette-gray-150);   /* hover, subtle fills */
-  --color-surface-sunken: var(--ic-palette-gray-200);   /* wells, inset areas */
+  --color-bg:             var(--color-gray-50);   /* page background */
+  --color-surface:        var(--color-white);      /* cards, panels */
+  --color-surface-muted:  var(--color-gray-100);   /* hover, subtle fills */
+  --color-surface-sunken: var(--color-gray-200);   /* wells, inset areas */
 
   /* ---- Borders ---- */
-  --color-border:         var(--ic-palette-gray-200);
-  --color-border-strong:  var(--ic-palette-gray-300);
-  --color-border-focus:   var(--ic-palette-blue-500);
+  --color-border:         var(--color-gray-200);
+  --color-border-strong:  var(--color-gray-300);
+  --color-border-focus:   var(--color-blue-500);
 
   /* ---- Text ---- */
-  --color-text:           var(--ic-palette-graphite-900);
-  --color-text-muted:     var(--ic-palette-gray-700);
-  --color-text-subtle:    var(--ic-palette-gray-500);
-  --color-text-inverse:   var(--ic-palette-white);
-  --color-text-link:      var(--ic-palette-blue-500);
-  --color-icon:           var(--ic-palette-graphite-700);   /* default resting colour for .icon */
+  --color-text:           var(--color-graphite-900);
+  --color-text-muted:     var(--color-gray-700);   /* extension on purpose: Picasso's darkest text grey is gray-600 at 3.56:1 on white, below AA for body. gray-700 is 6.04:1. */
+  --color-text-subtle:    var(--color-gray-500);
+  --color-text-inverse:   var(--color-white);
+  --color-text-link:      var(--color-blue-500);
+  --color-icon:           var(--color-graphite-750);   /* designmd's own: Picasso icons carry no colour, they inherit currentColor (fill-current / text-inherit). Nearest Picasso name is graphite-700 (Typography 'dark-grey'). */
 
   /* ---- Brand / primary action ---- */
-  --color-brand:          var(--ic-palette-green-500);
-  --color-brand-hover:    var(--ic-palette-green-600);
-  --color-brand-active:   var(--ic-palette-green-700);
-  --color-brand-subtle:   var(--ic-palette-green-100);
+  --color-brand:          var(--color-green-500);
+  --color-brand-hover:    var(--color-green-500-hover);   /* picasso lightens on hover */
+  --color-brand-active:   var(--color-green-500-active);
+  --color-brand-subtle:   var(--color-green-100);
 
   /* ---- Accent (interactive secondary, links) ---- */
-  --color-accent:         var(--ic-palette-blue-500);
-  --color-accent-hover:   var(--ic-palette-blue-600);
-  --color-accent-subtle:  var(--ic-palette-blue-100);
+  --color-accent:         var(--color-blue-500);
+  --color-accent-hover:   var(--color-blue-500-hover);
+  --color-accent-active:  var(--color-blue-500-active);
+  --color-accent-subtle:  var(--color-blue-100);
 
   /* ---- Status ---- */
-  --color-success:        var(--ic-palette-green-500);
-  --color-success-subtle: var(--ic-palette-green-100);
-  --color-warning:        var(--ic-palette-yellow-500);
-  --color-warning-subtle: var(--ic-palette-yellow-100);
-  --color-danger:         var(--ic-palette-red-500);
-  --color-danger-hover:   var(--ic-palette-red-600);
-  --color-danger-subtle:  var(--ic-palette-red-100);
-  --color-info:           var(--ic-palette-cyan-500);
+  --color-success:        var(--color-green-500);
+  --color-success-subtle: var(--color-green-100);
+  --color-warning:        var(--color-yellow-500);
+  --color-warning-subtle: var(--color-yellow-100);
+  --color-danger:         var(--color-red-500);
+  --color-danger-hover:   var(--color-red-500-hover);
+  --color-danger-active:  var(--color-red-500-active);
+  --color-danger-subtle:  var(--color-red-100);
+  --color-info:           var(--color-blue-400);
   /* --color-info-subtle is en route to blue. cyan-100 was retired in the
      palette cleanup; backed by blue-100 until --color-info itself moves
      to blue, at which point the cyan-500 reference above also goes. */
-  --color-info-subtle:    var(--ic-palette-blue-100);
+  --color-info-subtle:    var(--color-blue-100);
 
   /* ---- Overlays ---- */
   --color-overlay:        rgba(38, 45, 61, 0.5); /* graphite-900 @ 50% — for modal scrims */
 
   /* ---- Type roles (size + line height paired) ---- */
-  --type-h1: var(--ic-weight-semibold) var(--ic-text-2xl)/var(--ic-lh-h1) var(--ic-font-sans);
-  --type-h2: var(--ic-weight-semibold) var(--ic-text-xl)/var(--ic-lh-h2) var(--ic-font-sans);
-  --type-h3: var(--ic-weight-semibold) var(--ic-text-md)/var(--ic-lh-h3) var(--ic-font-sans);
-  --type-h4: var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-h4) var(--ic-font-sans);
-  --type-body-lg:  var(--ic-weight-regular) var(--ic-text-md)/var(--ic-lh-body-lg) var(--ic-font-sans);
-  --type-body:     var(--ic-weight-regular) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans);
-  --type-body-sm:  var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-sans);
-  --type-body-xs:  var(--ic-weight-regular) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);   /* Body Xsmall 12/18 */
-  --type-body-xxs: var(--ic-weight-regular) var(--ic-text-xxs)/var(--ic-lh-body-xxs) var(--ic-font-sans); /* Body Xxsmall 11/16 */
+  --type-h1: var(--font-weight-semibold) var(--text-2xl)/var(--text-2xl--line-height) var(--font-sans);
+  --type-h2: var(--font-weight-semibold) var(--text-xl)/var(--text-xl--line-height) var(--font-sans);
+  --type-h3: var(--font-weight-semibold) var(--text-lg)/var(--text-lg--line-height) var(--font-sans);
+  --type-h4: var(--font-weight-semibold) var(--text-md)/var(--text-md--line-height) var(--font-sans);
+  --type-body-lg:  var(--font-weight-regular) var(--text-lg)/var(--text-lg--line-height) var(--font-sans);
+  --type-body:     var(--font-weight-regular) var(--text-md)/var(--text-md--line-height) var(--font-sans);
+  --type-body-sm:  var(--font-weight-regular) var(--text-sm)/var(--text-sm--line-height) var(--font-sans);
+  --type-body-xs:  var(--font-weight-regular) var(--text-xxs)/var(--text-xxs--line-height) var(--font-sans);   /* Body Xsmall 12/18 */
+  --type-body-xxs: var(--font-weight-regular) var(--text-2xs)/var(--text-2xs--line-height) var(--font-sans); /* Body Xxsmall 11/16 */
   /* Semibold body variants (same sizes, weight 600) */
-  --type-body-lg-semibold:  var(--ic-weight-semibold) var(--ic-text-md)/var(--ic-lh-body-lg) var(--ic-font-sans);
-  --type-body-semibold:     var(--ic-weight-semibold) var(--ic-text-base)/var(--ic-lh-body-md) var(--ic-font-sans);
-  --type-body-sm-semibold:  var(--ic-weight-semibold) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-sans);
-  --type-body-xs-semibold:  var(--ic-weight-semibold) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);
-  --type-body-xxs-semibold: var(--ic-weight-semibold) var(--ic-text-xxs)/var(--ic-lh-body-xxs) var(--ic-font-sans);
-  --type-caption:  var(--ic-weight-medium) var(--ic-text-xs)/var(--ic-lh-body-xs) var(--ic-font-sans);
-  --type-mono:     var(--ic-weight-regular) var(--ic-text-sm)/var(--ic-lh-body-sm) var(--ic-font-mono);
+  --type-body-lg-semibold:  var(--font-weight-semibold) var(--text-lg)/var(--text-lg--line-height) var(--font-sans);
+  --type-body-semibold:     var(--font-weight-semibold) var(--text-md)/var(--text-md--line-height) var(--font-sans);
+  --type-body-sm-semibold:  var(--font-weight-semibold) var(--text-sm)/var(--text-sm--line-height) var(--font-sans);
+  --type-body-xs-semibold:  var(--font-weight-semibold) var(--text-xxs)/var(--text-xxs--line-height) var(--font-sans);
+  --type-body-xxs-semibold: var(--font-weight-semibold) var(--text-2xs)/var(--text-2xs--line-height) var(--font-sans);
+  --type-caption:  var(--font-weight-regular) var(--text-xxs)/var(--text-xxs--line-height) var(--font-sans);
+  --type-mono:     var(--font-weight-regular) var(--text-sm)/var(--text-sm--line-height) var(--font-mono);
 }
 
 /* ---- Dark theme override ---- */
 [data-theme="dark"] {
-  --color-bg:             var(--ic-palette-zinc-900);
-  --color-surface:        var(--ic-palette-zinc-800);
-  --color-surface-muted:  var(--ic-palette-zinc-700);
-  --color-surface-sunken: var(--ic-palette-zinc-900);
+  --color-bg:             var(--color-zinc-900);
+  --color-surface:        var(--color-zinc-800);
+  --color-surface-muted:  var(--color-zinc-700);
+  --color-surface-sunken: var(--color-zinc-900);
 
-  --color-border:         var(--ic-palette-zinc-600);
-  --color-border-strong:  var(--ic-palette-zinc-500);
+  --color-border:         var(--color-zinc-600);
+  --color-border-strong:  var(--color-zinc-500);
 
-  --color-text:           var(--ic-palette-gray-100);
-  --color-text-muted:     var(--ic-palette-gray-400);
-  --color-text-subtle:    var(--ic-palette-gray-600);
-  --color-text-inverse:   var(--ic-palette-zinc-900);
-  --color-icon:           var(--ic-palette-graphite-300);   /* lighter graphite for dark mode */
+  --color-text:           var(--color-gray-50);
+  --color-text-muted:     var(--color-gray-400);
+  --color-text-subtle:    var(--color-gray-600);
+  --color-text-inverse:   var(--color-zinc-900);
+  --color-icon:           var(--color-graphite-300);   /* lighter graphite for dark mode */
 
-  --color-brand:          var(--ic-palette-green-400);
-  --color-brand-hover:    var(--ic-palette-green-300);
-  --color-brand-active:   var(--ic-palette-green-200);
-  --color-brand-subtle:   var(--ic-palette-green-800);
+  --color-brand:          var(--color-green-400);
+  --color-brand-hover:    var(--color-green-300);
+  --color-brand-active:   var(--color-green-200);
+  --color-brand-subtle:   var(--color-green-800);
 }
 
 /* ---- Reset + base ---- */
@@ -103,7 +105,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .page {
-  max-width: var(--ic-container-lg);
+  max-width: var(--container-lg);
   margin: 0 auto;
-  padding: var(--ic-space-8) var(--ic-space-5);
+  padding: var(--spacing-12) var(--spacing-6);
 }
