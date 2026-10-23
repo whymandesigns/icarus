@@ -48,8 +48,8 @@
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: var(--ic-space-2);
-  padding: var(--ic-space-3);
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
   background: var(--color-surface);
   color: var(--color-text);
   border: 1px solid var(--color-border);

@@ -169,19 +169,30 @@
   --ic-weight-semibold: 600;
   --ic-weight-bold:     700;
 
-  /* ---- Spacing (4px base) ---- */
-  --ic-space-0: 0;
-  --ic-space-1: 4px;
-  --ic-space-2: 8px;
-  --ic-space-3: 12px;
-  --ic-space-4: 16px;
-  --ic-space-5: 24px;
-  --ic-space-6: 32px;
-  --ic-space-7: 40px;
-  --ic-space-8: 48px;
-  --ic-space-10: 64px;
-  --ic-space-12: 80px;
-  --ic-space-16: 128px;
+  /* ---- Spacing — Picasso's scale, names and values verbatim ----
+   * The number IS the value: n x 0.25rem, the Tailwind convention, so
+   * --spacing-4 is what a developer writes as p-4. designmd's old scale was
+   * index-based (sequential steps), which collided above step 4: the old
+   * --spacing-12 was 48px where Picasso's 8 is 32px. Every prototype that
+   * handed a spacing number to a developer above step 4 was mistranslated.
+   *
+   * Picasso source: toptal/picasso packages/picasso-tailwind @ bcaacbb8ec3b
+   */
+  --spacing-0: 0;                   /* picasso */
+  --spacing-1: 0.25rem;             /* picasso - 4px */
+  --spacing-2: 0.5rem;              /* picasso - 8px */
+  --spacing-3: 0.75rem;             /* picasso - 12px */
+  --spacing-4: 1rem;                /* picasso - 16px */
+  --spacing-6: 1.5rem;              /* picasso - 24px */
+  --spacing-8: 2rem;                /* picasso - 32px */
+  --spacing-10: 2.5rem;             /* picasso - 40px */
+  --spacing-12: 3rem;               /* picasso - 48px */
+  /* Extensions. Picasso's scale stops at 12 (48px); page-level layout needs
+   * more. Numbered on Tailwind's own n x 0.25rem rule, so p-16 in code is
+   * still 4rem — consistent with Picasso even though Picasso omits them. */
+  --spacing-16: 4rem;               /* extension - 64px */
+  --spacing-20: 5rem;               /* extension - 80px */
+  --spacing-32: 8rem;               /* extension - 128px */
 
   /* ---- Radii ---- */
   --ic-radius-none: 0;

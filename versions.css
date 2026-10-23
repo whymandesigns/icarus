@@ -22,7 +22,7 @@ body:has([id$="-switcher"]:not([hidden])) .vr-dock { left: 264px; }
 
 .vr-head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: var(--ic-space-2, 8px) var(--ic-space-3, 12px);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
   background: var(--ic-palette-graphite-800, #262C38);
   color: var(--color-text-inverse, #fff);
   font: var(--ic-weight-semibold, 600) var(--ic-text-xxs, 11px)/1.4 var(--ic-font-sans, -apple-system, sans-serif);
@@ -31,7 +31,7 @@ body:has([id$="-switcher"]:not([hidden])) .vr-dock { left: 264px; }
 /* Family names run long; keep the title bar one line like the switcher's */
 .vr-head > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vr-collapse { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; font: inherit; }
-.vr-body { max-height: 64vh; overflow: auto; padding: var(--ic-space-2, 8px); display: flex; flex-direction: column; gap: var(--ic-space-3, 12px); }
+.vr-body { max-height: 64vh; overflow: auto; padding: var(--spacing-2, 8px); display: flex; flex-direction: column; gap: var(--spacing-3, 12px); }
 .vr-dock.is-collapsed .vr-body { display: none; }
 
 .vr-group { display: flex; flex-direction: column; gap: 4px; }

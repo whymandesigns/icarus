@@ -105,5 +105,5 @@ body {
 .page {
   max-width: var(--ic-container-lg);
   margin: 0 auto;
-  padding: var(--ic-space-8) var(--ic-space-5);
+  padding: var(--spacing-12) var(--spacing-6);
 }

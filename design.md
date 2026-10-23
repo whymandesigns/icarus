@@ -11,7 +11,7 @@ Three layers. Don't skip them.
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │  tokens.css        Primitives — palette, scale, raw values   │  ← never reference directly in components
-│                    (--ic-palette-*, --ic-text-*, --ic-space-*)│
+│                    (--ic-palette-*, --ic-text-*, --spacing-*) │
 ├──────────────────────────────────────────────────────────────┤
 │  semantic.css      Intent aliases — bg, text, brand, danger  │  ← what components and prototypes USE
 │                    (--color-bg, --color-text, --type-h1)     │
@@ -139,11 +139,23 @@ Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body-lg` `.body` `.body-s
 
 ## 4. Spacing
 
-4px base. Tokens: `--ic-space-1` (4px) → `--ic-space-16` (128px).
+**Picasso's scale, names and values verbatim.** The number *is* the value: `n × 0.25rem`,
+Tailwind's convention. So `--spacing-4` is exactly what a developer writes as `p-4`, and a
+prototype translates to production without arithmetic.
 
-`1=4 · 2=8 · 3=12 · 4=16 · 5=24 · 6=32 · 7=40 · 8=48 · 10=64 · 12=80 · 16=128`
+`0=0 · 1=4 · 2=8 · 3=12 · 4=16 · 6=24 · 8=32 · 10=40 · 12=48`
 
-Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
+Extensions, for page-level layout Picasso's scale doesn't reach (it stops at 12 = 48px).
+Numbered on the same `n × 0.25rem` rule, so they stay consistent with Tailwind:
+
+`16=64 · 20=80 · 32=128`
+
+Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
+
+> **If you remember the old scale, re-read the numbers.** designmd used to be index-based —
+> sequential steps — which collided with Picasso above step 4: the old `--ic-space-8` was 48px
+> where Picasso's `8` is 32px. Old → new: `5→6 · 6→8 · 7→10 · 8→12 · 10→16 · 12→20 · 16→32`.
+> Steps 0–4 are unchanged.
 
 ---
 
@@ -236,7 +248,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 - **Check the system before you build.** Nothing bespoke until `example.html` has been looked at and found wanting. Most of what a prototype needs is already a component — toasts, snackbars, modals, drawers, switches, empty states, banners — and a hand-rolled version of something that exists is drift the moment the real one changes. The order is: find the component → if it is close, add a variant to `components.css` → only then write something new, and write it in `components.css` so the next prototype inherits it, not inline in one file. A one-off that lives in a single page is the thing this system exists to prevent.
 - **Compose, don't override.** Stack variants on the root class (`<button class="btn btn-xs btn-primary">`). Don't write new CSS in a feature file — if a variant is missing, add it to `components.css` and re-inline.
-- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--ic-space-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
+- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--spacing-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
 - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, tag inputs, character counters) get their behavior from the `<script>` block in `example.html`. When you build a new prototype, copy that whole block — the handlers are delegated and idempotent, so they activate on any markup that uses the right classes / data attributes.
 - **Page structure:** wrap content in `<main class="page">` to get the 1024px max-width centered layout.
 - **Wide vs. sheet tables.** Both share the `.table` base, so a prototype can offer a view toggle by swapping the modifier. Use `.table-wide` for read-heavy lists (tall rows, zebra striping, rich cell content). Use `.table-sheet` + `data-sheet` for editable, dense, Airtable/Linear-style grids where every cell is inline-editable through the shared cell state machine. Drive columns and cell values off `data-*` attributes — the module renders and wires everything; you don't hand-author cell inner markup (except the Name cell's `.sheet-tree` scaffold for the row toggle).
@@ -484,7 +496,7 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--ic-palette-*` directly.
 > - **Three color roles:** brand mark = blue-500 (`--color-accent`, logo only); primary CTA = green-500 (`--color-brand`, ONE per page — every other CTA is `.btn-secondary`); chrome = graphite-800 (topbar only).
 > - Reuse component classes from the §6 shortcode reference (`.btn`, `.card`, `.input`/`.field`, `.alert`, `.tabs`, `.toast`, `.tooltip` via `[data-tooltip]`, `.avatar`, `.table` (+ `.table-sheet` editable grid via `data-sheet`), `.dropdown`, `.modal`, `.drawer`, `.page-head`, `.sidenav`, `.topbar`, `.badge`, `.tag`, `.chip`, `.switch`, `.radio`, `.checkbox`, etc.). Compose variants on the root (`<button class="btn btn-xs btn-primary">`). Don't author new component CSS in the prototype — if a variant is missing, add it to `components.css` and re-inline.
-> - All spacing via `--ic-space-*`. All radii via `--ic-radius-*`. All motion via `--ic-duration-*` + `--ic-ease*`.
+> - All spacing via `--spacing-*`. All radii via `--ic-radius-*`. All motion via `--ic-duration-*` + `--ic-ease*`.
 > - Status colors (red/yellow/green) only signal state, never decoration.
 > - Type is the visual hierarchy. Avoid extra borders, dividers, or background fills.
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
