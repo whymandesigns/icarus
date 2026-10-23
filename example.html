@@ -602,7 +602,7 @@
       <section class="stack" id="palette">
         <div>
           <h3 class="h3">Color palette</h3>
-          <p class="body-sm">All tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--color-</code>.</p>
+          <p class="body-sm">All tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--color-</code>. Each swatch names the Picasso scale it maps to — use it as <code style="font: var(--type-mono); color: var(--color-text-muted)">bg-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">text-</code> or <code style="font: var(--type-mono); color: var(--color-text-muted)">border-</code> in code. Swatches marked <em>extension</em> have no Picasso equivalent and no class behind them.</p>
         </div>
         <div class="stack" id="palette-root" style="gap: var(--spacing-6)"></div>
       </section>
@@ -618,7 +618,7 @@
       <section class="stack" id="spacing">
         <div>
           <h3 class="h3">Spacing</h3>
-          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px); the three above it are extensions, numbered on the same rule.</p>
+          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px); the three above it are extensions, numbered on the same rule. The class column shows <code style="font: var(--type-mono); color: var(--color-text-muted)">p-</code> as the exemplar — the same number works with <code style="font: var(--type-mono); color: var(--color-text-muted)">m-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">gap-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">w-</code> and the rest.</p>
         </div>
         <div class="tok-list" id="spacing-root"></div>
       </section>
@@ -5798,6 +5798,7 @@
           <div class="swatch-label">
             <code class="swatch-token">${short}</code>
             <code class="swatch-hex">${hex}</code>
+            <code class="tok-src${picasso ? ' is-picasso' : ''}">${picasso || 'extension'}</code>
           </div>
         </div>`;
     };
@@ -5857,8 +5858,10 @@
     document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
       const v = css.getPropertyValue(`--spacing-${n}`).trim();
       const p = px(v);
+      // the number works with any spacing utility — p-, m-, gap-, w- … — so
+      // p-N stands in as the exemplar rather than listing them all
       return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0',
-                 SPACING_PICASSO.has(n) ? 'picasso' : 'extension');
+                 SPACING_PICASSO.has(n) ? `p-${n}` : 'extension');
     }).join('');
 
     // Z-index — ordered by the value it actually resolves to
