@@ -3,7 +3,6 @@
  * Pierce shadow DOM via CSS custom properties — components read these directly.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Proxima Nova — product/Figma typeface, self-hosted (licensed .woff2). Only
  * Regular (400) and Semibold (600) are supplied, so 500 folds into Regular and
@@ -24,206 +23,365 @@
      ================================================================ */
 
   /* Neutral */
-  --ic-palette-white: #FFFFFF;
-  --ic-palette-black: #000000;
+  --color-white: #FFFFFF;           /* picasso */
+  --color-black: #000000;           /* picasso */
 
   /* Gray */
-  --ic-palette-gray-100: #FCFCFC;   /* Picasso grey.lightest */
-  --ic-palette-gray-150: #F3F4F6;   /* Picasso grey.lighter */
-  --ic-palette-gray-200: #EBECED;   /* Picasso grey.lighter2 */
-  --ic-palette-gray-300: #E5E7EA;   /* Picasso grey.light */
-  --ic-palette-gray-400: #D8D9DC;   /* Picasso grey.light2 */
-  --ic-palette-gray-500: #C4C6CA;   /* Picasso grey.main */
-  --ic-palette-gray-600: #84888E;   /* Picasso grey.main2 */
-  --ic-palette-gray-700: #5F636A;
-  --ic-palette-gray-800: #3D4149;
-  --ic-palette-gray-900: #24272D;
-
+  --color-gray-50: #FCFCFC;         /* picasso */
+  --color-gray-100: #F3F4F6;        /* picasso */
+  --color-gray-200: #EBECED;        /* picasso */
+  --color-gray-300: #E5E7EA;        /* picasso */
+  --color-gray-400: #D8D9DC;        /* picasso */
+  --color-gray-500: #C4C6CA;        /* picasso */
+  --color-gray-600: #84888E;        /* picasso */
+  --color-gray-700: #5F636A;        /* extension */
+  /* --color-gray-800: #3D4149;  unreferenced extension */
+  /* --color-gray-900: #24272D;  unreferenced extension */
   /* Zinc — dark-theme neutrals */
-  --ic-palette-zinc-100: #D1D2D3;
-  --ic-palette-zinc-200: #949597;
-  --ic-palette-zinc-300: #636466;
-  --ic-palette-zinc-400: #484A4C;
-  --ic-palette-zinc-500: #343536;
-  --ic-palette-zinc-600: #282829;
-  --ic-palette-zinc-700: #1E1E1F;
-  --ic-palette-zinc-800: #141415;
-  --ic-palette-zinc-900: #0A0A0A;
+  /* Zinc — NOT Picasso. Picasso has no zinc at all. These nine exist for one
+   * reason: they are the entire foundation of the dark theme in semantic.css.
+   * Hidden from the palette gallery in example.html so nobody reaches for them
+   * when building, and they should never appear in a prototype directly.
+   * They cannot simply be deleted — the [data-theme="dark"] block resolves to
+   * nothing without them and the theme toggle breaks. Picasso ships real dark
+   * values for every token; rebuilding dark mode on those is what retires this
+   * ramp for good. */
+  /* --color-zinc-100: #D1D2D3;  unreferenced extension */
+  /* --color-zinc-200: #949597;  unreferenced extension */
+  /* --color-zinc-300: #636466;  unreferenced extension */
+  /* --color-zinc-400: #484A4C;  unreferenced extension */
+  --color-zinc-500: #343536;        /* extension */
+  --color-zinc-600: #282829;        /* extension */
+  --color-zinc-700: #1E1E1F;        /* extension */
+  --color-zinc-800: #141415;        /* extension */
+  --color-zinc-900: #0A0A0A;        /* extension */
 
   /* Graphite (Operationalize brand) */
-  --ic-palette-graphite-100: #E0E3EA;
-  --ic-palette-graphite-150: #CDD1DC;
-  --ic-palette-graphite-200: #B3B9C8;
-  --ic-palette-graphite-300: #8F96AA;
-  --ic-palette-graphite-400: #6A7389;
-  --ic-palette-graphite-500: #455065;
-  --ic-palette-graphite-600: #3A4457;
-  --ic-palette-graphite-700: #303A4A;
-  --ic-palette-graphite-800: #262D3D;
-  --ic-palette-graphite-900: #191E28;
+  /* --color-graphite-100: #E0E3EA;  unreferenced extension */
+  /* --color-graphite-150: #CDD1DC;  unreferenced extension */
+  /* --color-graphite-200: #B3B9C8;  unreferenced extension */
+  --color-graphite-300: #8F96AA;    /* extension */
+  /* --color-graphite-400: #6A7389;  unreferenced extension */
+  --color-graphite-700: #455065;    /* picasso */
+  /* --color-graphite-725: #3A4457;  unreferenced extension */
+  --color-graphite-750: #303A4A;    /* extension */
+  --color-graphite-800: #262D3D;    /* picasso */
+  --color-graphite-900: #191E28;    /* picasso */
 
   /* Red */
-  --ic-palette-red-100: #FBEDF1;
-  --ic-palette-red-150: #F5D8E0;
-  --ic-palette-red-200: #F0B8C4;
-  --ic-palette-red-300: #E5637D;
-  --ic-palette-red-400: #DA3F62;
-  --ic-palette-red-500: #D42551;
-  --ic-palette-red-600: #A81D41;
-  --ic-palette-red-700: #7D1530;
-  --ic-palette-red-800: #5C0F24;
-  --ic-palette-red-900: #3D0A18;
-
+  --color-red-100: #FBEDF1;         /* picasso */
+  --color-red-150: #F5D8E0;         /* picasso */
+  /* --color-red-200: #F0B8C4;  unreferenced extension */
+  /* --color-red-300: #E5637D;  unreferenced extension */
+  /* --color-red-400: #DA3F62;  unreferenced extension */
+  --color-red-500: #D42551;         /* picasso */
+  /* --color-red-600: #A81D41;  unreferenced extension */
+  /* --color-red-700: #7D1530;  unreferenced extension */
+  /* --color-red-800: #5C0F24;  unreferenced extension */
+  /* --color-red-900: #3D0A18;  unreferenced extension */
   /* Yellow */
-  --ic-palette-yellow-100: #FFF5E3;
-  --ic-palette-yellow-150: #F8E7C8;
-  --ic-palette-yellow-200: #F2D9A6;
-  --ic-palette-yellow-300: #EDCA7E;
-  --ic-palette-yellow-400: #E9B340;
-  --ic-palette-yellow-500: #E59C01;
-  --ic-palette-yellow-600: #C08301;
-  --ic-palette-yellow-700: #9A6A01;
-  --ic-palette-yellow-800: #704D01;
-  --ic-palette-yellow-900: #4A3301;
-
-
+  --color-yellow-100: #FFF5E3;      /* picasso */
+  --color-yellow-150: #F8E7C8;      /* picasso */
+  /* --color-yellow-200: #F2D9A6;  unreferenced extension */
+  /* --color-yellow-300: #EDCA7E;  unreferenced extension */
+  /* --color-yellow-400: #E9B340;  unreferenced extension */
+  --color-yellow-500: #E59C01;      /* picasso */
+  /* --color-yellow-600: #C08301;  unreferenced extension */
+  --color-yellow-700: #9A6A01;      /* extension */
+  /* --color-yellow-800: #704D01;  unreferenced extension */
+  /* --color-yellow-900: #4A3301;  unreferenced extension */
   /* Green */
-  --ic-palette-green-100: #EAFBF5;
-  --ic-palette-green-150: #D7F3E9;
-  --ic-palette-green-200: #A8E6D0;
-  --ic-palette-green-300: #66D4AB;
-  --ic-palette-green-400: #33D097;
-  --ic-palette-green-500: #00CC83;
-  --ic-palette-green-600: #03B080;
-  --ic-palette-green-700: #05947C;
-  --ic-palette-green-800: #046B5A;
-  --ic-palette-green-900: #034539;
-
+  --color-green-100: #EAFBF5;       /* picasso */
+  --color-green-150: #D7F3E9;       /* picasso */
+  --color-green-200: #A8E6D0;       /* extension */
+  --color-green-300: #66D4AB;       /* extension */
+  --color-green-400: #33D097;       /* extension */
+  --color-green-500: #00CC83;       /* picasso */
+  --color-green-600: #03B080;       /* picasso */
+  --color-green-700: #05947C;       /* picasso */
+  --color-green-800: #046B5A;       /* extension */
+  /* --color-green-900: #034539;  unreferenced extension */
   /* Cyan — single shade. Pending removal: components currently using
      cyan-500 (.tag-blue-light, .badge-info text, --color-info) will
      migrate to a blue shade in the next pass, after which the ramp goes
      away entirely. */
-  --ic-palette-cyan-500: #25A9EF;
+  --color-blue-400: #25A9EF;        /* picasso */
 
   /* Blue */
-  --ic-palette-blue-100: #EDF1FD;
-  --ic-palette-blue-150: #D5DEFA;
-  --ic-palette-blue-200: #B0C1F5;
-  --ic-palette-blue-300: #7B9AEE;
-  --ic-palette-blue-400: #4A6FE0;
-  --ic-palette-blue-500: #204ECF;
-  --ic-palette-blue-600: #183A9E;
-  --ic-palette-blue-700: #0F256E;
-  --ic-palette-blue-800: #0A1A50;
-  --ic-palette-blue-900: #061035;
-
+  --color-blue-100: #EDF1FD;        /* picasso */
+  --color-blue-150: #D5DEFA;        /* picasso */
+  /* --color-blue-200: #B0C1F5;  unreferenced extension */
+  /* --color-blue-300: #7B9AEE;  unreferenced extension */
+  /* --color-blue-450: #4A6FE0;  designmd's old blue-400, a mid-ramp tint with
+   * no Picasso equivalent. Nothing referenced it once --color-info moved to
+   * blue-400 (Picasso's, the colour that used to be called cyan-500), so it
+   * is commented out rather than carried as a dead extension. */
+  --color-blue-500: #204ECF;        /* picasso */
+  --color-blue-600: #183A9E;        /* picasso */
+  --color-blue-700: #0F256E;        /* picasso */
+  /* --color-blue-800: #0A1A50;  unreferenced extension */
+  /* --color-blue-900: #061035;  unreferenced extension */
   /* Purple */
-  --ic-palette-purple-100: #F1ECFD;
-  --ic-palette-purple-150: #DFD3F9;
-  --ic-palette-purple-200: #C9B5F4;
-  --ic-palette-purple-300: #A47DE2;
-  --ic-palette-purple-400: #8552D9;
-  --ic-palette-purple-500: #6727CF;
-  --ic-palette-purple-600: #5019A8;
-  --ic-palette-purple-700: #3A1280;
-  --ic-palette-purple-800: #280D5C;
-  --ic-palette-purple-900: #1A0840;
+  --color-purple-100: #F1ECFD;      /* extension - unused, kept on request */
+  --color-purple-150: #DFD3F9;      /* extension - unused, kept on request */
+  /* --color-purple-200: #C9B5F4;  unreferenced extension */
+  /* --color-purple-300: #A47DE2;  unreferenced extension */
+  /* --color-purple-400: #8552D9;  unreferenced extension */
+  --color-purple-500: #6727CF;      /* picasso */
+  /* --color-purple-600: #5019A8;  unreferenced extension */
+  /* --color-purple-700: #3A1280;  unreferenced extension */
+  /* --color-purple-800: #280D5C;  unreferenced extension */
+  /* --color-purple-900: #1A0840;  unreferenced extension */
+  /* ---- Typography — Picasso's names and values, verbatim ----
+   * Picasso's stack is `proxima-nova, Arial, sans-serif`, where proxima-nova is
+   * the Adobe Fonts kit id. designmd self-hosts the licensed .woff2 under the
+   * family name 'Proxima Nova', so that comes first and Picasso's kit id follows
+   * — same typeface either way, and the prototype renders without the kit.
+   */
+  --font-sans: 'Proxima Nova', proxima-nova, Arial, sans-serif;/* picasso + self-hosted */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; /* picasso */
+  /* --font-display: var(--font-sans);  retired — a pure alias to --font-sans that
+   * nothing ever referenced. */
 
+  /* Size scale. Picasso pairs every size with a line-height; Tailwind v4 writes
+   * that as --text-{size}--line-height, so the pair travels together. */
+  --text-2xs: 0.688rem;             /* picasso - 11px */
+  --text-2xs--line-height: 1rem;    /* picasso */
+  --text-xxs: 0.75rem;              /* picasso - 12px */
+  --text-xxs--line-height: 1.125rem; /* picasso */
+  --text-sm: 0.8125rem;             /* picasso - 13px */
+  --text-sm--line-height: 1.25rem;  /* picasso */
+  --text-md: 0.875rem;              /* picasso - 14px, default body */
+  --text-md--line-height: 1.375rem; /* picasso */
+  --text-lg: 1rem;                  /* picasso - 16px */
+  --text-lg--line-height: 1.5rem;   /* picasso */
+  --text-xl: 1.25rem;               /* picasso - 20px */
+  --text-xl--line-height: 1.875rem; /* picasso */
+  --text-2xl: 1.75rem;              /* picasso - 28px */
+  --text-2xl--line-height: 2.625rem; /* picasso */
+  --text-xxl: 1.75rem;              /* picasso - 28px, same as 2xl */
+  --text-xxl--line-height: 2.625rem; /* picasso */
+  --text-button-small: 12px;        /* picasso */
+  --text-button-small--line-height: 15px;  /* picasso */
+  --text-button-medium: 13px;       /* picasso */
+  --text-button-medium--line-height: 16px; /* picasso */
+  --text-button-large: 15px;        /* picasso */
+  --text-button-large--line-height: 18px;  /* picasso */
+  /* --text-18: 1.125rem;  18px — retired. Unreferenced, and the two uses its own
+   * comment claimed were both untrue: avatar initials run 2xs/xxs/sm/md/2xl plus a
+   * literal 42px, and .card-title is --type-h3 at 16px. Picasso has no 18px. */
 
-  /* ---- Typography ----
-   * Product / Figma font is Proxima Nova (commercial — loaded via an Adobe Fonts
-   * kit where licensed). Inter is the websafe local stand-in / fallback for
-   * prototyping: metrically close, free, no login. Proxima Nova leads the stack
-   * so it renders wherever it's installed; Inter renders everywhere else. */
-  --ic-font-sans: 'Proxima Nova', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --ic-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  --ic-font-display: var(--ic-font-sans);
+  /* Unitless line-heights. Picasso has none of these; base-tailwind adds only
+   * lineHeight.5 = 1.25rem, which is already --text-sm--line-height. */
+  /* --leading-tight:   1.2;  unreferenced extension */
+  /* --leading-normal:  1.5;  unreferenced extension */
+  /* --leading-relaxed: 1.75;  unreferenced extension */
+  /* Weights. Picasso ships four, and the self-hosted Proxima only carries
+   * Regular and Semibold — the @font-face ranges above fold 500 into 400 and
+   * 700 into 600. designmd's old `medium` (500) and `bold` (700) therefore
+   * already rendered as regular and semibold, and are gone. */
+  --font-weight-inherit: inherit;   /* picasso - unused here, kept deliberately: unlike
+                                     * thin and light it always renders, and Picasso's
+                                     * Typography exposes it alongside regular and
+                                     * semibold. Do not retire as dead. */
+  /* --font-weight-thin: 100;   and  --font-weight-light: 300;  are REMOVED, and this
+   * is the one place designmd deliberately does not mirror Picasso's preset. Both are
+   * keys there, so the classes generate — but no Picasso component uses either
+   * (Typography exposes regular, semibold and inherit only), and Proxima ships no face
+   * at 100 or 300, so a browser synthesises them. A token that cannot render what it
+   * promises is worse than a missing one. Uncomment if Proxima ever licenses the faces. */
+  --font-weight-regular: 400;       /* picasso */
+  --font-weight-semibold: 600;      /* picasso */
 
-  /* Size scale — Figma spec */
-  --ic-text-xxs:  0.6875rem;  /* 11px — Body Xxsmall */
-  --ic-text-xs:   0.75rem;    /* 12px — Body Xsmall */
-  --ic-text-sm:   0.8125rem;  /* 13px — Body Small */
-  --ic-text-base: 0.875rem;   /* 14px — Body Medium, H4 */
-  --ic-text-md:   1rem;       /* 16px — Body Large, H3 */
-  --ic-text-lg:   1.125rem;   /* 18px — utility (avatar initials, card titles) */
-  --ic-text-xl:   1.25rem;    /* 20px — H2 */
-  --ic-text-2xl:  1.75rem;    /* 28px — H1 */
+  /* Interaction states for the three action colours. Picasso's Button hardcodes
+   * these as arbitrary hex rather than palette shades, so there is no Picasso
+   * token to point at — but the VALUES are Picasso's, read from
+   * Button/src/Button/styles.ts. Note the direction: hover goes LIGHTER,
+   * active goes darker. designmd used to darken on hover, which is backwards
+   * from what the product does. */
+  --color-blue-500-hover: #4269D6;  /* extension - picasso Button primary hover */
+  --color-blue-500-active: #1A41AB; /* extension - picasso Button primary active */
+  --color-green-500-hover: #27D496; /* extension - picasso Button positive hover */
+  --color-green-500-active: #00A96C;/* extension - picasso Button positive active */
+  --color-red-500-hover: #DB466B;   /* extension - picasso Button negative hover */
+  --color-red-500-active: #B01F43;  /* extension - picasso Button negative active */
 
-  /* Line heights — Figma spec (absolute, mirrors design intent) */
-  --ic-lh-h1:       2.625rem;  /* 42px */
-  --ic-lh-h2:       1.875rem;  /* 30px */
-  --ic-lh-h3:       1.5rem;    /* 24px */
-  --ic-lh-h4:       1.375rem;  /* 22px */
-  --ic-lh-body-lg:  1.5rem;    /* 24px */
-  --ic-lh-body-md:  1.375rem;  /* 22px */
-  --ic-lh-body-sm:  1.25rem;   /* 20px */
-  --ic-lh-body-xs:  1.125rem;  /* 18px */
-  --ic-lh-body-xxs: 1rem;      /* 16px */
+  /* ---- Spacing — Picasso's scale, names and values verbatim ----
+   * The number IS the value: n x 0.25rem, the Tailwind convention, so
+   * --spacing-4 is what a developer writes as p-4. designmd's old scale was
+   * index-based (sequential steps), which collided above step 4: the old
+   * step 8 was 48px where Picasso's 8 is 32px. Every prototype that
+   * handed a spacing number to a developer above step 4 was mistranslated.
+   *
+   * Picasso source: toptal/picasso packages/picasso-tailwind @ bcaacbb8ec3b
+   */
+  --spacing-0: 0;                   /* picasso */
+  --spacing-1: 0.25rem;             /* picasso - 4px */
+  --spacing-2: 0.5rem;              /* picasso - 8px */
+  --spacing-3: 0.75rem;             /* picasso - 12px */
+  --spacing-4: 1rem;                /* picasso - 16px */
+  --spacing-6: 1.5rem;              /* picasso - 24px */
+  --spacing-8: 2rem;                /* picasso - 32px */
+  --spacing-10: 2.5rem;             /* picasso - 40px */
+  --spacing-12: 3rem;               /* picasso - 48px */
+  /* Extensions. Picasso's scale stops at 12 (48px); page-level layout needs
+   * more. Numbered on Tailwind's own n x 0.25rem rule, so p-16 in code is
+   * still 4rem — consistent with Picasso even though Picasso omits them. */
+  /* --spacing-16: 4rem;  64px — retired. Its only use was .page-toc's offset, which
+   * was really the topbar height plus a gap; that now says so with --header-height. */
+  /* --spacing-20: 5rem;   80px  — unused, and in neither config. */
+  /* --spacing-32: 8rem;  128px  — unused, and in neither config. */
 
-  --ic-leading-tight:   1.2;
-  --ic-leading-normal:  1.5;
-  --ic-leading-relaxed: 1.75;
+  /* ---- Sizing — Picasso's minWidth / maxWidth / minHeight / maxHeight ----
+   * All four start from the spacing scale (`...theme('spacing')`), so min-w-4 is
+   * --spacing-4 and needs no token of its own. Only the values Picasso adds on
+   * top are declared here.
+   */
+  --header-height: 3.5rem;          /* picasso - 56px. Picasso's own custom property:
+                                     * PageTopBar is h-[var(--header-height,3.5rem)]
+                                     * and constants.ts sets headerHeight 3.5rem. */
 
-  --ic-weight-regular:  400;
-  --ic-weight-medium:   500;
-  --ic-weight-semibold: 600;
-  --ic-weight-bold:     700;
+  --min-width-14: 3.5rem;           /* picasso - 56px, min-w-14 */
+  --min-width-16: 4rem;             /* picasso - 64px, min-w-16 */
+  --min-width-24: 6rem;             /* picasso - 96px, min-w-24 */
 
-  /* ---- Spacing (4px base) ---- */
-  --ic-space-0: 0;
-  --ic-space-1: 4px;
-  --ic-space-2: 8px;
-  --ic-space-3: 12px;
-  --ic-space-4: 16px;
-  --ic-space-5: 24px;
-  --ic-space-6: 32px;
-  --ic-space-7: 40px;
-  --ic-space-8: 48px;
-  --ic-space-10: 64px;
-  --ic-space-12: 80px;
-  --ic-space-16: 128px;
+  /* Twelfths — Picasso's 12-column grid, maxWidth only. The class is written
+   * max-w-1/12; a slash cannot appear in a custom property name, so the token
+   * spells it out. */
+  --max-width-1-12: 8.333333%;      /* picasso - max-w-1/12 */
+  --max-width-2-12: 16.666667%;     /* picasso - max-w-2/12 */
+  --max-width-3-12: 25%;            /* picasso - max-w-3/12 */
+  --max-width-4-12: 33.333333%;     /* picasso - max-w-4/12 */
+  --max-width-5-12: 41.666667%;     /* picasso - max-w-5/12 */
+  --max-width-6-12: 50%;            /* picasso - max-w-6/12 */
+  --max-width-7-12: 58.333333%;     /* picasso - max-w-7/12 */
+  --max-width-8-12: 66.666667%;     /* picasso - max-w-8/12 */
+  --max-width-9-12: 75%;            /* picasso - max-w-9/12 */
+  --max-width-10-12: 83.333333%;    /* picasso - max-w-10/12 */
+  --max-width-11-12: 91.666667%;    /* picasso - max-w-11/12 */
 
   /* ---- Radii ---- */
-  --ic-radius-none: 0;
-  --ic-radius-sm: 4px;
-  --ic-radius-md: 8px;
-  --ic-radius-lg: 12px;
-  --ic-radius-xl: 16px;
-  --ic-radius-2xl: 24px;
-  --ic-radius-full: 9999px;
-
+  --radius-none: 0;                 /* picasso */
+  --radius-sm: 4px;                 /* picasso */
+  --radius-md: 8px;                 /* picasso */
+  /* No extensions. The scale is Picasso's four, exactly.
+   * --radius-lg (12px), -xl (16px) and -2xl (24px) are gone: lg's ten uses —
+   * .card and nine bits of showcase chrome — now take --radius-md, which is
+   * what Picasso's Container applies, and xl/2xl were never referenced. */
+  --radius-full: 9999px;            /* picasso */
   /* Numeric aliases — reach for these by px value */
-  --ic-radius-0:  var(--ic-radius-none);
-  --ic-radius-4:  var(--ic-radius-sm);
-  --ic-radius-8:  var(--ic-radius-md);
-  --ic-radius-12: var(--ic-radius-lg);
 
-  /* ---- Shadows ---- */
-  --ic-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --ic-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
-  --ic-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --ic-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10);
-  --ic-shadow-xl: 0 24px 56px rgba(0, 0, 0, 0.14);
+  /* ---- Shadows — Picasso's values, verbatim ----
+   * Picasso's shadows are ROLES, not a size ramp, and its own source names
+   * them. designmd used to carry an xs..xl ramp of its own invention; each
+   * call site is now mapped to the role Picasso documents, so a prototype
+   * casts the same shadow the product does.
+   * Picasso also defines 6-24 (Material UI v4 elevations) which its source
+   * marks for deprecation — deliberately not carried here.
+   */
+  --shadow-0: none;                                                 /* picasso */
+  --shadow-1: 0 0 8px 0 rgba(0,0,0, 0.08);                          /* picasso - notification center, paper */
+  --shadow-2: 0 4px 8px 0 rgba(0,0,0, 0.08);                        /* picasso - modal */
+  --shadow-3: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 0 8px 0 rgba(0, 0, 0, 0.16);  /* picasso - notification growl */
+  --shadow-4: 0 0 4px 0 rgba(0,0,0, 0.24), 0 0 32px 0 rgba(0,0,0, 0.12);     /* picasso - tooltip */
+  --shadow-5: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 8px 12px -3px rgba(0, 0, 0, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.04); /* picasso - scroll menu */
 
-  /* ---- Z-index scale ---- */
-  --ic-z-base: 0;
-  --ic-z-dropdown: 100;
-  --ic-z-sticky: 200;
-  --ic-z-overlay: 800;
-  --ic-z-modal: 900;
-  --ic-z-toast: 1000;
+  /* ---- Z-index — Picasso's four, verbatim; the rest are extensions ----
+   * designmd's modal was 900 and its toast 1000. Picasso puts modal at 1300
+   * and snackbar at 1400, so anything written against the old numbers sat in
+   * the wrong layer once it reached production. */
+  --z-drawer: 1200;                 /* picasso */
+  --z-modal: 1300;                  /* picasso */
+  --z-tooltip: 1300;                /* picasso */
+  --z-snackbar: 1400;               /* picasso */
+  /* --z-base: 0;  unreferenced extension */
+  /* These three are designmd's own, and they stay that way for a reason rather
+   * than for want of a Picasso number. Picasso's four come from Material UI v4
+   * (drawer 1200, modal 1300, snackbar 1400 are MUI's exactly; tooltip is pulled
+   * from 1500 down to 1300) and nothing in either scale sits below 1000.
+   *
+   * The gap is a rendering difference, not an oversight. Picasso's Dropdown and
+   * Menu carry no z-index at all — they render through Popper, which portals to
+   * the body and stacks at z-modal. designmd's dropdowns are positioned in flow,
+   * so they only need to beat their siblings; 1300 would wrongly lift them over
+   * drawers. Same for the sticky sidenav toggle and the sheet popover. */
+  --z-dropdown: 100;                /* extension - .dropdown-menu, .datepicker-panel */
+  --z-sticky: 200;                  /* extension - .sidenav-toggle, the showcase TOC */
+  --z-overlay: 800;                 /* extension - .sheet-pop */
 
-  /* ---- Motion ---- */
-  --ic-ease: cubic-bezier(0.2, 0, 0, 1);
-  --ic-ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ic-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ic-duration-fast: 120ms;
-  --ic-duration-base: 200ms;
-  --ic-duration-slow: 320ms;
+  /* ---- Breakpoints — Picasso's screens, verbatim ---- */
+  --breakpoint-xs: 0px;             /* picasso */
+  --breakpoint-sm: 480px;           /* picasso */
+  --breakpoint-md: 768px;           /* picasso */
+  --breakpoint-lg: 1024px;          /* picasso */
+  --breakpoint-xl: 1440px;          /* picasso */
 
-  /* ---- Layout ---- */
-  --ic-container-sm: 640px;
-  --ic-container-md: 768px;
-  --ic-container-lg: 1024px;
-  --ic-container-xl: 1280px;
+  /* ---- Borders ---- */
+  --border-width: 1px;              /* picasso - Tailwind DEFAULT */
+  --border-width-0: 0px;            /* picasso */
+
+  /* ---- Component tokens — Picasso sizes its inputs with these ---- */
+  --width-input: 18.75rem;          /* picasso - 300px */
+  --height-input: 2rem;             /* picasso - 32px */
+  --padding-input: 0.5rem;          /* picasso - 8px */
+
+  /* ---- Motion ----
+   * Picasso adds one duration (350ms) and no easings; the rest are extensions. */
+  --duration-350: 350ms;            /* picasso */
+  --duration-fast: 120ms;           /* extension */
+  --duration-base: 200ms;           /* extension */
+  /* --duration-slow: 320ms;  retired — only the Motion gallery used it. */
+  --ease: cubic-bezier(0.2, 0, 0, 1);      /* extension */
+  /* --ease-out: cubic-bezier(0, 0, 0.2, 1);   retired — gallery-only. */
+  /* --ease-in: cubic-bezier(0.4, 0, 1, 1);    retired — gallery-only.
+   * These two are the standard complement to --ease. If a prototype needs an
+   * accelerate or decelerate curve, UNCOMMENT them — do not write a literal
+   * cubic-bezier, which is how the drift this file just cleaned up started. */
+
+  /* ---- Animation ----
+   * Tailwind v4 names an animation --animate-{name}; the keyframes it points at
+   * are defined below this block. Picasso contributes circle-spin; the other
+   * four come from the Operationalize Tailwind config, which is the only place
+   * the product extends Picasso. The duration and easing tokens above stay —
+   * they are what hand-written transitions use.
+   */
+  --animate-circle-spin: stroke-dash 1.4s ease-in-out infinite;  /* picasso */
+  --animate-highlight: highlight 3s ease-in-out;                 /* operationalize */
+  --animate-fade-in: fadeIn ease-in 1s;                          /* operationalize */
+  --animate-slider-progress: sliderProgress linear 10s forwards; /* operationalize */
+  --animate-card-land: cardLand 250ms ease-out;                  /* operationalize */
+
+  /* ---- Layout — extensions. Picasso has breakpoints, not container widths. */
+  /* --container-sm: 640px;  unreferenced extension */
+  /* --container-md: 768px;  unreferenced extension */
+  --container-lg: 1024px;           /* extension - .page max-width. Picasso has breakpoints, not containers */
+  /* --container-xl: 1280px;  unreferenced extension */
+}
+
+/* Keyframes behind the --animate-* tokens. Names and values are verbatim from
+ * the Picasso and Operationalize Tailwind configs, so an animation a prototype
+ * uses is the same one the product ships. */
+@keyframes stroke-dash {
+  0%   { stroke-dasharray: 1px, 200px;   stroke-dashoffset: 0px; }
+  50%  { stroke-dasharray: 100px, 200px; stroke-dashoffset: -15px; }
+  100% { stroke-dasharray: 100px, 200px; stroke-dashoffset: -125px; }
+}
+/* rgba(37,169,239,.5) is blue-400 at 50% — written out as the config has it */
+@keyframes highlight { 50% { background-color: rgba(37, 169, 239, 50%); } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sliderProgress { from { width: 0px; } to { width: 100%; } }
+@keyframes cardLand {
+  0%   { transform: scale(1.04); filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2)); }
+  100% { transform: scale(1);    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0)); }
+}
+
+/* Motion is functional. Anything decorative respects a user who asked for less. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animate-circle-spin: none;
+    --animate-highlight: none;
+    --animate-fade-in: none;
+    --animate-slider-progress: none;
+    --animate-card-land: none;
+  }
 }

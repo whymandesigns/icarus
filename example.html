@@ -12,17 +12,17 @@
   <style>
     /* .stack, .row, .grid-2 live in components.css (Layout helpers section).
        This block holds example.html's own demo-only chrome below. */
-    .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: var(--ic-space-7); }
-    .swatch-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--ic-space-1); }
+    .header { display: flex; justify-content: space-between; align-items: end; margin-bottom: var(--spacing-10); }
+    .swatch-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--spacing-1); }
     .swatch-card {
       display: flex;
       flex-direction: column;
-      gap: var(--ic-space-2);
+      gap: var(--spacing-2);
       min-width: 0;
     }
     .swatch {
       aspect-ratio: 1;
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       border: 1px solid var(--color-border);
     }
     .swatch-label {
@@ -32,28 +32,28 @@
       min-width: 0;
     }
     .swatch-token {
-      font: var(--ic-weight-medium) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono);
       color: var(--color-text);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     .swatch-hex {
-      font: var(--ic-weight-regular) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono);
       color: var(--color-text-subtle);
       text-transform: uppercase;
     }
 
-    .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--ic-space-5); align-items: center; }
+    .ramp { display: grid; grid-template-columns: 96px 1fr; gap: var(--spacing-6); align-items: center; }
     .ramp-name { font: var(--type-h4); color: var(--color-text); }
 
     .radii-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-      gap: var(--ic-space-4);
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+      gap: var(--spacing-4);
     }
     .radius-card {
-      display: flex; flex-direction: column; gap: var(--ic-space-2);
+      display: flex; flex-direction: column; gap: var(--spacing-2);
       align-items: stretch;
     }
     .radius-shape {
@@ -62,25 +62,48 @@
       border: 1px solid var(--color-border);
     }
     .radius-token {
-      font: var(--ic-weight-medium) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono);
       color: var(--color-text);
     }
     .radius-value {
-      font: var(--ic-weight-regular) var(--ic-text-xxs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono);
       color: var(--color-text-subtle);
     }
 
+    /* Shared rows for the spacing / z-index / breakpoint galleries. Each row is
+       token name, a proportional bar, the value, and where the token comes from. */
+    .tok-list { display: flex; flex-direction: column; gap: var(--spacing-1); }
+    .tok-row {
+      display: grid; grid-template-columns: 11rem 1fr 5rem 9.5rem;
+      gap: var(--spacing-3); align-items: center;
+      padding: var(--spacing-1) 0;
+    }
+    .tok-name { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text); }
+    .tok-bar { height: 12px; border-radius: var(--radius-sm); background: var(--color-brand-subtle); border: 1px solid var(--color-border); }
+    .tok-val { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); text-align: right; }
+    .tok-src { font: var(--font-weight-regular) var(--text-2xs)/1.2 var(--font-mono); color: var(--color-text-subtle); }
+    .tok-src.is-picasso { color: var(--color-brand); }
+    .type-specimen { color: var(--color-text); font-family: var(--font-sans); white-space: nowrap; }
+    .shadow-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-6); }
+    .shadow-card { display: flex; flex-direction: column; gap: var(--spacing-2); }
+    .shadow-chip {
+      height: 72px; border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+    .shadow-role { font: var(--font-weight-semibold) var(--text-2xs)/1.2 var(--font-sans); color: var(--color-text); }
+    @media (max-width: 720px) { .tok-row { grid-template-columns: 8rem 1fr 4rem; } .tok-src { display: none; } }
+
     @media (max-width: 720px) {
       /* .grid-2 collapse handled in components.css */
-      .ramp { grid-template-columns: 1fr; gap: var(--ic-space-2); }
+      .ramp { grid-template-columns: 1fr; gap: var(--spacing-2); }
     }
 
     /* ---- Top nav — full-width sticky bar at the viewport top ---- */
     .topnav {
       position: sticky;
       top: 0;
-      z-index: var(--ic-z-sticky);
-      padding: var(--ic-space-2) var(--ic-space-5);
+      z-index: var(--z-sticky);
+      padding: var(--spacing-2) var(--spacing-6);
       background: color-mix(in srgb, var(--color-bg) 88%, transparent);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -90,25 +113,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--ic-space-4);
-      max-width: var(--ic-container-lg);
+      gap: var(--spacing-4);
+      max-width: var(--container-lg);
       margin: 0 auto;
     }
-    .topnav-links { display: flex; gap: var(--ic-space-2); }
+    .topnav-links { display: flex; gap: var(--spacing-2); }
     .topnav-links a {
-      font: var(--ic-weight-medium) var(--ic-text-base)/1 var(--ic-font-sans);
+      font: var(--font-weight-regular) var(--text-md)/1 var(--font-sans);
       color: var(--color-text-muted);
       text-decoration: none;
-      padding: var(--ic-space-2) var(--ic-space-3);
-      border-radius: var(--ic-radius-md);
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  background var(--ic-duration-fast) var(--ic-ease);
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      transition: color var(--duration-fast) var(--ease),
+                  background var(--duration-fast) var(--ease);
     }
     .topnav-links a:hover { color: var(--color-text); background: var(--color-surface-muted); }
-    .topnav-actions { display: flex; gap: var(--ic-space-2); align-items: center; }
+    .topnav-actions { display: flex; gap: var(--spacing-2); align-items: center; }
 
     /* Anchor offset so the sticky nav doesn't overlap section headings */
-    [id] { scroll-margin-top: calc(var(--ic-space-7) + var(--ic-space-4)); }
+    [id] { scroll-margin-top: calc(var(--spacing-10) + var(--spacing-4)); }
 
     /* Theme toggle — show sun in light mode, moon in dark mode */
     .theme-icon-moon { display: none; }
@@ -120,7 +143,7 @@
       font: var(--type-h1);
       color: var(--color-text);
       margin: 0;
-      padding-bottom: var(--ic-space-3);
+      padding-bottom: var(--spacing-3);
       border-bottom: 1px solid var(--color-border);
     }
 
@@ -128,7 +151,7 @@
     .toc {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ic-space-2);
+      gap: var(--spacing-2);
       list-style: none;
       padding: 0;
       margin: 0;
@@ -136,16 +159,16 @@
     .toc a {
       display: inline-flex;
       align-items: center;
-      font: var(--ic-weight-medium) var(--ic-text-sm)/1 var(--ic-font-sans);
+      font: var(--font-weight-regular) var(--text-sm)/1 var(--font-sans);
       color: var(--color-text-muted);
-      padding: var(--ic-space-2) var(--ic-space-3);
-      border-radius: var(--ic-radius-md);
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
       background: var(--color-surface-muted);
       border: 1px solid transparent;
       text-decoration: none;
-      transition: background var(--ic-duration-fast) var(--ic-ease),
-                  color var(--ic-duration-fast) var(--ic-ease),
-                  border-color var(--ic-duration-fast) var(--ic-ease);
+      transition: background var(--duration-fast) var(--ease),
+                  color var(--duration-fast) var(--ease),
+                  border-color var(--duration-fast) var(--ease);
     }
     .toc a:hover {
       background: var(--color-surface);
@@ -156,7 +179,7 @@
     /* Subsection rhythm — each h3 section inside a major group sits above a
        thin top border + extra padding, except the one that follows a TOC. */
     section[id] section.stack[id] {
-      padding-top: var(--ic-space-6);
+      padding-top: var(--spacing-8);
       border-top: 1px solid var(--color-border);
     }
     .toc + section.stack[id],
@@ -174,18 +197,18 @@
       justify-content: center;
       width: 24px;
       height: 24px;
-      margin-left: var(--ic-space-2);
+      margin-left: var(--spacing-2);
       background: transparent;
       border: 0;
       padding: 0;
       cursor: pointer;
       color: var(--color-text-subtle);
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       opacity: 0;
-      transition: opacity var(--ic-duration-fast) var(--ic-ease),
-                  color var(--ic-duration-fast) var(--ic-ease),
-                  background var(--ic-duration-fast) var(--ic-ease);
-      font: var(--ic-weight-regular) var(--ic-text-base)/1 var(--ic-font-mono);
+      transition: opacity var(--duration-fast) var(--ease),
+                  color var(--duration-fast) var(--ease),
+                  background var(--duration-fast) var(--ease);
+      font: var(--font-weight-regular) var(--text-md)/1 var(--font-mono);
       vertical-align: middle;
     }
     .h3:hover .heading-anchor,
@@ -197,43 +220,43 @@
     .icon-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-      gap: var(--ic-space-3);
+      gap: var(--spacing-3);
     }
     .icon-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--ic-space-2);
-      padding: var(--ic-space-4) var(--ic-space-2);
+      gap: var(--spacing-2);
+      padding: var(--spacing-4) var(--spacing-2);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       background: var(--color-surface);
-      transition: border-color var(--ic-duration-fast) var(--ic-ease),
-                  background var(--ic-duration-fast) var(--ic-ease);
+      transition: border-color var(--duration-fast) var(--ease),
+                  background var(--duration-fast) var(--ease);
     }
     .icon-card:hover { border-color: var(--color-border-strong); background: var(--color-surface-muted); }
     .icon-card svg { width: 24px; height: 24px; }
     .pictogram-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: var(--ic-space-3);
+      gap: var(--spacing-3);
     }
     .pictogram-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--ic-space-3);
-      padding: var(--ic-space-5) var(--ic-space-3);
+      gap: var(--spacing-3);
+      padding: var(--spacing-6) var(--spacing-3);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       background: var(--color-surface);
     }
     .pictogram-card-name {
-      font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono);
       color: var(--color-text-subtle);
     }
     .icon-card-name {
-      font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono);
+      font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono);
       color: var(--color-text-subtle);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -248,24 +271,24 @@
     .motion-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: var(--ic-space-3);
+      gap: var(--spacing-3);
     }
     .motion-card {
       display: flex;
       flex-direction: column;
-      gap: var(--ic-space-3);
-      padding: var(--ic-space-4);
+      gap: var(--spacing-3);
+      padding: var(--spacing-4);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
+      border-radius: var(--radius-md);
       background: var(--color-surface);
     }
-    .motion-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ic-space-3); }
+    .motion-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-3); }
     .motion-name { font: var(--type-body-semibold); color: var(--color-text); }
-    .motion-sub { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-subtle); margin-left: 6px; }
+    .motion-sub { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text-subtle); margin-left: 6px; }
     .motion-curve {
       width: 40px; height: 40px; flex-shrink: 0;
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-sm);
+      border-radius: var(--radius-sm);
       background: var(--color-surface-muted);
       overflow: visible;
     }
@@ -273,7 +296,7 @@
     .motion-track {
       position: relative;
       height: 24px;
-      border-radius: var(--ic-radius-full);
+      border-radius: var(--radius-full);
       background: var(--color-surface-sunken);
       overflow: hidden;
     }
@@ -285,29 +308,49 @@
       border-radius: 50%;
       background: var(--color-accent);
     }
-    .motion-dot.run { animation: motion-slide var(--md-dur, 1200ms) var(--md-ease, var(--ic-ease)) both; }
+    .motion-dot.run { animation: motion-slide var(--md-dur, 1200ms) var(--md-ease, var(--ease)) both; }
     @keyframes motion-slide { from { left: 4px; } to { left: calc(100% - 20px); } }
-    .motion-meta { display: flex; align-items: baseline; justify-content: space-between; gap: var(--ic-space-3); }
-    .motion-token { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-muted); }
-    .motion-val { font: var(--ic-weight-regular) var(--ic-text-xs)/1.2 var(--ic-font-mono); color: var(--color-text-subtle); }
+    .motion-meta { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-3); }
+    .motion-token { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text-muted); }
+    .motion-val { font: var(--font-weight-regular) var(--text-xxs)/1.2 var(--font-mono); color: var(--color-text-subtle); }
     @media (prefers-reduced-motion: reduce) { .motion-dot.run { animation: none; left: calc(100% - 20px); } }
+    /* Animation-token demos. Each plays the token itself, so what you see is
+       exactly the value --animate-* holds. */
+    .anim-demo {
+      position: absolute; top: 50%; left: 4px; transform: translateY(-50%);
+      width: 20px; height: 20px; border-radius: var(--radius-sm);
+      background: var(--color-accent);
+    }
+    .anim-demo.anim-slider { width: 0; left: 4px; right: 4px; border-radius: var(--radius-full); }
+    .anim-demo.anim-highlight { background: var(--color-surface-sunken); width: calc(100% - 8px); }
+    .anim-demo.anim-spin { background: none; border: 2px solid var(--color-border); border-top-color: var(--color-accent); border-radius: var(--radius-full); }
+    .anim-demo.run.anim-spin   { animation: anim-spin-demo 1.4s ease-in-out infinite; }
+    .anim-demo.run.anim-highlight { animation: var(--animate-highlight); }
+    .anim-demo.run.anim-fade      { animation: var(--animate-fade-in); }
+    .anim-demo.run.anim-slider    { animation: anim-slider-demo 10s linear forwards; }
+    .anim-demo.run.anim-card      { animation: var(--animate-card-land); }
+    /* the two width-based ones are shown at demo scale; the tokens themselves
+       animate to 100% / spin an SVG dash, which needs the real component */
+    @keyframes anim-spin-demo { to { transform: translateY(-50%) rotate(360deg); } }
+    @keyframes anim-slider-demo { from { width: 0; } to { width: calc(100% - 8px); } }
+    @media (prefers-reduced-motion: reduce) { .anim-demo.run { animation: none; } }
 
     /* ---- Device preview (App shell template) ----
        Flip the app shell between Desktop / Tablet (768) / Mobile (375). The
        frame is a CSS container, so the app shell reflows by container width
        (real responsive behaviour) while staying live in the page. */
-    .device-preview { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+    .device-preview { display: flex; flex-direction: column; gap: var(--spacing-4); }
     .device-tabs { align-self: flex-start; }
     .device-stage {
       display: flex;
       justify-content: center;
-      padding: var(--ic-space-6) var(--ic-space-5);
+      padding: var(--spacing-8) var(--spacing-6);
       background-color: var(--color-bg);
       background-image: radial-gradient(var(--color-border-strong) 1px, transparent 1px);
       background-size: 16px 16px;
       background-position: -8px -8px;
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-lg);
+      border-radius: var(--radius-md);
       overflow: auto;
     }
     .device-frame {
@@ -319,10 +362,10 @@
       container-name: appshell;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: var(--ic-radius-md);
-      box-shadow: var(--ic-shadow-lg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-5);
       overflow: hidden;
-      transition: width var(--ic-duration-base) var(--ic-ease);
+      transition: width var(--duration-base) var(--ease);
     }
     [data-device="tablet"] .device-frame { width: 768px; }
     [data-device="mobile"] .device-frame { width: 375px; }
@@ -332,15 +375,15 @@
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
-      padding: var(--ic-space-2) var(--ic-space-3);
+      padding: var(--spacing-2) var(--spacing-3);
       background: var(--color-surface-muted);
       border-bottom: 1px solid var(--color-border);
     }
-    .device-dot { width: 10px; height: 10px; border-radius: var(--ic-radius-full); background: var(--color-border-strong); }
-    .device-chrome-label { margin-left: var(--ic-space-2); font: var(--type-body-xs); color: var(--color-text-subtle); }
+    .device-dot { width: 10px; height: 10px; border-radius: var(--radius-full); background: var(--color-border-strong); }
+    .device-chrome-label { margin-left: var(--spacing-2); font: var(--type-body-xs); color: var(--color-text-subtle); }
 
     .device-frame .template-frame { flex: 1; height: auto; border: 0; border-radius: 0; }
-    .device-frame .app-shell-main { padding: var(--ic-space-7); }
+    .device-frame .app-shell-main { padding: var(--spacing-10); }
 
     /* Hamburger — injected left of the page title, shown only on tablet/mobile. */
     /* Hamburger uses the icon-button component (.btn.btn-icon-only.btn-ghost);
@@ -360,8 +403,8 @@
         position: absolute; top: 0; left: 0; bottom: 0; z-index: 50;
         width: 236px;
         transform: translateX(-100%);
-        transition: transform var(--ic-duration-base) var(--ic-ease);
-        box-shadow: var(--ic-shadow-lg);
+        transition: transform var(--duration-base) var(--ease);
+        box-shadow: var(--shadow-5);
       }
       .device-frame .app-shell.is-nav-open .sidenav { transform: translateX(0); }
       .device-frame .app-shell.is-nav-open .app-shell-scrim {
@@ -369,11 +412,11 @@
         background: var(--color-overlay);
       }
       /* Tighter, even outer padding on tablet/mobile */
-      .device-frame .app-shell-main { padding: var(--ic-space-4); }
+      .device-frame .app-shell-main { padding: var(--spacing-4); }
     }
     /* Component playground — a segmented header (knobs) sitting on top of the
        canvas panel, swapping one live demo. Reusable across component sections. */
-    .playground { display: flex; flex-direction: column; gap: var(--ic-space-4); }
+    .playground { display: flex; flex-direction: column; gap: var(--spacing-4); }
     .playground-tabs { align-self: flex-start; }
     /* A segmented control where one item opens a dropdown (its menu floats
        outside the segmented's clipped bounds). */
@@ -382,10 +425,10 @@
     .segmented-item[aria-expanded="true"] .segmented-caret { transform: rotate(180deg); }
     /* Menus float below their trigger segment (JS sets left); outside the
        segmented's clipped bounds. */
-    .seg-menu { position: absolute; top: calc(100% + var(--ic-space-1)); z-index: var(--ic-z-dropdown); }
+    .seg-menu { position: absolute; top: calc(100% + var(--spacing-1)); z-index: var(--z-dropdown); }
     /* Multi-knob controls strip (Storybook-style): one labelled control per prop. */
-    .playground-controls { display: flex; flex-wrap: wrap; gap: var(--ic-space-5) var(--ic-space-6); align-items: flex-end; }
-    .control { display: flex; flex-direction: column; gap: var(--ic-space-2); }
+    .playground-controls { display: flex; flex-wrap: wrap; gap: var(--spacing-6) var(--spacing-8); align-items: flex-end; }
+    .control { display: flex; flex-direction: column; gap: var(--spacing-2); }
     .control-label { font: var(--type-caption); color: var(--color-text-muted); }
     .playground-stage { width: 100%; max-width: 640px; container-type: inline-size; }
     .playground-variant[hidden] { display: none; }
@@ -396,7 +439,7 @@
     .playground[data-vp="tablet"] .device-stage > *,
     .playground[data-vp="mobile"] .device-stage > * {
       max-width: 100% !important;
-      transition: width var(--ic-duration-base) var(--ic-ease);
+      transition: width var(--duration-base) var(--ease);
     }
     .playground[data-vp="tablet"] .device-stage > * { width: 768px !important; }
     .playground[data-vp="mobile"] .device-stage > * { width: 375px !important; }
@@ -422,9 +465,9 @@
     .device-panel {
       width: 100%;
       background: var(--color-surface);
-      border-radius: var(--ic-radius-md);
-      box-shadow: var(--ic-shadow-lg);
-      padding: var(--ic-space-5);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-5);
+      padding: var(--spacing-6);
     }
 
     /* Page-head CTAs carry an icon that only surfaces at mobile width. */
@@ -433,10 +476,10 @@
        collapse to icon-only at mobile, mirroring the app-shell page head. */
     .pagehead-demo { container-type: inline-size; }
     @container (max-width: 480px) {
-      .pagehead-demo .page-head { align-items: center; gap: var(--ic-space-3); }
+      .pagehead-demo .page-head { align-items: center; gap: var(--spacing-3); }
       .pagehead-demo .page-head-actions { width: auto; flex-shrink: 0; }
-      .pagehead-demo .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
-      .pagehead-demo .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
+      .pagehead-demo .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--radius-full); }
+      .pagehead-demo .page-head-actions .btn-secondary { color: var(--color-graphite-750); }
       .pagehead-demo .page-head-actions .btn-cta-icon { display: inline-flex; }
       .pagehead-demo .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     }
@@ -444,12 +487,12 @@
        collapse the CTAs to icon-only buttons (download = CSV, plus = create)
        that sit flush right of the title. */
     @container appshell (max-width: 480px) {
-      .device-frame .page-head { align-items: flex-start; gap: var(--ic-space-3); }
+      .device-frame .page-head { align-items: flex-start; gap: var(--spacing-3); }
       .device-frame .page-head-actions { width: auto; flex-shrink: 0; }
       /* Adopt the icon-only component: round 32px pill; secondary keeps its
          graphite-700 icon, primary its white icon. */
-      .device-frame .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--ic-radius-full); }
-      .device-frame .page-head-actions .btn-secondary { color: var(--ic-palette-graphite-700); }
+      .device-frame .page-head-actions .btn { width: 32px; padding: 0; border-radius: var(--radius-full); }
+      .device-frame .page-head-actions .btn-secondary { color: var(--color-graphite-750); }
       .device-frame .page-head-actions .btn-cta-icon { display: inline-flex; }
       .device-frame .page-head-actions .btn-cta-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     }
@@ -461,33 +504,33 @@
     .page-toc {
       position: fixed;
       /* Sits below the sticky topnav (~56px) plus a small gap. */
-      top: var(--ic-space-10);
-      right: var(--ic-space-5);
+      top: calc(var(--header-height) + var(--spacing-2));
+      right: var(--spacing-6);
       width: 220px;
-      max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-5));
+      max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-6));
       overflow-y: auto;
-      z-index: var(--ic-z-sticky);
-      padding: var(--ic-space-3) 0;
+      z-index: var(--z-sticky);
+      padding: var(--spacing-3) 0;
     }
-    .page-toc-section { margin-bottom: var(--ic-space-4); }
+    .page-toc-section { margin-bottom: var(--spacing-4); }
     .page-toc-section:last-child { margin-bottom: 0; }
     .page-toc-section-label {
-      font: var(--ic-weight-semibold) var(--ic-text-xxs)/1 var(--ic-font-sans);
+      font: var(--font-weight-semibold) var(--text-2xs)/1 var(--font-sans);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--color-text-subtle);
-      padding: 0 var(--ic-space-3);
-      margin-bottom: var(--ic-space-2);
+      padding: 0 var(--spacing-3);
+      margin-bottom: var(--spacing-2);
     }
     .page-toc-item {
       display: block;
-      padding: var(--ic-space-1) var(--ic-space-3);
+      padding: var(--spacing-1) var(--spacing-3);
       font: var(--type-body-sm);
       color: var(--color-text-muted);
       text-decoration: none;
       border-left: 2px solid transparent;
-      transition: color var(--ic-duration-fast) var(--ic-ease),
-                  border-color var(--ic-duration-fast) var(--ic-ease);
+      transition: color var(--duration-fast) var(--ease),
+                  border-color var(--duration-fast) var(--ease);
     }
     .page-toc-item:hover { color: var(--color-text); }
     .page-toc-item.is-active {
@@ -503,19 +546,19 @@
       /* Show toggle inline in header; hide the always-visible sidebar and
          convert it into a slide-out floating panel. Toggle gets a higher
          stacking context so it stays clickable when the panel overlaps it. */
-      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--ic-z-sticky) + 1); }
+      .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--z-sticky) + 1); }
       .page-toc {
         /* Floating panel sits below the sticky topnav with a small gap. */
-        top: var(--ic-space-10);
-        right: var(--ic-space-3);
-        max-height: calc(100vh - var(--ic-space-10) - var(--ic-space-3));
+        top: calc(var(--header-height) + var(--spacing-2));
+        right: var(--spacing-3);
+        max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-3));
         background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--ic-radius-md);
-        box-shadow: var(--ic-shadow-lg);
-        padding: var(--ic-space-4) 0;
-        transform: translateX(calc(100% + var(--ic-space-5)));
-        transition: transform var(--ic-duration-base) var(--ic-ease);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-5);
+        padding: var(--spacing-4) 0;
+        transform: translateX(calc(100% + var(--spacing-6)));
+        transition: transform var(--duration-base) var(--ease);
       }
       .page-toc.is-open { transform: translateX(0); }
     }
@@ -544,38 +587,79 @@
     </div>
   </nav>
 
-  <main class="page stack" style="gap: var(--ic-space-8)">
+  <main class="page stack" style="gap: var(--spacing-12)">
 
     <header class="header">
       <div>
-        <h1 class="h1">Icarus design system</h1>
+        <h1 class="h1">Picasso design system</h1>
         <p class="body-sm">Vibe prototyping reference — tokens, semantics, components.</p>
       </div>
     </header>
 
-    <section id="foundations" class="stack" style="gap: var(--ic-space-7)">
+    <section id="foundations" class="stack" style="gap: var(--spacing-10)">
       <h2 class="section-head">Foundations</h2>
       <nav class="toc" data-toc-for="foundations" aria-label="Foundations contents"></nav>
 
       <section class="stack" id="palette">
         <div>
           <h3 class="h3">Color palette</h3>
-          <p class="body-sm">All tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-palette-</code>.</p>
+          <p class="body-sm">All tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--color-</code>. Each swatch names the Picasso scale it maps to — use it as <code style="font: var(--type-mono); color: var(--color-text-muted)">bg-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">text-</code> or <code style="font: var(--type-mono); color: var(--color-text-muted)">border-</code> in code. Swatches marked <em>extension</em> have no Picasso equivalent and no class behind them.</p>
         </div>
-        <div class="stack" id="palette-root" style="gap: var(--ic-space-5)"></div>
+        <div class="stack" id="palette-root" style="gap: var(--spacing-6)"></div>
       </section>
 
       <section class="stack" id="radii">
         <div>
           <h3 class="h3">Radii</h3>
-          <p class="body-sm">Numeric aliases (<code style="font: var(--type-mono); color: var(--color-text-muted)">-0</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-4</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-8</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">-12</code>) point to the same values as the t-shirt scale.</p>
+          <p class="body-sm">Picasso's scale, exactly — four radii, each with a <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-*</code> class and no extensions. Note it <em>replaces</em> Tailwind's default scale rather than extending it, so <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-lg</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-xl</code> and the rest do not exist here. For anything off-scale Picasso writes a literal, the way its Tag uses <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-[6.25rem]</code>.</p>
         </div>
         <div class="radii-row" id="radii-root"></div>
       </section>
 
+      <section class="stack" id="spacing">
+        <div>
+          <h3 class="h3">Spacing</h3>
+          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px), and so does this — the scale has no extensions. The class column shows <code style="font: var(--type-mono); color: var(--color-text-muted)">p-</code> as the exemplar — the same number works with <code style="font: var(--type-mono); color: var(--color-text-muted)">m-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">gap-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">w-</code> and the rest.</p>
+        </div>
+        <div class="tok-list" id="spacing-root"></div>
+      </section>
+
+      <section class="stack" id="sizing">
+        <div>
+          <h3 class="h3">Sizing</h3>
+          <p class="body-sm">Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">minWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">maxWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">minHeight</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">maxHeight</code> all start from the spacing scale, so <code style="font: var(--type-mono); color: var(--color-text-muted)">min-w-4</code> is simply <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code>. Only what Picasso adds on top gets its own token: three min-widths, the twelfths of its 12-column grid, and <code style="font: var(--type-mono); color: var(--color-text-muted)">--header-height</code>, which is Picasso's own property for the topbar.</p>
+        </div>
+        <div class="tok-list" id="sizing-root"></div>
+        <div class="tok-list" id="twelfths-root"></div>
+      </section>
+
+      <section class="stack" id="shadows">
+        <div>
+          <h3 class="h3">Shadow</h3>
+          <p class="body-sm">Picasso's shadows are <strong>roles, not a ramp</strong> — pick by what the surface <em>is</em>, not by how heavy you want it. All six are Picasso's values. (Picasso also defines 6–24, Material UI elevations its own source marks for deprecation; those are not carried.)</p>
+        </div>
+        <div class="shadow-row" id="shadow-root"></div>
+      </section>
+
+      <section class="stack" id="layers">
+        <div>
+          <h3 class="h3">Z-index</h3>
+          <p class="body-sm">Picasso fixes the four that matter for overlays. The rest are designmd extensions sitting below them — anything above 1400 is prototype tooling, not product.</p>
+        </div>
+        <div class="tok-list" id="layer-root"></div>
+      </section>
+
+      <section class="stack" id="breakpoints">
+        <div>
+          <h3 class="h3">Breakpoints</h3>
+          <p class="body-sm">Picasso's screens. Author mobile-first and layer upward with <code style="font: var(--type-mono); color: var(--color-text-muted)">min-width</code>; the four edges are 480 · 768 · 1024 · 1440.</p>
+        </div>
+        <div class="tok-list" id="bp-root"></div>
+      </section>
+
       <section class="stack" id="type">
         <h3 class="h3">Type scale</h3>
-        <div class="card stack" style="gap: var(--ic-space-3)" data-no-map>
+        <div class="card stack" style="gap: var(--spacing-3)" data-no-map>
           <h1 class="h1">H1 — Page titles (28/42)</h1>
           <h2 class="h2">H2 — Section heads (20/30)</h2>
           <h3 class="h3">H3 — Subheads (16/24)</h3>
@@ -587,14 +671,22 @@
           <p class="body-xxs">Body xxsmall — 11/16, the smallest label size.</p>
           <p class="caption">CAPTION — 12/18, micro labels and timestamps.</p>
         </div>
-        <h4 class="h4" style="margin-top: var(--ic-space-2)">Semibold body</h4>
-        <div class="card stack" style="gap: var(--ic-space-3)" data-no-map>
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Semibold body</h4>
+        <div class="card stack" style="gap: var(--spacing-3)" data-no-map>
           <p class="body-lg-semibold">Body large semibold — 16/24, emphasis in lead copy.</p>
           <p class="body-semibold">Body medium semibold — 14/22, inline emphasis and labels.</p>
           <p class="body-sm-semibold">Body small semibold — 13/20, buttons and strong metadata.</p>
           <p class="body-xs-semibold">Body xsmall semibold — 12/18, dense emphasis and small buttons.</p>
           <p class="body-xxs-semibold">Body xxsmall semibold — 11/16, the smallest emphasised label.</p>
         </div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Size tokens</h4>
+        <p class="body-sm">The sizes those roles are built from. Picasso pairs each with a line-height, so the token travels as a pair — <code style="font: var(--type-mono); color: var(--color-text-muted)">--text-md</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">--text-md--line-height</code>.</p>
+        <div class="tok-list" id="type-root"></div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Weight tokens</h4>
+        <p class="body-sm">Two faces, and only two. Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">Typography</code> exposes <code style="font: var(--type-mono); color: var(--color-text-muted)">regular</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">semibold</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>, and nothing reaches for more. Picasso's preset also declares <code style="font: var(--type-mono); color: var(--color-text-muted)">thin</code> (100) and <code style="font: var(--type-mono); color: var(--color-text-muted)">light</code> (300), but no component uses them and Proxima has no face at either weight — a browser would synthesise them. designmd does not carry them.</p>
+        <div class="tok-list" id="weight-root"></div>
       </section>
 
       <section class="stack" id="iconography">
@@ -674,7 +766,7 @@
       <section class="stack" id="motion">
         <div>
           <h3 class="h3">Motion</h3>
-          <p class="body-sm">Easing curves and durations for transitions and animation. Easing tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-ease</code>, durations <code style="font: var(--type-mono); color: var(--color-text-muted)">--ic-duration-</code>. Pair one of each, e.g. <code style="font: var(--type-mono); color: var(--color-text-muted)">transition: transform var(--ic-duration-base) var(--ic-ease)</code>. <button class="btn btn-secondary btn-xs" type="button" data-motion-play><svg class="btn-icon"><use href="#i-play-solid"/></svg>Replay</button></p>
+          <p class="body-sm">Easing curves and durations for transitions and animation. Easing tokens are prefixed <code style="font: var(--type-mono); color: var(--color-text-muted)">--ease</code>, durations <code style="font: var(--type-mono); color: var(--color-text-muted)">--duration-</code>. Pair one of each, e.g. <code style="font: var(--type-mono); color: var(--color-text-muted)">transition: transform var(--duration-base) var(--ease)</code>. <button class="btn btn-secondary btn-xs" type="button" data-motion-play><svg class="btn-icon"><use href="#i-play-solid"/></svg>Replay</button></p>
         </div>
 
         <h4 class="h4">Easing</h4>
@@ -684,49 +776,58 @@
               <span class="motion-name">Standard<span class="motion-sub">in-out</span></span>
               <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C20,100 0,0 100,0"/></svg>
             </div>
-            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-ease</code><span class="motion-val">cubic-bezier(.2, 0, 0, 1)</span></div>
-          </div>
-          <div class="motion-card">
-            <div class="motion-card-head">
-              <span class="motion-name">Ease out<span class="motion-sub">decelerate</span></span>
-              <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C0,100 20,0 100,0"/></svg>
-            </div>
-            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease-out)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-ease-out</code><span class="motion-val">cubic-bezier(0, 0, .2, 1)</span></div>
-          </div>
-          <div class="motion-card">
-            <div class="motion-card-head">
-              <span class="motion-name">Ease in<span class="motion-sub">accelerate</span></span>
-              <svg class="motion-curve" viewBox="0 0 100 100" aria-hidden="true"><path d="M0,100 C40,100 100,0 100,0"/></svg>
-            </div>
-            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ic-ease-in)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-ease-in</code><span class="motion-val">cubic-bezier(.4, 0, 1, 1)</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-ease: var(--ease)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--ease</code><span class="motion-val">cubic-bezier(.2, 0, 0, 1)</span></div>
           </div>
         </div>
 
-        <h4 class="h4" style="margin-top: var(--ic-space-2)">Duration</h4>
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Duration</h4>
         <div class="motion-grid">
           <div class="motion-card">
             <div class="motion-card-head"><span class="motion-name">Fast</span><span class="motion-val">120ms</span></div>
-            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-fast)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-duration-fast</code><span class="motion-val">hovers, small state changes</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--duration-fast)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--duration-fast</code><span class="motion-val">hovers, small state changes</span></div>
           </div>
           <div class="motion-card">
             <div class="motion-card-head"><span class="motion-name">Base</span><span class="motion-val">200ms</span></div>
-            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-base)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-duration-base</code><span class="motion-val">most transitions</span></div>
+            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--duration-base)"></span></div>
+            <div class="motion-meta"><code class="motion-token">--duration-base</code><span class="motion-val">most transitions</span></div>
+          </div>
+        </div>
+
+        <h4 class="h4" style="margin-top: var(--spacing-2)">Animation</h4>
+        <p class="body-sm">Complete named animations, applied whole: <code style="font: var(--type-mono); color: var(--color-text-muted)">animation: var(--animate-fade-in)</code>. Values come from the Picasso and Operationalize Tailwind configs, so a prototype plays what the product plays. All five collapse to <code style="font: var(--type-mono); color: var(--color-text-muted)">none</code> under <code style="font: var(--type-mono); color: var(--color-text-muted)">prefers-reduced-motion</code>.</p>
+        <div class="motion-grid">
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Circle spin<span class="motion-sub">picasso</span></span><span class="motion-val">1.4s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-spin" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-circle-spin</code><span class="motion-val">loaders</span></div>
           </div>
           <div class="motion-card">
-            <div class="motion-card-head"><span class="motion-name">Slow</span><span class="motion-val">320ms</span></div>
-            <div class="motion-track"><span class="motion-dot" style="--md-dur: var(--ic-duration-slow)"></span></div>
-            <div class="motion-meta"><code class="motion-token">--ic-duration-slow</code><span class="motion-val">large surfaces, modals</span></div>
+            <div class="motion-card-head"><span class="motion-name">Highlight<span class="motion-sub">operationalize</span></span><span class="motion-val">3s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-highlight" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-highlight</code><span class="motion-val">flash a row that just changed</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Fade in<span class="motion-sub">operationalize</span></span><span class="motion-val">1s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-fade" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-fade-in</code><span class="motion-val">content arriving</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Slider progress<span class="motion-sub">operationalize</span></span><span class="motion-val">10s</span></div>
+            <div class="motion-track"><span class="anim-demo anim-slider" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-slider-progress</code><span class="motion-val">timed fill</span></div>
+          </div>
+          <div class="motion-card">
+            <div class="motion-card-head"><span class="motion-name">Card land<span class="motion-sub">operationalize</span></span><span class="motion-val">250ms</span></div>
+            <div class="motion-track"><span class="anim-demo anim-card" data-anim></span></div>
+            <div class="motion-meta"><code class="motion-token">--animate-card-land</code><span class="motion-val">a dropped card settling</span></div>
           </div>
         </div>
       </section>
     </section>
 
-    <section id="components" class="stack" style="gap: var(--ic-space-7)">
+    <section id="components" class="stack" style="gap: var(--spacing-10)">
       <h2 class="section-head">Components</h2>
       <nav class="toc" data-toc-for="components" aria-label="Components contents"></nav>
 
@@ -848,10 +949,10 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In context — sitting directly beneath a page head (persistent, no close — Dismiss CTA)</span>
+        <span class="caption" style="display: block; margin-top: var(--spacing-4)">In context — sitting directly beneath a page head (persistent, no close — Dismiss CTA)</span>
         <div class="device-stage">
           <div class="device-panel">
-            <div class="page-head" style="margin-bottom: var(--ic-space-4)">
+            <div class="page-head" style="margin-bottom: var(--spacing-4)">
               <div class="page-head-main">
                 <div class="page-head-title">
                   <h1 class="page-head-heading">Billing</h1>
@@ -904,7 +1005,7 @@
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 520px">
               <div class="playground-variant" data-variant="photo">
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                <div class="row" style="gap: var(--spacing-4); align-items: flex-end; justify-content: center">
                   <span class="avatar avatar-xs" data-size="xs"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
                   <span class="avatar avatar-sm" data-size="sm"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
                   <span class="avatar avatar-md" data-size="md"><img src="https://i.pravatar.cc/240?img=12" alt="" /></span>
@@ -914,7 +1015,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="initials" hidden>
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                <div class="row" style="gap: var(--spacing-4); align-items: flex-end; justify-content: center">
                   <span class="avatar avatar-xs" data-size="xs">JD</span>
                   <span class="avatar avatar-sm" data-size="sm">JD</span>
                   <span class="avatar avatar-md" data-size="md">JD</span>
@@ -924,7 +1025,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="team" hidden>
-                <div class="row" style="gap: var(--ic-space-4); align-items: flex-end; justify-content: center">
+                <div class="row" style="gap: var(--spacing-4); align-items: flex-end; justify-content: center">
                   <span class="avatar avatar-xs avatar-team" data-size="xs"><svg class="icon"><use href="#i-buildings"/></svg></span>
                   <span class="avatar avatar-sm avatar-team" data-size="sm"><svg class="icon"><use href="#i-buildings"/></svg></span>
                   <span class="avatar avatar-md avatar-team" data-size="md"><svg class="icon"><use href="#i-buildings"/></svg></span>
@@ -934,7 +1035,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="interactive" hidden>
-                <div class="row" style="gap: var(--ic-space-3); align-items: center; justify-content: center">
+                <div class="row" style="gap: var(--spacing-3); align-items: center; justify-content: center">
                   <button class="avatar avatar-md" type="button" aria-label="Open profile">JD</button>
                   <a class="avatar avatar-md" href="#avatars" aria-label="View team"><svg class="icon"><use href="#i-users-three"/></svg></a>
                   <button class="avatar avatar-md" type="button" aria-label="Account menu"><img src="https://i.pravatar.cc/240?img=32" alt="" /></button>
@@ -977,9 +1078,9 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">In context — first row of a page head</span>
-        <div class="card" style="padding: var(--ic-space-5)">
-          <nav class="breadcrumbs" aria-label="Breadcrumb" style="margin-bottom: var(--ic-space-3)">
+        <span class="caption" style="display: block; margin-top: var(--spacing-3)">In context — first row of a page head</span>
+        <div class="card" style="padding: var(--spacing-6)">
+          <nav class="breadcrumbs" aria-label="Breadcrumb" style="margin-bottom: var(--spacing-3)">
             <a class="breadcrumb" href="#breadcrumbs">Processes</a>
             <a class="breadcrumb" href="#breadcrumbs">Onboarding</a>
             <span class="breadcrumb is-current" aria-current="page">Review step</span>
@@ -1423,7 +1524,7 @@
         <div class="grid-2" style="width: 100%; max-width: 720px">
           <article class="card">
             <h3 class="card-title">Sign in</h3>
-            <p class="card-body" style="margin-bottom: var(--ic-space-5)">Welcome back to Operationalize.</p>
+            <p class="card-body" style="margin-bottom: var(--spacing-6)">Welcome back to Operationalize.</p>
             <form class="stack">
               <label class="field">
                 <span class="field-label">Email</span>
@@ -1433,7 +1534,7 @@
                 <span class="field-label">Password</span>
                 <input class="input" type="password" placeholder="••••••••" />
               </label>
-              <div class="row row-end" style="margin-top: var(--ic-space-2)">
+              <div class="row row-end" style="margin-top: var(--spacing-2)">
                 <button class="btn btn-ghost" type="button">Forgot password?</button>
                 <button class="btn btn-primary" type="submit">Continue</button>
               </div>
@@ -1442,8 +1543,8 @@
 
           <article class="card">
             <h3 class="card-title">Status</h3>
-            <p class="card-body" style="margin-bottom: var(--ic-space-5)">Workflow run status across environments.</p>
-            <div class="stack" style="gap: var(--ic-space-3)">
+            <p class="card-body" style="margin-bottom: var(--spacing-6)">Workflow run status across environments.</p>
+            <div class="stack" style="gap: var(--spacing-3)">
               <div class="row" style="justify-content: space-between">
                 <span class="body">Production deploy</span>
                 <span class="badge badge-success">Healthy</span>
@@ -1508,18 +1609,18 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In a form</span>
+        <span class="caption" style="display: block; margin-top: var(--spacing-4)">In a form</span>
         <div class="device-stage">
           <article class="card" style="width: 100%; max-width: 480px">
-            <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Notify me about</p>
-            <div class="stack" style="gap: var(--ic-space-3)">
+            <p class="body" style="margin: 0 0 var(--spacing-3); font-weight: var(--font-weight-regular)">Notify me about</p>
+            <div class="stack" style="gap: var(--spacing-3)">
               <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Product updates</span></label>
               <label class="checkbox"><input type="checkbox" class="checkbox-input" data-indeterminate /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Team activity (some channels)</span></label>
               <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Weekly digest</span></label>
               <label class="checkbox"><input type="checkbox" class="checkbox-input" disabled /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Marketing (paused)</span></label>
             </div>
 
-            <div class="field" style="margin-top: var(--ic-space-5)">
+            <div class="field" style="margin-top: var(--spacing-6)">
               <label class="checkbox is-error"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">I agree to the terms</span></label>
               <span class="field-hint is-error">You must agree to continue.</span>
             </div>
@@ -1539,7 +1640,7 @@
           <div class="device-stage">
             <div class="playground-stage" style="max-width: 320px">
               <div class="playground-variant" data-variant="primary">
-                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                <div class="row" style="align-items: center; gap: var(--spacing-4)">
                   <span class="count-badge count-badge-lg">1</span>
                   <span class="count-badge">1</span>
                   <span class="count-badge count-badge-sm">1</span>
@@ -1547,7 +1648,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="secondary" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                <div class="row" style="align-items: center; gap: var(--spacing-4)">
                   <span class="count-badge count-badge-secondary count-badge-lg">1</span>
                   <span class="count-badge count-badge-secondary">1</span>
                   <span class="count-badge count-badge-secondary count-badge-sm">1</span>
@@ -1555,7 +1656,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="context" hidden>
-                <div class="row" style="align-items: center; gap: var(--ic-space-4)">
+                <div class="row" style="align-items: center; gap: var(--spacing-4)">
                   <button class="btn btn-icon-only btn-ghost" aria-label="Notifications" style="position: relative">
                     <svg class="btn-icon"><use href="#i-bell"/></svg>
                     <span class="count-badge count-badge-sm" style="position: absolute; top: 6px; right: 6px">3</span>
@@ -1627,7 +1728,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-3)">
+              <div class="stack" style="gap: var(--spacing-3)">
                 <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Active</span></label>
                 <label class="checkbox"><input type="checkbox" class="checkbox-input" checked /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">In progress</span></label>
                 <label class="checkbox"><input type="checkbox" class="checkbox-input" /><span class="checkbox-box"><svg class="checkbox-mark"><use href="#i-check"/></svg><svg class="checkbox-mark checkbox-mark-dash"><use href="#i-minus"/></svg></span><span class="checkbox-label">Completed</span></label>
@@ -1649,7 +1750,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4)">
+              <div class="stack" style="gap: var(--spacing-4)">
                 <label class="field">
                   <span class="field-label">Name</span>
                   <input class="input" type="text" placeholder="Migrate billing infra" />
@@ -1683,7 +1784,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4)">
+              <div class="stack" style="gap: var(--spacing-4)">
                 <label class="field">
                   <span class="field-label">Objective</span>
                   <input class="input" type="text" value="Increase activation rate by 25%" />
@@ -1692,7 +1793,7 @@
                   <span class="field-label">Description</span>
                   <textarea class="input" rows="3">Drive new-user activation through onboarding improvements.</textarea>
                 </label>
-                <p class="caption" style="margin: var(--ic-space-2) 0 0">Key results</p>
+                <p class="caption" style="margin: var(--spacing-2) 0 0">Key results</p>
                 <div class="list-row"><div><p class="list-row-title">Time-to-first-value &lt; 5 min</p><p class="list-row-meta">Current: 7m 30s</p></div><span class="tag tag-indicator tag-warning">At risk</span></div>
                 <div class="list-row"><div><p class="list-row-title">Activation rate ≥ 65%</p><p class="list-row-meta">Current: 58%</p></div><span class="tag tag-indicator tag-positive">On track</span></div>
               </div>
@@ -1712,19 +1813,19 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--ic-space-5)">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--spacing-6)">
                 <div>
-                  <p class="body" style="margin: 0 0 var(--ic-space-2); font-weight: var(--ic-weight-medium)">Onboarding</p>
-                  <p class="body-sm" style="margin: 0 0 var(--ic-space-4)">14 steps · Owner: Matthew Vella</p>
-                  <div class="stack" style="gap: var(--ic-space-2)">
+                  <p class="body" style="margin: 0 0 var(--spacing-2); font-weight: var(--font-weight-regular)">Onboarding</p>
+                  <p class="body-sm" style="margin: 0 0 var(--spacing-4)">14 steps · Owner: Matthew Vella</p>
+                  <div class="stack" style="gap: var(--spacing-2)">
                     <div class="list-row"><div><p class="list-row-title">Step 1 — Welcome email</p><p class="list-row-meta">Automatic · 0 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
                     <div class="list-row"><div><p class="list-row-title">Step 2 — Account setup</p><p class="list-row-meta">Manual · 5 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
                     <div class="list-row"><div><p class="list-row-title">Step 3 — Team invite</p><p class="list-row-meta">Manual · 10 minutes</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
                   </div>
                 </div>
                 <aside>
-                  <p class="caption" style="margin: 0 0 var(--ic-space-2)">Stats</p>
-                  <div class="stack" style="gap: var(--ic-space-3)">
+                  <p class="caption" style="margin: 0 0 var(--spacing-2)">Stats</p>
+                  <div class="stack" style="gap: var(--spacing-3)">
                     <div class="stat-card"><p class="stat-card-label">Runs this month</p><p class="stat-card-value">128</p></div>
                     <div class="stat-card"><p class="stat-card-label">Avg duration</p><p class="stat-card-value">42m</p></div>
                   </div>
@@ -1746,8 +1847,8 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <p class="body-sm" style="margin: 0 0 var(--ic-space-3)">All workspace activity over the last 24 hours.</p>
-              <div class="stack" style="gap: var(--ic-space-2)">
+              <p class="body-sm" style="margin: 0 0 var(--spacing-3)">All workspace activity over the last 24 hours.</p>
+              <div class="stack" style="gap: var(--spacing-2)">
                 <div class="list-row"><div><p class="list-row-title">Onboarding process — renamed</p><p class="list-row-meta">Matthew Vella · 2h ago</p></div><span class="tag tag-indicator tag-blue">Updated</span></div>
                 <div class="list-row"><div><p class="list-row-title">Q4 Planning — 3 steps added</p><p class="list-row-meta">Anna Schmidt · 4h ago</p></div><span class="tag tag-indicator tag-positive">Created</span></div>
                 <div class="list-row"><div><p class="list-row-title">Vendor Onboarding — archived</p><p class="list-row-meta">Jordan Park · 6h ago</p></div><span class="tag tag-indicator tag-dark">Archived</span></div>
@@ -1770,10 +1871,10 @@
         <p class="body-sm">The open panel — items compose icon, label, description, avatar, selected state, or removable chips.</p>
 
         <div class="device-stage">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--ic-space-5); align-items: start; width: 100%">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--spacing-6); align-items: start; width: 100%">
 
           <!-- 1. Default -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">Default</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">Label</button>
@@ -1784,7 +1885,7 @@
           </div>
 
           <!-- 2. With Icon -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With icon</span>
             <div class="dropdown-menu">
               <button class="dropdown-item"><svg class="dropdown-item-icon"><use href="#i-folder"/></svg>Projects</button>
@@ -1795,7 +1896,7 @@
           </div>
 
           <!-- 3. With Description -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With description</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">
@@ -1820,7 +1921,7 @@
           </div>
 
           <!-- 4. With Icon + Description -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">Icon + description</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">
@@ -1848,7 +1949,7 @@
           </div>
 
           <!-- 5. With Avatar -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With avatar</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">
@@ -1876,7 +1977,7 @@
           </div>
 
           <!-- 5b. With Avatar — compact (name only, 24px avatar) -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With avatar — compact</span>
             <div class="dropdown-menu">
               <button class="dropdown-item">
@@ -1895,7 +1996,7 @@
           </div>
 
           <!-- 6. Has a Selected Option -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">Selected</span>
             <div class="dropdown-menu">
               <button class="dropdown-item"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Label</button>
@@ -1906,7 +2007,7 @@
           </div>
 
           <!-- 6b. Multi-select (check + semibold selected) -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">Multi-select</span>
             <div class="dropdown-menu" data-multiselect>
               <button class="dropdown-item is-selected"><svg class="dropdown-item-check"><use href="#i-check"/></svg>Design</button>
@@ -1917,7 +2018,7 @@
           </div>
 
           <!-- 7. With Switches -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With switches</span>
             <div class="dropdown-menu">
               <label class="dropdown-item">
@@ -1943,7 +2044,7 @@
           </div>
 
           <!-- 8. With Tags (multi-select) -->
-          <div class="stack" style="gap: var(--ic-space-2); grid-column: span 2">
+          <div class="stack" style="gap: var(--spacing-2); grid-column: span 2">
             <span class="caption">With tags (multi-select)</span>
             <div class="dropdown-menu">
               <span class="dropdown-menu-label">Optional Label</span>
@@ -1956,7 +2057,7 @@
           </div>
 
           <!-- 9. With Search (filter a long list) -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <span class="caption">With search</span>
             <div class="dropdown-menu" data-dropdown-search>
               <div class="dropdown-search">
@@ -2012,7 +2113,7 @@
         <p class="body-sm">Both <code style="font: var(--type-mono); color: var(--color-text-muted)">.field-label</code> (top) and <code style="font: var(--type-mono); color: var(--color-text-muted)">.field-hint</code> (bottom) are optional.</p>
         <div class="device-stage">
         <div class="device-panel" style="max-width: 520px">
-        <div class="stack" style="gap: var(--ic-space-5)">
+        <div class="stack" style="gap: var(--spacing-6)">
 
           <label class="field">
             <span class="field-label">XS · 24 — label only</span>
@@ -2169,16 +2270,16 @@
         <span class="caption" style="display: block">Chase — clockwise</span>
         <div class="device-stage">
           <div class="device-panel">
-        <div class="row" style="gap: var(--ic-space-7); align-items: flex-end; justify-content: center">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--ic-space-2)">
+        <div class="row" style="gap: var(--spacing-10); align-items: flex-end; justify-content: center">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2)">
               <svg class="chase-cw size-sm" viewBox="0 0 22 32" role="img" aria-label="Loading"><path d="M11.6925 5.00513C11.5704 4.99755 11.4673 5.09285 11.4624 5.21506L11.3199 8.82092C11.3151 8.94296 11.4101 9.04543 11.5319 9.05404C11.8046 9.07331 12.0729 9.10838 12.3359 9.15832C12.4556 9.18105 12.5735 9.1067 12.6003 8.98783L13.3946 5.47129C13.4215 5.35225 13.3469 5.2337 13.2274 5.20915C12.7273 5.10639 12.2148 5.03755 11.6925 5.00513Z"/><path d="M10.3897 5.00033C10.5112 4.99369 10.6133 5.08877 10.6181 5.21036L10.7609 8.8204C10.7657 8.94254 10.6705 9.04505 10.5486 9.05354C10.2758 9.07254 10.0074 9.10734 9.74432 9.15703C9.6247 9.17962 9.50695 9.10527 9.48012 8.98649L8.68264 5.45569C8.65561 5.33604 8.7311 5.21703 8.8514 5.19323C9.35276 5.09405 9.86636 5.02892 10.3897 5.00033Z"/><path d="M7.58847 5.52244C7.70397 5.48484 7.82696 5.55023 7.86302 5.66626L8.93861 9.12776C8.97494 9.24467 8.90922 9.36851 8.79343 9.40815C8.53582 9.49634 8.28507 9.5993 8.04218 9.71601C7.93249 9.76871 7.7996 9.72736 7.74298 9.61962L6.05349 6.4046C5.99643 6.296 6.03858 6.16148 6.14865 6.10737C6.61125 5.87995 7.09212 5.68404 7.58847 5.52244Z"/><path d="M5.01218 6.7527C5.11403 6.68657 5.24968 6.71793 5.31449 6.82064L7.25525 9.89609C7.32062 9.99969 7.2891 10.1364 7.18735 10.2046C6.96161 10.3559 6.74526 10.5201 6.53936 10.6962C6.44705 10.7751 6.30831 10.7694 6.2259 10.6802L3.75345 8.00296C3.6701 7.91271 3.67617 7.77161 3.76878 7.6909C4.15993 7.35 4.57537 7.03629 5.01218 6.7527Z"/><path d="M3.14377 8.5954C3.05475 8.51312 2.91591 8.51778 2.83455 8.60765C2.48506 8.99368 2.16255 9.4046 1.86999 9.83744C1.80108 9.93939 1.83165 10.0775 1.93568 10.1432L5.02874 12.0963C5.13123 12.161 5.2664 12.1309 5.33529 12.0311C5.49018 11.8068 5.65795 11.5921 5.83754 11.3881C5.91865 11.2959 5.91392 11.1553 5.82376 11.072L3.14377 8.5954Z"/><path d="M1.49729 10.8734C1.39011 10.817 1.25734 10.8573 1.20192 10.965C0.963642 11.428 0.757205 11.9101 0.585497 12.4084C0.545434 12.5247 0.610701 12.6501 0.728093 12.6866L4.23398 13.7766C4.34974 13.8126 4.47253 13.7485 4.51329 13.6343C4.60557 13.3757 4.71279 13.1241 4.83391 12.8807C4.88869 12.7707 4.84782 12.6358 4.73902 12.5785L1.49729 10.8734Z"/><path d="M0.494446 13.5089C0.376194 13.4822 0.258268 13.5557 0.232794 13.6743C0.123741 14.1818 0.0496438 14.7024 0.0131471 15.2333C0.0047196 15.3558 0.100176 15.4599 0.222917 15.4648L3.90175 15.6103C4.0229 15.6151 4.12492 15.5213 4.13464 15.4005C4.15686 15.1241 4.19529 14.8523 4.24898 14.5861C4.27328 14.4656 4.19889 14.346 4.07905 14.3189L0.494446 13.5089Z"/><path d="M0.210291 16.321C0.0892093 16.3258 -0.00566608 16.4272 0.000263525 16.5483C0.0263981 17.0819 0.0904871 17.6055 0.189887 18.1165C0.213358 18.2372 0.332522 18.3131 0.452388 18.286L4.05308 17.4722C4.17122 17.4455 4.2455 17.3287 4.22385 17.2095C4.17514 16.9413 4.14188 16.6677 4.125 16.3897C4.11755 16.2669 4.0147 16.1705 3.89181 16.1753L0.210291 16.321Z"/><path d="M0.662998 19.119C0.547156 19.155 0.481772 19.2778 0.519099 19.3932C0.682854 19.8997 0.882286 20.3902 1.11443 20.8617C1.16859 20.9717 1.303 21.0137 1.4115 20.9567L4.68415 19.2355C4.79158 19.179 4.83301 19.0466 4.78085 18.937C4.66271 18.6888 4.55891 18.4324 4.47051 18.1689C4.4314 18.0524 4.30715 17.9859 4.18977 18.0224L0.662998 19.119Z"/><path d="M1.83513 21.7058C1.73232 21.7707 1.70106 21.9067 1.76746 22.0086C2.05728 22.4533 2.37835 22.8758 2.72754 23.2729C2.8084 23.3649 2.94892 23.3706 3.03885 23.2874L5.75571 20.7763C5.84491 20.6938 5.85059 20.5551 5.77166 20.4627C5.59177 20.2523 5.42427 20.0309 5.27029 19.7998C5.20225 19.6977 5.0653 19.6659 4.96156 19.7314L1.83513 21.7058Z"/><path d="M3.64398 23.9008C3.56141 23.9902 3.56648 24.1298 3.65715 24.2109C4.05164 24.5642 4.47175 24.8894 4.91433 25.1835C5.01622 25.2512 5.15324 25.2203 5.21854 25.1168L7.19314 21.9886C7.25803 21.8858 7.22753 21.7502 7.12726 21.6814C6.89753 21.524 6.67777 21.353 6.46912 21.1697C6.37698 21.0887 6.23655 21.0935 6.15333 21.1837L3.64398 23.9008Z"/><path d="M5.96361 25.5511C5.9069 25.659 5.94811 25.7927 6.05697 25.8475C6.5284 26.0847 7.01922 26.2891 7.5264 26.4576C7.64215 26.4961 7.76595 26.4307 7.80216 26.3142L8.89888 22.7853C8.93505 22.6689 8.87006 22.5455 8.75499 22.5053C8.4906 22.4131 8.23352 22.3052 7.98484 22.1829C7.87491 22.1288 7.74073 22.1699 7.68373 22.2783L5.96361 25.5511Z"/><path d="M8.63566 26.5354C8.6087 26.6546 8.68365 26.7734 8.80348 26.7976C9.31726 26.9017 9.84401 26.9699 10.381 26.9997C10.5026 27.0064 10.6048 26.9113 10.6096 26.7896L10.7553 23.106C10.7601 22.9839 10.665 22.8814 10.5432 22.8728C10.262 22.853 9.98549 22.8164 9.7146 22.7641C9.5947 22.7409 9.47633 22.8152 9.4494 22.9344L8.63566 26.5354Z"/><path d="M11.4709 26.7849C11.4758 26.9072 11.579 27.0025 11.7011 26.9948C12.237 26.9611 12.7624 26.8891 13.2747 26.7815C13.3938 26.7565 13.4678 26.6382 13.441 26.5195L12.631 22.9331C12.604 22.8138 12.4855 22.7394 12.3655 22.7628C12.0948 22.8154 11.8184 22.8523 11.5373 22.8723C11.4156 22.881 11.3206 22.9835 11.3255 23.1054L11.4709 26.7849Z"/><path d="M14.2708 26.2896C14.3071 26.4067 14.4319 26.472 14.548 26.4326C15.052 26.2611 15.5396 26.0541 16.0077 25.8146C16.1157 25.7593 16.1563 25.6263 16.0998 25.5189L14.3952 22.2756C14.3382 22.167 14.2039 22.126 14.0939 22.1802C13.8456 22.3027 13.5888 22.4107 13.3248 22.5031C13.2098 22.5433 13.145 22.6666 13.1811 22.783L14.2708 26.2896Z"/><path d="M16.8377 25.0791C16.9033 25.183 17.0412 25.2136 17.1431 25.145C17.5813 24.8498 17.9972 24.524 18.3877 24.1705C18.4776 24.0891 18.4822 23.9502 18.3999 23.8611L15.9238 21.1804C15.8405 21.0902 15.7 21.0855 15.6079 21.1665C15.3996 21.3497 15.1803 21.5206 14.951 21.6781C14.8509 21.7468 14.8205 21.8824 14.8853 21.9851L16.8377 25.0791Z"/><path d="M18.9971 23.2462C19.0874 23.3296 19.2285 23.3235 19.3091 23.2308C19.6536 22.8351 19.9702 22.4145 20.256 21.9722C20.3218 21.8703 20.2904 21.7349 20.1879 21.6701L17.114 19.7283C17.0102 19.6627 16.8732 19.6945 16.8051 19.7967C16.6514 20.0277 16.4842 20.249 16.3046 20.4593C16.2258 20.5517 16.2315 20.6904 16.3207 20.7728L18.9971 23.2462Z"/><path d="M20.6049 20.9229C20.7137 20.9801 20.8484 20.9377 20.9023 20.8272C21.1308 20.3591 21.327 19.8725 21.4882 19.3701C21.5252 19.2547 21.4598 19.1323 21.3441 19.0963L17.8842 18.0205C17.7668 17.984 17.6426 18.0505 17.6035 18.1671C17.5153 18.4302 17.4117 18.6863 17.2938 18.9343C17.2417 19.0439 17.2832 19.1762 17.3906 19.2327L20.6049 20.9229Z"/><path d="M21.5508 18.2685C21.6709 18.2956 21.7901 18.2195 21.8134 18.0987C21.911 17.5923 21.974 17.0736 21.9997 16.5451C22.0056 16.424 21.9108 16.3226 21.7897 16.3178L18.1816 16.1751C18.0587 16.1702 17.9558 16.2667 17.9484 16.3895C17.9316 16.667 17.8984 16.9402 17.8498 17.208C17.8282 17.3272 17.9025 17.4439 18.0206 17.4706L21.5508 18.2685Z"/><path d="M21.7771 15.468C21.8999 15.4631 21.9953 15.3591 21.9869 15.2365C21.9509 14.7107 21.878 14.1949 21.7708 13.6919C21.7455 13.5732 21.6275 13.4995 21.5091 13.5262L17.9946 14.3205C17.8748 14.3476 17.8004 14.4672 17.8247 14.5876C17.8783 14.8534 17.9166 15.1248 17.9388 15.4007C17.9485 15.5216 18.0505 15.6154 18.1717 15.6106L21.7771 15.468Z"/><path d="M21.2795 12.7091C21.3967 12.6726 21.462 12.5475 21.4222 12.4314C21.2532 11.9373 21.05 11.459 20.8155 10.9994C20.7604 10.8913 20.6273 10.8506 20.5199 10.9071L17.3358 12.5814C17.227 12.6386 17.1861 12.7734 17.2408 12.8835C17.3617 13.1266 17.4687 13.3778 17.5607 13.6361C17.6015 13.7503 17.7243 13.8145 17.8401 13.7785L21.2795 12.7091Z"/><path d="M20.088 10.1786C20.1918 10.1131 20.2225 9.97549 20.1542 9.87356C19.8655 9.44286 19.5473 9.03367 19.2024 8.64888C19.1212 8.55829 18.9818 8.55327 18.8925 8.63583L16.2526 11.0754C16.1625 11.1587 16.1577 11.2992 16.2387 11.3914C16.418 11.5954 16.5856 11.81 16.7402 12.0342C16.8091 12.134 16.9443 12.1642 17.0469 12.0995L20.088 10.1786Z"/><path d="M18.291 8.04211C18.3741 7.9522 18.3684 7.81172 18.2766 7.73081C17.8894 7.38964 17.4781 7.07525 17.0456 6.79054C16.9437 6.72348 16.8072 6.75458 16.7421 6.85774L14.8228 9.89922C14.7575 10.0028 14.7889 10.1394 14.8905 10.2076C15.116 10.359 15.332 10.5232 15.5377 10.6993C15.63 10.7783 15.7688 10.7727 15.8512 10.6834L18.291 8.04211Z"/><path d="M16.0105 6.43642C16.0673 6.32832 16.0259 6.19442 15.9167 6.13982C15.4571 5.91008 14.9792 5.71154 14.4858 5.54698C14.37 5.50835 14.2461 5.57372 14.2098 5.69034L13.1414 9.13004C13.1051 9.24687 13.1707 9.37062 13.2863 9.41034C13.5437 9.49873 13.7942 9.60187 14.0369 9.71874C14.1466 9.77158 14.2796 9.73027 14.3363 9.62245L16.0105 6.43642Z"/></svg>
               <span class="caption">Small · 24px</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--ic-space-2)">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2)">
               <svg class="chase-cw size-md" viewBox="0 0 22 32" role="img" aria-label="Loading"><path d="M11.6925 5.00513C11.5704 4.99755 11.4673 5.09285 11.4624 5.21506L11.3199 8.82092C11.3151 8.94296 11.4101 9.04543 11.5319 9.05404C11.8046 9.07331 12.0729 9.10838 12.3359 9.15832C12.4556 9.18105 12.5735 9.1067 12.6003 8.98783L13.3946 5.47129C13.4215 5.35225 13.3469 5.2337 13.2274 5.20915C12.7273 5.10639 12.2148 5.03755 11.6925 5.00513Z"/><path d="M10.3897 5.00033C10.5112 4.99369 10.6133 5.08877 10.6181 5.21036L10.7609 8.8204C10.7657 8.94254 10.6705 9.04505 10.5486 9.05354C10.2758 9.07254 10.0074 9.10734 9.74432 9.15703C9.6247 9.17962 9.50695 9.10527 9.48012 8.98649L8.68264 5.45569C8.65561 5.33604 8.7311 5.21703 8.8514 5.19323C9.35276 5.09405 9.86636 5.02892 10.3897 5.00033Z"/><path d="M7.58847 5.52244C7.70397 5.48484 7.82696 5.55023 7.86302 5.66626L8.93861 9.12776C8.97494 9.24467 8.90922 9.36851 8.79343 9.40815C8.53582 9.49634 8.28507 9.5993 8.04218 9.71601C7.93249 9.76871 7.7996 9.72736 7.74298 9.61962L6.05349 6.4046C5.99643 6.296 6.03858 6.16148 6.14865 6.10737C6.61125 5.87995 7.09212 5.68404 7.58847 5.52244Z"/><path d="M5.01218 6.7527C5.11403 6.68657 5.24968 6.71793 5.31449 6.82064L7.25525 9.89609C7.32062 9.99969 7.2891 10.1364 7.18735 10.2046C6.96161 10.3559 6.74526 10.5201 6.53936 10.6962C6.44705 10.7751 6.30831 10.7694 6.2259 10.6802L3.75345 8.00296C3.6701 7.91271 3.67617 7.77161 3.76878 7.6909C4.15993 7.35 4.57537 7.03629 5.01218 6.7527Z"/><path d="M3.14377 8.5954C3.05475 8.51312 2.91591 8.51778 2.83455 8.60765C2.48506 8.99368 2.16255 9.4046 1.86999 9.83744C1.80108 9.93939 1.83165 10.0775 1.93568 10.1432L5.02874 12.0963C5.13123 12.161 5.2664 12.1309 5.33529 12.0311C5.49018 11.8068 5.65795 11.5921 5.83754 11.3881C5.91865 11.2959 5.91392 11.1553 5.82376 11.072L3.14377 8.5954Z"/><path d="M1.49729 10.8734C1.39011 10.817 1.25734 10.8573 1.20192 10.965C0.963642 11.428 0.757205 11.9101 0.585497 12.4084C0.545434 12.5247 0.610701 12.6501 0.728093 12.6866L4.23398 13.7766C4.34974 13.8126 4.47253 13.7485 4.51329 13.6343C4.60557 13.3757 4.71279 13.1241 4.83391 12.8807C4.88869 12.7707 4.84782 12.6358 4.73902 12.5785L1.49729 10.8734Z"/><path d="M0.494446 13.5089C0.376194 13.4822 0.258268 13.5557 0.232794 13.6743C0.123741 14.1818 0.0496438 14.7024 0.0131471 15.2333C0.0047196 15.3558 0.100176 15.4599 0.222917 15.4648L3.90175 15.6103C4.0229 15.6151 4.12492 15.5213 4.13464 15.4005C4.15686 15.1241 4.19529 14.8523 4.24898 14.5861C4.27328 14.4656 4.19889 14.346 4.07905 14.3189L0.494446 13.5089Z"/><path d="M0.210291 16.321C0.0892093 16.3258 -0.00566608 16.4272 0.000263525 16.5483C0.0263981 17.0819 0.0904871 17.6055 0.189887 18.1165C0.213358 18.2372 0.332522 18.3131 0.452388 18.286L4.05308 17.4722C4.17122 17.4455 4.2455 17.3287 4.22385 17.2095C4.17514 16.9413 4.14188 16.6677 4.125 16.3897C4.11755 16.2669 4.0147 16.1705 3.89181 16.1753L0.210291 16.321Z"/><path d="M0.662998 19.119C0.547156 19.155 0.481772 19.2778 0.519099 19.3932C0.682854 19.8997 0.882286 20.3902 1.11443 20.8617C1.16859 20.9717 1.303 21.0137 1.4115 20.9567L4.68415 19.2355C4.79158 19.179 4.83301 19.0466 4.78085 18.937C4.66271 18.6888 4.55891 18.4324 4.47051 18.1689C4.4314 18.0524 4.30715 17.9859 4.18977 18.0224L0.662998 19.119Z"/><path d="M1.83513 21.7058C1.73232 21.7707 1.70106 21.9067 1.76746 22.0086C2.05728 22.4533 2.37835 22.8758 2.72754 23.2729C2.8084 23.3649 2.94892 23.3706 3.03885 23.2874L5.75571 20.7763C5.84491 20.6938 5.85059 20.5551 5.77166 20.4627C5.59177 20.2523 5.42427 20.0309 5.27029 19.7998C5.20225 19.6977 5.0653 19.6659 4.96156 19.7314L1.83513 21.7058Z"/><path d="M3.64398 23.9008C3.56141 23.9902 3.56648 24.1298 3.65715 24.2109C4.05164 24.5642 4.47175 24.8894 4.91433 25.1835C5.01622 25.2512 5.15324 25.2203 5.21854 25.1168L7.19314 21.9886C7.25803 21.8858 7.22753 21.7502 7.12726 21.6814C6.89753 21.524 6.67777 21.353 6.46912 21.1697C6.37698 21.0887 6.23655 21.0935 6.15333 21.1837L3.64398 23.9008Z"/><path d="M5.96361 25.5511C5.9069 25.659 5.94811 25.7927 6.05697 25.8475C6.5284 26.0847 7.01922 26.2891 7.5264 26.4576C7.64215 26.4961 7.76595 26.4307 7.80216 26.3142L8.89888 22.7853C8.93505 22.6689 8.87006 22.5455 8.75499 22.5053C8.4906 22.4131 8.23352 22.3052 7.98484 22.1829C7.87491 22.1288 7.74073 22.1699 7.68373 22.2783L5.96361 25.5511Z"/><path d="M8.63566 26.5354C8.6087 26.6546 8.68365 26.7734 8.80348 26.7976C9.31726 26.9017 9.84401 26.9699 10.381 26.9997C10.5026 27.0064 10.6048 26.9113 10.6096 26.7896L10.7553 23.106C10.7601 22.9839 10.665 22.8814 10.5432 22.8728C10.262 22.853 9.98549 22.8164 9.7146 22.7641C9.5947 22.7409 9.47633 22.8152 9.4494 22.9344L8.63566 26.5354Z"/><path d="M11.4709 26.7849C11.4758 26.9072 11.579 27.0025 11.7011 26.9948C12.237 26.9611 12.7624 26.8891 13.2747 26.7815C13.3938 26.7565 13.4678 26.6382 13.441 26.5195L12.631 22.9331C12.604 22.8138 12.4855 22.7394 12.3655 22.7628C12.0948 22.8154 11.8184 22.8523 11.5373 22.8723C11.4156 22.881 11.3206 22.9835 11.3255 23.1054L11.4709 26.7849Z"/><path d="M14.2708 26.2896C14.3071 26.4067 14.4319 26.472 14.548 26.4326C15.052 26.2611 15.5396 26.0541 16.0077 25.8146C16.1157 25.7593 16.1563 25.6263 16.0998 25.5189L14.3952 22.2756C14.3382 22.167 14.2039 22.126 14.0939 22.1802C13.8456 22.3027 13.5888 22.4107 13.3248 22.5031C13.2098 22.5433 13.145 22.6666 13.1811 22.783L14.2708 26.2896Z"/><path d="M16.8377 25.0791C16.9033 25.183 17.0412 25.2136 17.1431 25.145C17.5813 24.8498 17.9972 24.524 18.3877 24.1705C18.4776 24.0891 18.4822 23.9502 18.3999 23.8611L15.9238 21.1804C15.8405 21.0902 15.7 21.0855 15.6079 21.1665C15.3996 21.3497 15.1803 21.5206 14.951 21.6781C14.8509 21.7468 14.8205 21.8824 14.8853 21.9851L16.8377 25.0791Z"/><path d="M18.9971 23.2462C19.0874 23.3296 19.2285 23.3235 19.3091 23.2308C19.6536 22.8351 19.9702 22.4145 20.256 21.9722C20.3218 21.8703 20.2904 21.7349 20.1879 21.6701L17.114 19.7283C17.0102 19.6627 16.8732 19.6945 16.8051 19.7967C16.6514 20.0277 16.4842 20.249 16.3046 20.4593C16.2258 20.5517 16.2315 20.6904 16.3207 20.7728L18.9971 23.2462Z"/><path d="M20.6049 20.9229C20.7137 20.9801 20.8484 20.9377 20.9023 20.8272C21.1308 20.3591 21.327 19.8725 21.4882 19.3701C21.5252 19.2547 21.4598 19.1323 21.3441 19.0963L17.8842 18.0205C17.7668 17.984 17.6426 18.0505 17.6035 18.1671C17.5153 18.4302 17.4117 18.6863 17.2938 18.9343C17.2417 19.0439 17.2832 19.1762 17.3906 19.2327L20.6049 20.9229Z"/><path d="M21.5508 18.2685C21.6709 18.2956 21.7901 18.2195 21.8134 18.0987C21.911 17.5923 21.974 17.0736 21.9997 16.5451C22.0056 16.424 21.9108 16.3226 21.7897 16.3178L18.1816 16.1751C18.0587 16.1702 17.9558 16.2667 17.9484 16.3895C17.9316 16.667 17.8984 16.9402 17.8498 17.208C17.8282 17.3272 17.9025 17.4439 18.0206 17.4706L21.5508 18.2685Z"/><path d="M21.7771 15.468C21.8999 15.4631 21.9953 15.3591 21.9869 15.2365C21.9509 14.7107 21.878 14.1949 21.7708 13.6919C21.7455 13.5732 21.6275 13.4995 21.5091 13.5262L17.9946 14.3205C17.8748 14.3476 17.8004 14.4672 17.8247 14.5876C17.8783 14.8534 17.9166 15.1248 17.9388 15.4007C17.9485 15.5216 18.0505 15.6154 18.1717 15.6106L21.7771 15.468Z"/><path d="M21.2795 12.7091C21.3967 12.6726 21.462 12.5475 21.4222 12.4314C21.2532 11.9373 21.05 11.459 20.8155 10.9994C20.7604 10.8913 20.6273 10.8506 20.5199 10.9071L17.3358 12.5814C17.227 12.6386 17.1861 12.7734 17.2408 12.8835C17.3617 13.1266 17.4687 13.3778 17.5607 13.6361C17.6015 13.7503 17.7243 13.8145 17.8401 13.7785L21.2795 12.7091Z"/><path d="M20.088 10.1786C20.1918 10.1131 20.2225 9.97549 20.1542 9.87356C19.8655 9.44286 19.5473 9.03367 19.2024 8.64888C19.1212 8.55829 18.9818 8.55327 18.8925 8.63583L16.2526 11.0754C16.1625 11.1587 16.1577 11.2992 16.2387 11.3914C16.418 11.5954 16.5856 11.81 16.7402 12.0342C16.8091 12.134 16.9443 12.1642 17.0469 12.0995L20.088 10.1786Z"/><path d="M18.291 8.04211C18.3741 7.9522 18.3684 7.81172 18.2766 7.73081C17.8894 7.38964 17.4781 7.07525 17.0456 6.79054C16.9437 6.72348 16.8072 6.75458 16.7421 6.85774L14.8228 9.89922C14.7575 10.0028 14.7889 10.1394 14.8905 10.2076C15.116 10.359 15.332 10.5232 15.5377 10.6993C15.63 10.7783 15.7688 10.7727 15.8512 10.6834L18.291 8.04211Z"/><path d="M16.0105 6.43642C16.0673 6.32832 16.0259 6.19442 15.9167 6.13982C15.4571 5.91008 14.9792 5.71154 14.4858 5.54698C14.37 5.50835 14.2461 5.57372 14.2098 5.69034L13.1414 9.13004C13.1051 9.24687 13.1707 9.37062 13.2863 9.41034C13.5437 9.49873 13.7942 9.60187 14.0369 9.71874C14.1466 9.77158 14.2796 9.73027 14.3363 9.62245L16.0105 6.43642Z"/></svg>
               <span class="caption">Medium · 32px</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--ic-space-2)">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2)">
               <svg class="chase-cw size-lg" viewBox="0 0 22 32" role="img" aria-label="Loading"><path d="M11.6925 5.00513C11.5704 4.99755 11.4673 5.09285 11.4624 5.21506L11.3199 8.82092C11.3151 8.94296 11.4101 9.04543 11.5319 9.05404C11.8046 9.07331 12.0729 9.10838 12.3359 9.15832C12.4556 9.18105 12.5735 9.1067 12.6003 8.98783L13.3946 5.47129C13.4215 5.35225 13.3469 5.2337 13.2274 5.20915C12.7273 5.10639 12.2148 5.03755 11.6925 5.00513Z"/><path d="M10.3897 5.00033C10.5112 4.99369 10.6133 5.08877 10.6181 5.21036L10.7609 8.8204C10.7657 8.94254 10.6705 9.04505 10.5486 9.05354C10.2758 9.07254 10.0074 9.10734 9.74432 9.15703C9.6247 9.17962 9.50695 9.10527 9.48012 8.98649L8.68264 5.45569C8.65561 5.33604 8.7311 5.21703 8.8514 5.19323C9.35276 5.09405 9.86636 5.02892 10.3897 5.00033Z"/><path d="M7.58847 5.52244C7.70397 5.48484 7.82696 5.55023 7.86302 5.66626L8.93861 9.12776C8.97494 9.24467 8.90922 9.36851 8.79343 9.40815C8.53582 9.49634 8.28507 9.5993 8.04218 9.71601C7.93249 9.76871 7.7996 9.72736 7.74298 9.61962L6.05349 6.4046C5.99643 6.296 6.03858 6.16148 6.14865 6.10737C6.61125 5.87995 7.09212 5.68404 7.58847 5.52244Z"/><path d="M5.01218 6.7527C5.11403 6.68657 5.24968 6.71793 5.31449 6.82064L7.25525 9.89609C7.32062 9.99969 7.2891 10.1364 7.18735 10.2046C6.96161 10.3559 6.74526 10.5201 6.53936 10.6962C6.44705 10.7751 6.30831 10.7694 6.2259 10.6802L3.75345 8.00296C3.6701 7.91271 3.67617 7.77161 3.76878 7.6909C4.15993 7.35 4.57537 7.03629 5.01218 6.7527Z"/><path d="M3.14377 8.5954C3.05475 8.51312 2.91591 8.51778 2.83455 8.60765C2.48506 8.99368 2.16255 9.4046 1.86999 9.83744C1.80108 9.93939 1.83165 10.0775 1.93568 10.1432L5.02874 12.0963C5.13123 12.161 5.2664 12.1309 5.33529 12.0311C5.49018 11.8068 5.65795 11.5921 5.83754 11.3881C5.91865 11.2959 5.91392 11.1553 5.82376 11.072L3.14377 8.5954Z"/><path d="M1.49729 10.8734C1.39011 10.817 1.25734 10.8573 1.20192 10.965C0.963642 11.428 0.757205 11.9101 0.585497 12.4084C0.545434 12.5247 0.610701 12.6501 0.728093 12.6866L4.23398 13.7766C4.34974 13.8126 4.47253 13.7485 4.51329 13.6343C4.60557 13.3757 4.71279 13.1241 4.83391 12.8807C4.88869 12.7707 4.84782 12.6358 4.73902 12.5785L1.49729 10.8734Z"/><path d="M0.494446 13.5089C0.376194 13.4822 0.258268 13.5557 0.232794 13.6743C0.123741 14.1818 0.0496438 14.7024 0.0131471 15.2333C0.0047196 15.3558 0.100176 15.4599 0.222917 15.4648L3.90175 15.6103C4.0229 15.6151 4.12492 15.5213 4.13464 15.4005C4.15686 15.1241 4.19529 14.8523 4.24898 14.5861C4.27328 14.4656 4.19889 14.346 4.07905 14.3189L0.494446 13.5089Z"/><path d="M0.210291 16.321C0.0892093 16.3258 -0.00566608 16.4272 0.000263525 16.5483C0.0263981 17.0819 0.0904871 17.6055 0.189887 18.1165C0.213358 18.2372 0.332522 18.3131 0.452388 18.286L4.05308 17.4722C4.17122 17.4455 4.2455 17.3287 4.22385 17.2095C4.17514 16.9413 4.14188 16.6677 4.125 16.3897C4.11755 16.2669 4.0147 16.1705 3.89181 16.1753L0.210291 16.321Z"/><path d="M0.662998 19.119C0.547156 19.155 0.481772 19.2778 0.519099 19.3932C0.682854 19.8997 0.882286 20.3902 1.11443 20.8617C1.16859 20.9717 1.303 21.0137 1.4115 20.9567L4.68415 19.2355C4.79158 19.179 4.83301 19.0466 4.78085 18.937C4.66271 18.6888 4.55891 18.4324 4.47051 18.1689C4.4314 18.0524 4.30715 17.9859 4.18977 18.0224L0.662998 19.119Z"/><path d="M1.83513 21.7058C1.73232 21.7707 1.70106 21.9067 1.76746 22.0086C2.05728 22.4533 2.37835 22.8758 2.72754 23.2729C2.8084 23.3649 2.94892 23.3706 3.03885 23.2874L5.75571 20.7763C5.84491 20.6938 5.85059 20.5551 5.77166 20.4627C5.59177 20.2523 5.42427 20.0309 5.27029 19.7998C5.20225 19.6977 5.0653 19.6659 4.96156 19.7314L1.83513 21.7058Z"/><path d="M3.64398 23.9008C3.56141 23.9902 3.56648 24.1298 3.65715 24.2109C4.05164 24.5642 4.47175 24.8894 4.91433 25.1835C5.01622 25.2512 5.15324 25.2203 5.21854 25.1168L7.19314 21.9886C7.25803 21.8858 7.22753 21.7502 7.12726 21.6814C6.89753 21.524 6.67777 21.353 6.46912 21.1697C6.37698 21.0887 6.23655 21.0935 6.15333 21.1837L3.64398 23.9008Z"/><path d="M5.96361 25.5511C5.9069 25.659 5.94811 25.7927 6.05697 25.8475C6.5284 26.0847 7.01922 26.2891 7.5264 26.4576C7.64215 26.4961 7.76595 26.4307 7.80216 26.3142L8.89888 22.7853C8.93505 22.6689 8.87006 22.5455 8.75499 22.5053C8.4906 22.4131 8.23352 22.3052 7.98484 22.1829C7.87491 22.1288 7.74073 22.1699 7.68373 22.2783L5.96361 25.5511Z"/><path d="M8.63566 26.5354C8.6087 26.6546 8.68365 26.7734 8.80348 26.7976C9.31726 26.9017 9.84401 26.9699 10.381 26.9997C10.5026 27.0064 10.6048 26.9113 10.6096 26.7896L10.7553 23.106C10.7601 22.9839 10.665 22.8814 10.5432 22.8728C10.262 22.853 9.98549 22.8164 9.7146 22.7641C9.5947 22.7409 9.47633 22.8152 9.4494 22.9344L8.63566 26.5354Z"/><path d="M11.4709 26.7849C11.4758 26.9072 11.579 27.0025 11.7011 26.9948C12.237 26.9611 12.7624 26.8891 13.2747 26.7815C13.3938 26.7565 13.4678 26.6382 13.441 26.5195L12.631 22.9331C12.604 22.8138 12.4855 22.7394 12.3655 22.7628C12.0948 22.8154 11.8184 22.8523 11.5373 22.8723C11.4156 22.881 11.3206 22.9835 11.3255 23.1054L11.4709 26.7849Z"/><path d="M14.2708 26.2896C14.3071 26.4067 14.4319 26.472 14.548 26.4326C15.052 26.2611 15.5396 26.0541 16.0077 25.8146C16.1157 25.7593 16.1563 25.6263 16.0998 25.5189L14.3952 22.2756C14.3382 22.167 14.2039 22.126 14.0939 22.1802C13.8456 22.3027 13.5888 22.4107 13.3248 22.5031C13.2098 22.5433 13.145 22.6666 13.1811 22.783L14.2708 26.2896Z"/><path d="M16.8377 25.0791C16.9033 25.183 17.0412 25.2136 17.1431 25.145C17.5813 24.8498 17.9972 24.524 18.3877 24.1705C18.4776 24.0891 18.4822 23.9502 18.3999 23.8611L15.9238 21.1804C15.8405 21.0902 15.7 21.0855 15.6079 21.1665C15.3996 21.3497 15.1803 21.5206 14.951 21.6781C14.8509 21.7468 14.8205 21.8824 14.8853 21.9851L16.8377 25.0791Z"/><path d="M18.9971 23.2462C19.0874 23.3296 19.2285 23.3235 19.3091 23.2308C19.6536 22.8351 19.9702 22.4145 20.256 21.9722C20.3218 21.8703 20.2904 21.7349 20.1879 21.6701L17.114 19.7283C17.0102 19.6627 16.8732 19.6945 16.8051 19.7967C16.6514 20.0277 16.4842 20.249 16.3046 20.4593C16.2258 20.5517 16.2315 20.6904 16.3207 20.7728L18.9971 23.2462Z"/><path d="M20.6049 20.9229C20.7137 20.9801 20.8484 20.9377 20.9023 20.8272C21.1308 20.3591 21.327 19.8725 21.4882 19.3701C21.5252 19.2547 21.4598 19.1323 21.3441 19.0963L17.8842 18.0205C17.7668 17.984 17.6426 18.0505 17.6035 18.1671C17.5153 18.4302 17.4117 18.6863 17.2938 18.9343C17.2417 19.0439 17.2832 19.1762 17.3906 19.2327L20.6049 20.9229Z"/><path d="M21.5508 18.2685C21.6709 18.2956 21.7901 18.2195 21.8134 18.0987C21.911 17.5923 21.974 17.0736 21.9997 16.5451C22.0056 16.424 21.9108 16.3226 21.7897 16.3178L18.1816 16.1751C18.0587 16.1702 17.9558 16.2667 17.9484 16.3895C17.9316 16.667 17.8984 16.9402 17.8498 17.208C17.8282 17.3272 17.9025 17.4439 18.0206 17.4706L21.5508 18.2685Z"/><path d="M21.7771 15.468C21.8999 15.4631 21.9953 15.3591 21.9869 15.2365C21.9509 14.7107 21.878 14.1949 21.7708 13.6919C21.7455 13.5732 21.6275 13.4995 21.5091 13.5262L17.9946 14.3205C17.8748 14.3476 17.8004 14.4672 17.8247 14.5876C17.8783 14.8534 17.9166 15.1248 17.9388 15.4007C17.9485 15.5216 18.0505 15.6154 18.1717 15.6106L21.7771 15.468Z"/><path d="M21.2795 12.7091C21.3967 12.6726 21.462 12.5475 21.4222 12.4314C21.2532 11.9373 21.05 11.459 20.8155 10.9994C20.7604 10.8913 20.6273 10.8506 20.5199 10.9071L17.3358 12.5814C17.227 12.6386 17.1861 12.7734 17.2408 12.8835C17.3617 13.1266 17.4687 13.3778 17.5607 13.6361C17.6015 13.7503 17.7243 13.8145 17.8401 13.7785L21.2795 12.7091Z"/><path d="M20.088 10.1786C20.1918 10.1131 20.2225 9.97549 20.1542 9.87356C19.8655 9.44286 19.5473 9.03367 19.2024 8.64888C19.1212 8.55829 18.9818 8.55327 18.8925 8.63583L16.2526 11.0754C16.1625 11.1587 16.1577 11.2992 16.2387 11.3914C16.418 11.5954 16.5856 11.81 16.7402 12.0342C16.8091 12.134 16.9443 12.1642 17.0469 12.0995L20.088 10.1786Z"/><path d="M18.291 8.04211C18.3741 7.9522 18.3684 7.81172 18.2766 7.73081C17.8894 7.38964 17.4781 7.07525 17.0456 6.79054C16.9437 6.72348 16.8072 6.75458 16.7421 6.85774L14.8228 9.89922C14.7575 10.0028 14.7889 10.1394 14.8905 10.2076C15.116 10.359 15.332 10.5232 15.5377 10.6993C15.63 10.7783 15.7688 10.7727 15.8512 10.6834L18.291 8.04211Z"/><path d="M16.0105 6.43642C16.0673 6.32832 16.0259 6.19442 15.9167 6.13982C15.4571 5.91008 14.9792 5.71154 14.4858 5.54698C14.37 5.50835 14.2461 5.57372 14.2098 5.69034L13.1414 9.13004C13.1051 9.24687 13.1707 9.37062 13.2863 9.41034C13.5437 9.49873 13.7942 9.60187 14.0369 9.71874C14.1466 9.77158 14.2796 9.73027 14.3363 9.62245L16.0105 6.43642Z"/></svg>
               <span class="caption">Large · 48px</span>
             </div>
@@ -2284,7 +2385,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4)">
+              <div class="stack" style="gap: var(--spacing-4)">
                 <label class="field">
                   <span class="field-label">Name</span>
                   <input class="input" type="text" placeholder="Onboarding" />
@@ -2314,7 +2415,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4)">
+              <div class="stack" style="gap: var(--spacing-4)">
                 <label class="field">
                   <span class="field-label">Objective</span>
                   <input class="input" type="text" value="Increase activation rate by 25%" />
@@ -2323,7 +2424,7 @@
                   <span class="field-label">Description</span>
                   <textarea class="input" rows="3">Drive new-user activation through onboarding improvements and product-led growth experiments.</textarea>
                 </label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--ic-space-4)">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4)">
                   <label class="field">
                     <span class="field-label">Owner</span>
                     <input class="input" type="text" value="Anna Schmidt" />
@@ -2349,8 +2450,8 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <p class="body-sm" style="margin: 0 0 var(--ic-space-3)">12 items updated since the last review.</p>
-              <div class="stack" style="gap: var(--ic-space-2)">
+              <p class="body-sm" style="margin: 0 0 var(--spacing-3)">12 items updated since the last review.</p>
+              <div class="stack" style="gap: var(--spacing-2)">
                 <div class="list-row"><div><p class="list-row-title">Onboarding process</p><p class="list-row-meta">Renamed · 2h ago</p></div><span class="tag tag-indicator tag-positive">Approved</span></div>
                 <div class="list-row"><div><p class="list-row-title">Q4 Planning</p><p class="list-row-meta">3 steps added · yesterday</p></div><span class="tag tag-indicator tag-warning">Pending</span></div>
                 <div class="list-row"><div><p class="list-row-title">Vendor Onboarding</p><p class="list-row-meta">Archived · 3 days ago</p></div><span class="tag tag-indicator tag-negative">Rejected</span></div>
@@ -2370,7 +2471,7 @@
               <button class="btn btn-icon-only btn-ghost btn-xs modal-close" data-modal-close aria-label="Close" type="button"><svg class="icon"><use href="#i-x"/></svg></button>
             </header>
             <div class="modal-body">
-              <div class="stack" style="gap: var(--ic-space-4); max-width: 480px; margin: 0 auto">
+              <div class="stack" style="gap: var(--spacing-4); max-width: 480px; margin: 0 auto">
                 <label class="field">
                   <span class="field-label">What's this for?</span>
                   <input class="input" type="text" placeholder="Title…" />
@@ -2479,19 +2580,19 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In a form</span>
+        <span class="caption" style="display: block; margin-top: var(--spacing-4)">In a form</span>
         <div class="device-stage">
         <article class="card" style="width: 100%; max-width: 480px">
-          <p class="body" style="margin: 0 0 var(--ic-space-3); font-weight: var(--ic-weight-medium)">Choose a plan</p>
-          <div class="stack" style="gap: var(--ic-space-3)">
+          <p class="body" style="margin: 0 0 var(--spacing-3); font-weight: var(--font-weight-regular)">Choose a plan</p>
+          <div class="stack" style="gap: var(--spacing-3)">
             <label class="radio"><input type="radio" name="plan" class="radio-input" checked /><span class="radio-circle"></span><span class="radio-label">Starter — free</span></label>
             <label class="radio"><input type="radio" name="plan" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Team — $12/mo</span></label>
             <label class="radio"><input type="radio" name="plan" class="radio-input" disabled /><span class="radio-circle"></span><span class="radio-label">Enterprise — contact us</span></label>
           </div>
 
-          <div class="field" style="margin-top: var(--ic-space-5)">
-            <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Billing cycle</p>
-            <label class="radio is-error" style="margin-top: var(--ic-space-2)"><input type="radio" name="billing" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Annual</span></label>
+          <div class="field" style="margin-top: var(--spacing-6)">
+            <p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Billing cycle</p>
+            <label class="radio is-error" style="margin-top: var(--spacing-2)"><input type="radio" name="billing" class="radio-input" /><span class="radio-circle"></span><span class="radio-label">Annual</span></label>
             <span class="field-hint is-error">Please choose a billing cycle.</span>
           </div>
         </article>
@@ -2504,7 +2605,7 @@
           <p class="body-sm">Editable spreadsheet variant of the table — grid lines, sticky header + <code style="font: var(--type-mono); color: var(--color-text-muted)">#</code> gutter, and every cell editable through one shared state machine. Same <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table class="table"&gt;</code> base as the wide variant, so a prototype can toggle <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-wide</code> ⇄ <code style="font: var(--type-mono); color: var(--color-text-muted)">.table-sheet</code>. Six cell primitives: text (Name/Description), single-select (Status/Health), person, date (+ roadmap dot / RoB time), multi-select tags, link.</p>
         </div>
         <div class="device-stage">
-          <div class="device-panel" style="padding: var(--ic-space-3)">
+          <div class="device-panel" style="padding: var(--spacing-3)">
         <div class="table-scroll" style="max-height: 520px">
           <table class="table table-sheet" data-sheet>
             <thead><tr><th class="sheet-gutter">#</th><th class="sheet-col" data-col="name" style="width:220px"><span class="sheet-col-inner"><button class="th-sort" type="button">Name <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="description" style="width:210px"><span class="sheet-col-inner"><button class="th-sort" type="button">Description <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="status" style="width:180px"><span class="sheet-col-inner"><button class="th-sort" type="button">Status <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="health" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Health <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="accountability" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Accountability <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="roadmap" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">Roadmap <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="tags" style="width:200px"><span class="sheet-col-inner"><button class="th-sort" type="button">Tags <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="beneficiary" style="width:160px"><span class="sheet-col-inner"><button class="th-sort" type="button">Beneficiary function <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="rob" style="width:150px"><span class="sheet-col-inner"><button class="th-sort" type="button">RoB Meetings <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th><th class="sheet-col" data-col="start" style="width:130px"><span class="sheet-col-inner"><button class="th-sort" type="button">Start date <svg class="icon th-arrow"><use href="#i-arrow-up"/></svg></button><span class="th-tools"><button class="th-menu" type="button" aria-label="Column menu"><svg class="icon"><use href="#i-dots-three"/></svg></button></span><span class="th-resize"></span></span></th></tr></thead>
@@ -2661,7 +2762,7 @@
         <span class="caption" style="display: block">States — on · off · disabled</span>
         <div class="device-stage">
           <div class="device-panel">
-            <div class="row" style="gap: var(--ic-space-6); align-items: center; justify-content: center">
+            <div class="row" style="gap: var(--spacing-8); align-items: center; justify-content: center">
               <label class="switch"><input type="checkbox" class="switch-input" checked /><span class="switch-track"></span></label>
               <label class="switch"><input type="checkbox" class="switch-input" /><span class="switch-track"></span></label>
               <label class="switch"><input type="checkbox" class="switch-input" checked disabled /><span class="switch-track"></span></label>
@@ -2670,10 +2771,10 @@
           </div>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-4)">In a form</span>
+        <span class="caption" style="display: block; margin-top: var(--spacing-4)">In a form</span>
         <div class="device-stage">
         <article class="card" style="width: 100%; max-width: 480px">
-          <div class="stack" style="gap: var(--ic-space-4)">
+          <div class="stack" style="gap: var(--spacing-4)">
             <div class="row" style="justify-content: space-between">
               <div>
                 <p class="body" style="margin: 0">Email notifications</p>
@@ -2699,7 +2800,7 @@
           <p class="body-sm">Wide variant — tall rows, zebra striping, no grid lines. Built on semantic <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;table&gt;</code> with cell-content helpers (<code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-title</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-user</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">.cell-meta</code>) for repeating patterns. For a dense, editable spreadsheet grid on the same <code style="font: var(--type-mono); color: var(--color-text-muted)">.table</code> base, see the <a href="#sheet">Sheet</a> variant.</p>
         </div>
         <div class="device-stage">
-          <div class="device-panel" style="padding: var(--ic-space-3)">
+          <div class="device-panel" style="padding: var(--spacing-3)">
         <div class="table-scroll">
           <table class="table table-wide">
             <thead>
@@ -2739,7 +2840,7 @@
                 <td>
                   <div class="cell-meta">
                     <span class="cell-meta-title">Paid Media Plan Review</span>
-                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--spacing-1)">Every third Wednesday</span></span>
                   </div>
                 </td>
                 <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="icon" style="width:16px;height:16px"><use href="#i-dots-three-vertical"/></svg></button></div></td>
@@ -2899,7 +3000,7 @@
                 <td>
                   <div class="cell-meta">
                     <span class="cell-meta-title">Paid Media Plan Review</span>
-                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--spacing-1)">Every third Wednesday</span></span>
                   </div>
                 </td>
                 <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="icon" style="width:16px;height:16px"><use href="#i-dots-three-vertical"/></svg></button></div></td>
@@ -3009,7 +3110,7 @@
                 <td>
                   <div class="cell-meta">
                     <span class="cell-meta-title">Sustainability sync</span>
-                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Nov 12 · 10:00am · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Weekly on Tuesday</span></span>
+                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Nov 12 · 10:00am · <span class="tag tag-light" style="margin-left: var(--spacing-1)">Weekly on Tuesday</span></span>
                   </div>
                 </td>
                 <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="icon" style="width:16px;height:16px"><use href="#i-dots-three-vertical"/></svg></button></div></td>
@@ -3039,7 +3140,7 @@
                 <td>
                   <div class="cell-meta">
                     <span class="cell-meta-title">Onboarding review</span>
-                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--ic-space-1)">Every third Wednesday</span></span>
+                    <span class="cell-meta-sub"><svg class="icon"><use href="#i-calendar-blank"/></svg>Oct 25 · 04:30pm · <span class="tag tag-light" style="margin-left: var(--spacing-1)">Every third Wednesday</span></span>
                   </div>
                 </td>
                 <td><div class="cell-actions"><button class="btn btn-icon-only btn-ghost" aria-label="More"><svg class="icon" style="width:16px;height:16px"><use href="#i-dots-three-vertical"/></svg></button></div></td>
@@ -3080,16 +3181,16 @@
                   <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-members" id="tabs-demo-tab-members" type="button">Team collaboration</button>
                   <button class="tab" role="tab" aria-selected="false" aria-controls="tabs-demo-settings" id="tabs-demo-tab-settings" type="button">Workspace settings</button>
                 </div>
-                <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--ic-space-5)">
+                <div role="tabpanel" id="tabs-demo-overview" aria-labelledby="tabs-demo-tab-overview" style="padding-top: var(--spacing-6)">
                   <p class="body">A summary of recent activity and key metrics for this workspace.</p>
                 </div>
-                <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--ic-space-5)" hidden>
+                <div role="tabpanel" id="tabs-demo-activity" aria-labelledby="tabs-demo-tab-activity" style="padding-top: var(--spacing-6)" hidden>
                   <p class="body">Who reports to whom across the org.</p>
                 </div>
-                <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--ic-space-5)" hidden>
+                <div role="tabpanel" id="tabs-demo-members" aria-labelledby="tabs-demo-tab-members" style="padding-top: var(--spacing-6)" hidden>
                   <p class="body">12 members have access to this workspace.</p>
                 </div>
-                <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--ic-space-5)" hidden>
+                <div role="tabpanel" id="tabs-demo-settings" aria-labelledby="tabs-demo-tab-settings" style="padding-top: var(--spacing-6)" hidden>
                   <p class="body">Workspace name, billing, integrations and permissions.</p>
                 </div>
               </div>
@@ -3165,7 +3266,7 @@
         </div>
 
         <span class="caption" style="display: block">Spawn — color variants (timed, 4s)</span>
-        <div class="row" style="gap: var(--ic-space-2)">
+        <div class="row" style="gap: var(--spacing-2)">
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'neutral', message: 'New comment on Q4 plan.' })">Neutral</button>
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'error', message: 'Failed to save changes. Check your connection.' })">Error</button>
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'warning', message: 'You have unsaved changes.' })">Warning</button>
@@ -3173,16 +3274,16 @@
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'info', message: 'A new version is available.' })">Info</button>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Spawn — behaviors</span>
-        <div class="row" style="gap: var(--ic-space-2)">
+        <span class="caption" style="display: block; margin-top: var(--spacing-3)">Spawn — behaviors</span>
+        <div class="row" style="gap: var(--spacing-2)">
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'success', behavior: 'timed', message: 'Auto-dismisses after 4 seconds.', timeout: 4000 })">Timed</button>
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'warning', behavior: 'persistent', message: 'Stays until you dismiss it.' })">Persistent</button>
           <button class="btn btn-secondary" type="button" onclick="toast({ variant: 'neutral', behavior: 'action', message: 'Item moved to archive.', action: { label: 'Undo' } })">Action</button>
         </div>
 
-        <span class="caption" style="display: block; margin-top: var(--ic-space-3)">Static reference — color variants (rendered inline so you can see all five at once)</span>
+        <span class="caption" style="display: block; margin-top: var(--spacing-3)">Static reference — color variants (rendered inline so you can see all five at once)</span>
         <div class="device-stage">
-        <div class="stack" style="gap: var(--ic-space-3); max-width: 380px">
+        <div class="stack" style="gap: var(--spacing-3); max-width: 380px">
           <div class="toast toast-neutral">
             <p class="toast-message">New comment on Q4 plan.</p>
             <button class="btn btn-icon-only btn-ghost btn-xs toast-close" type="button" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
@@ -3220,10 +3321,10 @@
         </div>
         <div class="device-stage">
           <div class="device-panel">
-        <div class="stack" style="gap: var(--ic-space-6); width: 100%">
+        <div class="stack" style="gap: var(--spacing-8); width: 100%">
 
           <!-- BAU page -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <p class="body-sm" style="color: var(--color-text-muted); margin: 0">BAU page — search · filters · query · quick-filter selects · sort · view toggle</p>
             <div class="toolbar">
               <div class="input-icon input-icon-left toolbar-search">
@@ -3259,7 +3360,7 @@
           </div>
 
           <!-- Initiative page -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <p class="body-sm" style="color: var(--color-text-muted); margin: 0">Initiative page — search · filters with count · period switcher</p>
             <div class="toolbar">
               <div class="input-icon input-icon-left toolbar-search">
@@ -3278,7 +3379,7 @@
           </div>
 
           <!-- OKR page -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <p class="body-sm" style="color: var(--color-text-muted); margin: 0">OKR page — wide search · filters</p>
             <div class="toolbar">
               <div class="input-icon input-icon-left toolbar-search" style="flex-basis: 480px">
@@ -3292,7 +3393,7 @@
           </div>
 
           <!-- People page -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <p class="body-sm" style="color: var(--color-text-muted); margin: 0">People page — search · quick-filter selects · reset</p>
             <div class="toolbar">
               <div class="input-icon input-icon-left toolbar-search" style="flex-basis: 200px">
@@ -3334,7 +3435,7 @@
           </div>
 
           <!-- Team page -->
-          <div class="stack" style="gap: var(--ic-space-2)">
+          <div class="stack" style="gap: var(--spacing-2)">
             <p class="body-sm" style="color: var(--color-text-muted); margin: 0">Team page — org-unit select · inline toggle</p>
             <div class="toolbar">
               <div class="input-select is-auto" style="flex: 1 1 320px; max-width: 420px">
@@ -3372,12 +3473,12 @@
           <div class="device-stage">
             <div class="device-panel">
               <div class="playground-variant" data-variant="compact">
-                <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-6) var(--ic-space-3); justify-content: center">
+                <div class="row" style="gap: var(--spacing-6); padding: var(--spacing-8) var(--spacing-3); justify-content: center">
                   <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on top" data-placement="top">Top</button>
                   <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on bottom" data-placement="bottom">Bottom</button>
                   <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the left side" data-placement="left">Left</button>
                   <button class="btn btn-secondary" type="button" data-tooltip="Tooltip on the right side" data-placement="right">Right</button>
-                  <span style="border-left: 1px solid var(--color-border); height: 24px; margin: 0 var(--ic-space-2)"></span>
+                  <span style="border-left: 1px solid var(--color-border); height: 24px; margin: 0 var(--spacing-2)"></span>
                   <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Edit" aria-label="Edit"><svg class="btn-icon"><use href="#i-pencil"/></svg></button>
                   <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Duplicate" aria-label="Duplicate"><svg class="btn-icon"><use href="#i-copy"/></svg></button>
                   <button class="btn btn-icon-only btn-ghost" type="button" data-tooltip="Archive" aria-label="Archive"><svg class="btn-icon"><use href="#i-archive"/></svg></button>
@@ -3385,7 +3486,7 @@
                 </div>
               </div>
               <div class="playground-variant" data-variant="regular" hidden>
-                <div class="row" style="gap: var(--ic-space-5); padding: var(--ic-space-8) var(--ic-space-3); justify-content: center">
+                <div class="row" style="gap: var(--spacing-6); padding: var(--spacing-12) var(--spacing-3); justify-content: center">
                   <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="top">Top</button>
                   <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="bottom">Bottom</button>
                   <button class="btn btn-secondary" type="button" data-tooltip="Regular tooltips fit longer explanatory copy that wraps onto multiple lines." data-tooltip-style="regular" data-placement="left">Left</button>
@@ -3403,7 +3504,7 @@
         <div class="playground" data-vp="desktop">
           <div class="device-stage">
           <div class="playground-stage">
-          <header class="topbar" style="border-radius: var(--ic-radius-sm); width: 100%; box-shadow: var(--ic-shadow-lg)">
+          <header class="topbar" style="border-radius: var(--radius-sm); width: 100%; box-shadow: var(--shadow-5)">
             <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu"><svg class="icon"><use href="#i-overview"/></svg></button>
             <a class="topbar-brand" href="#">
               <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
@@ -3444,7 +3545,7 @@
       </section>
     </section>
 
-    <section id="templates" class="stack" style="gap: var(--ic-space-7)">
+    <section id="templates" class="stack" style="gap: var(--spacing-10)">
       <h2 class="section-head">Templates</h2>
       <nav class="toc" data-toc-for="templates" aria-label="Templates contents"></nav>
 
@@ -3584,7 +3685,7 @@
                     <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>Schedule</button>
                   </div>
                 </div>
-                <div class="stack" style="gap: var(--ic-space-2)">
+                <div class="stack" style="gap: var(--spacing-2)">
                   <div class="list-row"><div><p class="list-row-title">Engineering Weekly</p><p class="list-row-meta">Mondays · 10:00 AM · 12 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
                   <div class="list-row"><div><p class="list-row-title">Leadership Sync</p><p class="list-row-meta">Tuesdays · 9:00 AM · 6 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
                   <div class="list-row"><div><p class="list-row-title">Product Review</p><p class="list-row-meta">Thursdays · 2:00 PM · 18 attendees</p></div><span class="tag tag-indicator tag-positive">Active</span></div>
@@ -3606,24 +3707,24 @@
                     <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>New OKR</button>
                   </div>
                 </div>
-                <div class="stack" style="gap: var(--ic-space-3)">
+                <div class="stack" style="gap: var(--spacing-3)">
                   <div class="card">
-                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Increase activation rate by 25%</p>
+                    <p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Increase activation rate by 25%</p>
                     <p class="body-sm" style="margin: 2px 0 0">Owner: Anna Schmidt · Q4 2026</p>
-                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 68%; height: 100%; background: var(--color-brand)"></div></div>
-                    <p class="caption" style="margin-top: var(--ic-space-2)">68% complete</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--radius-full); margin-top: var(--spacing-3); overflow: hidden"><div style="width: 68%; height: 100%; background: var(--color-brand)"></div></div>
+                    <p class="caption" style="margin-top: var(--spacing-2)">68% complete</p>
                   </div>
                   <div class="card">
-                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Reduce p95 latency to under 200ms</p>
+                    <p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Reduce p95 latency to under 200ms</p>
                     <p class="body-sm" style="margin: 2px 0 0">Owner: Jordan Park · Q4 2026</p>
-                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 42%; height: 100%; background: var(--color-warning)"></div></div>
-                    <p class="caption" style="margin-top: var(--ic-space-2)">42% complete</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--radius-full); margin-top: var(--spacing-3); overflow: hidden"><div style="width: 42%; height: 100%; background: var(--color-warning)"></div></div>
+                    <p class="caption" style="margin-top: var(--spacing-2)">42% complete</p>
                   </div>
                   <div class="card">
-                    <p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Ship 3 enterprise integrations</p>
+                    <p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Ship 3 enterprise integrations</p>
                     <p class="body-sm" style="margin: 2px 0 0">Owner: Rita Kowalski · Q4 2026</p>
-                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--ic-radius-full); margin-top: var(--ic-space-3); overflow: hidden"><div style="width: 92%; height: 100%; background: var(--color-brand)"></div></div>
-                    <p class="caption" style="margin-top: var(--ic-space-2)">92% complete · Almost done</p>
+                    <div style="height: 8px; background: var(--color-surface-muted); border-radius: var(--radius-full); margin-top: var(--spacing-3); overflow: hidden"><div style="width: 92%; height: 100%; background: var(--color-brand)"></div></div>
+                    <p class="caption" style="margin-top: var(--spacing-2)">92% complete · Almost done</p>
                   </div>
                 </div>
               </section>
@@ -3642,12 +3743,12 @@
                     <button class="btn btn-primary"><svg class="btn-icon"><use href="#i-plus"/></svg>Invite people</button>
                   </div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--ic-space-3)">
-                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-brand-subtle); color: var(--color-brand)">MV</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Matthew Vella</p><p class="body-sm" style="margin: 0">Engineering · Owner</p></div></article>
-                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-info-subtle); color: var(--color-info)">AS</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Anna Schmidt</p><p class="body-sm" style="margin: 0">Product · Admin</p></div></article>
-                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-warning-subtle); color: var(--color-warning)">JP</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Jordan Park</p><p class="body-sm" style="margin: 0">Engineering · Member</p></div></article>
-                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-success-subtle); color: var(--color-success)">RK</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Rita Kowalski</p><p class="body-sm" style="margin: 0">Sales · Member</p></div></article>
-                  <article class="card" style="display: flex; align-items: center; gap: var(--ic-space-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--ic-weight-semibold) var(--ic-text-base)/1 var(--ic-font-sans); background: var(--color-danger-subtle); color: var(--color-danger)">DT</span><div><p class="body" style="margin: 0; font-weight: var(--ic-weight-medium)">Dimitri Tanaka</p><p class="body-sm" style="margin: 0">Design · Member</p></div></article>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-3)">
+                  <article class="card" style="display: flex; align-items: center; gap: var(--spacing-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--font-weight-semibold) var(--text-md)/1 var(--font-sans); background: var(--color-brand-subtle); color: var(--color-brand)">MV</span><div><p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Matthew Vella</p><p class="body-sm" style="margin: 0">Engineering · Owner</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--spacing-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--font-weight-semibold) var(--text-md)/1 var(--font-sans); background: var(--color-info-subtle); color: var(--color-info)">AS</span><div><p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Anna Schmidt</p><p class="body-sm" style="margin: 0">Product · Admin</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--spacing-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--font-weight-semibold) var(--text-md)/1 var(--font-sans); background: var(--color-warning-subtle); color: var(--color-warning)">JP</span><div><p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Jordan Park</p><p class="body-sm" style="margin: 0">Engineering · Member</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--spacing-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--font-weight-semibold) var(--text-md)/1 var(--font-sans); background: var(--color-success-subtle); color: var(--color-success)">RK</span><div><p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Rita Kowalski</p><p class="body-sm" style="margin: 0">Sales · Member</p></div></article>
+                  <article class="card" style="display: flex; align-items: center; gap: var(--spacing-3)"><span style="width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: var(--font-weight-semibold) var(--text-md)/1 var(--font-sans); background: var(--color-danger-subtle); color: var(--color-danger)">DT</span><div><p class="body" style="margin: 0; font-weight: var(--font-weight-regular)">Dimitri Tanaka</p><p class="body-sm" style="margin: 0">Design · Member</p></div></article>
                 </div>
               </section>
 
@@ -3663,10 +3764,10 @@
                     <button class="btn btn-primary">Edit org chart</button>
                   </div>
                 </div>
-                <div class="card" style="text-align: center; padding: var(--ic-space-9) var(--ic-space-5)">
-                  <svg style="width: 48px; height: 48px; color: var(--color-text-subtle); margin-bottom: var(--ic-space-3)"><use href="#i-org"/></svg>
-                  <h3 class="h3" style="margin: 0 0 var(--ic-space-2)">No org chart yet</h3>
-                  <p class="body-sm" style="margin: 0 0 var(--ic-space-4); color: var(--color-text-muted)">Start by mapping your reporting structure.</p>
+                <div class="card" style="text-align: center; padding: var(--spacing-6)">
+                  <svg style="width: 48px; height: 48px; color: var(--color-text-subtle); margin-bottom: var(--spacing-3)"><use href="#i-org"/></svg>
+                  <h3 class="h3" style="margin: 0 0 var(--spacing-2)">No org chart yet</h3>
+                  <p class="body-sm" style="margin: 0 0 var(--spacing-4); color: var(--color-text-muted)">Start by mapping your reporting structure.</p>
                   <button class="btn btn-primary">Get started</button>
                 </div>
               </section>
@@ -3680,7 +3781,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="stack" style="gap: var(--ic-space-4); max-width: 640px">
+                <div class="stack" style="gap: var(--spacing-4); max-width: 640px">
                   <article class="card">
                     <h3 class="card-title">Workspace</h3>
                     <p class="card-body">Operationalize HQ · 24 members</p>
@@ -3709,25 +3810,25 @@
                     </div>
                   </div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--ic-space-4)">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-4)">
                   <article class="card">
                     <span class="badge badge-info">Guide</span>
-                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Getting started with Processes</h3>
+                    <h3 class="card-title" style="margin-top: var(--spacing-3)">Getting started with Processes</h3>
                     <p class="card-body">5 min read</p>
                   </article>
                   <article class="card">
                     <span class="badge badge-info">Guide</span>
-                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Writing effective OKRs</h3>
+                    <h3 class="card-title" style="margin-top: var(--spacing-3)">Writing effective OKRs</h3>
                     <p class="card-body">8 min read</p>
                   </article>
                   <article class="card">
                     <span class="badge badge-success">Playbook</span>
-                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Running a RoB cadence</h3>
+                    <h3 class="card-title" style="margin-top: var(--spacing-3)">Running a RoB cadence</h3>
                     <p class="card-body">12 min read</p>
                   </article>
                   <article class="card">
                     <span class="badge badge-warning">New</span>
-                    <h3 class="card-title" style="margin-top: var(--ic-space-3)">Designing initiative reviews</h3>
+                    <h3 class="card-title" style="margin-top: var(--spacing-3)">Designing initiative reviews</h3>
                     <p class="card-body">6 min read</p>
                   </article>
                 </div>
@@ -3748,13 +3849,13 @@
         </div>
 
         <div class="device-stage">
-        <article class="card" style="width: 100%; max-width: 640px; padding: var(--ic-space-6)">
-          <div style="margin-bottom: var(--ic-space-6)">
+        <article class="card" style="width: 100%; max-width: 640px; padding: var(--spacing-8)">
+          <div style="margin-bottom: var(--spacing-8)">
             <h2 class="h2">New process</h2>
-            <p class="body-sm" style="margin: var(--ic-space-1) 0 0">Define the workflow, owners and review cadence.</p>
+            <p class="body-sm" style="margin: var(--spacing-1) 0 0">Define the workflow, owners and review cadence.</p>
           </div>
 
-          <form class="stack" style="gap: var(--ic-space-4)" onsubmit="return false">
+          <form class="stack" style="gap: var(--spacing-4)" onsubmit="return false">
 
             <div class="grid-2">
               <label class="field">
@@ -3832,7 +3933,7 @@
               <button class="btn btn-ghost" type="button" data-add-field data-field-label="Org unit (optional)" data-placeholder="Choose an org unit…"><svg class="btn-icon"><use href="#i-plus"/></svg>Add org unit</button>
             </div>
 
-            <div class="stack" style="gap: var(--ic-space-4); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
+            <div class="stack" style="gap: var(--spacing-4); padding-top: var(--spacing-4); border-top: 1px solid var(--color-border)">
               <div class="row" style="justify-content: space-between">
                 <div>
                   <p class="body" style="margin: 0">Notify owners</p>
@@ -3849,7 +3950,7 @@
               </div>
             </div>
 
-            <div class="row" style="justify-content: flex-end; gap: var(--ic-space-2); padding-top: var(--ic-space-4); border-top: 1px solid var(--color-border)">
+            <div class="row" style="justify-content: flex-end; gap: var(--spacing-2); padding-top: var(--spacing-4); border-top: 1px solid var(--color-border)">
               <button class="btn btn-secondary" type="button">Cancel</button>
               <button class="btn btn-primary" type="submit">Create process</button>
             </div>
@@ -3865,15 +3966,13 @@
   <script>
     const ramps = [
       { name: 'Neutral',  tokens: ['white', 'black'] },
-      { name: 'Gray',     prefix: 'gray',     shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Zinc',     prefix: 'zinc',     shades: [100,200,300,400,500,600,700,800,900] },
-      { name: 'Graphite', prefix: 'graphite', shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Red',      prefix: 'red',      shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Yellow',   prefix: 'yellow',   shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Green',    prefix: 'green',    shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Cyan',     prefix: 'cyan',     shades: [500] }, /* single-shade interim — see design.md §2 */
-      { name: 'Blue',     prefix: 'blue',     shades: [100,150,200,300,400,500,600,700,800,900] },
-      { name: 'Purple',   prefix: 'purple',   shades: [100,150,200,300,400,500,600,700,800,900] },
+      { name: 'Gray',     prefix: 'gray',     shades: [50,100,200,300,400,500,600,700] },
+      { name: 'Graphite', prefix: 'graphite', shades: [300,700,750,800,900] },
+      { name: 'Red',      prefix: 'red',      shades: [100,150,500] },
+      { name: 'Yellow',   prefix: 'yellow',   shades: [100,150,500,700] },
+      { name: 'Green',    prefix: 'green',    shades: [100,150,200,300,400,500,600,700,800] },
+      { name: 'Blue',     prefix: 'blue',     shades: [100,150,400,500,600,700] },
+      { name: 'Purple',   prefix: 'purple',   shades: [100,150,500] },
     ];
 
     // Apply indeterminate state to checkboxes marked with data-indeterminate
@@ -4724,12 +4823,12 @@
     (function () {
       const sec = document.getElementById('motion');
       if (!sec) return;
-      const dots = [...sec.querySelectorAll('.motion-dot')];
+      const dots = [...sec.querySelectorAll('.motion-dot, .anim-demo')];
       const run = dot => { dot.classList.remove('run'); void dot.offsetWidth; dot.classList.add('run'); };
       const runAll = () => dots.forEach(run);
       sec.querySelector('[data-motion-play]')?.addEventListener('click', runAll);
       sec.querySelectorAll('.motion-card').forEach(card => {
-        card.addEventListener('mouseenter', () => { const d = card.querySelector('.motion-dot'); if (d) run(d); });
+        card.addEventListener('mouseenter', () => { const d = card.querySelector('.motion-dot, .anim-demo'); if (d) run(d); });
       });
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver(entries => {
@@ -5286,7 +5385,7 @@
       function editDate(cell) {
         const withTime = cell.dataset.variant === 'time';
         const pop = makePop(cell);
-        pop.innerHTML = `<input type="date" class="sheet-pop-search" style="margin-bottom:8px">${withTime ? '<input type="time" class="sheet-pop-search" style="margin-bottom:8px" value="18:00">' : ''}<div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Set</button><button class="btn btn-xs btn-ghost" data-clear>Clear</button></div>`;
+        pop.innerHTML = `<input type="date" class="sheet-pop-search" style="margin-bottom:var(--spacing-2)">${withTime ? '<input type="time" class="sheet-pop-search" style="margin-bottom:var(--spacing-2)" value="18:00">' : ''}<div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Set</button><button class="btn btn-xs btn-ghost" data-clear>Clear</button></div>`;
         const dateI = pop.querySelector('input[type=date]');
         const timeI = pop.querySelector('input[type=time]');
         pop.querySelector('[data-ok]').addEventListener('click', () => {
@@ -5646,44 +5745,44 @@
     // graphite-700) because Picasso's scale is offset at the edges.
     // Source: https://toptal.github.io/picasso/?path=/story/contribution-tailwind-tokens--tailwind-tokens
     const PICASSO_COLOR = {
-      '--ic-palette-white': 'white',
-      '--ic-palette-black': 'black',
-      '--ic-palette-gray-100': 'gray-50',
-      '--ic-palette-gray-150': 'gray-100',
-      '--ic-palette-gray-200': 'gray-200',
-      '--ic-palette-gray-300': 'gray-300',
-      '--ic-palette-gray-400': 'gray-400',
-      '--ic-palette-gray-500': 'gray-500',
-      '--ic-palette-gray-600': 'gray-600',
-      '--ic-palette-graphite-500': 'graphite-700',
-      '--ic-palette-graphite-800': 'graphite-800',
-      '--ic-palette-graphite-900': 'graphite-900',
-      '--ic-palette-red-100': 'red-100',
-      '--ic-palette-red-150': 'red-150',
-      '--ic-palette-red-500': 'red-500',
-      '--ic-palette-yellow-100': 'yellow-100',
-      '--ic-palette-yellow-150': 'yellow-150',
-      '--ic-palette-yellow-500': 'yellow-500',
-      '--ic-palette-green-100': 'green-100',
-      '--ic-palette-green-150': 'green-150',
-      '--ic-palette-green-500': 'green-500',
-      '--ic-palette-green-600': 'green-600',
-      '--ic-palette-green-700': 'green-700',
-      '--ic-palette-cyan-500': 'blue-400',
-      '--ic-palette-blue-100': 'blue-100',
-      '--ic-palette-blue-150': 'blue-150',
-      '--ic-palette-blue-500': 'blue-500',
-      '--ic-palette-blue-600': 'blue-600',
-      '--ic-palette-blue-700': 'blue-700',
-      '--ic-palette-purple-500': 'purple-500',
+      '--color-white': 'white',
+      '--color-black': 'black',
+      '--color-gray-50': 'gray-50',
+      '--color-gray-100': 'gray-100',
+      '--color-gray-200': 'gray-200',
+      '--color-gray-300': 'gray-300',
+      '--color-gray-400': 'gray-400',
+      '--color-gray-500': 'gray-500',
+      '--color-gray-600': 'gray-600',
+      '--color-graphite-700': 'graphite-700',
+      '--color-graphite-800': 'graphite-800',
+      '--color-graphite-900': 'graphite-900',
+      '--color-red-100': 'red-100',
+      '--color-red-150': 'red-150',
+      '--color-red-500': 'red-500',
+      '--color-yellow-100': 'yellow-100',
+      '--color-yellow-150': 'yellow-150',
+      '--color-yellow-500': 'yellow-500',
+      '--color-green-100': 'green-100',
+      '--color-green-150': 'green-150',
+      '--color-green-500': 'green-500',
+      '--color-green-600': 'green-600',
+      '--color-green-700': 'green-700',
+      '--color-blue-400': 'blue-400',
+      '--color-blue-100': 'blue-100',
+      '--color-blue-150': 'blue-150',
+      '--color-blue-500': 'blue-500',
+      '--color-blue-600': 'blue-600',
+      '--color-blue-700': 'blue-700',
+      '--color-purple-500': 'purple-500',
     };
 
     const swatch = (token) => {
       const hex = css.getPropertyValue(token).trim().toUpperCase();
-      // Drop "--ic-palette-{ramp}-" so the label is just the shade ("100", "white").
+      // Drop "--color-{ramp}-" so the label is just the shade ("100", "white").
       // Full token shows on hover via the title attribute.
-      const short = token.replace(/^--ic-palette-([a-z]+-)?/, '');
-      const label = token.replace('--ic-palette-', '');
+      const short = token.replace(/^--color-([a-z]+-)?/, '');
+      const label = token.replace('--color-', '');
       const picasso = PICASSO_COLOR[token];
       // Mapped swatches carry the Picasso ref as data on the chip; the inspector
       // (?map=1) outlines them and shows the ref on hover. Extras stay bare.
@@ -5696,43 +5795,153 @@
           <div class="swatch-label">
             <code class="swatch-token">${short}</code>
             <code class="swatch-hex">${hex}</code>
+            <code class="tok-src${picasso ? ' is-picasso' : ''}">${picasso || 'extension'}</code>
           </div>
         </div>`;
     };
 
     // Radii
-    const radii = ['none','sm','md','lg','xl'].map(k => `--ic-radius-${k}`);
-    // Picasso Tailwind border-radius tokens (only none/sm/md/full exist there);
-    // lg & xl are intentional extras and stay unlinked.
+    const radii = ['none','sm','md','full'].map(k => `--radius-${k}`);
+    // Picasso's border-radius scale is only none/sm/md/full. lg, xl and 2xl are
+    // designmd extensions and stay unlinked — the inspector outlines the mapped
+    // ones only, so an unlinked card means "no Tailwind class waiting for this".
     const PICASSO_RADIUS = {
-      '--ic-radius-none': 'rounded-none',
-      '--ic-radius-sm': 'rounded-sm',
-      '--ic-radius-md': 'rounded-md',
-      '--ic-radius-full': 'rounded-full',
+      '--radius-none': 'rounded-none',
+      '--radius-sm': 'rounded-sm',
+      '--radius-md': 'rounded-md',
+      '--radius-full': 'rounded-full',
     };
     const radiiRoot = document.getElementById('radii-root');
     radii.forEach(token => {
       const value = css.getPropertyValue(token).trim();
-      const display = token === '--ic-radius-full' ? 'pill' : value;
-      const label = token.replace('--ic-radius-', '');
+      const display = token === '--radius-full' ? 'pill' : value;
+      const label = token.replace('--radius-', '');
       const rounded = PICASSO_RADIUS[token];
       const dataAttrs = rounded
         ? ` data-picasso-radius="${rounded}" data-picasso-radius-token="${label}" data-picasso-radius-value="${display}"`
         : '';
       const card = document.createElement('div');
       card.className = 'radius-card';
+      // Show the full token, then the Tailwind class it becomes. The three
+      // extensions get no class, because Picasso sets theme.borderRadius rather
+      // than extending it — rounded-lg genuinely does not exist there.
       card.innerHTML = `
         <div class="radius-shape" style="border-radius: var(${token})"${dataAttrs}></div>
-        <code class="radius-token">${label}</code>
+        <code class="radius-token">${token}</code>
         <code class="radius-value">${display}</code>
+        <code class="tok-src${rounded ? ' is-picasso' : ''}">${rounded || 'extension · no class'}</code>
       `;
       radiiRoot.appendChild(card);
     });
 
+    // Spacing, z-index, breakpoints and shadows are all read from the live
+    // tokens rather than listed here, so the galleries cannot drift from
+    // tokens.css the way the radii list did.
+    const px = v => { v = v.trim();
+      if (v.endsWith('rem')) return Math.round(parseFloat(v) * 16);
+      if (v.endsWith('px')) return Math.round(parseFloat(v));
+      return parseFloat(v) || 0; };
+    const row = (name, barPct, value, src) => `
+      <div class="tok-row">
+        <code class="tok-name">${name}</code>
+        <div><div class="tok-bar" style="width: ${barPct}"></div></div>
+        <span class="tok-val">${value}</span>
+        <span class="tok-src${src === 'picasso' ? ' is-picasso' : ''}">${src}</span>
+      </div>`;
+
+    // Spacing — bar width is the step itself, so the scale is literally to scale
+    const SPACING = [0,1,2,3,4,6,8,10,12];
+    document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
+      const v = css.getPropertyValue(`--spacing-${n}`).trim();
+      const p = px(v);
+      // the number works with any spacing utility — p-, m-, gap-, w- … — so
+      // p-N stands in as the exemplar rather than listing them all
+      return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0',
+                 `p-${n}`);
+    }).join('');
+
+    // Z-index — ordered by the value it actually resolves to
+    const LAYERS = ['dropdown','sticky','overlay','drawer','modal','tooltip','snackbar'];
+    const LAYER_PICASSO = new Set(['drawer','modal','tooltip','snackbar']);
+    document.getElementById('layer-root').innerHTML = LAYERS
+      .map(k => ({ k, v: parseInt(css.getPropertyValue(`--z-${k}`).trim(), 10) || 0 }))
+      .sort((a, b) => a.v - b.v)
+      .map(({ k, v }) => row(`--z-${k}`, `${Math.max(2, (v / 1400) * 100)}%`, v,
+                             LAYER_PICASSO.has(k) ? 'picasso' : 'extension'))
+      .join('');
+
+    // Breakpoints — bar is the edge against the widest screen
+    const BPS = ['xs','sm','md','lg','xl'];
+    document.getElementById('bp-root').innerHTML = BPS.map((k, i) => {
+      const v = px(css.getPropertyValue(`--breakpoint-${k}`));
+      const next = i < BPS.length - 1 ? px(css.getPropertyValue(`--breakpoint-${BPS[i+1]}`)) : null;
+      const range = next ? `${v}–${next - 1}` : `≥ ${v}`;
+      return row(`--breakpoint-${k}`, `${Math.max(2, (v / 1440) * 100)}%`, range, 'picasso');
+    }).join('');
+
+    // Type — specimen rendered at the token's own size, with the class it becomes
+    const TYPE = ['2xs','xxs','sm','md','lg','xl','2xl','xxl',
+                  'button-small','button-medium','button-large'];
+    const TYPE_EXT = new Set();   // the size scale is Picasso's, with no extensions
+    document.getElementById('type-root').innerHTML = TYPE.map(k => {
+      const size = css.getPropertyValue(`--text-${k}`).trim();
+      const lh = css.getPropertyValue(`--text-${k}--line-height`).trim();
+      if (!size) return '';
+      const ext = TYPE_EXT.has(k);
+      return `
+        <div class="tok-row">
+          <code class="tok-name">--text-${k}</code>
+          <span class="type-specimen" style="font-size: var(--text-${k}); line-height: ${lh || 'normal'}">Ag</span>
+          <span class="tok-val">${px(size)}${lh ? '/' + px(lh) : ''}</span>
+          <code class="tok-src${ext ? '' : ' is-picasso'}">${ext ? 'extension' : 'text-' + k}</code>
+        </div>`;
+    }).join('');
+
+    // Weight — same specimen, so the faces can be compared directly
+    // Only regular and semibold are real: Picasso's Typography exposes those two
+    // plus inherit, no component uses thin or light, and Proxima ships no face
+    // for them. They stay listed because the preset defines them.
+    const WEIGHTS = [['regular', true], ['semibold', true]];
+    document.getElementById('weight-root').innerHTML = WEIGHTS.map(([k, real]) => {
+      const w = css.getPropertyValue(`--font-weight-${k}`).trim();
+      return `
+        <div class="tok-row">
+          <code class="tok-name">--font-weight-${k}</code>
+          <span class="type-specimen" style="font-weight: var(--font-weight-${k})">Ag</span>
+          <span class="tok-val">${w}</span>
+          <code class="tok-src${real ? ' is-picasso' : ''}">${real ? 'font-' + k : 'preset only · unused'}</code>
+        </div>`;
+    }).join('');
+
+    // Sizing — the three min-widths Picasso adds past the spacing scale
+    document.getElementById('sizing-root').innerHTML = [14,16,24].map(n => {
+      const v = css.getPropertyValue(`--min-width-${n}`).trim();
+      return row(`--min-width-${n}`, `${px(v)}px`, `${px(v)}px`, `min-w-${n}`);
+    }).join('');
+
+    // Twelfths — bar is the fraction itself, so the grid reads as a grid
+    document.getElementById('twelfths-root').innerHTML = Array.from({length: 11}, (_, i) => {
+      const n = i + 1;
+      const v = css.getPropertyValue(`--max-width-${n}-12`).trim();
+      return row(`--max-width-${n}-12`, v, `${n}/12`, `max-w-${n}/12`);
+    }).join('');
+
+    // Shadow — the role each one plays, straight from Picasso's own source comments
+    const SHADOW_ROLE = {
+      0: 'none', 1: 'paper · notification centre', 2: 'modal',
+      3: 'notification growl', 4: 'tooltip', 5: 'scroll menu · popovers',
+    };
+    document.getElementById('shadow-root').innerHTML = Object.entries(SHADOW_ROLE).map(([n, role]) => `
+      <div class="shadow-card">
+        <div class="shadow-chip" style="box-shadow: var(--shadow-${n})"></div>
+        <span class="shadow-role">${role}</span>
+        <code class="radius-token">--shadow-${n}</code>
+      </div>`).join('');
+
     ramps.forEach(ramp => {
       const tokens = ramp.tokens
-        ? ramp.tokens.map(t => `--ic-palette-${t}`)
-        : ramp.shades.map(s => `--ic-palette-${ramp.prefix}-${s}`);
+        ? ramp.tokens.map(t => `--color-${t}`)
+        : ramp.shades.map(s => `--color-${ramp.prefix}-${s}`);
       const row = document.createElement('div');
       row.className = 'ramp';
       row.innerHTML = `
@@ -5840,7 +6049,12 @@
         const resolveProps = (el, c) => {
           const pm = (c.react && c.react.propMap) || {};
           const props = {};
-          el.classList.forEach(cls => { if (pm[cls]) Object.assign(props, pm[cls]); });
+          // Walk the propMap in its own order, not the element's. The map lists the
+          // root class first and modifiers after, so .btn then .btn-xs resolves to
+          // size="small" whichever order the markup happens to write them in.
+          Object.keys(pm).forEach(cls => {
+            if (el.classList.contains(cls)) Object.assign(props, pm[cls]);
+          });
           return props;
         };
         const jsx = (comp, props) => {

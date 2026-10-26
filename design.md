@@ -1,6 +1,17 @@
-# Icarus — design.md
+# designmd — the Picasso-aligned prototyping system
 
-> Source of truth for vibe prototyping. Paste this file (or the **Vibe prompt** section) into your LLM context when generating new HTML prototypes. Every prototype links three stylesheets in order: `tokens.css` → `semantic.css` → `components.css`.
+> **Picasso is the source of truth.** [`github.com/toptal/picasso`](https://github.com/toptal/picasso)
+> and its [Storybook](https://toptal.github.io/picasso/) define the tokens and components Toptal
+> actually ships. **designmd is an extension of it** — the same foundations expressed as plain
+> HTML and CSS, so Operationalize can prototype in hours rather than in React.
+>
+> That makes this file downstream, not authoritative. Where it and Picasso disagree, Picasso is
+> right and this is a bug. Where designmd adds something Picasso has no answer for, the token
+> says `extension` and explains why. See §0.
+>
+> Paste this file (or the **Vibe prompt** section) into your LLM context when generating new HTML
+> prototypes. Every prototype links three stylesheets in order: `tokens.css` → `semantic.css` →
+> `components.css`.
 
 ---
 
@@ -11,7 +22,7 @@ Three layers. Don't skip them.
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │  tokens.css        Primitives — palette, scale, raw values   │  ← never reference directly in components
-│                    (--ic-palette-*, --ic-text-*, --ic-space-*)│
+│                    (--color-*, --text-*, --spacing-*)         │
 ├──────────────────────────────────────────────────────────────┤
 │  semantic.css      Intent aliases — bg, text, brand, danger  │  ← what components and prototypes USE
 │                    (--color-bg, --color-text, --type-h1)     │
@@ -23,7 +34,65 @@ Three layers. Don't skip them.
        prototype.html      ← consumes components + semantic tokens
 ```
 
-**Rule:** components and prototypes reference **semantic** aliases (`--color-bg`, `--type-h1`), never primitives (`--ic-palette-blue-500`). This makes theme swaps and brand changes one-file edits.
+**Rule:** for **colour**, components and prototypes reference semantic aliases (`--color-bg`, `--type-h1`), never primitives (`--color-blue-500`) — that is what makes a theme swap a one-file edit. Scale primitives are different: there is no semantic layer over spacing, radii or motion, so `var(--spacing-4)` and `var(--ease)` in `components.css` are correct and expected.
+
+---
+
+## 0. Upstream — Picasso
+
+**Picasso is Toptal's design system — the real one, shipped across every product.** designmd
+exists for one reason: Picasso is React, and a React prototype is slow to make and slow to
+throw away. designmd re-expresses the same foundations as plain HTML and CSS so Operationalize
+can get a screen in front of people in hours, and so what gets approved translates to
+production without anyone re-deriving the values.
+
+**That only works if the foundations are genuinely the same.** Every token in `tokens.css` is
+either Picasso's — name and value verbatim — or an extension that says `extension` in its own
+comment and explains why. When the two disagree, Picasso is right and this is a bug. When
+designmd needs something Picasso has no answer for, it says so rather than inventing quietly.
+
+**Check Picasso, not this file, when it matters.** The Storybook is where a component's real
+behaviour lives; `packages/base/<Component>/src/` is where its real values do. This file is a
+convenience layer over both, and a convenience layer drifts.
+
+| What | Where |
+|---|---|
+| Source | [`github.com/toptal/picasso`](https://github.com/toptal/picasso) — public. Default branch is **`master`**, not `main`. |
+| Verified against | `toptal/picasso@bcaacbb8ec3b` · `@toptal/picasso@102.0.0` (npm, public) |
+| Tailwind preset | `packages/picasso-tailwind/src/index.js` — the token source |
+| Base preset | `packages/base-tailwind/src/index.js` — adds only `lineHeight.5` |
+| Components | `packages/base/<Component>/src/` — props *and* styles |
+| Storybook | [`toptal.github.io/picasso`](https://toptal.github.io/picasso/) — `?path=/story/<storyId>` |
+
+**Checking a component.** The `storyId` in each `figma-map.json` entry opens its story:
+`https://toptal.github.io/picasso/?path=/story/{storyId}`. All 41 were checked against
+source and are correct.
+
+Two traps if you verify them yourself. The Storybook is a static build that resolves
+stories client-side, so `iframe.html?id=anything` returns **200** — a successful request
+proves nothing. And the id is not derived from the component name: each story declares it
+as `PicassoBook.section('X').createPage('Y', …)` in `<Pkg>/src/<Component>/story/index.jsx`,
+so `Modal` is `overlays-modal--modal` and `Input` is `forms-input--input`.
+
+The package is often not the component either — `ProgressBar` lives in `FileInput`,
+`Stepper` in `Step`, `PageHead`/`PageTopBar`/`PageSidebar` in `Page`, each with its own
+`story/` folder and its own section. Resolve the folder, don't guess from the name.
+
+**Read `packages/base/<Component>/src/` when you need certainty.** That is how every prop
+value in the registry was confirmed, and why the map records a `verifiedAgainst` commit
+rather than just a version.
+
+**What the preset does not tell you.** It defines tokens; it does not say which are used.
+Picasso's preset declares `fontWeight.thin` and `.light`, but no component uses them and
+Proxima has no face for either — so designmd does not carry them. That is the one place
+this file deliberately departs from the preset, on the grounds that a token which cannot
+render what it promises is worse than a missing one. Likewise `theme.borderRadius` *replaces* Tailwind's scale
+rather than extending it, so `rounded-lg` does not exist. Read the components before
+concluding a token is live.
+
+**Operationalize** sits one layer further down (`base-tailwind` → `picasso-tailwind` →
+its own config) and extends Picasso by almost nothing: one font, one no-op colour
+override, and four animations — all four carried here as `--animate-*`.
 
 ---
 
@@ -33,9 +102,9 @@ Three layers. Don't skip them.
 - **Three color roles, kept distinct:**
   - **Brand mark = Blue-500** (`--color-accent`). The logo color. White-on-graphite lockup in the topbar. Rarely surfaces elsewhere in the UI.
   - **Primary CTA = Green-500** (`--color-brand`). The attention-grabbing action color on dense data pages. Used **diligently** — ideally one `btn-primary` per page; every other CTA is `.btn-secondary`. Never decorative.
-  - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--ic-palette-graphite-800)` because it's the one place a raw palette reference is intentional.
+  - **Chrome = Graphite-800**. The dark topbar background that the white logo sits on. Used directly via `var(--color-graphite-800)` because it's the one place a raw palette reference is intentional.
 - **Status colors are scarce.** Red/yellow/green only signal state — never decoration. (Note: green also doubles as the primary CTA color, which is why CTA placement is so disciplined.)
-- **Motion is functional.** `--ic-duration-fast` (120ms) for state, `--ic-duration-base` (200ms) for entry/exit. Nothing decorative.
+- **Motion is functional.** `--duration-fast` (120ms) for state, `--duration-base` (200ms) for entry/exit. Nothing decorative.
 - **Every prototype ships with the review bar.** `inline.py` bakes `review.css` + `review.js` into every prototype it touches. Click the circle button bottom-right on any prototype (or open it with `?review=1`) and a bar appears at the bottom: **Edit text** (retype any copy in place), **Comment** (click an element, leave a note — numbered pins + a side panel) and **Spotlight** (dim everything outside a dragged rectangle). Comments and edits are saved to `feedback.json` next to the prototype when it runs on `tools/serve.mjs`. This is the canonical way to review a prototype and hand the notes to an LLM — see §7 "Review bar" and `review-bar.html`.
 - **Copy the `example.html` `<script>` block** into every new prototype — it carries the universal handlers (modals, drawers, dropdowns, tabs, toasts, …).
 
@@ -45,44 +114,76 @@ Three layers. Don't skip them.
 
 ### Primitive palette (`tokens.css`)
 
-9 ramps, each with shades 100–900 (cyan is currently a single shade pending full removal), plus `black` and `white` monochromes. Reference: see `tokens.css`.
+Every token is either **Picasso's**, name and value verbatim, or an **extension**
+designmd adds — and each declaration in `tokens.css` says which. 93 Picasso, 77
+extensions. If a prototype uses an extension, that colour has no Tailwind class
+waiting for it in production; reach for a Picasso one unless you mean it.
 
-| Ramp | Role |
+Picasso's palette is deliberately small: 30 colours, with three graphites, three
+reds, three yellows and a single purple.
+
+| Ramp | Picasso has | Role |
+|---|---|---|
+| `gray` | 50–600 | Neutrals for surfaces, borders, text |
+| `graphite` | 700, 800, 900 | Dark chrome — topbar background, inverse text |
+| `blue` | 100, 150, 400, 500, 600, 700 | **Brand mark** (logo, `--color-accent`), focus rings, links, info |
+| `green` | 100, 150, 500, 600, 700 | **Primary CTA** (`--color-brand`) — and success |
+| `red` | 100, 150, 500 | Danger / destructive |
+| `yellow` | 100, 150, 500 | Warning |
+| `purple` | 500 | Reserved |
+| `zinc` | *none* | Dark-theme neutrals — entirely a designmd extension, and **hidden from the palette gallery**. It exists only to back `[data-theme="dark"]`; never reach for it in a prototype. Picasso ships real dark values, and rebuilding dark mode on those retires this ramp. |
+
+Extensions are down to **21**. 36 unreferenced shades — the mid-ramps of red, yellow,
+blue and purple — are commented out in `tokens.css` rather than deleted, so a shade can
+come back if a prototype needs it; `purple-100` and `-150` already have. What survives:
+
+| Extension | Why it stays |
 |---|---|
-| `gray` | Neutrals for surfaces, borders, text |
-| `zinc` | Dark theme neutrals |
-| `graphite` | Dark chrome — topbar background, inverse text on dark surfaces |
-| `red` | Danger / destructive |
-| `yellow` | Warning |
-| `green` | **Primary CTA** (`--color-brand`) — and success |
-| `cyan` | Single shade only (`cyan-500`) — backs `.tag-blue-light` and `.badge-info` text. Pending removal: those components migrate to blue, then the ramp goes away. |
-| `blue` | **Brand mark** (logo, `--color-accent`) — also focus rings and links |
-| `purple` | Reserved |
+| `gray-700` | `--color-text-muted`. Picasso's darkest text grey is 3.56:1 on white, below AA |
+| `purple-100`, `-150` | kept deliberately; Picasso has only `purple-500`, so neither has a class |
+| `yellow-700` | `.badge-warning` text — warning copy needs contrast Picasso's yellow-500 cannot give |
+| `graphite-750` | `--color-icon` and the active segmented item |
+| `graphite-300`, `green-200/300/400/800`, `zinc-500…900` | the dark theme, which is designmd's own |
+| `blue/green/red-500-hover` and `-active` | Picasso's Button states, which it hardcodes as hex |
+
+Nine of the nineteen exist only because dark mode does. Rebuilding it on Picasso's own
+dark values would retire them in one move.
+
+> **If you remember the old names.** `gray-100`→`gray-50`, `gray-150`→`gray-100`,
+> `graphite-500`→`graphite-700`, `graphite-600/700`→`graphite-725/750`, and the
+> cyan ramp is gone: `cyan-500` was always Picasso's `blue-400`. The old
+> `blue-400` was not Picasso's; it became `blue-450` and is now commented out, since nothing used it.
 
 ### Semantic aliases (`semantic.css`) — **use these in prototypes**
 
+Picasso has no semantic layer — these roles are designmd's, mapped onto Picasso
+primitives so a prototype reads by intent and still translates to a real class.
+
 | Token | Light | Dark |
 |---|---|---|
-| `--color-bg` | gray-100 | zinc-900 |
+| `--color-bg` | gray-50 | zinc-900 |
 | `--color-surface` | white | zinc-800 |
-| `--color-surface-muted` | gray-150 | zinc-700 |
+| `--color-surface-muted` | gray-100 | zinc-700 |
 | `--color-surface-sunken` | gray-200 | zinc-900 |
 | `--color-border` | gray-200 | zinc-600 |
 | `--color-border-strong` | gray-300 | zinc-500 |
-| `--color-border-focus` | blue-500 | blue-500 |
-| `--color-text` | graphite-900 | gray-100 |
+| `--color-border-focus` | blue-500 | — |
+| `--color-text` | graphite-900 | gray-50 |
 | `--color-text-muted` | gray-700 | gray-400 |
 | `--color-text-subtle` | gray-500 | gray-600 |
 | `--color-text-inverse` | white | zinc-900 |
-| `--color-text-link` | blue-500 | blue-500 |
-| `--color-brand` | green-500 | green-400 |
-| `--color-brand-hover` | green-600 | green-300 |
-| `--color-brand-active` | green-700 | green-200 |
-| `--color-accent` | blue-500 | blue-500 |
+| `--color-text-link` | blue-500 | — |
+| `--color-icon` | graphite-750 | graphite-300 |
+| `--color-brand` / `-hover` / `-active` / `-subtle` | green-500 / #27D496 / #00A96C / green-100 | green-400 / 300 / 200 / 800 |
+| `--color-accent` / `-hover` / `-active` / `-subtle` | blue-500 / #4269D6 / #1A41AB / blue-100 | — |
 | `--color-success` / `-subtle` | green-500 / green-100 | — |
 | `--color-warning` / `-subtle` | yellow-500 / yellow-100 | — |
-| `--color-danger` / `-subtle` | red-500 / red-100 | — |
-| `--color-info` / `-subtle` | cyan-500 / cyan-100 | — |
+| `--color-danger` / `-hover` / `-active` / `-subtle` | red-500 / #DB466B / #B01F43 / red-100 | — |
+
+**Hover goes lighter, active goes darker.** Picasso's Button hardcodes those six values rather than using palette shades, so designmd carries them as `--color-{blue,green,red}-500-{hover,active}`. designmd used to darken on hover, which was backwards from the product.
+
+Two aliases point at extensions on purpose. `--color-text-muted` is gray-700 because Picasso's darkest text grey, gray-600, is 3.56:1 on white — below AA for body text; gray-700 is 6.04:1. `--color-icon` is designmd's own call: Picasso icons carry no colour at all, they inherit `currentColor`.
+| `--color-info` / `-subtle` | blue-400 / blue-100 | — |
 
 Switch theme: `<html data-theme="dark">`.
 
@@ -90,33 +191,74 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--ic-font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` is `'Proxima Nova', proxima-nova, Arial, sans-serif` — the self-hosted family first, then Picasso's Adobe Fonts kit id, then Picasso's own fallback. Inter used to sit in that stack and be pulled from Google Fonts; both are gone, so a prototype makes no font request at all. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. Picasso's preset also defines `thin` (100) and `light` (300), but nothing uses them and Proxima has no face at either weight, so designmd omits them — the single deliberate departure from the preset. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
+
+### Role → Picasso `<Typography>`
+
+Picasso's Typography resolves a `variant` × `size` pair into a size class, a weight **and
+a colour**. Nine of designmd's roles land on a pair exactly:
+
+| designmd | weight · size | Picasso |
+|---|---|---|
+| `--type-h1` | semibold · 2xl | `variant="heading" size="xlarge"` |
+| `--type-h2` | semibold · xl | `heading` · `large` |
+| `--type-h3` | semibold · lg | `heading` · `medium` |
+| `--type-h4` | semibold · md | `heading` · `small` |
+| `--type-body-lg` | regular · lg | `body` · `large` |
+| `--type-body` | regular · md | `body` · `medium` *(Picasso's default)* |
+| `--type-body-sm` | regular · sm | `body` · `small` |
+| `--type-body-xs` | regular · xxs | `body` · `xsmall` |
+| `--type-body-xxs` | regular · 2xs | `body` · `xxsmall` |
+| `--type-caption` | regular · xxs | `body` · `xsmall` — **identical to `--type-body-xs`** |
+| `--type-body-*-semibold` ×5 | semibold | `body` · size + `weight="semibold"`; Picasso's body variant is always regular, so the weight must be passed |
+| `--type-mono` | regular · sm · mono | **none** — Picasso's Typography has no mono variant |
+
+**Colour is the real divergence.** Picasso bakes it into the variant; designmd's `--type-*`
+tokens carry font only and inherit `--color-text`:
+
+| | designmd | Picasso | on white |
+|---|---|---|---|
+| Headings | graphite-900 `#191E28` | **black** `#000000` | 16.7:1 vs 21:1 |
+| Body | graphite-900 `#191E28` | **graphite-700** `#455065` | 16.7:1 vs 8.1:1 |
+
+So designmd's body copy is markedly darker than the product's — a prototype reads heavier
+than the screen a developer builds. Worth settling deliberately: either `--color-text`
+splits into a heading colour and a body colour, or designmd accepts the difference and
+says so.
+
+One Picasso oddity with no designmd counterpart: `heading` · `xsmall` is `text-md` at
+**regular** weight and graphite-700 — a heading that isn't bold.
 
 ### Size primitives
 
 | Token | Size | Used in |
 |---|---|---|
-| `--ic-text-xxs` | 11px | tiny labels |
-| `--ic-text-xs`  | 12px | captions |
-| `--ic-text-sm`  | 13px | body small |
-| `--ic-text-base`| 14px | **default body**, H4 |
-| `--ic-text-md`  | 16px | body large, H3 |
-| `--ic-text-lg`  | 18px | utility |
-| `--ic-text-xl`  | 20px | H2 |
-| `--ic-text-2xl` | 28px | H1 |
+| `--text-2xs` | 11px | tiny labels |
+| `--text-xxs`  | 12px | captions |
+| `--text-sm`  | 13px | body small |
+| `--text-md`| 14px | **default body**, H4 |
+| `--text-lg`  | 16px | body large, H3 |
+| `--text-xl`  | 20px | H2 |
+| `--text-2xl` | 28px | H1 |
+| `--text-xxl` | 28px | same as `2xl`; Picasso ships both |
+| `--text-button-small` | 12px | Picasso button sizes — no designmd component uses them yet |
+| `--text-button-medium` | 13px | |
+| `--text-button-large` | 15px | |
 
-> ⚠️ **Naming gotcha:** `-md` is **not** the default size — it's the *step above* default. The default body size is `--ic-text-base` (14px). Think of the scale as `base → md → lg → xl → 2xl` rather than `sm → md → lg`.
+> ⚠️ **Naming gotcha:** `--text-md` (14px) **is** the default body size, and the scale runs
+> `2xs → xxs → sm → md → lg → xl → 2xl`. It is one step denser than a stock Tailwind scale
+> at every name — Picasso's `lg` is 16px where Tailwind's is 18px. Read the px, not the name.
 
 ### Type roles (use these as `font:` shorthand)
 
 | Token | Composition |
 |---|---|
-| `--type-h1` | semibold 28/42 Inter |
-| `--type-h2` | semibold 20/30 Inter |
-| `--type-h3` | semibold 16/24 Inter |
-| `--type-h4` | semibold 14/22 Inter |
-| `--type-body-lg` | regular 16/24 Inter |
-| `--type-body` | regular 14/22 Inter |
+| `--type-h1` | semibold 28/42 Proxima Nova |
+| `--type-h2` | semibold 20/30 Proxima Nova |
+| `--type-h3` | semibold 16/24 Proxima Nova |
+| `--type-h4` | semibold 14/22 Proxima Nova |
+| `--type-body-lg` | regular 16/24 Proxima Nova |
+| `--type-body` | regular 14/22 Proxima Nova |
 | `--type-body-sm` | regular 13/20 |
 | `--type-body-xs` | regular 12/18 |
 | `--type-body-xxs` | regular 11/16 |
@@ -125,7 +267,7 @@ Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as lice
 | `--type-body-sm-semibold` | semibold 13/20 |
 | `--type-body-xs-semibold` | semibold 12/18 |
 | `--type-body-xxs-semibold` | semibold 11/16 |
-| `--type-caption` | medium 12/18 |
+| `--type-caption` | regular 12/18 — identical to `--type-body-xs` |
 | `--type-mono` | regular 13/20 mono |
 
 ```css
@@ -139,11 +281,23 @@ Helpers in `components.css`: `.h1` `.h2` `.h3` `.h4` `.body-lg` `.body` `.body-s
 
 ## 4. Spacing
 
-4px base. Tokens: `--ic-space-1` (4px) → `--ic-space-16` (128px).
+**Picasso's scale, names and values verbatim.** The number *is* the value: `n × 0.25rem`,
+Tailwind's convention. So `--spacing-4` is exactly what a developer writes as `p-4`, and a
+prototype translates to production without arithmetic.
 
-`1=4 · 2=8 · 3=12 · 4=16 · 5=24 · 6=32 · 7=40 · 8=48 · 10=64 · 12=80 · 16=128`
+`0=0 · 1=4 · 2=8 · 3=12 · 4=16 · 6=24 · 8=32 · 10=40 · 12=48`
 
-Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
+**No extensions.** The scale is Picasso's nine and stops where Picasso stops. The three
+that used to sit above it are gone: 20 and 32 were never referenced, and 16 turned out to
+be the topbar height plus a gap wearing a spacing number — `.page-toc` now says
+`calc(var(--header-height) + var(--spacing-2))`, which is what it always meant.
+
+Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
+
+> **If you remember the old scale, re-read the numbers.** designmd used to be index-based —
+> sequential steps — which collided with Picasso above step 4: the old step 8 was 48px
+> where Picasso's `8` is 32px. Old → new: `5→6 · 6→8 · 7→10 · 8→12 · 10→16 · 12→20 · 16→32`.
+> Steps 0–4 are unchanged.
 
 ---
 
@@ -151,12 +305,25 @@ Never write raw px. `padding: var(--ic-space-4) var(--ic-space-5)`.
 
 | Group | Tokens |
 |---|---|
-| Radii (t-shirt) | `--ic-radius-none` 0 · `-sm` 4 · `-md` 8 · `-lg` 12 · `-xl` 16 · `-2xl` 24 · `-full` 9999 |
-| Radii (numeric) | `--ic-radius-0` · `-4` · `-8` · `-12` (aliases for none/sm/md/lg) |
-| Shadow | `--ic-shadow-xs` · `-sm` · `-md` · `-lg` · `-xl` |
-| Motion | `--ic-duration-fast` 120 · `-base` 200 · `-slow` 320 — paired with `--ic-ease`, `--ic-ease-out`, `--ic-ease-in` |
-| Z-index | `--ic-z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 · `-modal` 900 · `-toast` 1000 |
-| Container | `--ic-container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 |
+| Radii | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-full` 9999 — **Picasso's four, no extensions.** Picasso *replaces* Tailwind's radius scale rather than extending it, so `rounded-lg` and friends do not exist; for anything off-scale it writes a literal (its Tag uses `rounded-[6.25rem]`). |
+| Shadow | `--shadow-0` … `--shadow-5`, Picasso's values. They are **roles, not a ramp**: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu. Pick by what the surface *is*. |
+| Motion | `--duration-350` (Picasso) · `--duration-fast` 120 · `-base` 200 · `--ease` (extensions — Picasso defines no easings at all). `--duration-slow`, `--ease-out` and `--ease-in` were used by nothing but the Motion gallery and are commented out; **uncomment them if a prototype needs an accelerate or decelerate curve — do not write a literal `cubic-bezier`.** |
+| Animation | `--animate-circle-spin` (Picasso) · `--animate-highlight` · `-fade-in` · `-slider-progress` · `-card-land` (from the Operationalize config). Apply whole: `animation: var(--animate-fade-in)`. All five collapse to `none` under `prefers-reduced-motion`. |
+| Z-index | Picasso's: `--z-drawer` 1200 · `-modal` 1300 · `-tooltip` 1300 · `-snackbar` 1400. Extensions below them: `-dropdown` 100 · `-sticky` 200 · `-overlay` 800. (`--z-base` was 0 and unused.) |
+| Breakpoints | `--breakpoint-xs` 0 · `-sm` 480 · `-md` 768 · `-lg` 1024 · `-xl` 1440 — Picasso's screens |
+| Container | `--container-lg` 1024 only — the `.page` max-width. Picasso has breakpoints, not container widths; `sm`, `md` and `xl` were never referenced and are retired. |
+
+**Sizing.** Picasso's `minWidth`, `maxWidth`, `minHeight` and `maxHeight` all start from
+the spacing scale (`...theme('spacing')`), so `min-w-4` is just `--spacing-4` and needs no
+token of its own. Only what Picasso adds on top is declared:
+
+| Group | Tokens |
+|---|---|
+| Min width | `--min-width-14` 56px · `-16` 64px · `-24` 96px — the three steps past the spacing scale |
+| Max width | `--max-width-1-12` … `--max-width-11-12` — Picasso's 12-column grid. The class is `max-w-1/12`; a slash cannot appear in a custom property name, so the token spells it out. |
+
+Still not carried: the two plugin utilities `.font-inherit-weight` and
+`.font-inherit-size`.
 
 ### Breakpoints
 
@@ -225,7 +392,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Toolbar](./example.html#toolbar) | `.toolbar` | Control strip above a table/list. Parts: `.toolbar-search` (grow, wrap an `.input-icon`) · `.toolbar-end` (pin controls right) · `.toolbar-spacer`. Composes `.input-select.is-auto` (content-width quick-filters), `.btn`, `.segmented`, `.checkbox`. |
 | [Segmented](./example.html#toolbar) | `.segmented` | Bordered mutually-exclusive switcher. `.segmented-item` (`.is-active` = dark fill) · `.segmented-icon` for icon-only segments. Click handled by the delegated `.segmented` handler. |
 | [Sheet](./example.html#sheet) | `.table.table-sheet` + `data-sheet` | Editable-spreadsheet variant of `.table`. Structure: `.sheet-gutter` (row `#`) · `.sheet-toggle` (pinned expand/collapse column — the module hoists each row's `.row-toggle` here and adds a `.sheet-collapse-all` control in its header) · `.sheet-col` header (`.sheet-col-inner` · `.th-sort` · `.th-menu` · `.th-resize`) · `td.sheet-cell` per cell. Cell config via attrs: `data-type="text\|select\|person\|date\|tags\|link"`, `data-variant="name\|muted\|health\|time"`, `data-value`, `data-label` (link), `data-dot` (`is-warning`/`is-danger`), `data-empty-icon`, `data-fail` (demo save error). Cell states: `.is-empty` · `.is-selected` · `.is-editing` · `.is-saving` · `.is-saved` · `.is-error` · `.is-range` · `.is-readonly` · `.is-skeleton`. Behaviour is auto-wired by the `data-sheet` module in the `example.html` script block. |
-| [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). **Two sizes only: 16 & 24** (`.icon-16` / `.icon-24`). Default colour graphite-700 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
+| [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 325 icons + aliases; 231 of those names match a Picasso icon). Renders at **1em**, tracking the surrounding text, exactly as Picasso's icons do; `.icon-16` / `.icon-24` pin a size where a context needs one. Default colour graphite-750 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Plugin launcher | `.pg-fab` | One button, bottom-right of every prototype, that switches the plugins below on and off. Lists only what the page carries; the rest are greyed out with the reason. CSS in `plugins.css`, JS in `plugins.js`, both inlined by `inline.py` alongside the review bar. |
@@ -236,7 +403,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 
 - **Check the system before you build.** Nothing bespoke until `example.html` has been looked at and found wanting. Most of what a prototype needs is already a component — toasts, snackbars, modals, drawers, switches, empty states, banners — and a hand-rolled version of something that exists is drift the moment the real one changes. The order is: find the component → if it is close, add a variant to `components.css` → only then write something new, and write it in `components.css` so the next prototype inherits it, not inline in one file. A one-off that lives in a single page is the thing this system exists to prevent.
 - **Compose, don't override.** Stack variants on the root class (`<button class="btn btn-xs btn-primary">`). Don't write new CSS in a feature file — if a variant is missing, add it to `components.css` and re-inline.
-- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--ic-space-*)` / `var(--type-*)` — never raw palette tokens like `var(--ic-palette-blue-500)`.
+- **Stick to semantic tokens.** In any inline styles use `var(--color-*)` / `var(--spacing-*)` / `var(--type-*)` — never raw palette tokens like `var(--color-blue-500)`.
 - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, tag inputs, character counters) get their behavior from the `<script>` block in `example.html`. When you build a new prototype, copy that whole block — the handlers are delegated and idempotent, so they activate on any markup that uses the right classes / data attributes.
 - **Page structure:** wrap content in `<main class="page">` to get the 1024px max-width centered layout.
 - **Wide vs. sheet tables.** Both share the `.table` base, so a prototype can offer a view toggle by swapping the modifier. Use `.table-wide` for read-heavy lists (tall rows, zebra striping, rich cell content). Use `.table-sheet` + `data-sheet` for editable, dense, Airtable/Linear-style grids where every cell is inline-editable through the shared cell state machine. Drive columns and cell values off `data-*` attributes — the module renders and wires everything; you don't hand-author cell inner markup (except the Name cell's `.sheet-tree` scaffold for the row toggle).
@@ -293,7 +460,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 <span class="caption">Caption</span>
 ```
 
-For the full inventory with every modifier and live demos, open `example.html` — it's the source of truth for what's available and how each component composes.
+For the full inventory with every modifier and live demos, open `example.html` — it's the complete picture of what designmd offers and how each component composes. For what a component *is*, though, the authority is Picasso: its [Storybook](https://toptal.github.io/picasso/) for behaviour and props, and `packages/base/<Component>/src/` for the implementation. `figma-map.json` carries the `storyId` for each one.
 
 ---
 
@@ -304,7 +471,7 @@ The deliverable for any prototype is **one HTML file** with all CSS + assets inl
 ### Two folders, side by side
 
 ```
-Development/
+Development/icarus/
 ├── designmd/                    ← the design system → pushed to GitHub
 │   ├── tokens.css               ← primitives
 │   ├── semantic.css             ← aliases + reset
@@ -318,7 +485,19 @@ Development/
 │   ├── assets/
 │   │   └── logo.svg
 │   ├── inline.py                ← bakes the system into a prototype HTML
-│   └── example.html             ← system showcase (uses local ./ links)
+│   ├── icons.svg                ← the Figma icon sprite (325 icons), injected by inline.py
+│   ├── icons.index.json         ← icon slugs + sections, for the searchable gallery
+│   ├── figma-map.json           ← the component registry: designmd ↔ Figma ↔ Picasso React
+│   ├── fonts/                   ← Proxima Nova .woff2, base64-embedded on inline
+│   ├── example.html             ← system showcase (uses local ./ links)
+│   ├── index.html               ← the library index, linking everything below
+│   ├── component-map.html       ← how the ?map=1 inspector works
+│   ├── interaction-patterns.html← pattern labs with live playgrounds
+│   ├── master-prompt.html       ← the copy-paste project scaffold prompt
+│   ├── plugin-launcher.html     ← the plugin launcher, documented
+│   ├── review-bar.html          ← the review bar, documented
+│   ├── states-switcher.html     ← the edge-state switcher (?states=1)
+│   └── versions.html            ← the Versions + Changes plugins
 │
 └── features/                    ← prototypes → dropped onto Netlify
     ├── integrations/
@@ -327,7 +506,7 @@ Development/
         └── index.html           ← single-file prototype
 ```
 
-`designmd/` is the stable source of truth that gets pushed to GitHub. `features/` is a separate, fast-moving sandbox of single HTML files. The two folders are **siblings** — `features/` is not a subfolder of `designmd/`, so the design-system repo isn't polluted with prototype churn.
+`designmd/` is the stable layer that gets pushed to GitHub — stable relative to `features/`, but still downstream of Picasso. `features/` is a separate, fast-moving sandbox of single HTML files. The two folders are **siblings** — `features/` is not a subfolder of `designmd/`, so the design-system repo isn't polluted with prototype churn.
 
 > **Rule — every feature follows `features/feature-name/index.html`.**
 >
@@ -343,6 +522,16 @@ Development/
 
 > **Rule — every feature prototype ships as a self-contained single file.**
 >
+> **`inline.py` refuses a prototype whose own styles use tokens the system no longer
+> defines.** It only swaps the block between the `tokens.css` markers, so a prototype
+> written against an older vocabulary would keep its hand-written styles and lose every
+> reference underneath them — the page comes out unstyled and it looks like the script
+> broke it. The check compares against what `tokens.css` and `semantic.css` actually
+> define (not a hardcoded prefix, so it survives later renames), ignores `var(--x,
+> fallback)` and anything the prototype defines itself, and prints the offending tokens
+> with counts. Rename them first, then inline. `--force` overrides, and `--only-review`
+> skips the check since it never touches the token block.
+
 > A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** — including the custom icon sprite (`icons.svg`), which `inline.py` injects after `<body>`. (Phosphor has been retired; there is no remote icon CDN anymore.)
 >
 > Why: the deliverable for every prototype is one HTML file. It needs to render identically when dropped on Netlify, attached to an email, opened from `file://`, hosted from any static server, or shared as a download. Relative `../designmd/` links work locally but break the moment the file is moved — so the file is never shipped with those links live.
@@ -468,7 +657,15 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 
 ## 8. Vibe prompt (paste into LLM)
 
-> Build an HTML prototype for the Icarus design system at `features/feature-name/index.html`. The system lives in a sibling `designmd/` folder.
+> Build an HTML prototype using **designmd** at `features/feature-name/index.html`. The system
+> lives in a sibling `designmd/` folder.
+>
+> designmd is a plain HTML/CSS extension of **Picasso**, Toptal's production design system
+> ([repo](https://github.com/toptal/picasso) · [Storybook](https://toptal.github.io/picasso/)).
+> Its tokens are Picasso's, name and value, except where a comment says `extension`. If you need
+> to know how a component really behaves or what props it takes, the Storybook is the authority —
+> `figma-map.json` carries the `storyId` and the React mapping for each one. Don't invent a token
+> or a component: if designmd lacks something, say so rather than approximating it.
 >
 > **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
 >
@@ -481,14 +678,14 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS **and the icon sprite** into the file. Result: zero external dependencies.
 >
 > **Rules:**
-> - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--ic-palette-*` directly.
+> - Use **semantic tokens only** (`--color-bg`, `--color-text`, `--color-brand`, `--type-h1`). NEVER reference primitives like `--color-blue-500` directly.
 > - **Three color roles:** brand mark = blue-500 (`--color-accent`, logo only); primary CTA = green-500 (`--color-brand`, ONE per page — every other CTA is `.btn-secondary`); chrome = graphite-800 (topbar only).
 > - Reuse component classes from the §6 shortcode reference (`.btn`, `.card`, `.input`/`.field`, `.alert`, `.tabs`, `.toast`, `.tooltip` via `[data-tooltip]`, `.avatar`, `.table` (+ `.table-sheet` editable grid via `data-sheet`), `.dropdown`, `.modal`, `.drawer`, `.page-head`, `.sidenav`, `.topbar`, `.badge`, `.tag`, `.chip`, `.switch`, `.radio`, `.checkbox`, etc.). Compose variants on the root (`<button class="btn btn-xs btn-primary">`). Don't author new component CSS in the prototype — if a variant is missing, add it to `components.css` and re-inline.
-> - All spacing via `--ic-space-*`. All radii via `--ic-radius-*`. All motion via `--ic-duration-*` + `--ic-ease*`.
+> - All spacing via `--spacing-*`. All radii via `--radius-*`. All motion via `--duration-*` + `--ease*`.
 > - Status colors (red/yellow/green) only signal state, never decoration.
 > - Type is the visual hierarchy. Avoid extra borders, dividers, or background fills.
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
-> - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Inter font already loaded via `tokens.css`.
+> - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Proxima Nova is self-hosted and base64-embedded by `inline.py` — no font request at runtime.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
 > - **The review bar comes for free.** `inline.py` adds `review.css` + `review.js` to every prototype; open it with `?review=1` to comment, edit text and spotlight. Don't build your own feedback tooling. Serve prototypes with `tools/serve.mjs` so comments persist to `feedback.json`.
 
@@ -510,13 +707,13 @@ More Figma requirements (naming, layers, component usage, tokens/variables, hand
 
 ### Component binding — designmd ↔ Figma ↔ React (Picasso)
 
-There are **two** component libraries for Icarus: this HTML/CSS one (`designmd/`) and a Figma component library. They must stay in lockstep so that when an approved feature moves from HTML into Figma, Claude drops the **real published Figma component** — never a hand-drawn or randomly generated approximation — and, in reverse, recreates a Figma frame with the correct designmd classes.
+There are **two** component libraries for designmd: this HTML/CSS one (`designmd/`) and a Figma component library. They must stay in lockstep so that when an approved feature moves from HTML into Figma, Claude drops the **real published Figma component** — never a hand-drawn or randomly generated approximation — and, in reverse, recreates a Figma frame with the correct designmd classes.
 
 The binding is stored in two artifacts:
 
 1. **`figma-map.json` (phase 1 — in repo now).** The authoritative pairing: for every component it records the designmd side (`root` class, `variants`, canonical `snippet`, shortcode URL) and the Figma side (`component` name, `nodeId`, `key`, and a `propMap` from Figma variant/property values → designmd variant classes). The Figma fields start as `pending-discovery` and are filled by reading the published library (`get_code_connect_suggestions` → `get_context_for_code_connect`).
 2. **Code Connect templates (phase 2 — `figma/*.figma.ts`).** Once the Figma library is published and a Node toolchain is available, each mapping is emitted as a `.figma.ts` template that returns the designmd HTML snippet, published via the Code Connect CLI so it also surfaces natively in Figma Dev Mode and the MCP. Generated from `figma-map.json`, not authored by hand.
-3. **React cross-reference (`react` block, in repo now).** Each entry also carries a `react` block binding the component to the **Picasso** React/Storybook library — `component`, `import`, Storybook `storyId`, a `status` (`mapped` · `partial` · `gap`), and a `propMap` translating designmd variant classes → React props. A stable `slug` is stamped onto the markup as `data-component="<slug>"` (auto-applied from each entry's `stampSelector`). Engineers open any prototype with **`?map=1`** (or the goggles toggle in `example.html`'s nav): mapped components get a pink dotted outline and hovering one shows the resolved React usage (e.g. `<Button variant="primary" size="small" />`), the import line, and a deep link to the Picasso story. `gap`/`partial` entries surface their `note` so library gaps stay visible instead of being faked.
+3. **React cross-reference (`react` block, in repo now).** Each entry also carries a `react` block binding the component to the **Picasso** React/Storybook library — `component`, `import`, Storybook `storyId`, a `status` (`mapped` · `partial` · `gap`), and a `propMap` translating designmd variant classes → React props. A stable `slug` is stamped onto the markup as `data-component="<slug>"` (auto-applied from each entry's `stampSelector`). Engineers open any prototype with **`?map=1`** (or the goggles toggle in `example.html`'s nav): mapped components get a pink dotted outline and hovering one shows the resolved React usage (e.g. `<Button variant="positive" size="small" />` — `.btn-primary` is Picasso's `positive`, since designmd's primary CTA is green and Picasso's `primary` is blue), the import line, and a deep link to the Picasso story. `gap`/`partial` entries surface their `note` so library gaps stay visible instead of being faked.
 
 **Rules for using the binding**
 
@@ -525,8 +722,28 @@ The binding is stored in two artifacts:
 - **Code → design (approved feature → Figma).** For every element in the HTML, look up its `root` class in `figma-map.json`, then instantiate the mapped Figma component by `nodeId` (via `use_figma`) and set its variants from `propMap`. If a class has a mapping, you MUST use that component — do not draw rectangles/text to fake it. If a class has **no** mapping yet, flag it (it's a gap to add to the library), don't silently improvise.
 - **Design → code (Figma frame → HTML).** Reverse-lookup by Figma component name/`nodeId` and emit the recorded `snippet` with the right variant classes.
 - **Icons come from the custom Figma pack — both sides.** designmd now ships the pack itself as an inline SVG sprite (`icons.svg`, generated by `tools/export_icons.py` from the Figma *Iconography* file); Phosphor is fully retired. HTML uses `<svg class="icon"><use href="#i-{slug}"></svg>`; Figma flows use the same pack via icon instance-swaps. Slugs match 1:1, so there is no name translation — `#i-{slug}` in HTML ↔ the `{slug}` component in Figma. New icons: add them to the Figma pack, re-run `export_icons.py`, and they appear in both places.
-  - **Sizes: 16×16 and 24×24 only.** The pack is drawn on a 16 and a 24 grid — those are the only two sizes an icon may be placed at, in HTML and in Figma. Use the `.icon-16` / `.icon-24` helpers (or `font-size: 16px` / `24px` on the `.icon`). Never scale an icon to an arbitrary size; if a design needs a larger graphic, that's a [Pictogram](#9-figma-design--requirements--guidelines) (64×64), not an icon. Stroke icons carry `vector-effect="non-scaling-stroke"`, so the stroke stays a constant 1px at both 16 and 24 (the exporter/importer add it automatically).
-  - **Default colour: graphite-700** (`--color-icon`). Standalone icons rest at graphite-700; icons inside colour-carrying components (primary buttons, links, badges, tags, toasts) inherit that component's colour instead.
+  - **Two grids, and icons scale with their text.** The pack is drawn on a 16 and a 24
+    grid — those are the only two artworks, in HTML and in Figma. Rendering is `1em`:
+    `.icon` is `width: 1em; height: 1em` with `vertical-align: -0.125em`, which is
+    character-for-character what Picasso does (`h-[1em] align-[-.125em]` on every icon
+    component). So an icon in a 13px button renders at 13px, exactly as Picasso's does —
+    its own button sizes are 12, 13 and 15px, never 16.
+
+    Pin a size with `.icon-16` / `.icon-24` only where a context genuinely needs one
+    independent of its text — `.sidenav-item-icon` does, so the icon reads a little
+    larger than its 14px label. Don't invent a third size: 18px, 14px and 12px literals
+    were all removed in favour of `1em` or a pinned 16. If a design needs a larger
+    graphic, that's a [Pictogram](#9-figma-design--requirements--guidelines) (64×64),
+    not an icon. Stroke icons carry `vector-effect="non-scaling-stroke"`, so the stroke
+    stays a constant 1px at any rendered size (the exporter/importer add it
+    automatically).
+  - **Default colour: graphite-750** (`--color-icon`). This is where designmd and Picasso
+    differ in approach rather than in outcome. Picasso puts `fill-current` + `text-inherit`
+    on every icon, so it always takes the surrounding text colour. designmd sets
+    `fill: none` + `color: var(--color-icon)` and then overrides to `inherit` inside
+    colour-carrying contexts (`.btn`, `a`, `.badge`, `.tag`, `.toast`). Same result in
+    those contexts; a *standalone* designmd icon rests at graphite-750 where Picasso's
+    would take whatever the text around it is.
 - **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `figma-map.json` entry in the same change — including its `slug`, `stampSelector`, Figma binding, and `react` block. A component isn't "done" until all three sides (designmd, Figma, React) and the mapping exist. `react.propMap` values are best-effort until confirmed against the Picasso story controls.
 
 Frame dimensions from the section above (1440 × 900) still apply to whatever view the mapped components are assembled into.

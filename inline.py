@@ -223,9 +223,63 @@ def inline_review_only(path):
     print(f'  {status}')
     print(f'  final size: {os.path.getsize(path):,} bytes')
 
-def inline(path):
+class StaleTokens(Exception):
+    """The prototype references tokens the current system does not define."""
+
+def find_stale_tokens(html):
+    """Token references in the prototype's OWN markup and styles that the system
+    no longer defines.
+
+    inline.py only swaps the block between the tokens.css markers. A prototype
+    written against an older vocabulary keeps its hand-written styles, so
+    refreshing the block underneath them silently orphans every reference —
+    the page comes out unstyled and it looks like this script broke it.
+
+    Checked against what tokens.css and semantic.css actually define, not
+    against a hardcoded prefix, so it keeps working through later renames.
+    """
+    # Drop everything inline.py manages; what is left is the prototype's own.
+    own = html
+    for pattern in (STYLE_PATTERN, REVIEW_STYLE_PATTERN, REVIEW_PATTERN, SPRITE_PATTERN):
+        own = pattern.sub('', own)
+    own = re.sub(r'/\*.*?\*/', '', own, flags=re.DOTALL)
+    own = re.sub(r'<!--.*?-->', '', own, flags=re.DOTALL)
+
+    system = set(re.findall(r'(--[a-zA-Z0-9-]+)\s*:', read('tokens.css') + read('semantic.css')))
+    local = set(re.findall(r'(--[a-zA-Z0-9-]+)\s*:', own))
+    local |= set(re.findall(r"""setProperty\(\s*['"](--[a-zA-Z0-9-]+)""", own))
+
+    stale = {}
+    for name, comma in re.findall(r'var\(\s*(--[a-zA-Z0-9-]+)\s*(,?)', own):
+        if comma:                      # var(--x, fallback) degrades on its own
+            continue
+        if name in system or name in local:
+            continue
+        stale[name] = stale.get(name, 0) + 1
+    return stale
+
+def assert_migrated(path, html):
+    stale = find_stale_tokens(html)
+    if not stale:
+        return
+    total = sum(stale.values())
+    worst = sorted(stale.items(), key=lambda kv: -kv[1])
+    print(f'  REFUSED — {total} reference(s) to {len(stale)} token(s) the system no longer defines:')
+    for name, n in worst[:8]:
+        print(f'      {name}  x{n}')
+    if len(worst) > 8:
+        print(f'      … and {len(worst) - 8} more')
+    print('  These live in the prototype\'s own styles, which this script does not touch.')
+    print('  Refreshing the system block underneath them would leave every one unresolved.')
+    print('  Rename them to the current tokens first, then inline. Override: --force')
+    raise StaleTokens(path)
+
+def inline(path, force=False):
     with open(path) as f:
         html = f.read()
+
+    if not force:
+        assert_migrated(path, html)
 
     style_block = build_style_block()
     inline_logo = build_inline_logo()
@@ -279,15 +333,26 @@ def inline(path):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     only_review = '--only-review' in sys.argv
+    force = '--force' in sys.argv
     if not args:
-        print('Usage: python3 inline.py [--only-review] <prototype.html> [more.html ...]')
+        print('Usage: python3 inline.py [--only-review] [--force] <prototype.html> [more.html ...]')
         sys.exit(1)
+    refused = 0
     for path in args:
         print(f'\n{path}')
         if not os.path.exists(path):
             print('  not found, skipping')
             continue
-        (inline_review_only if only_review else inline)(path)
+        if only_review:
+            inline_review_only(path)
+            continue
+        try:
+            inline(path, force=force)
+        except StaleTokens:
+            refused += 1
+    if refused:
+        print(f'\n{refused} file(s) left untouched. Migrate their tokens, or pass --force.')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

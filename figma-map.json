@@ -1,6 +1,6 @@
 {
   "$schema": "./figma-map.schema.json",
-  "description": "Binding layer between the Icarus designmd HTML/CSS component library and the Figma component library. Phase 1: this map. Phase 2 (once the Figma library URL + Node toolchain are in place): generated Code Connect .figma.ts templates under ./figma/.",
+  "description": "Registry binding designmd's HTML/CSS classes to the two systems they answer to: Picasso (github.com/toptal/picasso — the source of truth, React + Storybook) and the Figma component library. Each entry carries the designmd side (root class, snippet, shortcode), a react block (component, import, storyId, propMap, status) verified against Picasso's source, and a figma block. designmd is an extension of Picasso, not a parallel system: where a token or prop differs, Picasso is right.",
   "figmaLibrary": {
     "name": "Product Library v2.0",
     "fileKey": "0zTTN9YKOABPGLQ4NsyEW5",
@@ -16,7 +16,18 @@
     "react.block": "Cross-reference to the React/Storybook library (Picasso). Fields: component, import, storyId, status, propMap, note.",
     "react.status": "mapped = clean 1:1 · partial = closest fit, see note · gap = no single Picasso component (compose).",
     "slug": "Stable key stamped as data-component=\"<slug>\"; the ?map=1 inspector resolves it to this entry.",
-    "stampSelector": "CSS selector the inspector uses to auto-stamp data-component; omit to register without auto-stamping."
+    "stampSelector": "CSS selector the inspector uses to auto-stamp data-component; omit to register without auto-stamping.",
+    "react.propMap": "designmd class -> Picasso props. Key order is precedence: the root class comes first and modifiers after, so the result does not depend on the order a prototype writes its classes. Keys that are not classes (e.g. tooltip's \"data-placement=top\") document the binding but are not resolved by the ?map=1 inspector, which matches on classList."
+  },
+  "reactLibrary": {
+    "name": "Picasso",
+    "package": "@toptal/picasso",
+    "version": "102.0.0",
+    "registry": "https://registry.npmjs.org/@toptal/picasso",
+    "auditedOn": "2026-10-23",
+    "method": "Component names and prop unions read from the published .d.ts of @toptal/picasso@102.0.0; prop VALUES confirmed against the component implementations in packages/base at toptal/picasso@bcaacbb8ec3b (styles.ts / *.tsx), not inferred from designmd's CSS. The repo also ships Code Connect files (<Component>.figma.ts) that the Figma side of this map should be built from.",
+    "sourceRepo": "https://github.com/toptal/picasso",
+    "sourceCommit": "bcaacbb8ec3bac1c9b49a7864a84bb8b145846c6"
   },
   "components": [
     {
@@ -42,7 +53,8 @@
             "disabled": true
           }
         },
-        "note": "borders (all/middle/none) set on the .accordion-group in designmd = the `borders` prop in Picasso."
+        "note": "Verified against @toptal/picasso@102.0.0. borders (all/middle/none) set on .accordion-group in designmd = the `borders` prop in Picasso.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -61,7 +73,8 @@
         "storyId": "components-accordion--accordion",
         "status": "mapped",
         "propMap": {},
-        "note": "Always-visible trigger row."
+        "note": "Picasso Accordion.Summary takes content, not variants.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -80,7 +93,8 @@
         "storyId": "components-accordion--accordion",
         "status": "mapped",
         "propMap": {},
-        "note": "Collapsible content region."
+        "note": "Picasso Accordion.Details takes content, not variants.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -116,6 +130,12 @@
         "storyId": "components-button--button",
         "status": "mapped",
         "propMap": {
+          "btn": {
+            "size": "medium"
+          },
+          "btn-xs": {
+            "size": "small"
+          },
           "btn-primary": {
             "variant": "positive"
           },
@@ -127,12 +147,10 @@
           },
           "btn-ghost": {
             "variant": "transparent"
-          },
-          "btn-xs": {
-            "size": "small"
           }
         },
-        "note": "propMap values best-effort — confirm against the Picasso Button story controls."
+        "note": "Confirmed against Button/styles.ts, which resolves the variants to real colours: primary = bg-blue-500, positive = bg-green-500, negative = bg-red-500, secondary = bg-white/bg-gray-200, transparent = bg-transparent. designmd's primary CTA is green, so .btn-primary is positive, not primary. Sizes match on height — small h-6 = 24px = .btn-xs, medium h-8 = 32px = base .btn — though Picasso pads wider (px-4/px-3 vs designmd space-3/space-2). Picasso large (h-12, 48px) has no designmd equivalent. .btn-icon-only has no variant prop: pass icon with no children.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
@@ -174,7 +192,8 @@
             "size": "small"
           }
         },
-        "note": "Picasso groups inputs under Forms; propMap best-effort."
+        "note": "Verified against @toptal/picasso@102.0.0: size is small|medium|large and status accepts error. Picasso groups inputs under Forms in Storybook.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -206,7 +225,9 @@
         "import": "@toptal/picasso",
         "storyId": "forms-select--select",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso Select props come from SelectBase and are behavioural; designmd .input-select-* are structural parts.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -238,7 +259,9 @@
         "import": "@toptal/picasso",
         "storyId": "forms-tagselector--tagselector",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso TagSelector props are behavioural; designmd exposes no variant classes.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -275,7 +298,8 @@
         "storyId": "forms-dropzone--dropzone",
         "status": "mapped",
         "propMap": {},
-        "note": "Picasso groups it under Forms."
+        "note": "Picasso Dropzone props are behavioural (accept, onDrop…), not variants. designmd .is-dragover/.is-error/.is-disabled are runtime states.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -308,7 +332,8 @@
         "storyId": "components-pagetopbar--pagetopbar",
         "status": "mapped",
         "propMap": {},
-        "note": "Picasso composes it as Page.TopBar"
+        "note": "Picasso Page.TopBar exposes no variant props.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -342,7 +367,8 @@
         "storyId": "components-pagesidebar--pagesidebar",
         "status": "mapped",
         "propMap": {},
-        "note": "Picasso composes it as Page.Sidebar (with Page.Sidebar.Menu / Page.Sidebar.Item inside)."
+        "note": "Picasso Page.Sidebar exposes no variant props.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -361,7 +387,8 @@
         "storyId": "components-pagesidebar--pagesidebar",
         "status": "mapped",
         "propMap": {},
-        "note": "Row within Page.Sidebar.Menu."
+        "note": "Picasso Page.Sidebar.Item exposes no variant props.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -392,7 +419,13 @@
         "import": "@toptal/picasso",
         "storyId": "forms-switch--switch",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "is-disabled": {
+            "disabled": true
+          }
+        },
+        "note": "Checked state is the native input's, not a class.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -425,7 +458,13 @@
         "import": "@toptal/picasso",
         "storyId": "forms-radio--radio",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "is-disabled": {
+            "disabled": true
+          }
+        },
+        "note": "designmd .is-error has no Picasso Radio equivalent; checked is the native input's.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -458,7 +497,13 @@
         "import": "@toptal/picasso",
         "storyId": "forms-checkbox--checkbox",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "is-disabled": {
+            "disabled": true
+          }
+        },
+        "note": "designmd .is-error has no Picasso Checkbox equivalent; checked is the native input's.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -491,7 +536,9 @@
         "import": "@toptal/picasso",
         "storyId": "components-slider--slider",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso Slider props are behavioural; designmd exposes no slider variant classes.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -528,7 +575,25 @@
         "import": "@toptal/picasso",
         "storyId": "components-tag--tag",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "tag-positive": {
+            "variant": "green"
+          },
+          "tag-negative": {
+            "variant": "red"
+          },
+          "tag-warning": {
+            "variant": "yellow"
+          },
+          "tag-blue": {
+            "variant": "blue"
+          },
+          "tag-light": {
+            "variant": "light-grey"
+          }
+        },
+        "note": "Picasso Tag variant is light-grey|blue|green|yellow|red. designmd .tag-dark, .tag-blue-dark and .tag-blue-light have no Picasso equivalent — use the nearest variant and expect a shade difference.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -563,8 +628,22 @@
         "import": "@toptal/picasso",
         "storyId": "components-tag--tag",
         "status": "partial",
-        "propMap": {},
-        "note": "designmd status pill ≈ a colored Picasso Tag; no dedicated status-pill component"
+        "propMap": {
+          "badge-success": {
+            "variant": "green"
+          },
+          "badge-warning": {
+            "variant": "yellow"
+          },
+          "badge-danger": {
+            "variant": "red"
+          },
+          "badge-info": {
+            "variant": "blue"
+          }
+        },
+        "note": "designmd status pills are subtle-fill; Picasso Tag is solid. Colours map 1:1, weight does not — hence status partial.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -596,7 +675,23 @@
         "import": "@toptal/picasso",
         "storyId": "components-badge--badge",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "count-badge": {
+            "variant": "red",
+            "size": "medium"
+          },
+          "count-badge-sm": {
+            "size": "small"
+          },
+          "count-badge-lg": {
+            "size": "large"
+          },
+          "count-badge-secondary": {
+            "variant": "white"
+          }
+        },
+        "note": "Confirmed against Badge/styles.ts. Sizes line up exactly: small h-3 = 12px, medium h-4 = 16px, large 1.25rem = 20px, matching .count-badge-sm / base / -lg. white = 'bg-white text-graphite-700 border-gray-400' = .count-badge-secondary (designmd's border is gray-300, one step lighter). NOTE the defaults differ: a bare .count-badge is red at 16px, but Picasso defaults to variant white at size large — so the base class must be emitted explicitly, never as <Badge />.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
@@ -632,7 +727,22 @@
         "import": "@toptal/picasso",
         "storyId": "components-avatar--avatar",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "avatar-md": {
+            "size": "xxsmall"
+          },
+          "avatar-lg": {
+            "size": "xsmall"
+          },
+          "avatar-xl": {
+            "size": "small"
+          },
+          "avatar-2xl": {
+            "size": "medium"
+          }
+        },
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)",
+        "note": "WARNING — the names are shifted two steps. Picasso sizes are em-based (AvatarWrapper/styles.ts): xxsmall 2em=32px, xsmall 2.5em=40px, small 5em=80px, medium 7.5em=120px, large 10em=160px. designmd .avatar-md is 32px, so it is Picasso xxsmall, NOT medium — translating .avatar-md to size=\"medium\" gives 120px, nearly 4x too big. .avatar-xs (16px) and .avatar-sm (24px) are below Picasso's smallest; Picasso large (160px) has no designmd equivalent."
       }
     },
     {
@@ -680,7 +790,8 @@
             "variant": "blue"
           }
         },
-        "note": "Alert variant values best-effort — confirm against Picasso Alert controls."
+        "note": "Verified against @toptal/picasso@102.0.0: variant is red|green|yellow|blue — all four designmd alerts map cleanly.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -724,14 +835,12 @@
           "toast-warning": {
             "variant": "yellow"
           },
-          "toast-info": {
-            "variant": "blue"
-          },
           "toast-neutral": {
-            "variant": "grey"
+            "variant": "white"
           }
         },
-        "note": "Name mismatch: designmd Toast ≈ Picasso Notification. propMap best-effort — confirm variant values."
+        "note": "Corrected against @toptal/picasso@102.0.0: Notification variant is red|green|white|yellow. The previous map claimed blue for .toast-info and grey for .toast-neutral — neither exists. .toast-neutral = white; .toast-info has NO Picasso equivalent.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -763,7 +872,19 @@
         "import": "@toptal/picasso",
         "storyId": "components-loader--loader",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "size-sm": {
+            "size": "small"
+          },
+          "size-md": {
+            "size": "medium"
+          },
+          "size-lg": {
+            "size": "large"
+          }
+        },
+        "note": "Sizes are composed on .chase / .chase-cw. Picasso Loader also takes variant blue|inherit; designmd's .chase is blue and .chase-cw graphite — no class maps to variant.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -796,7 +917,8 @@
         "storyId": "components-progressbar--default",
         "status": "mapped",
         "propMap": {},
-        "note": "value={n}; add showPercentage for the labelled variant"
+        "note": "Picasso ProgressBar exposes no variant props; value is a prop, not a class.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -832,7 +954,8 @@
         "storyId": "components-dropdown--dropdown",
         "status": "mapped",
         "propMap": {},
-        "note": "Trigger + popup. The list inside is a Menu; rows are Menu.Item — see those entries."
+        "note": "Trigger + popup. The list inside is a Menu; rows are Menu.Item — see those entries.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -851,7 +974,8 @@
         "storyId": "components-menu--menu",
         "status": "mapped",
         "propMap": {},
-        "note": "The list rendered inside a Dropdown."
+        "note": "Picasso Menu exposes no variant props.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -870,7 +994,8 @@
         "storyId": "components-menu--menu",
         "status": "mapped",
         "propMap": {},
-        "note": "A row within a Picasso Menu."
+        "note": "Picasso Menu.Item exposes no variant props; designmd .dropdown-item-danger has no equivalent.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -905,6 +1030,9 @@
         "storyId": "overlays-modal--modal",
         "status": "mapped",
         "propMap": {
+          "modal-xs": {
+            "size": "xsmall"
+          },
           "modal-sm": {
             "size": "small"
           },
@@ -915,10 +1043,14 @@
             "size": "large"
           },
           "modal-xl": {
-            "size": "large"
+            "size": "xlarge"
+          },
+          "modal-full": {
+            "size": "full-screen"
           }
         },
-        "note": "propMap sizes best-effort — confirm against Picasso Modal."
+        "note": "Corrected against @toptal/picasso@102.0.0: size is xsmall|small|medium|large|xlarge|full-screen. .modal-xl was mapped to large; it is xlarge. .modal-xs and .modal-full were missing.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -953,7 +1085,25 @@
         "import": "@toptal/picasso",
         "storyId": "components-drawer--drawer",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "drawer-narrow": {
+            "width": "narrow"
+          },
+          "drawer-regular": {
+            "width": "regular"
+          },
+          "drawer-medium": {
+            "width": "medium"
+          },
+          "drawer-wide": {
+            "width": "wide"
+          },
+          "drawer-ultra": {
+            "width": "ultra-wide"
+          }
+        },
+        "note": "Exact 1:1 — Picasso WidthType is narrow|regular|medium|wide|ultra-wide; designmd .drawer-ultra = ultra-wide.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -983,7 +1133,9 @@
         "import": "@toptal/picasso",
         "storyId": "components-breadcrumbs--breadcrumbs",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso Breadcrumbs exposes no variant props; designmd .is-current is the last crumb.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1017,7 +1169,9 @@
         "import": "@toptal/picasso",
         "storyId": "components-pagehead--pagehead",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso PageHead exposes no variant props.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1047,7 +1201,9 @@
         "import": "@toptal/picasso",
         "storyId": "layout-tabs--tabs",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "designmd exposes no tab variant classes. Picasso Tabs has orientation and variant (scrollable|fullWidth) with no designmd counterpart.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1082,7 +1238,9 @@
         "import": "@toptal/picasso",
         "storyId": "components-stepper--stepper",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {},
+        "note": "Picasso Stepper has direction and active (an index, not a class). designmd .stepper-compact / .stepper-current-only have no Picasso equivalent.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1113,7 +1271,25 @@
         "import": "@toptal/picasso",
         "storyId": "overlays-tooltip--tooltip",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "data-placement=top": {
+            "placement": "top"
+          },
+          "data-placement=bottom": {
+            "placement": "bottom"
+          },
+          "data-placement=left": {
+            "placement": "left"
+          },
+          "data-placement=right": {
+            "placement": "right"
+          },
+          "data-tooltip-style=regular": {
+            "compact": false
+          }
+        },
+        "note": "Keyed by attribute value, not class. designmd's default dark pill = compact: true; [data-tooltip-style=\"regular\"] = compact: false. Picasso placement also accepts -start/-end suffixes designmd does not expose.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1145,7 +1321,8 @@
         "storyId": "layout-paper--paper",
         "status": "partial",
         "propMap": {},
-        "note": "no Picasso Card; nearest is Paper/Container"
+        "note": "Picasso Container is a layout primitive (direction, bordered, align); designmd .card is a styled surface. Nearest fit only — see status.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1180,7 +1357,16 @@
         "import": "@toptal/picasso",
         "storyId": "components-table--table",
         "status": "mapped",
-        "propMap": {}
+        "propMap": {
+          "table-wide": {
+            "variant": "striped"
+          },
+          "table-sheet": {
+            "spacing": "compact"
+          }
+        },
+        "note": "Confirmed against Table.tsx (defaults spacing regular, variant bordered), TableBody (striped calls stripeRows) and TableCell (compact = h-6/24px, regular = px-4). .table-wide is zebra-striped = striped, but its 80px rows have no Picasso equivalent. .table-sheet is 28px rows; compact (24px) is the nearest fit, not an exact one.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
@@ -1214,7 +1400,8 @@
         "storyId": null,
         "status": "gap",
         "propMap": {},
-        "note": "composite — no single Picasso component; assemble from Input (search), Select (filters), Button and Tabs"
+        "note": "No Picasso component — compose from Container, Input and Button.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1247,7 +1434,8 @@
         "storyId": "layout-tabs--tabs",
         "status": "partial",
         "propMap": {},
-        "note": "Picasso has no dedicated segmented control; Tabs cover view/period switching"
+        "note": "Mapped to Tabs as the nearest control; Picasso has no segmented variant. No prop corresponds to .segmented-item / .is-active.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1300,7 +1488,8 @@
         "storyId": "components-table--table",
         "status": "partial",
         "propMap": {},
-        "note": "editable spreadsheet grid; Picasso Table is static/tabular only"
+        "note": "The editable grid has no Picasso equivalent; Table is the nearest shell. See table for spacing.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1342,7 +1531,8 @@
         "storyId": "picasso-pictograms-pictograms--pictograms",
         "status": "partial",
         "propMap": {},
-        "note": "cross-ref to the Picasso Pictograms library"
+        "note": "Separate library (@toptal/picasso-pictograms); size is a prop, not a class.",
+        "verifiedAgainst": "102.0.0"
       }
     },
     {
@@ -1414,7 +1604,95 @@
         "storyId": "components-icons--icons",
         "status": "partial",
         "propMap": {},
-        "note": "Custom Figma pack aligned with Picasso's icon set — 242 of 320 slugs match a Picasso icon (cross-referenced per-icon in the ?map=1 gallery). The remaining ~78 are Operationalize-specific extras with no Picasso equivalent. Not auto-stamped page-wide (too granular)."
+        "note": "Icon is chosen by name, not by a variant prop, so there is nothing to propMap. SIZING MATCHES EXACTLY: designmd's .icon is width/height 1em with vertical-align -0.125em, and Picasso's icon components carry h-[1em] align-[-.125em]. COLOUR DIFFERS IN APPROACH: Picasso uses fill-current + text-inherit, so every icon inherits its parent's colour; designmd uses fill:none + color: var(--color-icon) and overrides to inherit inside colour-carrying contexts (.btn, a, .badge, .tag, .toast). Same result in those contexts, but a standalone designmd icon rests at graphite-750 where Picasso's would take the surrounding text colour. NAMES: 231 of designmd's 325 sprite slugs match one of Picasso's 311 icons exactly (71%). 87 are genuinely designmd-only and 80 Picasso-only. Seven more look like the same icon under a different name and are worth reconciling: controls/control, cpu/cpu2, cpu-2/cpu2, flag-2/flag2, initiatives/initiative, performance-2/performance, play/player. Note Picasso ships Ach and CreditCard at 32 as well as 16/24, so 'two grids' is true of designmd's pack but not strictly of Picasso's.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
+      }
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "slug": "typography",
+      "stampSelector": ".h1, .h2, .h3, .h4, .body, .body-lg, .body-sm, .body-xs, .body-xxs, .caption",
+      "designmd": {
+        "root": ".h1 · .h2 · .h3 · .h4 · .body-* · .caption",
+        "shortcode": "example.html#type",
+        "snippet": "<h1 class=\"h1\">Page title</h1>\n<p class=\"body\">Body copy.</p>"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Typography",
+        "import": "@toptal/picasso",
+        "storyId": "components-typography--typography",
+        "status": "mapped",
+        "propMap": {
+          "h1": {
+            "variant": "heading",
+            "size": "xlarge"
+          },
+          "h2": {
+            "variant": "heading",
+            "size": "large"
+          },
+          "h3": {
+            "variant": "heading",
+            "size": "medium"
+          },
+          "h4": {
+            "variant": "heading",
+            "size": "small"
+          },
+          "body-lg": {
+            "variant": "body",
+            "size": "large"
+          },
+          "body": {
+            "variant": "body",
+            "size": "medium"
+          },
+          "body-sm": {
+            "variant": "body",
+            "size": "small"
+          },
+          "body-xs": {
+            "variant": "body",
+            "size": "xsmall"
+          },
+          "body-xxs": {
+            "variant": "body",
+            "size": "xxsmall"
+          },
+          "caption": {
+            "variant": "body",
+            "size": "xsmall"
+          },
+          "body-lg-semibold": {
+            "variant": "body",
+            "size": "large",
+            "weight": "semibold"
+          },
+          "body-semibold": {
+            "variant": "body",
+            "size": "medium",
+            "weight": "semibold"
+          },
+          "body-sm-semibold": {
+            "variant": "body",
+            "size": "small",
+            "weight": "semibold"
+          },
+          "body-xs-semibold": {
+            "variant": "body",
+            "size": "xsmall",
+            "weight": "semibold"
+          },
+          "body-xxs-semibold": {
+            "variant": "body",
+            "size": "xxsmall",
+            "weight": "semibold"
+          }
+        },
+        "note": "Picasso resolves variant x size into a size class, a weight AND a colour. The nine plain roles map exactly; the five -semibold ones need weight passed because Picasso's body variant is always font-regular. COLOUR DIVERGES: Picasso sets headings text-black and body text-graphite-700, while designmd gives everything --color-text (graphite-900), so prototype body copy reads darker than the product's. .caption resolves identically to .body-xs. --type-mono has no Picasso equivalent. Picasso's heading/xsmall — text-md at regular weight — has no designmd counterpart.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     }
   ]
