@@ -197,11 +197,11 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 |---|---|
 | Radii | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-full` 9999 — **Picasso's four, no extensions.** Picasso *replaces* Tailwind's radius scale rather than extending it, so `rounded-lg` and friends do not exist; for anything off-scale it writes a literal (its Tag uses `rounded-[6.25rem]`). |
 | Shadow | `--shadow-0` … `--shadow-5`, Picasso's values. They are **roles, not a ramp**: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu. Pick by what the surface *is*. |
-| Motion | `--duration-350` (Picasso) · `--duration-fast` 120 · `-base` 200 · `-slow` 320, paired with `--ease`, `--ease-out`, `--ease-in` (extensions). Use these for hand-written transitions. |
+| Motion | `--duration-350` (Picasso) · `--duration-fast` 120 · `-base` 200 · `-slow` 320, paired with `--ease`, `--ease-out`, `--ease-in` (extensions — Picasso defines no easings). `--ease` and `--duration-fast` carry almost all of it; `-slow`, `-out` and `-in` are used by nothing but the Motion gallery. |
 | Animation | `--animate-circle-spin` (Picasso) · `--animate-highlight` · `-fade-in` · `-slider-progress` · `-card-land` (from the Operationalize config). Apply whole: `animation: var(--animate-fade-in)`. All five collapse to `none` under `prefers-reduced-motion`. |
-| Z-index | Picasso's: `--z-drawer` 1200 · `-modal` 1300 · `-tooltip` 1300 · `-snackbar` 1400. Extensions: `--z-base` 0 · `-dropdown` 100 · `-sticky` 200 · `-overlay` 800 |
+| Z-index | Picasso's: `--z-drawer` 1200 · `-modal` 1300 · `-tooltip` 1300 · `-snackbar` 1400. Extensions below them: `-dropdown` 100 · `-sticky` 200 · `-overlay` 800. (`--z-base` was 0 and unused.) |
 | Breakpoints | `--breakpoint-xs` 0 · `-sm` 480 · `-md` 768 · `-lg` 1024 · `-xl` 1440 — Picasso's screens |
-| Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 — extensions; Picasso has breakpoints, not container widths |
+| Container | `--container-lg` 1024 only — the `.page` max-width. Picasso has breakpoints, not container widths; `sm`, `md` and `xl` were never referenced and are retired. |
 
 **Sizing.** Picasso's `minWidth`, `maxWidth`, `minHeight` and `maxHeight` all start from
 the spacing scale (`...theme('spacing')`), so `min-w-4` is just `--spacing-4` and needs no

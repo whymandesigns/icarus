@@ -5882,7 +5882,7 @@
     }).join('');
 
     // Z-index — ordered by the value it actually resolves to
-    const LAYERS = ['base','dropdown','sticky','overlay','drawer','modal','tooltip','snackbar'];
+    const LAYERS = ['dropdown','sticky','overlay','drawer','modal','tooltip','snackbar'];
     const LAYER_PICASSO = new Set(['drawer','modal','tooltip','snackbar']);
     document.getElementById('layer-root').innerHTML = LAYERS
       .map(k => ({ k, v: parseInt(css.getPropertyValue(`--z-${k}`).trim(), 10) || 0 }))
