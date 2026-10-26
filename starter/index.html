@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starter — designmd</title>
+
+  <!--
+    Copy this folder to features/<your-feature>/ and edit index.html.
+
+    These three links are the whole system, in this order. Keep them live while
+    you build — edits to the stylesheets show up on reload. Before the file goes
+    anywhere, bake them in:
+
+        python3 ../../designmd/inline.py index.html
+
+    That inlines the CSS, injects the icon sprite and embeds the fonts, so the
+    result is one file with no external dependencies. Relative links break the
+    moment the file moves, which is why a prototype is never shared with them.
+
+    Check your work before you ship:
+
+        python3 ../../designmd/lint.py index.html
+
+    Two rules worth knowing before you start:
+
+      - Every class must be in designmd/dist/kit.json. If the kit has no
+        component for what you need, say so — do not invent a class. A class
+        that is not defined renders as nothing, silently.
+      - Do NOT copy markup out of designmd/example.html. 88 of the classes in
+        that file are the showcase's own chrome, styled in its <style> block
+        and nowhere else; they look exactly like kit classes. Use kit.json to
+        find a class, and this file or the component docs for the markup.
+  -->
+  <link rel="stylesheet" href="../../designmd/tokens.css" />
+  <link rel="stylesheet" href="../../designmd/semantic.css" />
+  <link rel="stylesheet" href="../../designmd/components.css" />
+</head>
+<body>
+
+<!--
+  Top bar — the one place the graphite chrome appears.
+
+  It is a container query, so it collapses on its own width, not the
+  viewport's. The three collapsed parts (.topbar-menu, .topbar-title,
+  .topbar-cta) belong in the markup from the start, hidden: the query at
+  768px reveals them and hides the brand, search and account. A .topbar-title
+  on its own shows NOTHING on a wide screen — it is the collapsed title.
+
+  The <img class="topbar-brand-logo"> is the shape inline.py looks for; it
+  swaps the file for an inline <svg> when it bakes.
+-->
+<header class="topbar">
+  <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">
+    <svg class="btn-icon"><use href="#i-list" /></svg>
+  </button>
+  <div class="topbar-brand">
+    <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="Operationalize" />
+  </div>
+  <span class="topbar-title">Team members</span>
+  <div class="topbar-search">
+    <svg class="icon search-icon"><use href="#i-magnifying-glass" /></svg>
+    <input class="topbar-search-input" type="search" placeholder="Search" aria-label="Search" />
+  </div>
+  <div class="topbar-actions">
+    <span class="avatar avatar-sm">MV</span>
+  </div>
+  <!--
+    No .topbar-cta here on purpose. It is the collapsed layout's action, and it
+    exists for screens that have NO page head to hold one. This page does have
+    one, and nothing hides .page-head-actions when the bar collapses — so
+    carrying both would put two .btn-primary on screen below 768px, which is
+    rule 4. Use .topbar-cta only when there is no page head.
+  -->
+</header>
+
+<!-- .page is the centred 1024px column. Every prototype has one. -->
+<main class="page">
+
+  <div class="page-head">
+    <div class="page-head-main">
+      <div class="page-head-title">
+        <h1 class="page-head-heading">Team members</h1>
+        <span class="count-badge count-badge-lg count-badge-secondary">4</span>
+      </div>
+      <p class="page-head-subtitle">Everyone with access to this workspace.</p>
+    </div>
+    <div class="page-head-actions">
+      <!--
+        ONE .btn-primary per page. Every other call to action is
+        .btn-secondary — two greens and neither reads as the action.
+      -->
+      <button class="btn btn-primary" type="button">
+        <svg class="btn-icon"><use href="#i-plus" /></svg>
+        Invite member
+      </button>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <div class="input-icon input-icon-left" style="max-width: 320px">
+      <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass" /></svg>
+      <input class="input" type="search" id="member-search" placeholder="Search members" />
+    </div>
+
+    <div class="table-scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th style="text-align: right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="member-rows">
+          <tr>
+            <td>
+              <div class="cell-user">
+                <span class="avatar avatar-md">AS</span>
+                <div class="cell-user-meta">
+                  <span class="cell-user-name">Anna Schmidt</span>
+                  <span class="cell-user-role">anna@example.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-light">Admin</span></td>
+            <td><span class="badge badge-success">Active</span></td>
+            <td>
+              <div class="cell-actions">
+                <button class="btn btn-icon-only btn-ghost btn-xs" type="button"
+                        aria-label="Remove Anna Schmidt" data-remove>
+                  <svg class="btn-icon"><use href="#i-trash" /></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="cell-user">
+                <span class="avatar avatar-md">RO</span>
+                <div class="cell-user-meta">
+                  <span class="cell-user-name">Rob Olsen</span>
+                  <span class="cell-user-role">rob@example.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-light">Editor</span></td>
+            <td><span class="badge badge-warning">Invited</span></td>
+            <td>
+              <div class="cell-actions">
+                <button class="btn btn-icon-only btn-ghost btn-xs" type="button"
+                        aria-label="Remove Rob Olsen" data-remove>
+                  <svg class="btn-icon"><use href="#i-trash" /></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<!-- Modal. Hidden until opened; the overlay carries the scrim. -->
+<div class="modal-overlay" id="confirm-remove" hidden>
+  <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="confirm-remove-title">
+    <header class="modal-header">
+      <h2 class="modal-title" id="confirm-remove-title">Remove member?</h2>
+      <button class="btn btn-icon-only btn-ghost btn-xs modal-close" type="button"
+              aria-label="Close" data-close>
+        <svg class="btn-icon"><use href="#i-x" /></svg>
+      </button>
+    </header>
+    <div class="modal-body">
+      <p class="body">They lose access immediately. You can invite them again later.</p>
+    </div>
+    <footer class="modal-footer">
+      <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+      <button class="btn btn-danger" type="button" id="confirm-remove-go">Remove</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+/*
+  Dev-time icon sprite. The three stylesheets do NOT carry the icons — only
+  inline.py injects the sprite — so every <use href="#i-…"> renders blank
+  until you bake, with no error to tell you why. This fetches it while you
+  work, and no-ops once the sprite is really in the document.
+*/
+if (!document.getElementById('i-plus')) {
+  fetch('../../designmd/icons.svg')
+    .then(function (r) { return r.ok ? r.text() : null; })
+    .then(function (svg) {
+      if (!svg) return;
+      var host = document.createElement('div');
+      host.hidden = true;
+      host.innerHTML = svg;
+      document.body.insertBefore(host, document.body.firstChild);
+    })
+    .catch(function () { /* file:// — bake with inline.py to see icons */ });
+}
+</script>
+
+<script>
+/*
+  Only what this page uses. designmd/example.html has a much larger delegated
+  block covering drawers, dropdowns, tabs, the sheet and the date picker — but
+  it is 2,286 lines and its tail renders the showcase's own palette swatches
+  against elements no prototype has, which throws and kills every handler after
+  it. Take the handlers you need from it, not the whole block.
+*/
+(function () {
+  var overlay = document.getElementById('confirm-remove');
+  var pending = null;
+
+  function open(row) {
+    pending = row;
+    overlay.hidden = false;
+  }
+
+  function close() {
+    pending = null;
+    overlay.hidden = true;
+  }
+
+  document.addEventListener('click', function (e) {
+    var remove = e.target.closest('[data-remove]');
+    if (remove) return open(remove.closest('tr'));
+    if (e.target.closest('[data-close]') || e.target === overlay) return close();
+    if (e.target.id === 'confirm-remove-go') {
+      if (pending) pending.remove();
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !overlay.hidden) close();
+  });
+
+  var search = document.getElementById('member-search');
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase();
+    document.querySelectorAll('#member-rows tr').forEach(function (row) {
+      row.hidden = q !== '' && row.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
