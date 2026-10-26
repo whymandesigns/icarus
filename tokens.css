@@ -180,7 +180,10 @@
    * Regular and Semibold — the @font-face ranges above fold 500 into 400 and
    * 700 into 600. designmd's old `medium` (500) and `bold` (700) therefore
    * already rendered as regular and semibold, and are gone. */
-  --font-weight-inherit: inherit;   /* picasso */
+  --font-weight-inherit: inherit;   /* picasso - unused here, kept deliberately: unlike
+                                     * thin and light it always renders, and Picasso's
+                                     * Typography exposes it alongside regular and
+                                     * semibold. Do not retire as dead. */
   /* --font-weight-thin: 100;   and  --font-weight-light: 300;  are REMOVED, and this
    * is the one place designmd deliberately does not mirror Picasso's preset. Both are
    * keys there, so the classes generate — but no Picasso component uses either
