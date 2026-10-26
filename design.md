@@ -408,6 +408,89 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 - **Page structure:** wrap content in `<main class="page">` to get the 1024px max-width centered layout.
 - **Wide vs. sheet tables.** Both share the `.table` base, so a prototype can offer a view toggle by swapping the modifier. Use `.table-wide` for read-heavy lists (tall rows, zebra striping, rich cell content). Use `.table-sheet` + `data-sheet` for editable, dense, Airtable/Linear-style grids where every cell is inline-editable through the shared cell state machine. Drive columns and cell values off `data-*` attributes — the module renders and wires everything; you don't hand-author cell inner markup (except the Name cell's `.sheet-tree` scaffold for the row toggle).
 
+### The page around them
+
+The snippets below are fragments. Each assumes a page that already has the three
+stylesheets, the icon sprite and the handlers — and none of those is automatic.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your feature</title>
+  <!-- All three, in this order. Point them at wherever designmd sits. -->
+  <link rel="stylesheet" href="../designmd/tokens.css" />      <!-- primitives -->
+  <link rel="stylesheet" href="../designmd/semantic.css" />    <!-- aliases + reset -->
+  <link rel="stylesheet" href="../designmd/components.css" />  <!-- the classes -->
+</head>
+<body>
+  … components …
+
+  <script>
+  // The sprite is NOT in the stylesheets — only inline.py injects it, so every
+  // <use href="#i-…"> is blank until you bake. This covers the gap while you
+  // work, and no-ops once the sprite is really in the document.
+  if (!document.getElementById('i-plus')) {
+    fetch('../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
+      if (!svg) return;
+      const host = document.createElement('div');
+      host.hidden = true; host.innerHTML = svg;
+      document.body.insertBefore(host, document.body.firstChild);
+    }).catch(() => {});
+  }
+
+  // Modals and drawers. Both are an overlay carrying `hidden`.
+  document.addEventListener('click', e => {
+    const open = e.target.closest('[data-modal-open]');
+    if (open) { const el = document.getElementById(open.dataset.modalOpen);
+                if (el) el.hidden = false; return; }
+    const close = e.target.closest('[data-modal-close]');
+    if (close) { const el = close.closest('.modal-overlay, .drawer-overlay');
+                 if (el) el.hidden = true; return; }
+    if (e.target.matches('.modal-overlay, .drawer-overlay')) e.target.hidden = true;
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay:not([hidden]), .drawer-overlay:not([hidden])')
+      .forEach(el => { el.hidden = true; });
+  });
+
+  // Dropdowns. The script finds the button by .dropdown-trigger, which carries no CSS.
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.dropdown-trigger');
+    document.querySelectorAll('.dropdown').forEach(d => {
+      const menu = d.querySelector('.dropdown-menu');
+      if (!menu) return;
+      const mine = t && d.contains(t);
+      menu.hidden = mine ? !menu.hidden : true;
+      const btn = d.querySelector('.dropdown-trigger');
+      if (btn) btn.setAttribute('aria-expanded', String(!menu.hidden));
+    });
+  });
+
+  // Tabs.
+  document.addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    tab.closest('.tabs').querySelectorAll('.tab').forEach(t => {
+      const on = t === tab;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', String(on));
+    });
+  });
+  </script>
+</body>
+</html>
+```
+
+Richer components — the sheet, the date picker, dropzones, tag inputs, toasts — need
+more handlers, which live in `example.html`'s `<script>` block. Take the ones you need;
+do **not** copy the whole block, because its tail renders the showcase's own palette
+swatches against elements no prototype has, throws, and stops every later handler
+attaching.
+
 ### Common snippets
 
 ```html
@@ -458,6 +541,157 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 <h1 class="h1">Page title</h1>
 <p class="body">Body copy.</p>
 <span class="caption">Caption</span>
+```
+
+The ones below are the structures that cannot be guessed from a class name — which
+wraps which, and what actually opens a thing.
+
+```html
+<!-- Top bar.
+     .topbar-menu, .topbar-title and .topbar-cta are the COLLAPSED layout, revealed
+     below 768px of the bar's OWN width, so they show nothing on a wide screen. Put
+     the menu and title in from the start. Use .topbar-cta only on a page with no
+     page head, or both primaries appear at once when the bar collapses. -->
+<header class="topbar">
+  <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">
+    <svg class="btn-icon"><use href="#i-list"></use></svg>
+  </button>
+  <div class="topbar-brand">
+    <img class="topbar-brand-logo" src="../designmd/assets/logo.svg" alt="Operationalize" />
+  </div>
+  <span class="topbar-title">Page name</span>
+  <div class="topbar-search">
+    <svg class="icon search-icon"><use href="#i-magnifying-glass"></use></svg>
+    <input class="topbar-search-input" type="search" placeholder="Search" aria-label="Search" />
+  </div>
+  <div class="topbar-actions">
+    <span class="avatar avatar-sm">MV</span>
+  </div>
+</header>
+
+<!-- Page head — and the page's one .btn-primary. -->
+<div class="page-head">
+  <div class="page-head-main">
+    <div class="page-head-title">
+      <h1 class="page-head-heading">Invoices</h1>
+      <span class="count-badge count-badge-lg count-badge-secondary">4</span>
+    </div>
+    <p class="page-head-subtitle">One sentence of context.</p>
+  </div>
+  <div class="page-head-actions">
+    <button class="btn btn-primary" type="button">
+      <svg class="btn-icon"><use href="#i-plus"></use></svg>New invoice
+    </button>
+  </div>
+</div>
+
+<!-- Input with a leading icon. The WRAPPER carries .input-icon and the side;
+     the glyph is a sibling of the input, not a child. -->
+<div class="input-icon input-icon-left">
+  <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass"></use></svg>
+  <input class="input" type="search" placeholder="Filter invoices" aria-label="Filter" />
+</div>
+
+<!-- Toolbar — a filter row above a table. .toolbar-search on the input wrapper
+     makes it take the free space. -->
+<div class="toolbar">
+  <div class="input-icon input-icon-left toolbar-search">
+    <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass"></use></svg>
+    <input class="input" type="text" placeholder="Search by name or owner" aria-label="Search" />
+  </div>
+  <button class="btn btn-secondary" type="button">
+    <svg class="icon"><use href="#i-funnel"></use></svg>Filters
+  </button>
+</div>
+
+<!-- Table. .table goes on the <table>; .table-scroll is the wrapper. -->
+<div class="table-scroll">
+  <table class="table">
+    <thead>
+      <tr><th>Invoice</th><th>Status</th><th style="text-align: right">Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="cell-title">INV-1041</span></td>
+        <td><span class="badge badge-success">Paid</span></td>
+        <td>
+          <div class="cell-actions">
+            <button class="btn btn-icon-only btn-ghost btn-xs" type="button"
+                    aria-label="Open INV-1041" data-modal-open="invoice-detail">
+              <svg class="btn-icon"><use href="#i-arrow-right"></use></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- A person in a table cell. -->
+<div class="cell-user">
+  <span class="avatar avatar-md">AS</span>
+  <div class="cell-user-meta">
+    <span class="cell-user-name">Anna Schmidt</span>
+    <span class="cell-user-role">anna@example.com</span>
+  </div>
+</div>
+
+<!-- Drawer. The OVERLAY WRAPS the panel and carries `hidden`. Opening is
+     data-modal-open="<overlay id>" on any trigger; closing is data-modal-close.
+     There is no .is-open for this.
+     Use the DRAWER's own header/body/footer — unlike the modal's they carry the
+     dividers and even padding a full-height panel needs. (example.html builds its
+     drawers from .modal-header and .modal-body; that is the showcase being
+     inconsistent, not the pattern to copy.)
+     Widths: .drawer-narrow .drawer-regular .drawer-medium .drawer-wide
+     .drawer-ultra .drawer-full. A modal is the same shape with
+     .modal-overlay > .modal.modal-sm and the .modal-* parts. -->
+<div class="drawer-overlay" id="invoice-detail" hidden>
+  <aside class="drawer drawer-regular" role="dialog" aria-modal="true"
+         aria-labelledby="invoice-detail-title">
+    <header class="drawer-header">
+      <h2 class="modal-title" id="invoice-detail-title">INV-1041</h2>
+      <button class="btn btn-icon-only btn-ghost btn-xs modal-close" type="button"
+              data-modal-close aria-label="Close">
+        <svg class="btn-icon"><use href="#i-x"></use></svg>
+      </button>
+    </header>
+    <div class="drawer-body"><p class="body">Detail goes here.</p></div>
+    <footer class="drawer-footer">
+      <button class="btn btn-secondary" type="button" data-modal-close>Close</button>
+    </footer>
+  </aside>
+</div>
+
+<!-- Dropdown. .dropdown-trigger carries no CSS — the delegated script finds the
+     button by it. -->
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-trigger" type="button" aria-expanded="false">
+    Actions <svg class="btn-icon"><use href="#i-caret-down"></use></svg>
+  </button>
+  <div class="dropdown-menu dropdown-menu-end" hidden>
+    <button class="dropdown-item" type="button">Download PDF</button>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item dropdown-item-danger" type="button">Void invoice</button>
+  </div>
+</div>
+
+<!-- App shell — sidenav beside the page. Goes BELOW the top bar and replaces
+     <main class="page">. Add .is-compact to .sidenav for the collapsed rail. -->
+<div class="app-shell">
+  <aside class="sidenav">
+    <button class="sidenav-toggle" type="button" aria-label="Toggle navigation">
+      <svg><use href="#i-chevron-left"></use></svg>
+    </button>
+    <ul class="sidenav-list">
+      <li><a class="sidenav-item is-active" href="#">
+        <svg class="sidenav-item-icon"><use href="#i-cpu-2"></use></svg>
+        <span class="sidenav-item-label">Processes</span>
+      </a></li>
+    </ul>
+  </aside>
+  <main class="app-shell-main">…</main>
+</div>
 ```
 
 For the full inventory with every modifier and live demos, open `example.html` — it's the complete picture of what designmd offers and how each component composes. For what a component *is*, though, the authority is Picasso: its [Storybook](https://toptal.github.io/picasso/) for behaviour and props, and `packages/base/<Component>/src/` for the implementation. `figma-map.json` carries the `storyId` for each one.

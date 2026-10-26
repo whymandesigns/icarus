@@ -431,6 +431,30 @@ def build_bundle_css(tokens_css, semantic_css, components_css):
     return "\n".join(bridge) + "\n" + components_css
 
 
+def check_doc_markup(design_md, kit_classes, showcase, icon_slugs):
+    """Every class and slug design.md demonstrates must really exist.
+
+    design.md carries the worked markup now, and nothing lints a markdown file.
+    It has rotted before — it listed `.topbar-avatar`, which is not a class, and
+    told readers for months to copy the example.html script block whole. A
+    snippet that teaches a name nothing defines is worse than no snippet.
+    """
+    problems = []
+    for block in re.findall(r"```html\n(.*?)```", design_md, re.S):
+        for m in re.finditer(r'class="([^"]*)"', block):
+            for cls in m.group(1).split():
+                if not re.fullmatch(r"[a-z][\w-]*", cls):
+                    continue
+                if cls in showcase:
+                    problems.append(f"design.md: .{cls} is showcase-only, not a kit class")
+                elif cls not in kit_classes:
+                    problems.append(f"design.md: .{cls} is not a kit class")
+        for slug in re.findall(r'href="#(i-[\w-]+)"', block):
+            if slug not in icon_slugs:
+                problems.append(f"design.md: #{slug} is not in the sprite")
+    return sorted(set(problems))
+
+
 # ----------------------------------------------------- universal entry points
 
 
@@ -605,6 +629,15 @@ def main():
     # each tool looks for them.
     agents_md = (ROOT / "AGENTS.md").read_text()
     icon_slugs = sorted(set(re.findall(r'<symbol[^>]*id="(i-[^"]+)"', icons_svg)))
+
+    kit_classes = {c for g in kit["classes"].values() for c in g}
+    kit_classes |= set(kit.get("behaviourHooks", []))
+    problems = check_doc_markup(design_md, kit_classes, set(kit["showcaseOnly"]), set(icon_slugs))
+    if problems:
+        print("design.md demonstrates something that does not exist:", file=sys.stderr)
+        for p_ in problems:
+            print("  " + p_, file=sys.stderr)
+        return 1
 
     root_outputs = {
         "llms.txt": build_llms_txt(),
