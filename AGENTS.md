@@ -48,10 +48,17 @@ python3 designmd/inline.py features/my-feature/index.html   # bake before sharin
 |---|---|
 | `designmd/dist/kit.json` | **the inventory** — 368 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
 | `designmd/starter/` | a working skeleton: top bar, page head, table, modal, search. |
+| `designmd/recipes.html` | **minimal correct markup, one block per component.** Class names alone do not tell you that `.drawer-overlay` wraps `.drawer`, or that a drawer borrows the modal's header. Copy from here. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
 | `designmd/design.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
-| `designmd/tools/build-packages.py` | regenerates `dist/` after a stylesheet change. |
+| `designmd/llms-full.txt` | this guide plus the complete class and token inventory, ~4k tokens. **Paste this if you have no filesystem.** |
+| `designmd/llms.txt` | a short index of everything above, for a tool that fetches one file. |
+| `designmd/tools/build-packages.py` | regenerates `dist/` and the entry points after a stylesheet change. |
+
+If your tool reads its own rules file, it already has this guide: `.github/copilot-instructions.md`,
+`.cursor/rules/designmd.mdc`, `.windsurfrules` and `.clinerules` are generated copies of it, so
+they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
 
 ## Things that fail silently
 
@@ -66,7 +73,10 @@ python3 designmd/inline.py features/my-feature/index.html   # bake before sharin
   has, which throws and kills every handler after it. Take the handlers you need.
 - **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title; the top
   bar is a container query that reveals it below 768px. Same for `.topbar-menu` and
-  `.topbar-cta`. Put all three in the markup from the start.
+  `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
+  they are invisible until the bar collapses. `.topbar-cta` is the exception: add it only
+  on a page with **no** page head, because nothing hides `.page-head-actions` when the bar
+  collapses, so carrying both puts two primary CTAs on screen below 768px.
 - **Some classes carry no CSS and are still right.** `.dropdown-trigger` is how the
   delegated script finds a dropdown's button; nothing styles it. `kit.json` lists these
   under `behaviourHooks`, beside `attributes` for the components driven by an attribute

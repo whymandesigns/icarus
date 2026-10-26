@@ -31,6 +31,7 @@ import json
 import pathlib
 import re
 import sys
+from urllib.parse import unquote, urlparse
 
 HERE = pathlib.Path(__file__).resolve().parent
 
@@ -106,20 +107,33 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
         own_style = tail if len(tail) < len(own_style) else ""
     own_classes = set(re.findall(r"\.([a-z][\w-]*)", re.sub(r"/\*.*?\*/", "", own_style, flags=re.S)))
 
+    markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
+    # An HTML comment is not markup either. recipes.html documents some
+    # patterns as commented examples, and a <link> or a class inside one is
+    # being shown, not used — reading them live reports stylesheets that are
+    # not loaded and classes that are not on the page.
+    markup = re.sub(r"<!--.*?-->", "", markup, flags=re.S)
+
+
     # A prototype may keep its CSS in a sibling file rather than a <style>
     # block — features/docs/ does. Reading only <style> flags every one of
     # its classes as invented. While we are here, a <link> is worth checking
     # in its own right: a relative href that resolves to nothing leaves the
     # page unstyled with no error, and an http one breaks the promise that a
     # shipped prototype has no external dependencies.
-    for m in re.finditer(r'<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"', html):
+    for m in re.finditer(r'<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"', markup):
         href = m.group(1)
-        ln = line_of(html, m.start())
+        ln = line_of(markup, m.start())
         if href.startswith(("http://", "https://", "//")):
             found.append(Finding("error", ln, "external-css",
                 f"{href} is fetched at runtime — a prototype ships self-contained"))
             continue
-        target = (path.parent / href).resolve()
+        if href.startswith("file://"):
+            # An absolute file:// URL is a real local path, not a relative one.
+            # Resolving it against the page's folder invents a missing file.
+            target = pathlib.Path(unquote(urlparse(href).path))
+        else:
+            target = (path.parent / href).resolve()
         if not target.exists():
             found.append(Finding("error", ln, "dead-stylesheet",
                 f"{href} does not exist — everything it styles renders unstyled"))
@@ -133,8 +147,6 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     # `<span class="breadcrumb is-current">` — and once inline.py bakes the
     # stylesheets in, those comments are inside the file. Reading them as
     # markup invents classes like .current and .null that nobody wrote.
-    markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
-
     # A bare `ph` is Phosphor's base class — but it is also a perfectly
     # ordinary name for a placeholder, which is what planning-voyage and
     # action-trace use it as. Only read it as Phosphor when the file shows

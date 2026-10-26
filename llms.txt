@@ -1,0 +1,29 @@
+# Icarus Prototype Design System
+
+> Plain HTML/CSS for prototyping the Operationalize app. An extension of Picasso,
+> Toptal's production React system, re-expressed as three stylesheets a browser
+> loads directly — no React, no build step. Every token is Picasso's name and
+> value, or is marked `extension` with a reason.
+
+Start with AGENTS.md. Never invent a class: if it is not in dist/kit.json, it
+does not exist, and a class nothing defines renders as nothing.
+
+## Docs
+
+- [AGENTS.md](AGENTS.md): the rules, the traps, and how to build and check a prototype. Read first.
+- [llms-full.txt](llms-full.txt): the rules plus the complete class and token inventory, in one file. Paste this if you have no filesystem.
+- [recipes.html](recipes.html): minimal correct markup, one block per component. Copy from here rather than inferring structure from class names.
+- [design.md](design.md): the full written system, ~16k tokens. Read a section, not the file.
+- [README.md](README.md): what this is and how the three layers fit together.
+
+## Machine-readable
+
+- [dist/kit.json](dist/kit.json): every class, grouped; the attribute-driven components; the behaviour hooks; and the showcase-only classes to reject.
+- [dist/tokens.json](dist/tokens.json): every token with its value and a usage note, light and dark.
+- [dist/bundle.css](dist/bundle.css): the stylesheet, with the bridge a generated tokens.css cannot supply.
+
+## Optional
+
+- [starter/index.html](starter/index.html): a working skeleton that lints clean. Copy it rather than assembling one.
+- [lint.py](lint.py): checks a prototype and exits non-zero on errors.
+- [figma-map.json](figma-map.json): per component, the Picasso React component, its import, and the Storybook story id.

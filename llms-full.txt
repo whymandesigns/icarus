@@ -1,0 +1,605 @@
+# Icarus — agent guide
+
+HTML prototypes for the **Operationalize** app, built from a design system called
+**designmd**. If you are writing UI here, read this first — it is short.
+
+Two sibling checkouts, and they must stay siblings — every path below is written from
+the folder that contains them both:
+
+```
+icarus/
+├── designmd/   the design system   (repo: whymandesigns/icarus)
+└── features/   the prototypes      (repo: whymandesigns/opz-prototypes)
+```
+
+## The rules
+
+1. **Never invent a class.** Every class must be in `designmd/dist/kit.json`. A class
+   nothing defines renders as nothing, silently. If the kit has no component for what
+   you need, say so rather than approximating it.
+2. **Never copy markup out of `designmd/example.html`.** 88 of the classes in that file
+   are the showcase's own chrome, styled in its `<style>` block and nowhere else. They
+   are indistinguishable from kit classes in the markup. `.btn-cta-icon` is one, and it
+   is already shipped in a prototype that way. `kit.json` lists them under
+   `showcaseOnly`; the linter rejects them.
+3. **Semantic tokens, never primitives.** `var(--color-bg)`, `var(--type-h1)`,
+   `var(--spacing-4)` — not `var(--color-blue-500)`. Re-pointing an alias is how a theme
+   changes; a primitive reference defeats that. The one sanctioned exception is
+   `--color-graphite-800`, the top bar chrome, which does not change with the theme.
+4. **One `.btn-primary` per page.** Every other call to action is `.btn-secondary`. Green
+   is both the primary CTA and the success colour, so two of them means neither reads as
+   the action.
+5. **Don't write component CSS in a prototype.** If a variant is missing, add it to
+   `designmd/components.css` so the next screen inherits it, then re-inline.
+
+## Start here
+
+```bash
+cp -r designmd/starter features/my-feature     # a correct, linting-clean skeleton
+python3 designmd/lint.py features/my-feature/index.html
+python3 designmd/inline.py features/my-feature/index.html   # bake before sharing
+```
+
+`features/<kebab-name>/index.html` — always that shape, always `index.html`.
+
+## Where things are
+
+| | |
+|---|---|
+| `designmd/dist/kit.json` | **the inventory** — 368 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/starter/` | a working skeleton: top bar, page head, table, modal, search. |
+| `designmd/recipes.html` | **minimal correct markup, one block per component.** Class names alone do not tell you that `.drawer-overlay` wraps `.drawer`, or that a drawer borrows the modal's header. Copy from here. |
+| `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
+| `designmd/design.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
+| `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
+| `designmd/llms-full.txt` | this guide plus the complete class and token inventory, ~4k tokens. **Paste this if you have no filesystem.** |
+| `designmd/llms.txt` | a short index of everything above, for a tool that fetches one file. |
+| `designmd/tools/build-packages.py` | regenerates `dist/` and the entry points after a stylesheet change. |
+
+If your tool reads its own rules file, it already has this guide: `.github/copilot-instructions.md`,
+`.cursor/rules/designmd.mdc`, `.windsurfrules` and `.clinerules` are generated copies of it, so
+they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
+
+## Things that fail silently
+
+- **Icons.** The three stylesheets do not carry the sprite — only `inline.py` injects it,
+  so `<use href="#i-…">` renders blank until you bake. The starter fetches it at dev time
+  to cover the gap. Slugs live in `designmd/icons.svg`; the linter checks them.
+- **Phosphor is retired.** `<i class="ph ph-x">` renders nothing. Some CSS comments still
+  show it; they are stale.
+- **The `example.html` script block.** Modals, drawers, dropdowns, tabs and the sheet get
+  their behaviour from a delegated block there. Do not copy it whole: it is 2,286 lines
+  and its tail renders the showcase's own palette swatches against elements no prototype
+  has, which throws and kills every handler after it. Take the handlers you need.
+- **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title; the top
+  bar is a container query that reveals it below 768px. Same for `.topbar-menu` and
+  `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
+  they are invisible until the bar collapses. `.topbar-cta` is the exception: add it only
+  on a page with **no** page head, because nothing hides `.page-head-actions` when the bar
+  collapses, so carrying both puts two primary CTAs on screen below 768px.
+- **Some classes carry no CSS and are still right.** `.dropdown-trigger` is how the
+  delegated script finds a dropdown's button; nothing styles it. `kit.json` lists these
+  under `behaviourHooks`, beside `attributes` for the components driven by an attribute
+  instead — a tooltip is `[data-tooltip]`, never `.tooltip`.
+
+## Upstream
+
+**Picasso is the source of truth** — Toptal's production React system
+([repo](https://github.com/toptal/picasso) ·
+[Storybook](https://toptal.github.io/picasso/)). designmd re-expresses its foundations as
+plain CSS so a screen can exist in hours. Every token is Picasso's name and value, or is
+marked `extension` with a reason in its own comment. Where the two disagree, Picasso is
+right and designmd has a bug. `designmd/figma-map.json` carries the Storybook `storyId`
+and React mapping per component.
+
+Note the Storybook is a client-side build: `iframe.html?id=anything` returns 200, so a
+request succeeding proves nothing about a story existing.
+
+## Two consumers, one generator
+
+designmd feeds Claude Code (this repo) and a published Design System artifact for Claude
+Design. Both are generated by `tools/build-packages.py` from the three stylesheets —
+`dist/kit.json`, `dist/tokens.json`, `dist/bundle.css`. They were hand-built once and
+drifted badly. After changing a stylesheet, re-run it; `--check` fails when `dist/` is
+stale.
+
+---
+
+# Recipes
+
+Minimal correct markup, one block per component. Copy these rather than
+inferring structure from class names. Every block is checked by lint.py.
+
+## a complete working page — start here, then paste components in
+
+```html
+<!--
+  The blocks below are fragments. Each assumes a page that already has the CSS,
+  the icon sprite and the handlers around it, and none of those is automatic.
+
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your feature</title>
+    <link rel="stylesheet" href="../../designmd/tokens.css" />
+    <link rel="stylesheet" href="../../designmd/semantic.css" />
+    <link rel="stylesheet" href="../../designmd/components.css" />
+  </head>
+  <body>
+    … components …
+
+    <script>
+    // The sprite is NOT in the stylesheets — only inline.py injects it, so
+    // every <use href="#i-…"> is blank until you bake. This fetches it while
+    // you work and no-ops once the sprite is really in the document.
+    if (!document.getElementById('i-plus')) {
+      fetch('../../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
+        if (!svg) return;
+        const host = document.createElement('div');
+        host.hidden = true; host.innerHTML = svg;
+        document.body.insertBefore(host, document.body.firstChild);
+      }).catch(() => {});
+    }
+
+    // Modals and drawers. Both are an overlay carrying `hidden`.
+    document.addEventListener('click', e => {
+      const open = e.target.closest('[data-modal-open]');
+      if (open) { const el = document.getElementById(open.dataset.modalOpen);
+                  if (el) el.hidden = false; return; }
+      const close = e.target.closest('[data-modal-close]');
+      if (close) { const el = close.closest('.modal-overlay, .drawer-overlay');
+                   if (el) el.hidden = true; return; }
+      if (e.target.matches('.modal-overlay, .drawer-overlay')) e.target.hidden = true;
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('.modal-overlay:not([hidden]), .drawer-overlay:not([hidden])')
+        .forEach(el => { el.hidden = true; });
+    });
+
+    // Dropdowns. The script finds the button by .dropdown-trigger.
+    document.addEventListener('click', e => {
+      const t = e.target.closest('.dropdown-trigger');
+      document.querySelectorAll('.dropdown').forEach(d => {
+        const menu = d.querySelector('.dropdown-menu');
+        if (!menu) return;
+        const mine = t && d.contains(t);
+        menu.hidden = mine ? !menu.hidden : true;
+        const btn = d.querySelector('.dropdown-trigger');
+        if (btn) btn.setAttribute('aria-expanded', String(!menu.hidden));
+      });
+    });
+
+    // Tabs.
+    document.addEventListener('click', e => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      tab.closest('.tabs').querySelectorAll('.tab').forEach(t => {
+        const on = t === tab;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', String(on));
+      });
+    });
+    </script>
+  </body>
+  </html>
+
+  Before sharing, bake it: `python3 designmd/inline.py <your-file>.html` inlines
+  the CSS, the sprite and the fonts, so the result has no external dependencies
+  and the dev-time fetch above stops firing. designmd/starter/ is this page with
+  the components already filled in — copy that if you can reach the filesystem.
+
+  Richer components (the sheet, the date picker, dropzones, tag inputs, toasts)
+  need more handlers, which live in example.html's script block. Take the ones
+  you need; do NOT copy the whole block — its tail throws.
+-->
+```
+
+## page shell — every screen starts here
+
+```html
+<header class="topbar">
+  <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">
+    <svg class="btn-icon"><use href="#i-list" /></svg>
+  </button>
+  <div class="topbar-brand">
+    <img class="topbar-brand-logo" src="./assets/logo.svg" alt="Operationalize" />
+  </div>
+  <span class="topbar-title">Page name</span>
+  <div class="topbar-search">
+    <svg class="icon search-icon"><use href="#i-magnifying-glass" /></svg>
+    <input class="topbar-search-input" type="search" placeholder="Search" aria-label="Search" />
+  </div>
+  <div class="topbar-actions">
+    <span class="avatar avatar-sm">MV</span>
+  </div>
+</header>
+<!--
+  .topbar-menu, .topbar-title and .topbar-cta are the COLLAPSED layout, revealed
+  below 768px of the bar's own width. They show nothing on a wide screen, and
+  all three belong in the markup from the start. Use .topbar-cta only when the
+  page has no page head, or both primaries appear at once when the bar collapses.
+-->
+```
+
+## page head — title, count, and the page's one primary action
+
+```html
+<div class="page-head">
+  <div class="page-head-main">
+    <div class="page-head-title">
+      <h1 class="page-head-heading">Invoices</h1>
+      <span class="count-badge count-badge-lg count-badge-secondary">4</span>
+    </div>
+    <p class="page-head-subtitle">One sentence of context.</p>
+  </div>
+  <div class="page-head-actions">
+    <button class="btn btn-primary" type="button">
+      <svg class="btn-icon"><use href="#i-plus" /></svg>
+      New invoice
+    </button>
+  </div>
+</div>
+<!-- ONE .btn-primary per page. Every other call to action is .btn-secondary. -->
+```
+
+## input with a leading icon
+
+```html
+<div class="input-icon input-icon-left" style="max-width: 320px">
+  <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass" /></svg>
+  <input class="input" type="search" placeholder="Filter invoices" aria-label="Filter invoices" />
+</div>
+<!-- The wrapper carries .input-icon and the side; the glyph is a sibling of the input. -->
+```
+
+## field — label, control, hint
+
+```html
+<div class="field" style="max-width: 320px">
+  <label class="field-label" for="recipe-owner">Owner email</label>
+  <input class="input" id="recipe-owner" type="email" placeholder="name@example.com" />
+  <p class="field-hint">We'll never share your email.</p>
+</div>
+<!-- Labels are nouns; hints are complete sentences. Add .is-error for the error state. -->
+```
+
+## table with a status badge and a row action
+
+```html
+<div class="table-scroll">
+  <table class="table">
+    <thead>
+      <tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th style="text-align: right">Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="cell-title">INV-1041</span></td>
+        <td>12 Oct 2026</td>
+        <td>$4,200.00</td>
+        <td><span class="badge badge-success">Paid</span></td>
+        <td>
+          <div class="cell-actions">
+            <button class="btn btn-icon-only btn-ghost btn-xs" type="button"
+                    aria-label="Open INV-1041" data-modal-open="recipe-drawer">
+              <svg class="btn-icon"><use href="#i-arrow-right" /></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--
+  .badge is a status a person can change; .tag is one the system owns.
+  Variants: .badge-success .badge-warning .badge-danger .badge-info, plain = neutral.
+-->
+```
+
+## a person in a table cell
+
+```html
+<div class="cell-user">
+  <span class="avatar avatar-md">AS</span>
+  <div class="cell-user-meta">
+    <span class="cell-user-name">Anna Schmidt</span>
+    <span class="cell-user-role">anna@example.com</span>
+  </div>
+</div>
+```
+
+## tabs
+
+```html
+<div class="tabs" role="tablist">
+  <button class="tab is-active" role="tab" aria-selected="true" type="button">Overview</button>
+  <button class="tab" role="tab" aria-selected="false" type="button">History</button>
+</div>
+```
+
+## card
+
+```html
+<article class="card">
+  <h3 class="card-title">Card title</h3>
+  <p class="card-body">A card is a surface, a hairline border and padding. Nothing else — no shadow at rest, no coloured left border for status.</p>
+</article>
+```
+
+## alert — a condition that belongs to the page
+
+```html
+<div class="alert alert-warning" role="alert">
+  <svg class="icon alert-icon"><use href="#i-warning" /></svg>
+  <p class="alert-message">Your payment method expires next month. Update it to keep service running.</p>
+  <div class="alert-actions">
+    <button class="btn btn-xs btn-secondary" type="button">Update</button>
+  </div>
+</div>
+<!-- Buttons inside an alert are always .btn-xs. Use Toast for something transient. -->
+```
+
+## dropdown menu
+
+```html
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-trigger" type="button" aria-expanded="false">
+    Actions
+    <svg class="btn-icon"><use href="#i-caret-down" /></svg>
+  </button>
+  <div class="dropdown-menu dropdown-menu-end" hidden>
+    <button class="dropdown-item" type="button">Download PDF</button>
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item dropdown-item-danger" type="button">Void invoice</button>
+  </div>
+</div>
+<!-- .dropdown-trigger carries no CSS; the delegated script finds the button by it. -->
+```
+
+## drawer — detail beside the page, opened by data-modal-open
+
+```html
+<div class="drawer-overlay" id="recipe-drawer" hidden>
+  <aside class="drawer drawer-regular" role="dialog" aria-modal="true" aria-labelledby="recipe-drawer-title">
+    <header class="drawer-header">
+      <h2 class="modal-title" id="recipe-drawer-title">INV-1041</h2>
+      <button class="btn btn-icon-only btn-ghost btn-xs modal-close" type="button"
+              data-modal-close aria-label="Close">
+        <svg class="btn-icon"><use href="#i-x" /></svg>
+      </button>
+    </header>
+    <div class="drawer-body">
+      <p class="body">Detail goes here.</p>
+    </div>
+    <footer class="drawer-footer">
+      <button class="btn btn-secondary" type="button" data-modal-close>Close</button>
+    </footer>
+  </aside>
+</div>
+<!--
+  The overlay WRAPS the panel and carries `hidden`. Opening is
+  data-modal-open="<overlay id>" on any trigger; closing is data-modal-close.
+
+  Use the DRAWER's own header, body and footer: unlike the modal's they carry
+  the dividers and even padding a full-height panel needs. (example.html builds
+  its drawers from .modal-header and .modal-body — that is the showcase being
+  inconsistent, not the pattern to copy.) A modal is the same shape with
+  .modal-overlay > .modal.modal-sm and the .modal-* parts.
+
+  Widths: .drawer-narrow .drawer-regular .drawer-medium .drawer-wide
+  .drawer-ultra .drawer-full.
+-->
+```
+
+## app shell — sidenav beside the page, for an application screen
+
+```html
+<!--
+  <div class="app-shell">
+    <aside class="sidenav">
+      <button class="sidenav-toggle" type="button" aria-label="Toggle navigation">
+        <svg><use href="#i-chevron-left" /></svg>
+      </button>
+      <ul class="sidenav-list">
+        <li><a class="sidenav-item is-active" href="#">
+          <svg class="sidenav-item-icon"><use href="#i-cpu-2" /></svg>
+          <span class="sidenav-item-label">Processes</span>
+        </a></li>
+        <li><a class="sidenav-item" href="#">
+          <svg class="sidenav-item-icon"><use href="#i-initiatives" /></svg>
+          <span class="sidenav-item-label">Initiatives</span>
+        </a></li>
+      </ul>
+    </aside>
+    <main class="app-shell-main">
+      … page content …
+    </main>
+  </div>
+
+  The shell goes BELOW the top bar and replaces <main class="page">. Add
+  .is-compact to .sidenav for the collapsed rail.
+-->
+```
+
+## toolbar — filter row above a table
+
+```html
+<div class="toolbar">
+  <div class="input-icon input-icon-left toolbar-search">
+    <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass" /></svg>
+    <input class="input" type="text" placeholder="Search by name or owner" aria-label="Search" />
+  </div>
+  <button class="btn btn-secondary" type="button">
+    <svg class="icon"><use href="#i-funnel" /></svg>Filters
+  </button>
+</div>
+<!-- .toolbar-search on the input wrapper makes it take the free space. -->
+```
+
+## icon
+
+```html
+<!--
+  <svg class="icon"><use href="#i-check" /></svg>
+
+  No size class means 1em, so it tracks the surrounding text — that is the
+  default and usually right. .icon-16 and .icon-24 pin it; nothing else is legal.
+  Inside a button use .btn-icon. The sprite is injected by inline.py, so icons
+  render blank until you bake. Slugs are listed at the end of this document.
+-->
+```
+
+---
+
+# Complete inventory
+
+Generated from the stylesheets. Everything the kit defines is below; if a
+name is not here, it does not exist.
+
+## Classes (368)
+
+**Accordion** — .accordion · .accordion-chevron · .accordion-content · .accordion-details · .accordion-group · .accordion-summary · .accordion-title · .borders-middle · .borders-none · .is-open
+
+**Alert** — .alert · .alert-actions · .alert-close · .alert-danger · .alert-icon · .alert-info · .alert-message · .alert-success · .alert-warning
+
+**Side navigation** — .app-shell · .app-shell-main · .is-compact · .sidenav · .sidenav-footer · .sidenav-group · .sidenav-group-trigger · .sidenav-item · .sidenav-item-chevron · .sidenav-item-icon · .sidenav-item-label · .sidenav-list · .sidenav-spacer · .sidenav-subitem · .sidenav-sublist · .sidenav-toggle
+
+**Avatar** — .avatar · .avatar-2xl · .avatar-lg · .avatar-md · .avatar-sm · .avatar-team · .avatar-xl · .avatar-xs
+
+**Badge** — .badge · .badge-danger · .badge-icon · .badge-info · .badge-remove · .badge-success · .badge-warning
+
+**Breadcrumbs** — .bc-collapsible · .breadcrumb · .breadcrumb-overflow · .breadcrumbs · .breadcrumbs-fit · .is-current · .org · .w3
+
+**Type helpers** — .body · .body-lg · .body-lg-semibold · .body-semibold · .body-sm · .body-sm-semibold · .body-xs · .body-xs-semibold · .body-xxs · .body-xxs-semibold · .caption · .h1 · .h2 · .h3 · .h4
+
+**Button** — .btn · .btn-danger · .btn-ghost · .btn-icon · .btn-icon-only · .btn-primary · .btn-secondary · .btn-xs · .icon · .icon-16 · .icon-24
+
+**Tabs** — .can-left · .can-right · .tab · .tabs · .tabs-more · .tabs-more-left · .tabs-more-right · .tabs-scroller
+
+**Card** — .card · .card-body · .card-title
+
+**Table** — .cell-actions · .cell-dot · .cell-meta · .cell-meta-sub · .cell-meta-title · .cell-title · .cell-title-row · .cell-title-sub · .cell-title-text · .cell-user · .cell-user-meta · .cell-user-name · .cell-user-role · .is-danger · .is-warning · .row-toggle · .row-toggle-spacer · .table · .table-scroll · .table-wide · .th-sort
+
+**Loaders** — .chase · .chase-cw · .size-lg · .size-md · .size-sm
+
+**Checkbox** — .checkbox · .checkbox-box · .checkbox-input · .checkbox-label · .checkbox-mark · .checkbox-mark-dash
+
+**Tag input** — .chip · .input-tags · .input-tags-input
+
+**Chip** — .chip-remove · .dropdown-empty · .dropdown-list · .dropdown-menu-label · .dropdown-search
+
+**Count badge** — .count-badge · .count-badge-lg · .count-badge-secondary · .count-badge-sm
+
+**Date picker** — .datepicker · .datepicker-day · .datepicker-dow · .datepicker-foot · .datepicker-grid · .datepicker-head · .datepicker-input · .datepicker-month · .datepicker-next · .datepicker-panel · .dropdown · .dropdown-item-danger · .dropdown-menu-end · .dropdown-menu-start · .is-outside · .is-today
+
+**Drawer** — .drawer · .drawer-medium · .drawer-narrow · .drawer-overlay · .drawer-regular · .drawer-ultra · .drawer-wide
+
+**Drawer parts** — .drawer-body · .drawer-footer · .drawer-header
+
+**Dropdown menu** — .dropdown-chips · .dropdown-divider · .dropdown-header · .dropdown-item · .dropdown-item-avatar · .dropdown-item-check · .dropdown-item-count · .dropdown-item-description · .dropdown-item-icon · .dropdown-item-label · .dropdown-item-text
+
+**Select (dropdown input)** — .dropdown-menu · .input-select · .input-select-placeholder · .input-select-trigger · .input-select-value
+
+**Dropzone (file upload)** — .dropzone · .dropzone-field · .dropzone-hint · .dropzone-icon · .dropzone-input · .dropzone-progress · .dropzone-progress-bar · .dropzone-status · .dropzone-status-dismiss · .dropzone-status-label · .dropzone-title · .is-dragover
+
+**Rich text editor** — .editor · .editor-content · .editor-counter · .editor-counter-ok · .editor-toolbar · .editor-toolbar-btn · .editor-toolbar-divider · .editor-toolbar-select · .is-disabled
+
+**Field + Input** — .field · .field-hint · .field-hint-end · .field-hint-row · .field-label · .input · .input-icon · .input-icon-glyph · .input-icon-left · .input-icon-right · .input-xs · .is-error
+
+**Layout helpers** — .grid-2 · .page · .row · .row-end · .stack
+
+**Segmented control** — .is-active · .segmented · .segmented-icon · .segmented-item
+
+**Toolbar** — .is-auto · .toolbar · .toolbar-end · .toolbar-search · .toolbar-spacer
+
+**Stepper** — .is-complete · .stepper · .stepper-compact · .stepper-current-only · .stepper-label · .stepper-num · .stepper-sep · .stepper-step
+
+**Table · Sheet variant** — .is-desc · .is-dragging · .is-editing · .is-empty · .is-empty-note · .is-filtered · .is-range · .is-readonly · .is-saved · .is-saving · .is-selected · .is-skeleton · .is-sorted · .ph-check · .sheet-addchild · .sheet-avatar · .sheet-cell · .sheet-cell-inner · .sheet-col · .sheet-col-inner · .sheet-collapse-all · .sheet-date · .sheet-empty · .sheet-empty-state · .sheet-error-msg · .sheet-gutter · .sheet-input · .sheet-link · .sheet-link-label · .sheet-name · .sheet-opt · .sheet-person · .sheet-person-name · .sheet-pop · .sheet-pop-list · .sheet-pop-search · .sheet-rownum · .sheet-status · .sheet-tags · .sheet-tags-more · .sheet-text · .sheet-toggle · .sheet-tree · .table-sheet · .th-arrow · .th-menu · .th-resize · .th-tools
+
+**Toast** — .is-entering · .is-leaving · .toast · .toast-action · .toast-close · .toast-error · .toast-icon · .toast-info · .toast-message · .toast-neutral · .toast-region · .toast-success · .toast-warning
+
+**Pictogram** — .is-filled · .is-muted · .pg-bg · .pg-fill · .pg-solid · .pictogram
+
+**Page head** — .list-row · .list-row-meta · .list-row-title · .page-head · .page-head-actions · .page-head-heading · .page-head-main · .page-head-subtitle · .page-head-title · .stat-card · .stat-card-label · .stat-card-value · .template-frame
+
+**Modal** — .modal · .modal-body · .modal-close · .modal-footer · .modal-full · .modal-header · .modal-lg · .modal-md · .modal-overlay · .modal-sm · .modal-title · .modal-xl · .modal-xs
+
+**Progress bar** — .progress · .progress-fill · .progress-track · .progress-value
+
+**Radio** — .radio · .radio-circle · .radio-input · .radio-label
+
+**Top bar** — .search-icon · .topbar · .topbar-account · .topbar-actions · .topbar-brand · .topbar-brand-logo · .topbar-cta · .topbar-logo · .topbar-menu · .topbar-search · .topbar-search-input · .topbar-title
+
+**Slider** — .slider · .slider-field · .slider-icon · .slider-input · .slider-label · .slider-value
+
+**Switch** — .switch · .switch-input · .switch-track
+
+**Tag** — .tag · .tag-blue · .tag-blue-dark · .tag-blue-light · .tag-dark · .tag-indicator · .tag-light · .tag-negative · .tag-positive · .tag-warning
+
+## Attribute-driven components
+
+Not every component is a class.
+
+- `[data-align]` — values: center, end
+- `[data-collapsible]`
+- `[data-level]` — values: 0, 1, 2
+- `[data-placement]` — values: bottom, left, right
+- `[data-theme]` — values: dark
+- `[data-tooltip]`
+- `[data-tooltip-style]` — values: regular
+- `[data-variant]` — values: muted
+- `[data-component]`
+- `[data-datepicker]`
+- `[data-dropzone]`
+- `[data-fail]`
+- `[data-modal-close]`
+- `[data-modal-open]`
+- `[data-sheet]`
+- `[data-slider-output]`
+- `[data-type]`
+
+## Behaviour hooks
+
+No CSS of their own, but the delegated script finds its targets by them.
+
+.datepicker-prev · .dropdown-trigger · .editor-counter-text · .page-view
+
+## Tokens
+
+Reference the semantic aliases. The palette ramps are listed so you can
+recognise one and avoid writing it directly.
+
+**color** (83) — `--color-white`, `--color-black`, `--color-gray-50`, `--color-gray-100`, `--color-gray-200`, `--color-gray-300`, `--color-gray-400`, `--color-gray-500`, `--color-gray-600`, `--color-gray-700`, `--color-zinc-500`, `--color-zinc-600`, `--color-zinc-700`, `--color-zinc-800`, `--color-zinc-900`, `--color-graphite-300`, `--color-graphite-700`, `--color-graphite-750`, `--color-graphite-800`, `--color-graphite-900`, `--color-red-100`, `--color-red-150`, `--color-red-500`, `--color-yellow-100`, `--color-yellow-150`, `--color-yellow-500`, `--color-yellow-700`, `--color-green-100`, `--color-green-150`, `--color-green-200`, `--color-green-300`, `--color-green-400`, `--color-green-500`, `--color-green-600`, `--color-green-700`, `--color-green-800`, `--color-blue-400`, `--color-blue-100`, `--color-blue-150`, `--color-blue-500`, `--color-blue-600`, `--color-blue-700`, `--color-purple-100`, `--color-purple-150`, `--color-purple-500`, `--color-blue-500-hover`, `--color-blue-500-active`, `--color-green-500-hover`, `--color-green-500-active`, `--color-red-500-hover`, `--color-red-500-active`, `--color-bg`, `--color-surface`, `--color-surface-muted`, `--color-surface-sunken`, `--color-border`, `--color-border-strong`, `--color-border-focus`, `--color-text`, `--color-text-muted`, `--color-text-subtle`, `--color-text-inverse`, `--color-text-link`, `--color-icon`, `--color-brand`, `--color-brand-hover`, `--color-brand-active`, `--color-brand-subtle`, `--color-accent`, `--color-accent-hover`, `--color-accent-active`, `--color-accent-subtle`, `--color-success`, `--color-success-subtle`, `--color-warning`, `--color-warning-subtle`, `--color-danger`, `--color-danger-hover`, `--color-danger-active`, `--color-danger-subtle`, `--color-info`, `--color-info-subtle`, `--color-overlay`
+
+**spacing** (9) — `--spacing-0`, `--spacing-1`, `--spacing-2`, `--spacing-3`, `--spacing-4`, `--spacing-6`, `--spacing-8`, `--spacing-10`, `--spacing-12`
+
+**radius** (4) — `--radius-none`, `--radius-sm`, `--radius-md`, `--radius-full`
+
+**shadow** (6) — `--shadow-0`, `--shadow-1`, `--shadow-2`, `--shadow-3`, `--shadow-4`, `--shadow-5`
+
+**zIndex** (7) — `--z-drawer`, `--z-modal`, `--z-tooltip`, `--z-snackbar`, `--z-dropdown`, `--z-sticky`, `--z-overlay`
+
+**breakpoint** (5) — `--breakpoint-xs`, `--breakpoint-sm`, `--breakpoint-md`, `--breakpoint-lg`, `--breakpoint-xl`
+
+**border** (2) — `--border-width`, `--border-width-0`
+
+**layout** (19) — `--header-height`, `--min-width-14`, `--min-width-16`, `--min-width-24`, `--max-width-1-12`, `--max-width-2-12`, `--max-width-3-12`, `--max-width-4-12`, `--max-width-5-12`, `--max-width-6-12`, `--max-width-7-12`, `--max-width-8-12`, `--max-width-9-12`, `--max-width-10-12`, `--max-width-11-12`, `--width-input`, `--height-input`, `--padding-input`, `--container-lg`
+
+**type** (16 roles, use as `font: var(--type-NAME)`) — `--type-h1`, `--type-h2`, `--type-h3`, `--type-h4`, `--type-body-lg`, `--type-body`, `--type-body-sm`, `--type-body-xs`, `--type-body-xxs`, `--type-body-lg-semibold`, `--type-body-semibold`, `--type-body-sm-semibold`, `--type-body-xs-semibold`, `--type-body-xxs-semibold`, `--type-caption`, `--type-mono`
+
+## Icon slugs (369)
+
+Every id in the sprite. `<svg class="icon"><use href="#SLUG" /></svg>`.
+A slug not listed here renders blank, silently.
+
+`i-add-document`, `i-afternoon`, `i-ai-smart-writing`, `i-archive`, `i-arrow-counter-clockwise`, `i-arrow-down`, `i-arrow-down-minor`, `i-arrow-long-down`, `i-arrow-long-left`, `i-arrow-long-right`, `i-arrow-long-up`, `i-arrow-right`, `i-arrow-square-out`, `i-arrow-up`, `i-arrow-up-minor`, `i-arrows-select`, `i-associated-org-unit-join`, `i-associated-org-unit-leave`, `i-asterisk-solid`, `i-attachment`, `i-attendee`, `i-availability-full-time`, `i-availability-part-time`, `i-availability-unavailable`, `i-availability-unavailable-minor`, `i-avatar`, `i-avg-weekly-hours`, `i-award`, `i-back`, `i-back-minor`, `i-backspace`, `i-badge`, `i-badge-star`, `i-bar-chart`, `i-bar-chart-2`, `i-bar-chart-3`, `i-bell`, `i-bell-off`, `i-bell-solid`, `i-bidirectional`, `i-billing`, `i-billing-2`, `i-board-new`, `i-bold`, `i-bookmark`, `i-bookmark-solid`, `i-bookmark-star-empty`, `i-bookmark-star-full`, `i-box`, `i-brochure`, `i-buildings`, `i-bulb`, `i-bullet-outline`, `i-bullet-solid`, `i-business-owner-join`, `i-business-owner-leave`, `i-cake`, `i-calendar`, `i-calendar-blank`, `i-calendar-reminder`, `i-call-missed`, `i-candidates`, `i-career`, `i-caret-down`, `i-caret-right`, `i-caret-up`, `i-ceo-founder`, `i-certificate`, `i-chat`, `i-chat-bot`, `i-chat-circle`, `i-check`, `i-check-circle`, `i-check-minor`, `i-chef`, `i-chevron`, `i-chevron-double`, `i-chevron-down`, `i-chevron-left`, `i-chevron-minor`, `i-chevron-right`, `i-circuit`, `i-circuit-2`, `i-close`, `i-close-circle`, `i-close-minor`, `i-cloud-connect`, `i-cloud-gaming`, `i-cloud-layers`, `i-cloud-storage`, `i-code`, `i-code-block`, `i-collapse`, `i-command-key`, `i-comment-add`, `i-comment-ask`, `i-company`, `i-component`, `i-connectors`, `i-connectors-2`, `i-contracts`, `i-controls`, `i-copy`, `i-cpu`, `i-cpu-2`, `i-cpu-3`, `i-critical`, `i-critical-solid`, `i-cycle`, `i-dashboard`, `i-data-warehouse`, `i-desktop-monitoring`, `i-device-monitoring`, `i-devices`, `i-dispute`, `i-done`, `i-done-solid`, `i-donut-chart`, `i-dots-three`, `i-dots-three-vertical`, `i-download`, `i-download-document`, `i-drag`, `i-drawer`, `i-education`, `i-ellipses`, `i-email`, `i-enter`, `i-envelope`, `i-estimated-delivery`, `i-evening`, `i-exclamation`, `i-exclamation-solid`, `i-exit`, `i-expand`, `i-eye`, `i-eye-hide`, `i-eye-slash`, `i-file`, `i-filter`, `i-flag`, `i-flag-2`, `i-flash`, `i-focus-group`, `i-folder`, `i-folder-misc`, `i-font-size`, `i-fullscreen`, `i-function`, `i-funnel`, `i-gear`, `i-gift`, `i-globe`, `i-goggles`, `i-google`, `i-grammar-check`, `i-grid`, `i-group-2`, `i-group-2-1`, `i-group-3`, `i-guests`, `i-happy-emoji`, `i-heading`, `i-heart`, `i-heartbeat`, `i-help`, `i-home`, `i-hours-this-month`, `i-house`, `i-image`, `i-image-gallery`, `i-inbox`, `i-info`, `i-info-solid`, `i-initiatives`, `i-italic`, `i-jira-software`, `i-job-change`, `i-jobs`, `i-key-results`, `i-keyboard-key`, `i-keypad`, `i-lan`, `i-language`, `i-layers`, `i-lead-org-unit-join`, `i-lead-org-unit-leave`, `i-legal-info`, `i-length`, `i-lengthen-paragraph-text`, `i-lightbulb`, `i-lightning`, `i-link`, `i-list`, `i-list-2`, `i-list-3`, `i-list-4`, `i-list-bullet`, `i-list-checkboxes`, `i-list-dashes`, `i-list-ordered`, `i-list-unordered`, `i-location`, `i-lock`, `i-magnifying-glass`, `i-manager-change`, `i-memo`, `i-mention`, `i-message`, `i-microphone-off`, `i-microphone-on`, `i-minus`, `i-minus-minor`, `i-mobile`, `i-mobile-monitoring`, `i-moon`, `i-more`, `i-morning`, `i-multi`, `i-narrow-tables-row`, `i-network`, `i-new`, `i-new-candidate`, `i-night`, `i-numerical-analysis`, `i-okr`, `i-okr-custom`, `i-org`, `i-org-chart`, `i-org-chart-2`, `i-org-chart-3`, `i-org-unit`, `i-overlap`, `i-overview`, `i-owner-default`, `i-owner-pending`, `i-page`, `i-page-2`, `i-participants`, `i-pause`, `i-pause-solid`, `i-pencil`, `i-pencil-simple`, `i-performance-2`, `i-phone`, `i-phone-down`, `i-pie-chart`, `i-pin`, `i-pin-solid`, `i-placeholder`, `i-play`, `i-play-solid`, `i-plus`, `i-plus-minor`, `i-pod`, `i-presenter`, `i-presenter-mode`, `i-preview`, `i-preview-1`, `i-proceed`, `i-process`, `i-profile`, `i-project`, `i-project-discovery`, `i-project-discovery-2`, `i-project-discovery-3`, `i-project-implementation`, `i-project-implementation-2`, `i-project-implementation-3`, `i-quote`, `i-rank-1`, `i-rank-2`, `i-rank-3`, `i-react-ai`, `i-recognize`, `i-record-solid`, `i-referral`, `i-referrals`, `i-removed-user`, `i-report`, `i-research`, `i-reset`, `i-resources`, `i-rocket`, `i-rotate`, `i-rows`, `i-sad-emoji`, `i-search`, `i-search-box`, `i-security`, `i-send`, `i-services`, `i-settings`, `i-settings-2`, `i-share-screen`, `i-shorten-paragraph-text`, `i-single`, `i-skills`, `i-skype`, `i-slack`, `i-sleep`, `i-sort`, `i-sort-ascending`, `i-sort-descending`, `i-sound-off`, `i-sound-on`, `i-special-group`, `i-special-group-join`, `i-special-group-leave`, `i-star`, `i-star-solid`, `i-sticker`, `i-stop-solid`, `i-storage`, `i-strategy`, `i-strikethrough`, `i-sub-arrow-right`, `i-subfunction`, `i-sun`, `i-support`, `i-switch`, `i-table`, `i-tables`, `i-target`, `i-tasks`, `i-team`, `i-thumbs-down`, `i-thumbs-up`, `i-time`, `i-time-convert`, `i-time-off`, `i-time-solid`, `i-timesheet`, `i-tip`, `i-transfer`, `i-trash`, `i-triangle-down-minor-solid`, `i-triangle-left-minor-solid`, `i-triangle-right-minor-solid`, `i-triangle-up-minor-solid`, `i-ui-guidelines`, `i-undo`, `i-unlink`, `i-update`, `i-upload`, `i-upload-document`, `i-user`, `i-users`, `i-users-three`, `i-verification-badge`, `i-video`, `i-video-broadcast`, `i-video-call`, `i-video-call-2`, `i-video-off`, `i-video-on`, `i-view`, `i-vr`, `i-warning`, `i-warning-octagon`, `i-warning-solid`, `i-web-monitoring`, `i-white-paper`, `i-white-paper-2`, `i-wide-tables-row`, `i-wifi`, `i-work-experience`, `i-working`, `i-x`
+
+## Never use these
+
+88 classes that example.html styles in its own
+`<style>` block and nowhere else. They look like kit classes in markup.
+
+.anim-card · .anim-demo · .anim-fade · .anim-highlight · .anim-slider · .anim-spin · .app-shell-ham · .app-shell-scrim · .btn-cta-icon · .btn-cta-label · .control · .control-label · .device-chrome · .device-chrome-label · .device-dot · .device-frame · .device-panel · .device-preview · .device-stage · .device-tabs · .header · .heading-anchor · .icon-card · .icon-card-name · .icon-grid · .is-nav-open · .is-picasso · .motion-card · .motion-card-head · .motion-curve · .motion-dot · .motion-grid · .motion-meta · .motion-name · .motion-sub · .motion-token · .motion-track · .motion-val · .page-toc · .page-toc-item · .page-toc-section · .page-toc-section-label · .page-toc-toggle · .pagehead-demo · .pictogram-card · .pictogram-card-name · .pictogram-grid · .playground · .playground-controls · .playground-stage · .playground-tabs · .playground-variant · .radii-row · .radius-card · .radius-shape · .radius-token · .radius-value · .ramp · .ramp-name · .run · .section-head · .seg-menu · .segmented-caret · .segmented-wrap · .shadow-card · .shadow-chip · .shadow-role · .shadow-row · .swatch · .swatch-card · .swatch-hex · .swatch-label · .swatch-row · .swatch-token · .theme-icon-moon · .theme-icon-sun · .toc · .tok-bar · .tok-list · .tok-name · .tok-row · .tok-src · .tok-val · .topnav · .topnav-actions · .topnav-inner · .topnav-links · .type-specimen
+

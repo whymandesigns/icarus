@@ -4,7 +4,7 @@
   "counts": {
     "classes": 368,
     "groups": 39,
-    "attributes": 8,
+    "attributes": 17,
     "behaviourHooks": 4,
     "showcaseOnly": 88,
     "tooling": 77
@@ -490,7 +490,16 @@
     ],
     "data-variant": [
       "muted"
-    ]
+    ],
+    "data-component": [],
+    "data-datepicker": [],
+    "data-dropzone": [],
+    "data-fail": [],
+    "data-modal-close": [],
+    "data-modal-open": [],
+    "data-sheet": [],
+    "data-slider-output": [],
+    "data-type": []
   },
   "behaviourHooks": [
     "datepicker-prev",
