@@ -37,9 +37,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Your feature</title>
-    <link rel="stylesheet" href="../../designmd/tokens.css" />
-    <link rel="stylesheet" href="../../designmd/semantic.css" />
-    <link rel="stylesheet" href="../../designmd/components.css" />
+    [ Point the three hrefs at wherever this design system folder sits,
+      relative to YOUR file. They are the only paths that matter. ]
+    <link rel="stylesheet" href="PATH/TO/tokens.css" />
+    <link rel="stylesheet" href="PATH/TO/semantic.css" />
+    <link rel="stylesheet" href="PATH/TO/components.css" />
   </head>
   <body>
     … components …
@@ -49,7 +51,7 @@
     // every <use href="#i-…"> is blank until you bake. This fetches it while
     // you work and no-ops once the sprite is really in the document.
     if (!document.getElementById('i-plus')) {
-      fetch('../../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
+      fetch('PATH/TO/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
         if (!svg) return;
         const host = document.createElement('div');
         host.hidden = true; host.innerHTML = svg;
@@ -100,9 +102,10 @@
   </body>
   </html>
 
-  Before sharing, bake it: `python3 designmd/inline.py <your-file>.html` inlines
+  Before sharing, bake it: `python3 inline.py <your-file>.html`, run from the
+  system folder. It inlines
   the CSS, the sprite and the fonts, so the result has no external dependencies
-  and the dev-time fetch above stops firing. designmd/starter/ is this page with
+  and the dev-time fetch above stops firing. starter/index.html is this page with
   the components already filled in — copy that if you can reach the filesystem.
 
   Richer components (the sheet, the date picker, dropzones, tag inputs, toasts)

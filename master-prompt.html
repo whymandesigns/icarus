@@ -46,7 +46,7 @@
     <ol class="steps">
       <li>Copy the prompt below.</li>
       <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) with your feature's folder name.</li>
-      <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings.</li>
+      <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings. This prompt is written for that Toptal layout; on a standalone clone of the system, start from <code>AGENTS.md</code> instead.</li>
       <li>Iterate locally, then inline + list it as the prompt describes.</li>
     </ol>
 
@@ -73,9 +73,12 @@ CONTEXT
   stylesheets, loaded in order: `tokens.css` (primitives) -> `semantic.css` (intent
   aliases + reset) -> `components.css` (every component class). Plus `assets/logo.svg`
   and an icon sprite `icons.svg`.
-- The complete, living component reference is `designmd/example.html` — open it to copy
-  the exact markup for any component. Principles, color roles and rules are in
-  `designmd/design.md`.
+- The inventory is `designmd/dist/kit.json` — every class that exists, grouped. The
+  markup for each component is in `designmd/recipes.html`. Do NOT copy markup out of
+  `designmd/example.html`: 88 of the classes in that file are the showcase's own chrome,
+  styled in its &lt;style&gt; block and nowhere else, and they look exactly like kit classes.
+  Browse it to see what a component looks like; take the class name from kit.json.
+  Principles, colour roles and rules are in `designmd/AGENTS.md`.
 - Prototypes live at `features/&lt;feature-name&gt;/index.html` — one folder per feature,
   kebab-case, the file is always named `index.html`.
 
@@ -104,7 +107,7 @@ TASK — create `features/{{FEATURE_NAME}}/index.html`
    labels; leave the substance for a follow-up prompt.
 
 RULES
-- CHECK THE SYSTEM BEFORE YOU BUILD. Open `designmd/example.html` and look for the
+- CHECK THE SYSTEM BEFORE YOU BUILD. Look in `designmd/dist/kit.json` for the
   thing you are about to make. Most of it is already there — toasts, modals, drawers,
   switches, empty states, banners, tables. Build bespoke only after looking and not
   finding it, and say so when you do. A hand-rolled copy of a component that already
@@ -116,9 +119,10 @@ RULES
   that a token covers. Colors: `var(--color-*)`. Spacing: `var(--spacing-*)`.
   Type: `var(--type-*)`. Components: `.btn`, `.card`, `.table`, `.alert`, `.tabs`,
   `.page-head`, `.input`, `.badge`, etc. When unsure of a component's markup, read it
-  from `designmd/example.html` rather than inventing classes.
+  from `designmd/recipes.html` rather than inventing classes.
 - Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
-  Browse the names in the Iconography gallery in `designmd/example.html`.
+  Every slug is listed at the end of `designmd/llms-full.txt`, and in the Iconography
+  gallery in `designmd/example.html`.
 - The sidenav lists the product's real top-level sections (Processes, Initiatives,
   OKRs, People, …). Follow my answer to the sidebar question above: if I named an
   existing section, mark that item `.is-active` and add no new entry; if I asked for a

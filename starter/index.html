@@ -6,35 +6,40 @@
   <title>Starter — designmd</title>
 
   <!--
-    Copy this folder to features/<your-feature>/ and edit index.html.
+    A working skeleton. Open it as it sits — the three links below point at the
+    system one folder up, so it renders immediately in a fresh clone.
 
-    These three links are the whole system, in this order. Keep them live while
-    you build — edits to the stylesheets show up on reload. Before the file goes
-    anywhere, bake them in:
+    TO START A PROTOTYPE, copy this file somewhere of your own and repoint
+    those three links at wherever this system lives. They are the only paths
+    that matter; get them wrong and the page renders as bare HTML with no error
+    to tell you why. From a folder beside the system:
 
-        python3 ../../designmd/inline.py index.html
+        cp starter/index.html ../my-feature.html
+        sed -i '' 's|"\.\./|"designmd/|g' ../my-feature.html    # adjust to taste
 
-    That inlines the CSS, injects the icon sprite and embeds the fonts, so the
-    result is one file with no external dependencies. Relative links break the
-    moment the file moves, which is why a prototype is never shared with them.
+    Then, from inside the system folder, check and bake:
 
-    Check your work before you ship:
+        python3 lint.py ../my-feature.html
+        python3 inline.py ../my-feature.html
 
-        python3 ../../designmd/lint.py index.html
+    lint.py reports an unresolved stylesheet, an invented class, a dead icon
+    slug and more. inline.py folds the CSS, the icon sprite and the fonts into
+    the file itself, so what you share has no external dependencies and does
+    not care where it sits.
 
     Two rules worth knowing before you start:
 
-      - Every class must be in designmd/dist/kit.json. If the kit has no
+      - Every class must be in dist/kit.json. If the kit has no
         component for what you need, say so — do not invent a class. A class
         that is not defined renders as nothing, silently.
-      - Do NOT copy markup out of designmd/example.html. 88 of the classes in
+      - Do NOT copy markup out of example.html. 88 of the classes in
         that file are the showcase's own chrome, styled in its <style> block
         and nowhere else; they look exactly like kit classes. Use kit.json to
         find a class, and this file or the component docs for the markup.
   -->
-  <link rel="stylesheet" href="../../designmd/tokens.css" />
-  <link rel="stylesheet" href="../../designmd/semantic.css" />
-  <link rel="stylesheet" href="../../designmd/components.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
 </head>
 <body>
 
@@ -55,7 +60,7 @@
     <svg class="btn-icon"><use href="#i-list" /></svg>
   </button>
   <div class="topbar-brand">
-    <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="Operationalize" />
+    <img class="topbar-brand-logo" src="../assets/logo.svg" alt="Operationalize" />
   </div>
   <span class="topbar-title">Team members</span>
   <div class="topbar-search">
@@ -192,7 +197,7 @@
   work, and no-ops once the sprite is really in the document.
 */
 if (!document.getElementById('i-plus')) {
-  fetch('../../designmd/icons.svg')
+  fetch('../icons.svg')
     .then(function (r) { return r.ok ? r.text() : null; })
     .then(function (svg) {
       if (!svg) return;

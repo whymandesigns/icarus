@@ -3,14 +3,23 @@
 HTML prototypes for the **Operationalize** app, built from a design system called
 **designmd**. If you are writing UI here, read this first — it is short.
 
-Two sibling checkouts, and they must stay siblings — every path below is written from
-the folder that contains them both:
+**Paths below are written from the root of this folder** — the one holding `tokens.css`,
+`lint.py` and `dist/`. That is true however you got it:
 
 ```
-icarus/
-├── designmd/   the design system   (repo: whymandesigns/icarus)
-└── features/   the prototypes      (repo: whymandesigns/opz-prototypes)
+# cloned on its own (github.com/whymandesigns/icarus)
+icarus/            ← you are here; prototypes live wherever you like
 ```
+```
+# inside Toptal's working layout, two sibling checkouts
+icarus/
+├── designmd/      ← you are here   (repo: whymandesigns/icarus)
+└── features/      the prototypes   (repo: whymandesigns/opz-prototypes)
+```
+
+Only one path ever needs changing: the three `<link>` hrefs at the top of a prototype
+must point at this folder. Get them wrong and the page renders as bare HTML with no
+error — `lint.py` is what catches it.
 
 ## The rules
 
@@ -34,13 +43,20 @@ icarus/
 
 ## Start here
 
+Open `starter/index.html` — it renders as it sits and is lint-clean. Copy it to
+wherever your prototype lives, repoint its three stylesheet `<link>`s at this folder,
+then, run from here:
+
 ```bash
-cp -r designmd/starter features/my-feature     # a correct, linting-clean skeleton
-python3 designmd/lint.py features/my-feature/index.html
-python3 designmd/inline.py features/my-feature/index.html   # bake before sharing
+python3 lint.py   <path-to-your-prototype>.html    # before you call it done
+python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
 
-`features/<kebab-name>/index.html` — always that shape, always `index.html`.
+`inline.py` folds the CSS, the icon sprite and the fonts into the file, so what you
+share has no external dependencies and does not care where it sits.
+
+In Toptal's working layout a prototype is `features/<kebab-name>/index.html` — always
+that shape, always `index.html`. On your own, put it where you like.
 
 ## Where things are
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Design Library</title>
+  <title>Icarus Prototype Design System</title>
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
@@ -17,11 +17,41 @@
 </head>
 <body>
   <main class="page">
-    <header style="margin-bottom: var(--spacing-10)">
-      <h1 class="h1">Design Library</h1>
+    <header style="margin-bottom: var(--spacing-8)">
+      <h1 class="h1">Icarus Prototype Design System</h1>
+      <p class="body-sm" style="color: var(--color-text-muted); margin: var(--spacing-2) 0 0">
+        An extension of <a href="https://toptal.github.io/picasso/" target="_blank" rel="noopener noreferrer"
+        style="color: var(--color-text-link); text-decoration: none">Picasso</a>, Toptal's production
+        design system — its foundations as plain CSS. No React, no build step.
+      </p>
     </header>
 
-    <section class="links">
+    <h2 class="h3" style="margin: 0 0 var(--spacing-3)">Build with it</h2>
+    <section class="links" style="margin-top: 0">
+      <a class="card" href="./AGENTS.md">
+        <h3 class="card-title">AGENTS.md — the rules <span class="arrow">→</span></h3>
+        <p class="card-body">Start here, human or agent. The rules, the traps and how to build and check a prototype, in about 1,300 tokens. Cursor, Copilot, Windsurf and Cline each get a generated copy at the path they look for.</p>
+      </a>
+      <a class="card" href="./starter/index.html">
+        <h3 class="card-title">Starter <span class="arrow">→</span></h3>
+        <p class="card-body">A working skeleton — top bar, page head, table, modal, search. It renders as it sits and passes <code>lint.py</code>. Copy it rather than assembling one.</p>
+      </a>
+      <a class="card" href="./recipes.html">
+        <h3 class="card-title">Recipes <span class="arrow">→</span></h3>
+        <p class="card-body">Minimal correct markup, one block per component. Class names alone do not tell you that <code>.drawer-overlay</code> wraps <code>.drawer</code>, or that a drawer opens from <code>data-modal-open</code>.</p>
+      </a>
+      <a class="card" href="./llms-full.txt">
+        <h3 class="card-title">llms-full.txt <span class="arrow">→</span></h3>
+        <p class="card-body">The rules, every recipe, all 368 classes, 135 tokens and 369 icon slugs in one file, about 9k tokens. Paste it into a chat that cannot reach the repo. <code>llms.txt</code> is the short index.</p>
+      </a>
+      <a class="card" href="./dist/kit.json">
+        <h3 class="card-title">dist/kit.json — the inventory <span class="arrow">→</span></h3>
+        <p class="card-body">Every class, grouped, plus the attribute-driven components, the behaviour hooks, and the showcase-only classes to reject. If a class is not in here it does not exist.</p>
+      </a>
+    </section>
+
+    <h2 class="h3" style="margin: var(--spacing-10) 0 var(--spacing-3)">Browse and reference</h2>
+    <section class="links" style="margin-top: 0">
       <a class="card" href="./example.html">
         <h3 class="card-title">Operationalize Design System <span class="arrow">→</span></h3>
         <p class="card-body">Swatches, type scale, components, theme toggle.</p>
@@ -31,8 +61,8 @@
         <p class="card-body">Documented interaction decisions with live playgrounds — when to use which pattern (e.g. confirm modal vs. undo toast for destructive actions).</p>
       </a>
       <a class="card" href="./design.md">
-        <h3 class="card-title">SKILL.md — Principles &amp; Reference <span class="arrow">→</span></h3>
-        <p class="card-body">Architecture, color roles, typography, component shortcodes, workflow rules.</p>
+        <h3 class="card-title">design.md — the full written system <span class="arrow">→</span></h3>
+        <p class="card-body">Architecture, colour roles, typography, component shortcodes, workflow rules. About 16k tokens — read the section you need, not the file.</p>
       </a>
       <a class="card" href="./master-prompt.html">
         <h3 class="card-title">Master prompt <span class="arrow">→</span></h3>
@@ -59,8 +89,8 @@
         <p class="card-body">Goggles for the component kit: outlines every component that has a React counterpart and shows its Picasso import, live JSX and Storybook link on hover. Open the kit with <code>?map=1</code>. Reads <code>figma-map.json</code>; kit-only for now.</p>
       </a>
       <a class="card" href="./features/">
-        <h3 class="card-title">Feature Prototypes directory <span class="arrow">→</span></h3>
-        <p class="card-body">All feature prototypes in one place — one card per <code>features/&lt;name&gt;/</code> folder.</p>
+        <h3 class="card-title">Feature prototypes <span class="arrow">→</span></h3>
+        <p class="card-body">One card per <code>features/&lt;name&gt;/</code> folder. Only resolves inside Toptal's working layout, where <code>features/</code> sits beside this folder — a standalone clone has no such directory.</p>
       </a>
     </section>
   </main>
