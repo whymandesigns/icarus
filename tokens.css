@@ -123,8 +123,8 @@
   /* --color-blue-800: #0A1A50;  unreferenced extension */
   /* --color-blue-900: #061035;  unreferenced extension */
   /* Purple */
-  --color-purple-100: #F1ECFD;      /* extension */
-  --color-purple-150: #DFD3F9;      /* extension */
+  --color-purple-100: #F1ECFD;      /* extension - unused, kept on request */
+  --color-purple-150: #DFD3F9;      /* extension - unused, kept on request */
   /* --color-purple-200: #C9B5F4;  unreferenced extension */
   /* --color-purple-300: #A47DE2;  unreferenced extension */
   /* --color-purple-400: #8552D9;  unreferenced extension */
@@ -141,7 +141,8 @@
    */
   --font-sans: 'Proxima Nova', proxima-nova, Arial, sans-serif;/* picasso + self-hosted */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; /* picasso */
-  --font-display: var(--font-sans);  /* extension */
+  /* --font-display: var(--font-sans);  retired — a pure alias to --font-sans that
+   * nothing ever referenced. */
 
   /* Size scale. Picasso pairs every size with a line-height; Tailwind v4 writes
    * that as --text-{size}--line-height, so the pair travels together. */
@@ -327,10 +328,13 @@
   --duration-350: 350ms;            /* picasso */
   --duration-fast: 120ms;           /* extension */
   --duration-base: 200ms;           /* extension */
-  --duration-slow: 320ms;           /* extension - only the Motion gallery uses it */
+  /* --duration-slow: 320ms;  retired — only the Motion gallery used it. */
   --ease: cubic-bezier(0.2, 0, 0, 1);      /* extension */
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);  /* extension - only the Motion gallery uses it */
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);   /* extension - only the Motion gallery uses it */
+  /* --ease-out: cubic-bezier(0, 0, 0.2, 1);   retired — gallery-only. */
+  /* --ease-in: cubic-bezier(0.4, 0, 1, 1);    retired — gallery-only.
+   * These two are the standard complement to --ease. If a prototype needs an
+   * accelerate or decelerate curve, UNCOMMENT them — do not write a literal
+   * cubic-bezier, which is how the drift this file just cleaned up started. */
 
   /* ---- Animation ----
    * Tailwind v4 names an animation --animate-{name}; the keyframes it points at
