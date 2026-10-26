@@ -248,9 +248,15 @@ def build_tokens_json(primitives, semantic_light, semantic_dark, table):
 # ---------------------------------------------------------------- kit.json
 
 
-def build_kit_json(components_css, example_html, other_css):
-    """Every class the kit defines, plus the showcase-only ones to reject."""
-    live = strip_comments(components_css)
+def build_kit_json(components_css, semantic_css, example_html, other_css):
+    """Every class the kit defines, plus the showcase-only ones to reject.
+
+    semantic.css is in here for one class, and it is the one every prototype
+    starts with: `.page`, the centred column. It lives there because it is the
+    reset's business rather than a component's, and reading only components.css
+    leaves the most fundamental layout class looking invented.
+    """
+    live = strip_comments(components_css) + "\n" + strip_comments(semantic_css)
 
     # Group by the top-level banners components.css already uses. Those are
     # written with a long dash run — /* ---------- Button ---------- */ —
@@ -268,7 +274,7 @@ def build_kit_json(components_css, example_html, other_css):
     # `.btn .icon, .badge .icon, .tag .icon, .toast .icon { … }`.
     owns, mentions, current = OrderedDict(), OrderedDict(), "misc"
     buf = ""
-    for line in components_css.split("\n"):
+    for line in (components_css + "\n/* ---------- Layout helpers ---------- */\n" + semantic_css).split("\n"):
         banner = re.match(r"\s*/\*\s*-{6,}\s*(.+?)\s*-{6,}", line)
         if banner:
             current = banner.group(1).strip()
@@ -305,6 +311,28 @@ def build_kit_json(components_css, example_html, other_css):
 
     tooling = set(re.findall(r"\.([a-z][\w-]*)", strip_comments(other_css))) - set(kit)
 
+    # Some classes carry no CSS at all and are still correct to use: the
+    # delegated script in example.html finds its targets by class, and
+    # .dropdown-trigger is the one every dropdown needs. Nothing styles it, so
+    # a styled-class inventory alone says it does not exist and a reader
+    # avoids the very hook the behaviour depends on.
+    #
+    # Pulled from what the script actually queries, then kept only where the
+    # name belongs to a component family the kit already defines — the raw
+    # query list is full of fragments like `.th` and `.use` from compound
+    # selectors, and of the devtools' own `.map-*` chrome.
+    script = "".join(re.findall(r"<script>(.*?)</script>", example_html, re.S))
+    queried = set()
+    for pattern in (r"querySelector(?:All)?\(\s*['\"]([^'\"]+)['\"]",
+                    r"closest\(\s*['\"]([^'\"]+)['\"]"):
+        for sel in re.findall(pattern, script):
+            queried |= set(re.findall(r"\.([a-z][\w-]*)", sel))
+    families = {c.split("-")[0] for c in kit if "-" in c}
+    hooks = sorted(
+        c for c in queried - set(kit) - set(showcase)
+        if "-" in c and c.split("-")[0] in families
+    )
+
     # Not every component is a class. Tooltips are driven entirely by
     # [data-tooltip], so a reader who sees only the class list concludes the
     # kit has no tooltip and builds one by hand.
@@ -324,6 +352,7 @@ def build_kit_json(components_css, example_html, other_css):
             "classes": len(kit),
             "groups": len(by_group),
             "attributes": len(attributes),
+            "behaviourHooks": len(hooks),
             "showcaseOnly": len(showcase),
             "tooling": len(tooling),
         },
@@ -331,11 +360,13 @@ def build_kit_json(components_css, example_html, other_css):
             "Use only classes listed in `classes`. If the kit lacks something, say so — do not invent a class.",
             "Never use a class from `showcaseOnly`: those are example.html's own chrome, not part of the kit.",
             "Some components are attribute-driven, not classes — see `attributes`. A tooltip is [data-tooltip], not .tooltip.",
+            "`behaviourHooks` carry no CSS but are correct to use — the delegated script finds its targets by them.",
             "Reference semantic tokens (--color-bg, --type-h1), never primitives (--color-blue-500).",
             "Do not author component CSS in a prototype. Add the variant to components.css and re-inline.",
         ],
         "classes": by_group,
         "attributes": attributes,
+        "behaviourHooks": hooks,
         "showcaseOnly": showcase,
         "tooling": sorted(tooling),
     }
@@ -421,7 +452,7 @@ def main():
         )
         + "\n",
         "kit.json": json.dumps(
-            build_kit_json(components_css, example_html, other_css), indent=2
+            build_kit_json(components_css, semantic_css, example_html, other_css), indent=2
         )
         + "\n",
         "bundle.css": build_bundle_css(tokens_css, semantic_css, components_css),
