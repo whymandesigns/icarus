@@ -135,6 +135,12 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     # markup invents classes like .current and .null that nobody wrote.
     markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
 
+    # A bare `ph` is Phosphor's base class — but it is also a perfectly
+    # ordinary name for a placeholder, which is what planning-voyage and
+    # action-trace use it as. Only read it as Phosphor when the file shows
+    # the pack elsewhere: a ph-* class in markup, or the CDN stylesheet.
+    uses_phosphor = bool(re.search(r'class="[^"]*\bph-[\w-]+', markup)) or "phosphor-icons" in html
+
     # --- classes used in markup
     for m in re.finditer(r'class="([^"]*)"', markup):
         # Markup built in JS carries template expressions inside the attribute —
@@ -147,7 +153,7 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
             if cls in kit_classes or cls in tooling or cls.startswith(ALLOWED_PREFIXES):
                 continue
             ln = line_of(markup, m.start())
-            if re.fullmatch(r"ph(-[\w-]+)?", cls):
+            if re.fullmatch(r"ph-[\w-]+", cls) or (cls == "ph" and uses_phosphor):
                 # Not an invented class: these resolve against the Phosphor
                 # CDN stylesheet some prototypes still link, so they render —
                 # off an external dependency, from a pack the system retired.
