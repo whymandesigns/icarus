@@ -685,7 +685,7 @@
         <div class="tok-list" id="type-root"></div>
 
         <h4 class="h4" style="margin-top: var(--spacing-2)">Weight tokens</h4>
-        <p class="body-sm">Picasso uses <strong>two</strong>: regular and semibold. Its <code style="font: var(--type-mono); color: var(--color-text-muted)">Typography</code> exposes only <code style="font: var(--type-mono); color: var(--color-text-muted)">regular</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">semibold</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>, and no component reaches for anything else. <code style="font: var(--type-mono); color: var(--color-text-muted)">thin</code> (100) and <code style="font: var(--type-mono); color: var(--color-text-muted)">light</code> (300) are keys in the Tailwind preset, so the classes generate — but nothing uses them and Proxima has no face at those weights, so they render synthesised. Treat them as unavailable.</p>
+        <p class="body-sm">Two faces, and only two. Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">Typography</code> exposes <code style="font: var(--type-mono); color: var(--color-text-muted)">regular</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">semibold</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">inherit</code>, and nothing reaches for more. Picasso's preset also declares <code style="font: var(--type-mono); color: var(--color-text-muted)">thin</code> (100) and <code style="font: var(--type-mono); color: var(--color-text-muted)">light</code> (300), but no component uses them and Proxima has no face at either weight — a browser would synthesise them. designmd does not carry them.</p>
         <div class="tok-list" id="weight-root"></div>
       </section>
 
@@ -5901,7 +5901,7 @@
     // Only regular and semibold are real: Picasso's Typography exposes those two
     // plus inherit, no component uses thin or light, and Proxima ships no face
     // for them. They stay listed because the preset defines them.
-    const WEIGHTS = [['thin', false], ['light', false], ['regular', true], ['semibold', true]];
+    const WEIGHTS = [['regular', true], ['semibold', true]];
     document.getElementById('weight-root').innerHTML = WEIGHTS.map(([k, real]) => {
       const w = css.getPropertyValue(`--font-weight-${k}`).trim();
       return `

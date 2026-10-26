@@ -84,7 +84,9 @@ rather than just a version.
 
 **What the preset does not tell you.** It defines tokens; it does not say which are used.
 Picasso's preset declares `fontWeight.thin` and `.light`, but no component uses them and
-Proxima has no face for either. Likewise `theme.borderRadius` *replaces* Tailwind's scale
+Proxima has no face for either — so designmd does not carry them. That is the one place
+this file deliberately departs from the preset, on the grounds that a token which cannot
+render what it promises is worse than a missing one. Likewise `theme.borderRadius` *replaces* Tailwind's scale
 rather than extending it, so `rounded-lg` does not exist. Read the components before
 concluding a token is live.
 
@@ -189,7 +191,7 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` is `'Proxima Nova', proxima-nova, Arial, sans-serif` — the self-hosted family first, then Picasso's Adobe Fonts kit id, then Picasso's own fallback. Inter used to sit in that stack and be pulled from Google Fonts; both are gone, so a prototype makes no font request at all. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. `--font-weight-thin` (100) and `--font-weight-light` (300) exist because Picasso's preset defines the keys, but nothing uses them and Proxima has no face for them — treat them as unavailable. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` is `'Proxima Nova', proxima-nova, Arial, sans-serif` — the self-hosted family first, then Picasso's Adobe Fonts kit id, then Picasso's own fallback. Inter used to sit in that stack and be pulled from Google Fonts; both are gone, so a prototype makes no font request at all. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. Picasso's preset also defines `thin` (100) and `light` (300), but nothing uses them and Proxima has no face at either weight, so designmd omits them — the single deliberate departure from the preset. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
 
 ### Role → Picasso `<Typography>`
 
