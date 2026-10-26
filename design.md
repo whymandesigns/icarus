@@ -124,6 +124,42 @@ Switch theme: `<html data-theme="dark">`.
 
 Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. `--font-weight-thin` (100) and `--font-weight-light` (300) exist because Picasso's preset defines the keys, but nothing uses them and Proxima has no face for them — treat them as unavailable. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
 
+### Role → Picasso `<Typography>`
+
+Picasso's Typography resolves a `variant` × `size` pair into a size class, a weight **and
+a colour**. Nine of designmd's roles land on a pair exactly:
+
+| designmd | weight · size | Picasso |
+|---|---|---|
+| `--type-h1` | semibold · 2xl | `variant="heading" size="xlarge"` |
+| `--type-h2` | semibold · xl | `heading` · `large` |
+| `--type-h3` | semibold · lg | `heading` · `medium` |
+| `--type-h4` | semibold · md | `heading` · `small` |
+| `--type-body-lg` | regular · lg | `body` · `large` |
+| `--type-body` | regular · md | `body` · `medium` *(Picasso's default)* |
+| `--type-body-sm` | regular · sm | `body` · `small` |
+| `--type-body-xs` | regular · xxs | `body` · `xsmall` |
+| `--type-body-xxs` | regular · 2xs | `body` · `xxsmall` |
+| `--type-caption` | regular · xxs | `body` · `xsmall` — **identical to `--type-body-xs`** |
+| `--type-body-*-semibold` ×5 | semibold | `body` · size + `weight="semibold"`; Picasso's body variant is always regular, so the weight must be passed |
+| `--type-mono` | regular · sm · mono | **none** — Picasso's Typography has no mono variant |
+
+**Colour is the real divergence.** Picasso bakes it into the variant; designmd's `--type-*`
+tokens carry font only and inherit `--color-text`:
+
+| | designmd | Picasso | on white |
+|---|---|---|---|
+| Headings | graphite-900 `#191E28` | **black** `#000000` | 16.7:1 vs 21:1 |
+| Body | graphite-900 `#191E28` | **graphite-700** `#455065` | 16.7:1 vs 8.1:1 |
+
+So designmd's body copy is markedly darker than the product's — a prototype reads heavier
+than the screen a developer builds. Worth settling deliberately: either `--color-text`
+splits into a heading colour and a body colour, or designmd accepts the difference and
+says so.
+
+One Picasso oddity with no designmd counterpart: `heading` · `xsmall` is `text-md` at
+**regular** weight and graphite-700 — a heading that isn't bold.
+
 ### Size primitives
 
 | Token | Size | Used in |

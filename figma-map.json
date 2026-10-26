@@ -1607,6 +1607,93 @@
         "note": "Icon is chosen by name, not by variant prop. designmd .icon-16/.icon-24 are sizing helpers with no Picasso prop.",
         "verifiedAgainst": "102.0.0"
       }
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "slug": "typography",
+      "stampSelector": ".h1, .h2, .h3, .h4, .body, .body-lg, .body-sm, .body-xs, .body-xxs, .caption",
+      "designmd": {
+        "root": ".h1 · .h2 · .h3 · .h4 · .body-* · .caption",
+        "shortcode": "example.html#type",
+        "snippet": "<h1 class=\"h1\">Page title</h1>\n<p class=\"body\">Body copy.</p>"
+      },
+      "react": {
+        "system": "picasso",
+        "component": "Typography",
+        "import": "@toptal/picasso",
+        "storyId": "components-typography--typography",
+        "status": "mapped",
+        "propMap": {
+          "h1": {
+            "variant": "heading",
+            "size": "xlarge"
+          },
+          "h2": {
+            "variant": "heading",
+            "size": "large"
+          },
+          "h3": {
+            "variant": "heading",
+            "size": "medium"
+          },
+          "h4": {
+            "variant": "heading",
+            "size": "small"
+          },
+          "body-lg": {
+            "variant": "body",
+            "size": "large"
+          },
+          "body": {
+            "variant": "body",
+            "size": "medium"
+          },
+          "body-sm": {
+            "variant": "body",
+            "size": "small"
+          },
+          "body-xs": {
+            "variant": "body",
+            "size": "xsmall"
+          },
+          "body-xxs": {
+            "variant": "body",
+            "size": "xxsmall"
+          },
+          "caption": {
+            "variant": "body",
+            "size": "xsmall"
+          },
+          "body-lg-semibold": {
+            "variant": "body",
+            "size": "large",
+            "weight": "semibold"
+          },
+          "body-semibold": {
+            "variant": "body",
+            "size": "medium",
+            "weight": "semibold"
+          },
+          "body-sm-semibold": {
+            "variant": "body",
+            "size": "small",
+            "weight": "semibold"
+          },
+          "body-xs-semibold": {
+            "variant": "body",
+            "size": "xsmall",
+            "weight": "semibold"
+          },
+          "body-xxs-semibold": {
+            "variant": "body",
+            "size": "xxsmall",
+            "weight": "semibold"
+          }
+        },
+        "note": "Picasso resolves variant x size into a size class, a weight AND a colour. The nine plain roles map exactly; the five -semibold ones need weight passed because Picasso's body variant is always font-regular. COLOUR DIVERGES: Picasso sets headings text-black and body text-graphite-700, while designmd gives everything --color-text (graphite-900), so prototype body copy reads darker than the product's. .caption resolves identically to .body-xs. --type-mono has no Picasso equivalent. Picasso's heading/xsmall — text-md at regular weight — has no designmd counterpart.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
+      }
     }
   ]
 }
