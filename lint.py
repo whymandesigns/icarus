@@ -100,11 +100,23 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     found = []
 
     # The file's own <style> blocks: classes defined here are prototype-scoped.
-    own_style = "".join(re.findall(r"<style[^>]*>(.*?)</style>", html, re.S))
-    if inlined:
-        # Everything after the baked system is the prototype's own CSS.
-        tail = own_style.split("/* === devtools.css === */")[-1]
-        own_style = tail if len(tail) < len(own_style) else ""
+    # Take every block EXCEPT the one inline.py baked the system into. Reading
+    # only what follows that block misses a prototype's own CSS when it sits
+    # above it, which is the usual order — and then reports classes as invented
+    # while the file styles them a few hundred lines up.
+    blocks = re.findall(r"<style[^>]*>(.*?)</style>", html, re.S)
+    own_style = "".join(b for b in blocks if INLINED_MARKER not in b)
+
+    # A class the file's own script selects on is a behaviour hook, not an
+    # invented class — the same thing .dropdown-trigger is for the kit. It
+    # carries no CSS on purpose, and reporting it as undefined sends a reader
+    # looking for missing styles instead of leaving it alone.
+    own_script = "".join(re.findall(r"<script[^>]*>(.*?)</script>", html, re.S))
+    hooks = set()
+    for m in re.finditer(r"(?:querySelector(?:All)?|closest|matches)\(\s*['\"]([^'\"]+)", own_script):
+        hooks |= set(re.findall(r"\.([a-z][\w-]*)", m.group(1)))
+    for m in re.finditer(r"classList\.\w+\(\s*['\"]([\w-]+)", own_script):
+        hooks.add(m.group(1))
     own_classes = set(re.findall(r"\.([a-z][\w-]*)", re.sub(r"/\*.*?\*/", "", own_style, flags=re.S)))
 
     markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
@@ -174,6 +186,9 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
             elif cls in showcase:
                 found.append(Finding("error", ln, "showcase-class",
                     f".{cls} is example.html's own chrome, not a kit class — it has no styles outside the showcase"))
+            elif cls in hooks:
+                found.append(Finding("warn", ln, "js-hook",
+                    f".{cls} carries no CSS — this file's script selects on it"))
             elif cls in own_classes:
                 found.append(Finding("warn", ln, "local-class",
                     f".{cls} is defined in this file — add it to components.css so the next screen inherits it"))
