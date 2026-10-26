@@ -27,6 +27,52 @@ Three layers. Don't skip them.
 
 ---
 
+## 0. Upstream — Picasso
+
+designmd is **downstream of Picasso**, Toptal's production design system. Every token in
+`tokens.css` is either Picasso's — name and value verbatim — or an extension that says so
+in its own comment and explains why. When the two disagree, Picasso wins; when designmd
+needs something Picasso has no answer for, it says so rather than inventing quietly.
+
+| What | Where |
+|---|---|
+| Source | [`github.com/toptal/picasso`](https://github.com/toptal/picasso) — public. Default branch is **`master`**, not `main`. |
+| Verified against | `toptal/picasso@bcaacbb8ec3b` · `@toptal/picasso@102.0.0` (npm, public) |
+| Tailwind preset | `packages/picasso-tailwind/src/index.js` — the token source |
+| Base preset | `packages/base-tailwind/src/index.js` — adds only `lineHeight.5` |
+| Components | `packages/base/<Component>/src/` — props *and* styles |
+| Storybook | [`toptal.github.io/picasso`](https://toptal.github.io/picasso/) — `?path=/story/<storyId>` |
+
+**Checking a component.** The `storyId` in each `figma-map.json` entry opens its story:
+`https://toptal.github.io/picasso/?path=/story/{storyId}`. All 41 were checked against
+source and are correct.
+
+Two traps if you verify them yourself. The Storybook is a static build that resolves
+stories client-side, so `iframe.html?id=anything` returns **200** — a successful request
+proves nothing. And the id is not derived from the component name: each story declares it
+as `PicassoBook.section('X').createPage('Y', …)` in `<Pkg>/src/<Component>/story/index.jsx`,
+so `Modal` is `overlays-modal--modal` and `Input` is `forms-input--input`.
+
+The package is often not the component either — `ProgressBar` lives in `FileInput`,
+`Stepper` in `Step`, `PageHead`/`PageTopBar`/`PageSidebar` in `Page`, each with its own
+`story/` folder and its own section. Resolve the folder, don't guess from the name.
+
+**Read `packages/base/<Component>/src/` when you need certainty.** That is how every prop
+value in the registry was confirmed, and why the map records a `verifiedAgainst` commit
+rather than just a version.
+
+**What the preset does not tell you.** It defines tokens; it does not say which are used.
+Picasso's preset declares `fontWeight.thin` and `.light`, but no component uses them and
+Proxima has no face for either. Likewise `theme.borderRadius` *replaces* Tailwind's scale
+rather than extending it, so `rounded-lg` does not exist. Read the components before
+concluding a token is live.
+
+**Operationalize** sits one layer further down (`base-tailwind` → `picasso-tailwind` →
+its own config) and extends Picasso by almost nothing: one font, one no-op colour
+override, and four animations — all four carried here as `--animate-*`.
+
+---
+
 ## 1. Principles
 
 - **Calm, not loud.** Generous whitespace. Type does hierarchy, not boxes.
@@ -618,7 +664,7 @@ The binding is stored in two artifacts:
 
 1. **`figma-map.json` (phase 1 — in repo now).** The authoritative pairing: for every component it records the designmd side (`root` class, `variants`, canonical `snippet`, shortcode URL) and the Figma side (`component` name, `nodeId`, `key`, and a `propMap` from Figma variant/property values → designmd variant classes). The Figma fields start as `pending-discovery` and are filled by reading the published library (`get_code_connect_suggestions` → `get_context_for_code_connect`).
 2. **Code Connect templates (phase 2 — `figma/*.figma.ts`).** Once the Figma library is published and a Node toolchain is available, each mapping is emitted as a `.figma.ts` template that returns the designmd HTML snippet, published via the Code Connect CLI so it also surfaces natively in Figma Dev Mode and the MCP. Generated from `figma-map.json`, not authored by hand.
-3. **React cross-reference (`react` block, in repo now).** Each entry also carries a `react` block binding the component to the **Picasso** React/Storybook library — `component`, `import`, Storybook `storyId`, a `status` (`mapped` · `partial` · `gap`), and a `propMap` translating designmd variant classes → React props. A stable `slug` is stamped onto the markup as `data-component="<slug>"` (auto-applied from each entry's `stampSelector`). Engineers open any prototype with **`?map=1`** (or the goggles toggle in `example.html`'s nav): mapped components get a pink dotted outline and hovering one shows the resolved React usage (e.g. `<Button variant="primary" size="small" />`), the import line, and a deep link to the Picasso story. `gap`/`partial` entries surface their `note` so library gaps stay visible instead of being faked.
+3. **React cross-reference (`react` block, in repo now).** Each entry also carries a `react` block binding the component to the **Picasso** React/Storybook library — `component`, `import`, Storybook `storyId`, a `status` (`mapped` · `partial` · `gap`), and a `propMap` translating designmd variant classes → React props. A stable `slug` is stamped onto the markup as `data-component="<slug>"` (auto-applied from each entry's `stampSelector`). Engineers open any prototype with **`?map=1`** (or the goggles toggle in `example.html`'s nav): mapped components get a pink dotted outline and hovering one shows the resolved React usage (e.g. `<Button variant="positive" size="small" />` — `.btn-primary` is Picasso's `positive`, since designmd's primary CTA is green and Picasso's `primary` is blue), the import line, and a deep link to the Picasso story. `gap`/`partial` entries surface their `note` so library gaps stay visible instead of being faked.
 
 **Rules for using the binding**
 
