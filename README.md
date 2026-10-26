@@ -35,9 +35,6 @@ llms.txt        a short index of everything here.
 dist/kit.json   every class, grouped — plus the attribute-driven components, the
                 behaviour hooks, and the showcase-only classes to reject.
 dist/tokens.json  every token, value and usage note, light and dark.
-recipes.html    minimal correct markup, one block per component. Class names
-                alone do not say that .drawer-overlay wraps .drawer.
-starter/        a working skeleton that lints clean. Copy it.
 lint.py         checks a prototype; exits non-zero on errors.
 ```
 

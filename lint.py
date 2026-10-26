@@ -120,9 +120,8 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     own_classes = set(re.findall(r"\.([a-z][\w-]*)", re.sub(r"/\*.*?\*/", "", own_style, flags=re.S)))
 
     markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
-    # An HTML comment is not markup either. recipes.html documents some
-    # patterns as commented examples, and a <link> or a class inside one is
-    # being shown, not used — reading them live reports stylesheets that are
+    # An HTML comment is not markup either. a page may document markup in a comment, and a
+    # <link> or a class inside one is being shown, not used — reading them live reports stylesheets that are
     # not loaded and classes that are not on the page.
     markup = re.sub(r"<!--.*?-->", "", markup, flags=re.S)
 

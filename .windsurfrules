@@ -45,9 +45,8 @@ error — `lint.py` is what catches it.
 
 ## Start here
 
-Open `starter/index.html` — it renders as it sits and is lint-clean. Copy it to
-wherever your prototype lives, repoint its three stylesheet `<link>`s at this folder,
-then, run from here:
+Point a prototype's three stylesheet `<link>`s at this folder, build it from the
+classes in `dist/kit.json`, then run from here:
 
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
@@ -65,8 +64,6 @@ that shape, always `index.html`. On your own, put it where you like.
 | | |
 |---|---|
 | `designmd/dist/kit.json` | **the inventory** — 368 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
-| `designmd/starter/` | a working skeleton: top bar, page head, table, modal, search. |
-| `designmd/recipes.html` | **minimal correct markup, one block per component.** Class names alone do not tell you that `.drawer-overlay` wraps `.drawer`, or that a drawer borrows the modal's header. Copy from here. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
 | `designmd/design.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |

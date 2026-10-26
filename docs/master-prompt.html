@@ -74,7 +74,7 @@ CONTEXT
   aliases + reset) -> `components.css` (every component class). Plus `assets/logo.svg`
   and an icon sprite `icons.svg`.
 - The inventory is `designmd/dist/kit.json` — every class that exists, grouped. The
-  markup for each component is in `designmd/recipes.html`. Do NOT copy markup out of
+  Do NOT copy markup out of
   `designmd/example.html`: 88 of the classes in that file are the showcase's own chrome,
   styled in its &lt;style&gt; block and nowhere else, and they look exactly like kit classes.
   Browse it to see what a component looks like; take the class name from kit.json.
@@ -119,7 +119,7 @@ RULES
   that a token covers. Colors: `var(--color-*)`. Spacing: `var(--spacing-*)`.
   Type: `var(--type-*)`. Components: `.btn`, `.card`, `.table`, `.alert`, `.tabs`,
   `.page-head`, `.input`, `.badge`, etc. When unsure of a component's markup, read it
-  from `designmd/recipes.html` rather than inventing classes.
+  from the markup already in your prototype rather than inventing classes.
 - Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
   Every slug is listed at the end of `designmd/llms-full.txt`, and in the Iconography
   gallery in `designmd/example.html`.

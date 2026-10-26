@@ -12,7 +12,6 @@ does not exist, and a class nothing defines renders as nothing.
 
 - [AGENTS.md](AGENTS.md): the rules, the traps, and how to build and check a prototype. Read first.
 - [llms-full.txt](llms-full.txt): the rules plus the complete class and token inventory, in one file. Paste this if you have no filesystem.
-- [recipes.html](recipes.html): minimal correct markup, one block per component. Copy from here rather than inferring structure from class names.
 - [design.md](design.md): the full written system, ~16k tokens. Read a section, not the file.
 - [README.md](README.md): what this is and how the three layers fit together.
 
@@ -24,6 +23,5 @@ does not exist, and a class nothing defines renders as nothing.
 
 ## Optional
 
-- [starter/index.html](starter/index.html): a working skeleton that lints clean. Copy it rather than assembling one.
 - [lint.py](lint.py): checks a prototype and exits non-zero on errors.
 - [figma-map.json](figma-map.json): per component, the Picasso React component, its import, and the Storybook story id.
