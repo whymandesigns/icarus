@@ -25,8 +25,16 @@ icarus/
 ```
 
 Only one path ever needs changing: the three `<link>` hrefs at the top of a prototype
-must point at this folder. Get them wrong and the page renders as bare HTML with no
-error — `lint.py` is what catches it.
+must point at this folder, in this order —
+
+```html
+<link rel="stylesheet" href="PATH/TO/tokens.css" />      <!-- primitives -->
+<link rel="stylesheet" href="PATH/TO/semantic.css" />    <!-- aliases + reset -->
+<link rel="stylesheet" href="PATH/TO/components.css" />  <!-- the classes -->
+```
+
+Get them wrong and the page renders as bare HTML with no error — `lint.py` is what
+catches it.
 
 ## The rules
 
