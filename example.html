@@ -5385,7 +5385,7 @@
       function editDate(cell) {
         const withTime = cell.dataset.variant === 'time';
         const pop = makePop(cell);
-        pop.innerHTML = `<input type="date" class="sheet-pop-search" style="margin-bottom:8px">${withTime ? '<input type="time" class="sheet-pop-search" style="margin-bottom:8px" value="18:00">' : ''}<div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Set</button><button class="btn btn-xs btn-ghost" data-clear>Clear</button></div>`;
+        pop.innerHTML = `<input type="date" class="sheet-pop-search" style="margin-bottom:var(--spacing-2)">${withTime ? '<input type="time" class="sheet-pop-search" style="margin-bottom:var(--spacing-2)" value="18:00">' : ''}<div style="display:flex;gap:6px"><button class="btn btn-xs btn-primary" data-ok>Set</button><button class="btn btn-xs btn-ghost" data-clear>Clear</button></div>`;
         const dateI = pop.querySelector('input[type=date]');
         const timeI = pop.querySelector('input[type=time]');
         pop.querySelector('[data-ok]').addEventListener('click', () => {

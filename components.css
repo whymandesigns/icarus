@@ -481,7 +481,7 @@ textarea.input {
   background: transparent;
   border-radius: var(--radius-sm);
   color: var(--color-text);
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   transition: background var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease);
 }
@@ -512,7 +512,7 @@ textarea.input {
 .editor-content code {
   font: var(--type-mono);
   background: var(--color-surface-muted);
-  padding: 1px 4px;
+  padding: 1px var(--spacing-1);
   border-radius: var(--radius-sm);
 }
 .editor-content a { color: var(--color-text-link); }
@@ -627,7 +627,7 @@ textarea.input {
   font: inherit;
   color: inherit;
 }
-.th-sort svg { font-size: 12px; color: var(--color-text-subtle); }
+.th-sort svg { font-size: 1em; color: var(--color-text-subtle); }
 .th-sort:hover { color: var(--color-text); }
 .th-sort:hover svg { color: var(--color-text-muted); }
 
@@ -655,14 +655,14 @@ textarea.input {
   background: transparent;
   border: 0;
   padding: 0;
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   color: var(--color-text-muted);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
 }
 .row-toggle:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.row-toggle svg { font-size: 14px; transition: transform var(--duration-fast) var(--ease); }
+.row-toggle svg { font-size: 1em; transition: transform var(--duration-fast) var(--ease); }
 .row-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
 .row-toggle-spacer { display: inline-block; width: 20px; height: 20px; flex-shrink: 0; }
 
@@ -679,7 +679,7 @@ textarea.input {
 .cell-meta { display: flex; flex-direction: column; gap: var(--spacing-1); }
 .cell-meta-title { font: var(--type-body-sm); color: var(--color-text); }
 .cell-meta-sub   { font: var(--type-caption); color: var(--color-text-muted); display: inline-flex; align-items: center; gap: var(--spacing-1); }
-.cell-meta-sub svg { font-size: 12px; color: var(--color-text-subtle); }
+.cell-meta-sub svg { font-size: 1em; color: var(--color-text-subtle); }
 
 /* Health dot — small colored circle used inline in a cell */
 .cell-dot {
@@ -775,13 +775,13 @@ textarea.input {
 .th-menu {
   width: 20px; height: 20px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: transparent; border: 0; padding: 0; cursor: pointer;
+  background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit;
   color: var(--color-text-subtle); border-radius: var(--radius-sm);
 }
 .th-menu:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.th-menu svg { font-size: 13px; }
+.th-menu svg { font-size: 1em; }
 /* Sort direction arrow */
-.sheet-col .th-sort .th-arrow { font-size: 11px; opacity: 0; }
+.sheet-col .th-sort .th-arrow { font-size: var(--text-2xs); opacity: 0; }
 .sheet-col.is-sorted .th-sort { color: var(--color-text); }
 .sheet-col.is-sorted .th-sort .th-arrow { opacity: 1; }
 .sheet-col.is-desc .th-sort .th-arrow { transform: rotate(180deg); }
@@ -847,7 +847,7 @@ textarea.input {
 .sheet-collapse-all {
   width: 20px; height: 20px; margin: 0 auto;
   display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-  background: transparent; border: 0; padding: 0; cursor: pointer;
+  background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit;
   color: var(--color-text-subtle); border-radius: var(--radius-sm);
 }
 .sheet-collapse-all:hover { background: var(--color-surface-muted); color: var(--color-text); }
@@ -903,13 +903,13 @@ textarea.input {
 }
 .sheet-cell.is-empty:hover .sheet-empty,
 .sheet-cell.is-empty.is-selected .sheet-empty { opacity: 1; }
-.sheet-empty svg { font-size: 14px; }
+.sheet-empty svg { font-size: 1em; }
 /* Saving / saved / error affordances (top-right corner marker) */
 .sheet-cell .sheet-status {
   position: absolute; top: 3px; right: 4px;
   width: 12px; height: 12px;
   display: none; align-items: center; justify-content: center;
-  font-size: 11px; line-height: 1;
+  font-size: var(--text-2xs); line-height: 1;
 }
 .sheet-cell.is-saving .sheet-status,
 .sheet-cell.is-saved  .sheet-status,
@@ -973,7 +973,7 @@ textarea.input {
   font: var(--type-body-sm); color: var(--color-text); cursor: pointer;
 }
 .sheet-opt:hover, .sheet-opt.is-active { background: var(--color-surface-muted); }
-.sheet-opt svg.ph-check { margin-left: auto; color: var(--color-accent); font-size: 14px; }
+.sheet-opt svg.ph-check { margin-left: auto; color: var(--color-accent); font-size: 1em; }
 .sheet-opt.is-empty-note { color: var(--color-text-subtle); cursor: default; }
 .sheet-opt.is-empty-note:hover { background: transparent; }
 
@@ -987,13 +987,13 @@ textarea.input {
 .sheet-addchild {
   width: 20px; height: 20px; flex-shrink: 0; margin-left: auto;
   display: inline-flex; align-items: center; justify-content: center;
-  background: transparent; border: 0; padding: 0; cursor: pointer;
+  background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit;
   color: var(--color-text-subtle); border-radius: var(--radius-sm);
   opacity: 0; transition: opacity var(--duration-fast) var(--ease);
 }
 .sheet-cell:hover .sheet-addchild, .sheet-cell.is-selected .sheet-addchild { opacity: 1; }
 .sheet-addchild:hover { background: var(--color-surface-muted); color: var(--color-text); }
-.sheet-addchild svg { font-size: 13px; }
+.sheet-addchild svg { font-size: 1em; }
 /* Text · Description variant — truncate with ellipsis */
 .sheet-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text); }
 .sheet-cell[data-variant="muted"] .sheet-text { color: var(--color-text-muted); }
@@ -1019,12 +1019,12 @@ textarea.input {
 
 /* Link / reference */
 .sheet-link {
-  display: inline-flex; align-items: center; gap: 4px; min-width: 0;
+  display: inline-flex; align-items: center; gap: var(--spacing-1); min-width: 0;
   color: var(--color-text-link); text-decoration: none;
 }
 .sheet-link:hover { text-decoration: underline; }
 .sheet-link-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sheet-link svg { font-size: 12px; flex-shrink: 0; }
+.sheet-link svg { font-size: 1em; flex-shrink: 0; }
 
 /* ---- Table-level empty + toolbar ---- */
 .sheet-empty-state {
@@ -1209,7 +1209,7 @@ button.badge:focus-visible {
   padding: 0;
   background: transparent;
   color: inherit;
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   border-radius: var(--radius-full);
   opacity: 0.65;
   transition: opacity var(--duration-fast) var(--ease),
@@ -1304,7 +1304,7 @@ button.badge:focus-visible {
 .count-badge-lg {
   min-width: 20px;
   height: 20px;
-  font-size: 11px;
+  font-size: var(--text-2xs);
   padding: 0 5px;
 }
 .count-badge-secondary {
@@ -1622,7 +1622,7 @@ a.avatar:focus-visible {
   min-width: 0;
   height: 24px; /* generous touch target around the 2px track */
   background: transparent;
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   margin: 0;
 }
 /* Track — filled portion dark, remainder light, split at --slider-progress */
@@ -2271,7 +2271,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   align-items: center;
   border: 0;
   padding: 0;
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   color: var(--color-text-muted);
   z-index: 1;
 }
@@ -2599,7 +2599,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: 0;
   background: transparent;
   border: 0;
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   color: var(--color-danger);
 }
 
@@ -2985,7 +2985,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: 0;
   background: transparent;
   border-radius: var(--radius-full);
-  cursor: pointer;
+  cursor: pointer; font: inherit;
   color: var(--color-text-muted);
   transition: background var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease);
