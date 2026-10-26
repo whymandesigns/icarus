@@ -2712,7 +2712,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-6);
-  height: 56px;
+  height: var(--header-height);
   padding: 0 var(--spacing-6);
   background: var(--color-graphite-800);
   color: var(--color-white);

@@ -504,10 +504,10 @@
     .page-toc {
       position: fixed;
       /* Sits below the sticky topnav (~56px) plus a small gap. */
-      top: var(--spacing-16);
+      top: calc(var(--header-height) + var(--spacing-2));
       right: var(--spacing-6);
       width: 220px;
-      max-height: calc(100vh - var(--spacing-16) - var(--spacing-6));
+      max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-6));
       overflow-y: auto;
       z-index: var(--z-sticky);
       padding: var(--spacing-3) 0;
@@ -549,9 +549,9 @@
       .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--z-sticky) + 1); }
       .page-toc {
         /* Floating panel sits below the sticky topnav with a small gap. */
-        top: var(--spacing-16);
+        top: calc(var(--header-height) + var(--spacing-2));
         right: var(--spacing-3);
-        max-height: calc(100vh - var(--spacing-16) - var(--spacing-3));
+        max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-3));
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
@@ -619,7 +619,7 @@
       <section class="stack" id="spacing">
         <div>
           <h3 class="h3">Spacing</h3>
-          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px); the three above it are extensions, numbered on the same rule. The class column shows <code style="font: var(--type-mono); color: var(--color-text-muted)">p-</code> as the exemplar — the same number works with <code style="font: var(--type-mono); color: var(--color-text-muted)">m-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">gap-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">w-</code> and the rest.</p>
+          <p class="body-sm">Picasso's scale, names and values verbatim. The number <em>is</em> the value — <code style="font: var(--type-mono); color: var(--color-text-muted)">n × 0.25rem</code>, Tailwind's convention — so <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code> is what a developer writes as <code style="font: var(--type-mono); color: var(--color-text-muted)">p-4</code>. Picasso stops at 12 (48px), and so does this — the scale has no extensions. The class column shows <code style="font: var(--type-mono); color: var(--color-text-muted)">p-</code> as the exemplar — the same number works with <code style="font: var(--type-mono); color: var(--color-text-muted)">m-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">gap-</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">w-</code> and the rest.</p>
         </div>
         <div class="tok-list" id="spacing-root"></div>
       </section>
@@ -627,7 +627,7 @@
       <section class="stack" id="sizing">
         <div>
           <h3 class="h3">Sizing</h3>
-          <p class="body-sm">Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">minWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">maxWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">minHeight</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">maxHeight</code> all start from the spacing scale, so <code style="font: var(--type-mono); color: var(--color-text-muted)">min-w-4</code> is simply <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code>. Only what Picasso adds on top gets its own token: three min-widths, and the twelfths of its 12-column grid.</p>
+          <p class="body-sm">Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">minWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">maxWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">minHeight</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">maxHeight</code> all start from the spacing scale, so <code style="font: var(--type-mono); color: var(--color-text-muted)">min-w-4</code> is simply <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code>. Only what Picasso adds on top gets its own token: three min-widths, the twelfths of its 12-column grid, and <code style="font: var(--type-mono); color: var(--color-text-muted)">--header-height</code>, which is Picasso's own property for the topbar.</p>
         </div>
         <div class="tok-list" id="sizing-root"></div>
         <div class="tok-list" id="twelfths-root"></div>
@@ -5871,15 +5871,14 @@
       </div>`;
 
     // Spacing — bar width is the step itself, so the scale is literally to scale
-    const SPACING = [0,1,2,3,4,6,8,10,12,16];
-    const SPACING_PICASSO = new Set([0,1,2,3,4,6,8,10,12]);
+    const SPACING = [0,1,2,3,4,6,8,10,12];
     document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
       const v = css.getPropertyValue(`--spacing-${n}`).trim();
       const p = px(v);
       // the number works with any spacing utility — p-, m-, gap-, w- … — so
       // p-N stands in as the exemplar rather than listing them all
       return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0',
-                 SPACING_PICASSO.has(n) ? `p-${n}` : 'extension');
+                 `p-${n}`);
     }).join('');
 
     // Z-index — ordered by the value it actually resolves to

@@ -223,9 +223,8 @@
   /* Extensions. Picasso's scale stops at 12 (48px); page-level layout needs
    * more. Numbered on Tailwind's own n x 0.25rem rule, so p-16 in code is
    * still 4rem — consistent with Picasso even though Picasso omits them. */
-  --spacing-16: 4rem;               /* extension - 64px. No p-16 in Picasso, but the
-                                     * same value is min-w-16: Picasso's minWidth
-                                     * extends the spacing scale with 14, 16 and 24. */
+  /* --spacing-16: 4rem;  64px — retired. Its only use was .page-toc's offset, which
+   * was really the topbar height plus a gap; that now says so with --header-height. */
   /* --spacing-20: 5rem;   80px  — unused, and in neither config. */
   /* --spacing-32: 8rem;  128px  — unused, and in neither config. */
 
@@ -234,6 +233,10 @@
    * --spacing-4 and needs no token of its own. Only the values Picasso adds on
    * top are declared here.
    */
+  --header-height: 3.5rem;          /* picasso - 56px. Picasso's own custom property:
+                                     * PageTopBar is h-[var(--header-height,3.5rem)]
+                                     * and constants.ts sets headerHeight 3.5rem. */
+
   --min-width-14: 3.5rem;           /* picasso - 56px, min-w-14 */
   --min-width-16: 4rem;             /* picasso - 64px, min-w-16 */
   --min-width-24: 6rem;             /* picasso - 96px, min-w-24 */

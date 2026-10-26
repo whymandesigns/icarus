@@ -59,10 +59,10 @@
     /* ---- Right-side sidebar TOC (ported from the component kit) ---- */
     .page-toc {
       position: fixed;
-      top: var(--spacing-16);
+      top: calc(var(--header-height) + var(--spacing-2));
       right: var(--spacing-6);
       width: 220px;
-      max-height: calc(100vh - var(--spacing-16) - var(--spacing-6));
+      max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-6));
       overflow-y: auto;
       z-index: var(--z-sticky);
       padding: var(--spacing-3) 0;
@@ -94,9 +94,9 @@
     @media (max-width: 1320px) {
       .page-toc-toggle { display: inline-flex; position: relative; z-index: calc(var(--z-sticky) + 1); }
       .page-toc {
-        top: var(--spacing-16);
+        top: calc(var(--header-height) + var(--spacing-2));
         right: var(--spacing-3);
-        max-height: calc(100vh - var(--spacing-16) - var(--spacing-3));
+        max-height: calc(100vh - var(--header-height) - var(--spacing-2) - var(--spacing-3));
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);

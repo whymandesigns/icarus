@@ -177,10 +177,10 @@ prototype translates to production without arithmetic.
 
 `0=0 · 1=4 · 2=8 · 3=12 · 4=16 · 6=24 · 8=32 · 10=40 · 12=48`
 
-Extensions, for page-level layout Picasso's scale doesn't reach (it stops at 12 = 48px).
-Numbered on the same `n × 0.25rem` rule, so they stay consistent with Tailwind:
-
-`16=64 · 20=80 · 32=128`
+**No extensions.** The scale is Picasso's nine and stops where Picasso stops. The three
+that used to sit above it are gone: 20 and 32 were never referenced, and 16 turned out to
+be the topbar height plus a gap wearing a spacing number — `.page-toc` now says
+`calc(var(--header-height) + var(--spacing-2))`, which is what it always meant.
 
 Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 
