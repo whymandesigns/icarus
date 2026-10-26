@@ -123,8 +123,8 @@
   /* --color-blue-800: #0A1A50;  unreferenced extension */
   /* --color-blue-900: #061035;  unreferenced extension */
   /* Purple */
-  /* --color-purple-100: #F1ECFD;  unreferenced extension */
-  /* --color-purple-150: #DFD3F9;  unreferenced extension */
+  --color-purple-100: #F1ECFD;      /* extension */
+  --color-purple-150: #DFD3F9;      /* extension */
   /* --color-purple-200: #C9B5F4;  unreferenced extension */
   /* --color-purple-300: #A47DE2;  unreferenced extension */
   /* --color-purple-400: #8552D9;  unreferenced extension */

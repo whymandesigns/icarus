@@ -64,14 +64,14 @@ reds, three yellows and a single purple.
 | `purple` | 500 | Reserved |
 | `zinc` | *none* | Dark-theme neutrals — entirely a designmd extension, and **hidden from the palette gallery**. It exists only to back `[data-theme="dark"]`; never reach for it in a prototype. Picasso ships real dark values, and rebuilding dark mode on those retires this ramp. |
 
-Extensions are down to **19**, and every one has a job. 38 unreferenced shades — the
-whole mid-ramp of red, yellow, blue and purple, eight of the nine purples among them —
-are commented out in `tokens.css` rather than deleted, so a shade can come back if a
-prototype needs it. What survives:
+Extensions are down to **21**. 36 unreferenced shades — the mid-ramps of red, yellow,
+blue and purple — are commented out in `tokens.css` rather than deleted, so a shade can
+come back if a prototype needs it; `purple-100` and `-150` already have. What survives:
 
 | Extension | Why it stays |
 |---|---|
 | `gray-700` | `--color-text-muted`. Picasso's darkest text grey is 3.56:1 on white, below AA |
+| `purple-100`, `-150` | kept deliberately; Picasso has only `purple-500`, so neither has a class |
 | `yellow-700` | `.badge-warning` text — warning copy needs contrast Picasso's yellow-500 cannot give |
 | `graphite-750` | `--color-icon` and the active segmented item |
 | `graphite-300`, `green-200/300/400/800`, `zinc-500…900` | the dark theme, which is designmd's own |
