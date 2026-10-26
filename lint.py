@@ -106,6 +106,28 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
         own_style = tail if len(tail) < len(own_style) else ""
     own_classes = set(re.findall(r"\.([a-z][\w-]*)", re.sub(r"/\*.*?\*/", "", own_style, flags=re.S)))
 
+    # A prototype may keep its CSS in a sibling file rather than a <style>
+    # block — features/docs/ does. Reading only <style> flags every one of
+    # its classes as invented. While we are here, a <link> is worth checking
+    # in its own right: a relative href that resolves to nothing leaves the
+    # page unstyled with no error, and an http one breaks the promise that a
+    # shipped prototype has no external dependencies.
+    for m in re.finditer(r'<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"', html):
+        href = m.group(1)
+        ln = line_of(html, m.start())
+        if href.startswith(("http://", "https://", "//")):
+            found.append(Finding("error", ln, "external-css",
+                f"{href} is fetched at runtime — a prototype ships self-contained"))
+            continue
+        target = (path.parent / href).resolve()
+        if not target.exists():
+            found.append(Finding("error", ln, "dead-stylesheet",
+                f"{href} does not exist — everything it styles renders unstyled"))
+            continue
+        if target.suffix == ".css" and HERE not in target.parents:
+            sheet = re.sub(r"/\*.*?\*/", "", target.read_text(), flags=re.S)
+            own_classes |= set(re.findall(r"\.([a-z][\w-]*)", sheet))
+
     # Scan markup only. A <style> block's own comments quote example markup —
     # components.css documents the breadcrumb as
     # `<span class="breadcrumb is-current">` — and once inline.py bakes the
@@ -125,7 +147,13 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
             if cls in kit_classes or cls in tooling or cls.startswith(ALLOWED_PREFIXES):
                 continue
             ln = line_of(markup, m.start())
-            if cls in showcase:
+            if re.fullmatch(r"ph(-[\w-]+)?", cls):
+                # Not an invented class: these resolve against the Phosphor
+                # CDN stylesheet some prototypes still link, so they render —
+                # off an external dependency, from a pack the system retired.
+                found.append(Finding("error", ln, "phosphor-class",
+                    f".{cls} is Phosphor — retired, and it only renders while the CDN stylesheet loads"))
+            elif cls in showcase:
                 found.append(Finding("error", ln, "showcase-class",
                     f".{cls} is example.html's own chrome, not a kit class — it has no styles outside the showcase"))
             elif cls in own_classes:
