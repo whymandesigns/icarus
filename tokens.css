@@ -290,9 +290,19 @@
   --z-tooltip: 1300;                /* picasso */
   --z-snackbar: 1400;               /* picasso */
   /* --z-base: 0;  unreferenced extension */
-  --z-dropdown: 100;                /* extension */
-  --z-sticky: 200;                  /* extension */
-  --z-overlay: 800;                 /* extension */
+  /* These three are designmd's own, and they stay that way for a reason rather
+   * than for want of a Picasso number. Picasso's four come from Material UI v4
+   * (drawer 1200, modal 1300, snackbar 1400 are MUI's exactly; tooltip is pulled
+   * from 1500 down to 1300) and nothing in either scale sits below 1000.
+   *
+   * The gap is a rendering difference, not an oversight. Picasso's Dropdown and
+   * Menu carry no z-index at all — they render through Popper, which portals to
+   * the body and stacks at z-modal. designmd's dropdowns are positioned in flow,
+   * so they only need to beat their siblings; 1300 would wrongly lift them over
+   * drawers. Same for the sticky sidenav toggle and the sheet popover. */
+  --z-dropdown: 100;                /* extension - .dropdown-menu, .datepicker-panel */
+  --z-sticky: 200;                  /* extension - .sidenav-toggle, the showcase TOC */
+  --z-overlay: 800;                 /* extension - .sheet-pop */
 
   /* ---- Breakpoints — Picasso's screens, verbatim ---- */
   --breakpoint-xs: 0px;             /* picasso */
