@@ -167,7 +167,9 @@
   --text-button-medium--line-height: 16px; /* picasso */
   --text-button-large: 15px;        /* picasso */
   --text-button-large--line-height: 18px;  /* picasso */
-  --text-18: 1.125rem;              /* extension - 18px, avatar initials and card titles; Picasso has no 18px */
+  /* --text-18: 1.125rem;  18px — retired. Unreferenced, and the two uses its own
+   * comment claimed were both untrue: avatar initials run 2xs/xxs/sm/md/2xl plus a
+   * literal 42px, and .card-title is --type-h3 at 16px. Picasso has no 18px. */
 
   /* Unitless line-heights. Picasso has none of these; base-tailwind adds only
    * lineHeight.5 = 1.25rem, which is already --text-sm--line-height. */

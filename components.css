@@ -2679,7 +2679,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* .toast .toast-icon (0,2,0) so the accent colour wins over the generic
  * `.toast .icon { color: inherit }` rule; per-variant --toast-accent drives it. */
-.toast .toast-icon { font-size: 18px; flex-shrink: 0; color: var(--toast-accent); }
+.toast .toast-icon { font-size: 16px; flex-shrink: 0; color: var(--toast-accent); }
 .toast-message { flex: 1; min-width: 0; margin: 0; line-height: 1.4; }
 .toast-action { flex-shrink: 0; align-self: center; }
 /* Dismiss button — styled by the icon-only ghost button component in the
