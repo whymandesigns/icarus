@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Plugin launcher — designmd</title>
-  <link rel="stylesheet" href="./tokens.css" />
-  <link rel="stylesheet" href="./semantic.css" />
-  <link rel="stylesheet" href="./components.css" />
-  <link rel="stylesheet" href="./plugins.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
+  <link rel="stylesheet" href="../plugins/plugins.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--spacing-1);
@@ -126,7 +126,7 @@
 <body>
   <main class="page">
 
-    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+    <a class="doc-back" href="../index.html"><svg class="icon icon-16"><use href="../icons.svg#i-chevron-left"/></svg> Design Library</a>
 
     <header class="doc-hero">
       <h1 class="h1">Plugin launcher</h1>
@@ -182,11 +182,11 @@
       <h2 class="h2">Nothing to wire up</h2>
       <p><code>inline.py</code> carries <code>plugins.css</code> and <code>plugins.js</code> into every prototype alongside the review bar, inside the same markers, so refreshing an existing prototype picks the launcher up in place:</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy command"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy command"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">python3 inline.py --only-review ../features/my-feature/index.html</div>
       </div>
       <div class="doc-callout">
-        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <svg class="icon"><use href="../icons.svg#i-info"/></svg>
         <p>A prototype that carries the review bar gets the launcher automatically. One that does not — because it was never inlined — gets neither; run the command above and it gets both.</p>
       </div>
     </section>
@@ -199,11 +199,11 @@
         const code = btn.parentElement.querySelector('.doc-code');
         try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
         btn.classList.add('is-copied');
-        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('use').setAttribute('href', '../icons.svg#i-check');
         btn.querySelector('span').textContent = 'Copied';
         setTimeout(() => {
           btn.classList.remove('is-copied');
-          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('use').setAttribute('href', '../icons.svg#i-copy');
           btn.querySelector('span').textContent = 'Copy';
         }, 1500);
       });

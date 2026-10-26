@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>States switcher — designmd</title>
-  <link rel="stylesheet" href="./tokens.css" />
-  <link rel="stylesheet" href="./semantic.css" />
-  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--spacing-1);
@@ -151,7 +151,7 @@
 <body>
   <main class="page">
 
-    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+    <a class="doc-back" href="../index.html"><svg class="icon icon-16"><use href="../icons.svg#i-chevron-left"/></svg> Design Library</a>
 
     <header class="doc-hero">
       <h1 class="h1">States switcher</h1>
@@ -162,12 +162,12 @@
       <h2 class="h2">Enable it</h2>
       <p>Open any prototype that carries the switcher with <code>?states=1</code> and the panel appears bottom-left. Click a state to show it; the current one is outlined in the accent colour. The <strong>–</strong> button in the header collapses the panel to its title bar, and that choice is remembered for the session. Without the parameter the panel is not rendered at all.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">https://opz-prototypes.vercel.app/initiatives/<span class="arrow">?states=1</span></div>
       </div>
       <p>Each state also has a direct link. Add <code>&amp;state=&lt;key&gt;</code> to land on it straight away, which is how states are shared, screenshotted or compared side by side. The keys are the <code>data-state</code> values listed below.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">https://opz-prototypes.vercel.app/initiatives/<span class="arrow">?states=1&amp;state=create-errors</span></div>
       </div>
       <p>The switcher and the <a href="./review-bar.html" style="color: var(--color-text-link)">review bar</a> are independent and stack: <code>?states=1&amp;review=1</code> lets a reviewer comment on a specific state.</p>
@@ -227,7 +227,7 @@
         </tbody>
       </table>
       <div class="doc-callout">
-        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <svg class="icon"><use href="../icons.svg#i-info"/></svg>
         <p>A state can be kept but hidden from the panel by commenting its button out. It stays reachable through <code>&amp;state=&lt;key&gt;</code>, which is what Initiatives does for <code>empty</code>, <code>no-results</code> and <code>long-text</code>.</p>
       </div>
     </section>
@@ -261,7 +261,7 @@
       <h3 class="h3">Snippet (reload-and-replay flavour)</h3>
       <p>Replace <code>xx</code> with the prototype's prefix. The reload approach is shown because it works for any prototype without knowing how it renders; swap the body of <code>go()</code> for an in-page re-render if the prototype re-renders from data anyway.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy snippet"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy snippet"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">&lt;style&gt;
   <span class="cm">/* Prototype state switcher (?states=1). Bottom-left so it stays clear of drawers. */</span>
   .xx-switcher { position: fixed; left: 16px; bottom: 16px; z-index: 999; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-5); overflow: hidden; }
@@ -323,7 +323,7 @@
 &lt;/script&gt;</div>
       </div>
       <div class="doc-callout is-warning">
-        <svg class="icon"><use href="./icons.svg#i-warning"/></svg>
+        <svg class="icon"><use href="../icons.svg#i-warning"/></svg>
         <p>Keep the switcher's CSS out of the design-system <code>&lt;style&gt;</code> block. <code>inline.py</code> replaces that block on every sync and would drop the switcher's styles with it.</p>
       </div>
     </section>
@@ -337,11 +337,11 @@
         const code = btn.parentElement.querySelector('.doc-code');
         try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
         btn.classList.add('is-copied');
-        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('use').setAttribute('href', '../icons.svg#i-check');
         btn.querySelector('span').textContent = 'Copied';
         setTimeout(() => {
           btn.classList.remove('is-copied');
-          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('use').setAttribute('href', '../icons.svg#i-copy');
           btn.querySelector('span').textContent = 'Copy';
         }, 1500);
       });

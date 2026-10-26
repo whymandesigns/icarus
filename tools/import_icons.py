@@ -58,7 +58,7 @@ def main():
     files = collect(sys.argv[1:])
     if not files:
         print("usage: import_icons.py <svg-or-dir> ..."); return
-    idx = json.loads((DM / 'icons.index.json').read_text())
+    idx = json.loads((DM / 'data/icons.index.json').read_text())
     by = {i['slug']: i for i in idx['icons']}
     for f in files:
         slug = Path(f).stem.lower()
@@ -72,7 +72,7 @@ def main():
             idx['icons'].append(e); by[slug] = e
         print(f"  {slug}: icons.svg {a1} · example.html {a2}")
     idx['icons'].sort(key=lambda i: i['slug']); idx['count'] = len(idx['icons'])
-    (DM / 'icons.index.json').write_text(json.dumps(idx, indent=1) + "\n")
+    (DM / 'data/icons.index.json').write_text(json.dumps(idx, indent=1) + "\n")
     print(f"index count: {idx['count']}")
 
 if __name__ == '__main__':

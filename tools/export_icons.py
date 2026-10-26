@@ -23,7 +23,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DESIGNMD = HERE.parent
-MANIFEST = DESIGNMD / "icon-export-manifest.json"
+MANIFEST = DESIGNMD / "data/icon-export-manifest.json"
 OUT = DESIGNMD / "icons.svg"
 API = "https://api.figma.com"
 BATCH = 80  # Figma allows many ids per images call; keep batches modest
@@ -113,11 +113,11 @@ def main():
               'style="position:absolute;width:0;height:0;overflow:hidden">\n  '
               + "\n  ".join(symbols) + "\n</svg>\n")
     OUT.write_text(sprite)
-    (DESIGNMD / "icons.index.json").write_text(
+    (DESIGNMD / "data/icons.index.json").write_text(
         json.dumps({"source": "Figma · Iconography (custom pack)", "fileKey": file_key,
                     "count": len(index), "icons": index}, indent=1) + "\n")
     print(f"\nWrote {OUT}  ({len(symbols)} symbols)")
-    print(f"Wrote {DESIGNMD / 'icons.index.json'}  ({len(index)} entries)")
+    print(f"Wrote {DESIGNMD / 'data/icons.index.json'}  ({len(index)} entries)")
     if missing:
         print(f"WARNING: {len(missing)} not exported: {', '.join(missing)}")
     print("\n✅ DONE — both files written. Safe to close now.")

@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Versions &amp; changes — designmd</title>
-  <link rel="stylesheet" href="./plugins.css" />
-  <link rel="stylesheet" href="./versions.css" />
-  <link rel="stylesheet" href="./tokens.css" />
-  <link rel="stylesheet" href="./semantic.css" />
-  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="../plugins/plugins.css" />
+  <link rel="stylesheet" href="../plugins/versions.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--spacing-1);
@@ -115,7 +115,7 @@
 <body>
   <main class="page">
 
-    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+    <a class="doc-back" href="../index.html"><svg class="icon icon-16"><use href="../icons.svg#i-chevron-left"/></svg> Design Library</a>
 
     <header class="doc-hero">
       <h1 class="h1">Versions &amp; changes</h1>
@@ -126,16 +126,16 @@
       <h2 class="h2">Enable it</h2>
       <p>On a version of a feature, open the plugin launcher (the button bottom-right) and switch on <strong>Versions</strong> and/or <strong>Changes</strong>, or add the parameters to the URL. Like every plugin, switching reloads the page so it starts clean.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">…/features/initiatives/v3-breadcrumb/<span class="arrow">?versions=1</span></div>
       </div>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">…/features/initiatives/v3-breadcrumb/<span class="arrow">?changes=1</span></div>
       </div>
       <p>They stack with the other plugins. <code>?states=1&amp;state=create-blank&amp;versions=1&amp;changes=1</code> opens the blank create form with the versions panel and the change outlines, and switching versions keeps the same state, so you compare like with like. <kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd> step through versions while the panel is on.</p>
       <div class="doc-callout">
-        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <svg class="icon"><use href="../icons.svg#i-info"/></svg>
         <p>Only on versioned features. A page without <code>&lt;meta name="icarus-versions"&gt;</code> shows both plugins greyed out in the launcher — "Only on features prototyped in versions".</p>
       </div>
     </section>
@@ -181,7 +181,7 @@
         <li><strong>Optionally, a landing page.</strong><span><code>features/&lt;feature&gt;/index.html</code> listing the versions newest-first (see <code>features/initiatives/</code>).</span></li>
       </ol>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy versions.json"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy versions.json"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">{
   "family": "Initiatives (TopTrack set-up / edit)",
   "versions": [
@@ -193,7 +193,7 @@
 }</div>
       </div>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy meta tag"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy meta tag"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">&lt;meta name="icarus-versions" content="../versions.json" /&gt;</div>
       </div>
     </section>
@@ -202,7 +202,7 @@
       <h2 class="h2">Mark the changes</h2>
       <p>Put two attributes on the element that changed — the row, card or section, not the input inside it (inputs can't carry the label). Keep the note to a few words; it is read at a glance.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy markers"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy markers"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">&lt;div class="in-form-row" <span class="arrow">data-change="moved" data-change-note="Stage tag → Status field"</span>&gt;…&lt;/div&gt;</div>
       </div>
       <ul class="doc-steps">
@@ -229,11 +229,11 @@
         const code = btn.parentElement.querySelector('.doc-code');
         try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
         btn.classList.add('is-copied');
-        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('use').setAttribute('href', '../icons.svg#i-check');
         btn.querySelector('span').textContent = 'Copied';
         setTimeout(() => {
           btn.classList.remove('is-copied');
-          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('use').setAttribute('href', '../icons.svg#i-copy');
           btn.querySelector('span').textContent = 'Copy';
         }, 1500);
       });
@@ -250,6 +250,6 @@
     });
 
   </script>
-  <script src="./plugins.js"></script>
+  <script src="../plugins/plugins.js"></script>
 </body>
 </html>

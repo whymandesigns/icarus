@@ -3,14 +3,23 @@
 HTML prototypes for the **Operationalize** app, built from a design system called
 **designmd**. If you are writing UI here, read this first — it is short.
 
-Two sibling checkouts, and they must stay siblings — every path below is written from
-the folder that contains them both:
+**Paths below are written from the root of this folder** — the one holding `tokens.css`,
+`lint.py` and `dist/`. That is true however you got it:
 
 ```
-icarus/
-├── designmd/   the design system   (repo: whymandesigns/icarus)
-└── features/   the prototypes      (repo: whymandesigns/opz-prototypes)
+# cloned on its own (github.com/whymandesigns/icarus)
+icarus/            ← you are here; prototypes live wherever you like
 ```
+```
+# inside Toptal's working layout, two sibling checkouts
+icarus/
+├── designmd/      ← you are here   (repo: whymandesigns/icarus)
+└── features/      the prototypes   (repo: whymandesigns/opz-prototypes)
+```
+
+Only one path ever needs changing: the three `<link>` hrefs at the top of a prototype
+must point at this folder. Get them wrong and the page renders as bare HTML with no
+error — `lint.py` is what catches it.
 
 ## The rules
 
@@ -34,13 +43,20 @@ icarus/
 
 ## Start here
 
+Open `starter/index.html` — it renders as it sits and is lint-clean. Copy it to
+wherever your prototype lives, repoint its three stylesheet `<link>`s at this folder,
+then, run from here:
+
 ```bash
-cp -r designmd/starter features/my-feature     # a correct, linting-clean skeleton
-python3 designmd/lint.py features/my-feature/index.html
-python3 designmd/inline.py features/my-feature/index.html   # bake before sharing
+python3 lint.py   <path-to-your-prototype>.html    # before you call it done
+python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
 
-`features/<kebab-name>/index.html` — always that shape, always `index.html`.
+`inline.py` folds the CSS, the icon sprite and the fonts into the file, so what you
+share has no external dependencies and does not care where it sits.
+
+In Toptal's working layout a prototype is `features/<kebab-name>/index.html` — always
+that shape, always `index.html`. On your own, put it where you like.
 
 ## Where things are
 
@@ -123,9 +139,11 @@ inferring structure from class names. Every block is checked by lint.py.
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Your feature</title>
-    <link rel="stylesheet" href="../../designmd/tokens.css" />
-    <link rel="stylesheet" href="../../designmd/semantic.css" />
-    <link rel="stylesheet" href="../../designmd/components.css" />
+    [ Point the three hrefs at wherever this design system folder sits,
+      relative to YOUR file. They are the only paths that matter. ]
+    <link rel="stylesheet" href="PATH/TO/tokens.css" />
+    <link rel="stylesheet" href="PATH/TO/semantic.css" />
+    <link rel="stylesheet" href="PATH/TO/components.css" />
   </head>
   <body>
     … components …
@@ -135,7 +153,7 @@ inferring structure from class names. Every block is checked by lint.py.
     // every <use href="#i-…"> is blank until you bake. This fetches it while
     // you work and no-ops once the sprite is really in the document.
     if (!document.getElementById('i-plus')) {
-      fetch('../../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
+      fetch('PATH/TO/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
         if (!svg) return;
         const host = document.createElement('div');
         host.hidden = true; host.innerHTML = svg;
@@ -186,9 +204,10 @@ inferring structure from class names. Every block is checked by lint.py.
   </body>
   </html>
 
-  Before sharing, bake it: `python3 designmd/inline.py <your-file>.html` inlines
+  Before sharing, bake it: `python3 inline.py <your-file>.html`, run from the
+  system folder. It inlines
   the CSS, the sprite and the fonts, so the result has no external dependencies
-  and the dev-time fetch above stops firing. designmd/starter/ is this page with
+  and the dev-time fetch above stops firing. starter/index.html is this page with
   the components already filled in — copy that if you can reach the filesystem.
 
   Richer components (the sheet, the date picker, dropzones, tag inputs, toasts)
