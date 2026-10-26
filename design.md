@@ -1,4 +1,4 @@
-# Icarus — design.md
+# designmd — the Picasso-aligned prototyping system
 
 > Source of truth for vibe prototyping. Paste this file (or the **Vibe prompt** section) into your LLM context when generating new HTML prototypes. Every prototype links three stylesheets in order: `tokens.css` → `semantic.css` → `components.css`.
 
@@ -23,7 +23,7 @@ Three layers. Don't skip them.
        prototype.html      ← consumes components + semantic tokens
 ```
 
-**Rule:** components and prototypes reference **semantic** aliases (`--color-bg`, `--type-h1`), never primitives (`--color-blue-500`). This makes theme swaps and brand changes one-file edits.
+**Rule:** for **colour**, components and prototypes reference semantic aliases (`--color-bg`, `--type-h1`), never primitives (`--color-blue-500`) — that is what makes a theme swap a one-file edit. Scale primitives are different: there is no semantic layer over spacing, radii or motion, so `var(--spacing-4)` and `var(--ease)` in `components.css` are correct and expected.
 
 ---
 
@@ -168,7 +168,7 @@ Switch theme: `<html data-theme="dark">`.
 
 ## 3. Typography
 
-Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` leads with `"Proxima Nova"`; **Inter** (Google Fonts) stays as the metric fallback. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. `--font-weight-thin` (100) and `--font-weight-light` (300) exist because Picasso's preset defines the keys, but nothing uses them and Proxima has no face for them — treat them as unavailable. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
+Family: **Proxima Nova** — the product/Figma typeface, **self-hosted** as licensed `.woff2` in `designmd/fonts/`. `--font-sans` is `'Proxima Nova', proxima-nova, Arial, sans-serif` — the self-hosted family first, then Picasso's Adobe Fonts kit id, then Picasso's own fallback. Inter used to sit in that stack and be pulled from Google Fonts; both are gone, so a prototype makes no font request at all. Supplied weights are **Regular (400)** and **Semibold (600)** — 500 folds into Regular and 700 into Semibold via `@font-face` weight ranges until Medium/Bold `.woff2` are added. That matches Picasso, which uses only those two: its `Typography` exposes `regular`, `semibold` and `inherit`, and no component uses anything else. `--font-weight-thin` (100) and `--font-weight-light` (300) exist because Picasso's preset defines the keys, but nothing uses them and Proxima has no face for them — treat them as unavailable. `inline.py` base64-embeds the woff2 into inlined prototypes, so they render Proxima Nova with **zero external font files**. Mono: system mono stack.
 
 ### Role → Picasso `<Typography>`
 
@@ -217,19 +217,25 @@ One Picasso oddity with no designmd counterpart: `heading` · `xsmall` is `text-
 | `--text-lg`  | 16px | body large, H3 |
 | `--text-xl`  | 20px | H2 |
 | `--text-2xl` | 28px | H1 |
+| `--text-xxl` | 28px | same as `2xl`; Picasso ships both |
+| `--text-button-small` | 12px | Picasso button sizes — no designmd component uses them yet |
+| `--text-button-medium` | 13px | |
+| `--text-button-large` | 15px | |
 
-> ⚠️ **Naming gotcha:** `-md` is **not** the default size — it's the *step above* default. The default body size is `--text-md` (14px). Think of the scale as `base → md → lg → xl → 2xl` rather than `sm → md → lg`.
+> ⚠️ **Naming gotcha:** `--text-md` (14px) **is** the default body size, and the scale runs
+> `2xs → xxs → sm → md → lg → xl → 2xl`. It is one step denser than a stock Tailwind scale
+> at every name — Picasso's `lg` is 16px where Tailwind's is 18px. Read the px, not the name.
 
 ### Type roles (use these as `font:` shorthand)
 
 | Token | Composition |
 |---|---|
-| `--type-h1` | semibold 28/42 Inter |
-| `--type-h2` | semibold 20/30 Inter |
-| `--type-h3` | semibold 16/24 Inter |
-| `--type-h4` | semibold 14/22 Inter |
-| `--type-body-lg` | regular 16/24 Inter |
-| `--type-body` | regular 14/22 Inter |
+| `--type-h1` | semibold 28/42 Proxima Nova |
+| `--type-h2` | semibold 20/30 Proxima Nova |
+| `--type-h3` | semibold 16/24 Proxima Nova |
+| `--type-h4` | semibold 14/22 Proxima Nova |
+| `--type-body-lg` | regular 16/24 Proxima Nova |
+| `--type-body` | regular 14/22 Proxima Nova |
 | `--type-body-sm` | regular 13/20 |
 | `--type-body-xs` | regular 12/18 |
 | `--type-body-xxs` | regular 11/16 |
@@ -238,7 +244,7 @@ One Picasso oddity with no designmd counterpart: `heading` · `xsmall` is `text-
 | `--type-body-sm-semibold` | semibold 13/20 |
 | `--type-body-xs-semibold` | semibold 12/18 |
 | `--type-body-xxs-semibold` | semibold 11/16 |
-| `--type-caption` | medium 12/18 |
+| `--type-caption` | regular 12/18 — identical to `--type-body-xs` |
 | `--type-mono` | regular 13/20 mono |
 
 ```css
@@ -442,7 +448,7 @@ The deliverable for any prototype is **one HTML file** with all CSS + assets inl
 ### Two folders, side by side
 
 ```
-Development/
+Development/icarus/
 ├── designmd/                    ← the design system → pushed to GitHub
 │   ├── tokens.css               ← primitives
 │   ├── semantic.css             ← aliases + reset
@@ -456,7 +462,19 @@ Development/
 │   ├── assets/
 │   │   └── logo.svg
 │   ├── inline.py                ← bakes the system into a prototype HTML
-│   └── example.html             ← system showcase (uses local ./ links)
+│   ├── icons.svg                ← the Figma icon sprite (325 icons), injected by inline.py
+│   ├── icons.index.json         ← icon slugs + sections, for the searchable gallery
+│   ├── figma-map.json           ← the component registry: designmd ↔ Figma ↔ Picasso React
+│   ├── fonts/                   ← Proxima Nova .woff2, base64-embedded on inline
+│   ├── example.html             ← system showcase (uses local ./ links)
+│   ├── index.html               ← the library index, linking everything below
+│   ├── component-map.html       ← how the ?map=1 inspector works
+│   ├── interaction-patterns.html← pattern labs with live playgrounds
+│   ├── master-prompt.html       ← the copy-paste project scaffold prompt
+│   ├── plugin-launcher.html     ← the plugin launcher, documented
+│   ├── review-bar.html          ← the review bar, documented
+│   ├── states-switcher.html     ← the edge-state switcher (?states=1)
+│   └── versions.html            ← the Versions + Changes plugins
 │
 └── features/                    ← prototypes → dropped onto Netlify
     ├── integrations/
@@ -616,7 +634,7 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 
 ## 8. Vibe prompt (paste into LLM)
 
-> Build an HTML prototype for the Icarus design system at `features/feature-name/index.html`. The system lives in a sibling `designmd/` folder.
+> Build an HTML prototype for the designmd design system at `features/feature-name/index.html`. The system lives in a sibling `designmd/` folder.
 >
 > **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
 >
@@ -636,7 +654,7 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > - Status colors (red/yellow/green) only signal state, never decoration.
 > - Type is the visual hierarchy. Avoid extra borders, dividers, or background fills.
 > - Layout with `.stack` / `.row` / `.grid-2` and flex/grid. Constrain content via `<main class="page">` (1024px max).
-> - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Inter font already loaded via `tokens.css`.
+> - Icons: `<svg class="icon"><use href="#i-{name}"></svg>` from the custom Figma sprite (`icons.svg`, auto-injected by `inline.py`). Proxima Nova is self-hosted and base64-embedded by `inline.py` — no font request at runtime.
 > - **JS-driven components** (modals, drawers, dropdowns, tabs, alerts, tooltips, toasts, tag inputs, char counters) need the delegated `<script>` block from `designmd/example.html` copied into your prototype — handlers are idempotent and activate on the right classes / `data-*` attributes.
 > - **The review bar comes for free.** `inline.py` adds `review.css` + `review.js` to every prototype; open it with `?review=1` to comment, edit text and spotlight. Don't build your own feedback tooling. Serve prototypes with `tools/serve.mjs` so comments persist to `feedback.json`.
 
@@ -658,7 +676,7 @@ More Figma requirements (naming, layers, component usage, tokens/variables, hand
 
 ### Component binding — designmd ↔ Figma ↔ React (Picasso)
 
-There are **two** component libraries for Icarus: this HTML/CSS one (`designmd/`) and a Figma component library. They must stay in lockstep so that when an approved feature moves from HTML into Figma, Claude drops the **real published Figma component** — never a hand-drawn or randomly generated approximation — and, in reverse, recreates a Figma frame with the correct designmd classes.
+There are **two** component libraries for designmd: this HTML/CSS one (`designmd/`) and a Figma component library. They must stay in lockstep so that when an approved feature moves from HTML into Figma, Claude drops the **real published Figma component** — never a hand-drawn or randomly generated approximation — and, in reverse, recreates a Figma frame with the correct designmd classes.
 
 The binding is stored in two artifacts:
 

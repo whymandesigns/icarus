@@ -3,7 +3,6 @@
  * Pierce shadow DOM via CSS custom properties — components read these directly.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Proxima Nova — product/Figma typeface, self-hosted (licensed .woff2). Only
  * Regular (400) and Semibold (600) are supplied, so 500 folds into Regular and
