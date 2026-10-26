@@ -317,7 +317,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Toolbar](./example.html#toolbar) | `.toolbar` | Control strip above a table/list. Parts: `.toolbar-search` (grow, wrap an `.input-icon`) · `.toolbar-end` (pin controls right) · `.toolbar-spacer`. Composes `.input-select.is-auto` (content-width quick-filters), `.btn`, `.segmented`, `.checkbox`. |
 | [Segmented](./example.html#toolbar) | `.segmented` | Bordered mutually-exclusive switcher. `.segmented-item` (`.is-active` = dark fill) · `.segmented-icon` for icon-only segments. Click handled by the delegated `.segmented` handler. |
 | [Sheet](./example.html#sheet) | `.table.table-sheet` + `data-sheet` | Editable-spreadsheet variant of `.table`. Structure: `.sheet-gutter` (row `#`) · `.sheet-toggle` (pinned expand/collapse column — the module hoists each row's `.row-toggle` here and adds a `.sheet-collapse-all` control in its header) · `.sheet-col` header (`.sheet-col-inner` · `.th-sort` · `.th-menu` · `.th-resize`) · `td.sheet-cell` per cell. Cell config via attrs: `data-type="text\|select\|person\|date\|tags\|link"`, `data-variant="name\|muted\|health\|time"`, `data-value`, `data-label` (link), `data-dot` (`is-warning`/`is-danger`), `data-empty-icon`, `data-fail` (demo save error). Cell states: `.is-empty` · `.is-selected` · `.is-editing` · `.is-saving` · `.is-saved` · `.is-error` · `.is-range` · `.is-readonly` · `.is-skeleton`. Behaviour is auto-wired by the `data-sheet` module in the `example.html` script block. |
-| [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 320 icons + aliases). **Two sizes only: 16 & 24** (`.icon-16` / `.icon-24`). Default colour graphite-700 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
+| [Icons](./example.html#iconography) | `.icon` | `<svg class="icon"><use href="#i-{name}"></svg>` — references the custom Figma icon sprite (`icons.svg`, 325 icons + aliases; 231 of those names match a Picasso icon). Renders at **1em**, tracking the surrounding text, exactly as Picasso's icons do; `.icon-16` / `.icon-24` pin a size where a context needs one. Default colour graphite-750 (`--color-icon`); colour-carrying contexts (buttons, links, badges, toasts) override via `currentColor`. Browse/search them in the Iconography section. |
 | Type helpers | `.h1`–`.h4`, `.body`, `.body-sm`, `.caption` | — |
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Plugin launcher | `.pg-fab` | One button, bottom-right of every prototype, that switches the plugins below on and off. Lists only what the page carries; the rest are greyed out with the reason. CSS in `plugins.css`, JS in `plugins.js`, both inlined by `inline.py` alongside the review bar. |
@@ -642,7 +642,13 @@ The binding is stored in two artifacts:
     not an icon. Stroke icons carry `vector-effect="non-scaling-stroke"`, so the stroke
     stays a constant 1px at any rendered size (the exporter/importer add it
     automatically).
-  - **Default colour: graphite-700** (`--color-icon`). Standalone icons rest at graphite-700; icons inside colour-carrying components (primary buttons, links, badges, tags, toasts) inherit that component's colour instead.
+  - **Default colour: graphite-750** (`--color-icon`). This is where designmd and Picasso
+    differ in approach rather than in outcome. Picasso puts `fill-current` + `text-inherit`
+    on every icon, so it always takes the surrounding text colour. designmd sets
+    `fill: none` + `color: var(--color-icon)` and then overrides to `inherit` inside
+    colour-carrying contexts (`.btn`, `a`, `.badge`, `.tag`, `.toast`). Same result in
+    those contexts; a *standalone* designmd icon rests at graphite-750 where Picasso's
+    would take whatever the text around it is.
 - **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `figma-map.json` entry in the same change — including its `slug`, `stampSelector`, Figma binding, and `react` block. A component isn't "done" until all three sides (designmd, Figma, React) and the mapping exist. `react.propMap` values are best-effort until confirmed against the Picasso story controls.
 
 Frame dimensions from the section above (1440 × 900) still apply to whatever view the mapped components are assembled into.

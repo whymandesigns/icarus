@@ -1604,8 +1604,8 @@
         "storyId": "components-icons--icons",
         "status": "partial",
         "propMap": {},
-        "note": "Icon is chosen by name, not by variant prop. designmd .icon-16/.icon-24 are sizing helpers with no Picasso prop.",
-        "verifiedAgainst": "102.0.0"
+        "note": "Icon is chosen by name, not by a variant prop, so there is nothing to propMap. SIZING MATCHES EXACTLY: designmd's .icon is width/height 1em with vertical-align -0.125em, and Picasso's icon components carry h-[1em] align-[-.125em]. COLOUR DIFFERS IN APPROACH: Picasso uses fill-current + text-inherit, so every icon inherits its parent's colour; designmd uses fill:none + color: var(--color-icon) and overrides to inherit inside colour-carrying contexts (.btn, a, .badge, .tag, .toast). Same result in those contexts, but a standalone designmd icon rests at graphite-750 where Picasso's would take the surrounding text colour. NAMES: 231 of designmd's 325 sprite slugs match one of Picasso's 311 icons exactly (71%). 87 are genuinely designmd-only and 80 Picasso-only. Seven more look like the same icon under a different name and are worth reconciling: controls/control, cpu/cpu2, cpu-2/cpu2, flag-2/flag2, initiatives/initiative, performance-2/performance, play/player. Note Picasso ships Ach and CreditCard at 32 as well as 16/24, so 'two grids' is true of designmd's pack but not strictly of Picasso's.",
+        "verifiedAgainst": "102.0.0 (source: toptal/picasso@bcaacbb8ec3b)"
       }
     },
     {
