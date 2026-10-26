@@ -237,6 +237,30 @@
   /* --spacing-20: 5rem;   80px  — unused, and in neither config. */
   /* --spacing-32: 8rem;  128px  — unused, and in neither config. */
 
+  /* ---- Sizing — Picasso's minWidth / maxWidth / minHeight / maxHeight ----
+   * All four start from the spacing scale (`...theme('spacing')`), so min-w-4 is
+   * --spacing-4 and needs no token of its own. Only the values Picasso adds on
+   * top are declared here.
+   */
+  --min-width-14: 3.5rem;           /* picasso - 56px, min-w-14 */
+  --min-width-16: 4rem;             /* picasso - 64px, min-w-16 */
+  --min-width-24: 6rem;             /* picasso - 96px, min-w-24 */
+
+  /* Twelfths — Picasso's 12-column grid, maxWidth only. The class is written
+   * max-w-1/12; a slash cannot appear in a custom property name, so the token
+   * spells it out. */
+  --max-width-1-12: 8.333333%;      /* picasso - max-w-1/12 */
+  --max-width-2-12: 16.666667%;     /* picasso - max-w-2/12 */
+  --max-width-3-12: 25%;            /* picasso - max-w-3/12 */
+  --max-width-4-12: 33.333333%;     /* picasso - max-w-4/12 */
+  --max-width-5-12: 41.666667%;     /* picasso - max-w-5/12 */
+  --max-width-6-12: 50%;            /* picasso - max-w-6/12 */
+  --max-width-7-12: 58.333333%;     /* picasso - max-w-7/12 */
+  --max-width-8-12: 66.666667%;     /* picasso - max-w-8/12 */
+  --max-width-9-12: 75%;            /* picasso - max-w-9/12 */
+  --max-width-10-12: 83.333333%;    /* picasso - max-w-10/12 */
+  --max-width-11-12: 91.666667%;    /* picasso - max-w-11/12 */
+
   /* ---- Radii ---- */
   --radius-none: 0;                 /* picasso */
   --radius-sm: 4px;                 /* picasso */

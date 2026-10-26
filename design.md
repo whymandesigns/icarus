@@ -190,20 +190,17 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 | Breakpoints | `--breakpoint-xs` 0 · `-sm` 480 · `-md` 768 · `-lg` 1024 · `-xl` 1440 — Picasso's screens |
 | Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 — extensions; Picasso has breakpoints, not container widths |
 
-**Picasso vocabulary designmd does not carry.** Its preset extends four sizing keys that
-have no counterpart here, so a prototype cannot express them and a developer reading one
-will not be prompted to use them:
+**Sizing.** Picasso's `minWidth`, `maxWidth`, `minHeight` and `maxHeight` all start from
+the spacing scale (`...theme('spacing')`), so `min-w-4` is just `--spacing-4` and needs no
+token of its own. Only what Picasso adds on top is declared:
 
-| Picasso | What it gives | designmd |
-|---|---|---|
-| `minWidth` | the spacing scale **plus** `14` 3.5rem · `16` 4rem · `24` 6rem | — |
-| `maxWidth` | the spacing scale **plus** twelfths, `1/12` … `11/12` — a 12-column grid | — |
-| `minHeight` / `maxHeight` | the spacing scale | — |
-| plugin utilities | `.font-inherit-weight`, `.font-inherit-size` | — |
+| Group | Tokens |
+|---|---|
+| Min width | `--min-width-14` 56px · `-16` 64px · `-24` 96px — the three steps past the spacing scale |
+| Max width | `--max-width-1-12` … `--max-width-11-12` — Picasso's 12-column grid. The class is `max-w-1/12`; a slash cannot appear in a custom property name, so the token spells it out. |
 
-The twelfths are the notable one: that is Picasso's grid vocabulary, and designmd has no
-way to say "this column is 4/12 wide". Worth adding when a prototype needs it rather than
-up front, since unused tokens are how the last set of extensions accumulated.
+Still not carried: the two plugin utilities `.font-inherit-weight` and
+`.font-inherit-size`.
 
 ### Breakpoints
 

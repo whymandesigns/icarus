@@ -624,6 +624,15 @@
         <div class="tok-list" id="spacing-root"></div>
       </section>
 
+      <section class="stack" id="sizing">
+        <div>
+          <h3 class="h3">Sizing</h3>
+          <p class="body-sm">Picasso's <code style="font: var(--type-mono); color: var(--color-text-muted)">minWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">maxWidth</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">minHeight</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">maxHeight</code> all start from the spacing scale, so <code style="font: var(--type-mono); color: var(--color-text-muted)">min-w-4</code> is simply <code style="font: var(--type-mono); color: var(--color-text-muted)">--spacing-4</code>. Only what Picasso adds on top gets its own token: three min-widths, and the twelfths of its 12-column grid.</p>
+        </div>
+        <div class="tok-list" id="sizing-root"></div>
+        <div class="tok-list" id="twelfths-root"></div>
+      </section>
+
       <section class="stack" id="shadows">
         <div>
           <h3 class="h3">Shadow</h3>
@@ -5924,6 +5933,19 @@
           <span class="tok-val">${w}</span>
           <code class="tok-src${real ? ' is-picasso' : ''}">${real ? 'font-' + k : 'preset only · unused'}</code>
         </div>`;
+    }).join('');
+
+    // Sizing — the three min-widths Picasso adds past the spacing scale
+    document.getElementById('sizing-root').innerHTML = [14,16,24].map(n => {
+      const v = css.getPropertyValue(`--min-width-${n}`).trim();
+      return row(`--min-width-${n}`, `${px(v)}px`, `${px(v)}px`, `min-w-${n}`);
+    }).join('');
+
+    // Twelfths — bar is the fraction itself, so the grid reads as a grid
+    document.getElementById('twelfths-root').innerHTML = Array.from({length: 11}, (_, i) => {
+      const n = i + 1;
+      const v = css.getPropertyValue(`--max-width-${n}-12`).trim();
+      return row(`--max-width-${n}-12`, v, `${n}/12`, `max-w-${n}/12`);
     }).join('');
 
     // Shadow — the role each one plays, straight from Picasso's own source comments
