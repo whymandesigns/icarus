@@ -1,6 +1,17 @@
 # designmd — the Picasso-aligned prototyping system
 
-> Source of truth for vibe prototyping. Paste this file (or the **Vibe prompt** section) into your LLM context when generating new HTML prototypes. Every prototype links three stylesheets in order: `tokens.css` → `semantic.css` → `components.css`.
+> **Picasso is the source of truth.** [`github.com/toptal/picasso`](https://github.com/toptal/picasso)
+> and its [Storybook](https://toptal.github.io/picasso/) define the tokens and components Toptal
+> actually ships. **designmd is an extension of it** — the same foundations expressed as plain
+> HTML and CSS, so Operationalize can prototype in hours rather than in React.
+>
+> That makes this file downstream, not authoritative. Where it and Picasso disagree, Picasso is
+> right and this is a bug. Where designmd adds something Picasso has no answer for, the token
+> says `extension` and explains why. See §0.
+>
+> Paste this file (or the **Vibe prompt** section) into your LLM context when generating new HTML
+> prototypes. Every prototype links three stylesheets in order: `tokens.css` → `semantic.css` →
+> `components.css`.
 
 ---
 
@@ -29,10 +40,20 @@ Three layers. Don't skip them.
 
 ## 0. Upstream — Picasso
 
-designmd is **downstream of Picasso**, Toptal's production design system. Every token in
-`tokens.css` is either Picasso's — name and value verbatim — or an extension that says so
-in its own comment and explains why. When the two disagree, Picasso wins; when designmd
-needs something Picasso has no answer for, it says so rather than inventing quietly.
+**Picasso is Toptal's design system — the real one, shipped across every product.** designmd
+exists for one reason: Picasso is React, and a React prototype is slow to make and slow to
+throw away. designmd re-expresses the same foundations as plain HTML and CSS so Operationalize
+can get a screen in front of people in hours, and so what gets approved translates to
+production without anyone re-deriving the values.
+
+**That only works if the foundations are genuinely the same.** Every token in `tokens.css` is
+either Picasso's — name and value verbatim — or an extension that says `extension` in its own
+comment and explains why. When the two disagree, Picasso is right and this is a bug. When
+designmd needs something Picasso has no answer for, it says so rather than inventing quietly.
+
+**Check Picasso, not this file, when it matters.** The Storybook is where a component's real
+behaviour lives; `packages/base/<Component>/src/` is where its real values do. This file is a
+convenience layer over both, and a convenience layer drifts.
 
 | What | Where |
 |---|---|
@@ -437,7 +458,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 <span class="caption">Caption</span>
 ```
 
-For the full inventory with every modifier and live demos, open `example.html` — it's the source of truth for what's available and how each component composes.
+For the full inventory with every modifier and live demos, open `example.html` — it's the complete picture of what designmd offers and how each component composes. For what a component *is*, though, the authority is Picasso: its [Storybook](https://toptal.github.io/picasso/) for behaviour and props, and `packages/base/<Component>/src/` for the implementation. `figma-map.json` carries the `storyId` for each one.
 
 ---
 
@@ -483,7 +504,7 @@ Development/icarus/
         └── index.html           ← single-file prototype
 ```
 
-`designmd/` is the stable source of truth that gets pushed to GitHub. `features/` is a separate, fast-moving sandbox of single HTML files. The two folders are **siblings** — `features/` is not a subfolder of `designmd/`, so the design-system repo isn't polluted with prototype churn.
+`designmd/` is the stable layer that gets pushed to GitHub — stable relative to `features/`, but still downstream of Picasso. `features/` is a separate, fast-moving sandbox of single HTML files. The two folders are **siblings** — `features/` is not a subfolder of `designmd/`, so the design-system repo isn't polluted with prototype churn.
 
 > **Rule — every feature follows `features/feature-name/index.html`.**
 >
@@ -634,7 +655,15 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 
 ## 8. Vibe prompt (paste into LLM)
 
-> Build an HTML prototype for the designmd design system at `features/feature-name/index.html`. The system lives in a sibling `designmd/` folder.
+> Build an HTML prototype using **designmd** at `features/feature-name/index.html`. The system
+> lives in a sibling `designmd/` folder.
+>
+> designmd is a plain HTML/CSS extension of **Picasso**, Toptal's production design system
+> ([repo](https://github.com/toptal/picasso) · [Storybook](https://toptal.github.io/picasso/)).
+> Its tokens are Picasso's, name and value, except where a comment says `extension`. If you need
+> to know how a component really behaves or what props it takes, the Storybook is the authority —
+> `figma-map.json` carries the `storyId` and the React mapping for each one. Don't invent a token
+> or a component: if designmd lacks something, say so rather than approximating it.
 >
 > **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
 >

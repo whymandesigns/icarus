@@ -1,6 +1,6 @@
 {
   "$schema": "./figma-map.schema.json",
-  "description": "Binding layer between the Icarus designmd HTML/CSS component library and the Figma component library. Phase 1: this map. Phase 2 (once the Figma library URL + Node toolchain are in place): generated Code Connect .figma.ts templates under ./figma/.",
+  "description": "Registry binding designmd's HTML/CSS classes to the two systems they answer to: Picasso (github.com/toptal/picasso — the source of truth, React + Storybook) and the Figma component library. Each entry carries the designmd side (root class, snippet, shortcode), a react block (component, import, storyId, propMap, status) verified against Picasso's source, and a figma block. designmd is an extension of Picasso, not a parallel system: where a token or prop differs, Picasso is right.",
   "figmaLibrary": {
     "name": "Product Library v2.0",
     "fileKey": "0zTTN9YKOABPGLQ4NsyEW5",
