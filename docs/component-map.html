@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Component map — designmd</title>
-  <link rel="stylesheet" href="./tokens.css" />
-  <link rel="stylesheet" href="./semantic.css" />
-  <link rel="stylesheet" href="./components.css" />
-  <link rel="stylesheet" href="./devtools.css" />
-  <link rel="stylesheet" href="./plugins.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
+  <link rel="stylesheet" href="../plugins/devtools.css" />
+  <link rel="stylesheet" href="../plugins/plugins.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--spacing-1);
@@ -134,7 +134,7 @@
 <body>
   <main class="page">
 
-    <a class="doc-back" href="./index.html"><svg class="icon icon-16"><use href="./icons.svg#i-chevron-left"/></svg> Design Library</a>
+    <a class="doc-back" href="../index.html"><svg class="icon icon-16"><use href="../icons.svg#i-chevron-left"/></svg> Design Library</a>
 
     <header class="doc-hero">
       <h1 class="h1">Component map</h1>
@@ -142,7 +142,7 @@
     </header>
 
     <div class="doc-callout is-warning">
-      <svg class="icon"><use href="./icons.svg#i-warning"/></svg>
+      <svg class="icon"><use href="../icons.svg#i-warning"/></svg>
       <p><strong>Kit only for now.</strong> The inspector runs in <code>example.html</code>, where the registry sits beside it. Prototypes carry the CSS but neither the script nor the registry, so <code>?map=1</code> does nothing there yet — see <a href="#prototypes">Taking it to prototypes</a>.</p>
     </div>
 
@@ -150,7 +150,7 @@
       <h2 class="h2">Enable it</h2>
       <p>Open the kit with <code>?map=1</code>, switch <strong>Component map</strong> on in the plugin launcher bottom-right, or press the goggles button in the kit's toolbar next to the theme toggle — all three do the same thing. Each flips the parameter and reloads, so the page always starts in a known state. Without it nothing is stamped, outlined or fetched.</p>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy URL"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">example.html<span class="arrow">?map=1</span></div>
       </div>
     </section>
@@ -194,7 +194,7 @@
 
       <h3 class="h3">One entry</h3>
       <div class="doc-code-wrap">
-        <button class="doc-code-copy" type="button" data-copy aria-label="Copy entry"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
+        <button class="doc-code-copy" type="button" data-copy aria-label="Copy entry"><svg class="icon"><use href="../icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">{
   "id": "accordion",
   "name": "Accordion",
@@ -242,7 +242,7 @@
         <li><strong>Decide what gets stamped.</strong><span>Selectors are written against the kit's markup. A prototype composes the same components, so most should match — but that is an assumption worth testing on a real prototype before trusting it.</span></li>
       </ol>
       <div class="doc-callout">
-        <svg class="icon"><use href="./icons.svg#i-info"/></svg>
+        <svg class="icon"><use href="../icons.svg#i-info"/></svg>
         <p>Until then the honest description is the one at the top of this page: a tool for the kit, used while mapping the library to Picasso — not something a reviewer opens on a prototype.</p>
       </div>
     </section>
@@ -256,11 +256,11 @@
         const code = btn.parentElement.querySelector('.doc-code');
         try { await navigator.clipboard.writeText(code.textContent); } catch (_) {}
         btn.classList.add('is-copied');
-        btn.querySelector('use').setAttribute('href', './icons.svg#i-check');
+        btn.querySelector('use').setAttribute('href', '../icons.svg#i-check');
         btn.querySelector('span').textContent = 'Copied';
         setTimeout(() => {
           btn.classList.remove('is-copied');
-          btn.querySelector('use').setAttribute('href', './icons.svg#i-copy');
+          btn.querySelector('use').setAttribute('href', '../icons.svg#i-copy');
           btn.querySelector('span').textContent = 'Copy';
         }, 1500);
       });
@@ -276,6 +276,6 @@
       });
     });
   </script>
-  <script src="./plugins.js"></script>
+  <script src="../plugins/plugins.js"></script>
 </body>
 </html>

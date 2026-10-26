@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./semantic.css" />
   <link rel="stylesheet" href="./components.css" />
-  <link rel="stylesheet" href="./devtools.css" />
-  <link rel="stylesheet" href="./plugins.css" />
+  <link rel="stylesheet" href="./plugins/devtools.css" />
+  <link rel="stylesheet" href="./plugins/plugins.css" />
   <style>
     /* .stack, .row, .grid-2 live in components.css (Layout helpers section).
        This block holds example.html's own demo-only chrome below. */
@@ -4643,7 +4643,7 @@
       // Shared with the ?map=1 inspector so in-context icons (alerts, toolbar,
       // etc.) get the same Picasso cross-reference as the gallery cards.
       window.__PICASSO_ICON_MAP = iconMap;
-      fetch('icons.index.json').then(r => r.json()).then(data => {
+      fetch('data/icons.index.json').then(r => r.json()).then(data => {
         const icons = data.icons.slice().sort((a, b) => a.slug.localeCompare(b.slug));
         const render = (q = '') => {
           const ql = q.trim().toLowerCase();
@@ -4658,7 +4658,7 @@
         };
         render();
         search && search.addEventListener('input', () => render(search.value));
-      }).catch(() => { if (count) count.textContent = 'icons.index.json not found — run tools/export_icons.py'; });
+      }).catch(() => { if (count) count.textContent = 'data/icons.index.json not found — run tools/export_icons.py'; });
     })();
 
     // Searchable dropdown menus — filter items live in any [data-dropdown-search]
@@ -5975,7 +5975,7 @@
         });
       }
       const STORYBOOK = 'https://toptal.github.io/picasso/?path=/story/';
-      fetch('./figma-map.json').then(r => r.ok ? r.json() : null).then(map => {
+      fetch('./data/figma-map.json').then(r => r.ok ? r.json() : null).then(map => {
         if (!map) return;
         const bySlug = {};
         (map.components || []).forEach(c => { if (c.slug) bySlug[c.slug] = c; });
@@ -6254,6 +6254,6 @@
       }).catch(() => {});
     })();
   </script>
-  <script src="./plugins.js"></script>
+  <script src="./plugins/plugins.js"></script>
 </body>
 </html>

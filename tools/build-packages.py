@@ -621,7 +621,8 @@ def main():
     icons_svg = (ROOT / "icons.svg").read_text() if (ROOT / "icons.svg").exists() else ""
     other_css = "".join(
         (ROOT / f).read_text()
-        for f in ["devtools.css", "plugins.css", "review.css", "versions.css"]
+        for f in ["plugins/devtools.css", "plugins/plugins.css",
+                  "plugins/review.css", "plugins/versions.css"]
         if (ROOT / f).exists()
     )
 

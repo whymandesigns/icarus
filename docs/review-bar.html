@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Review bar — designmd</title>
-  <link rel="stylesheet" href="./tokens.css" />
-  <link rel="stylesheet" href="./semantic.css" />
-  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
-  <link rel="stylesheet" href="./review.css" />
-  <link rel="stylesheet" href="./plugins.css" />
+  <link rel="stylesheet" href="../plugins/review.css" />
+  <link rel="stylesheet" href="../plugins/plugins.css" />
   <style>
     .doc-back {
       display: inline-flex; align-items: center; gap: var(--spacing-2);
@@ -200,7 +200,7 @@
 <body>
   <main class="page">
 
-    <a class="doc-back" href="./index.html"><i class="ph ph-arrow-left"></i>designmd</a>
+    <a class="doc-back" href="../index.html"><i class="ph ph-arrow-left"></i>designmd</a>
 
     <header class="doc-hero">
       <h1 class="h1">Review bar</h1>
@@ -422,7 +422,7 @@
   <!-- The review bar itself, so the page it documents can be reviewed with it.
        review.js mounts its own circle button bottom-right and reads ?review=1;
        the button above is the same switch, said in words. -->
-  <script src="./review.js"></script>
+  <script src="../plugins/review.js"></script>
   <script>
     (() => {
       const btn = document.getElementById('docTry');
@@ -437,6 +437,6 @@
       paint();
     })();
   </script>
-  <script src="./plugins.js"></script>
+  <script src="../plugins/plugins.js"></script>
 </body>
 </html>
