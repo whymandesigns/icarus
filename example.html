@@ -5862,7 +5862,7 @@
       </div>`;
 
     // Spacing — bar width is the step itself, so the scale is literally to scale
-    const SPACING = [0,1,2,3,4,6,8,10,12,16,20,32];
+    const SPACING = [0,1,2,3,4,6,8,10,12,16];
     const SPACING_PICASSO = new Set([0,1,2,3,4,6,8,10,12]);
     document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
       const v = css.getPropertyValue(`--spacing-${n}`).trim();

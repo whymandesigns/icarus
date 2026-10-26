@@ -231,9 +231,11 @@
   /* Extensions. Picasso's scale stops at 12 (48px); page-level layout needs
    * more. Numbered on Tailwind's own n x 0.25rem rule, so p-16 in code is
    * still 4rem — consistent with Picasso even though Picasso omits them. */
-  --spacing-16: 4rem;               /* extension - 64px */
-  --spacing-20: 5rem;               /* extension - 80px */
-  --spacing-32: 8rem;               /* extension - 128px */
+  --spacing-16: 4rem;               /* extension - 64px. No p-16 in Picasso, but the
+                                     * same value is min-w-16: Picasso's minWidth
+                                     * extends the spacing scale with 14, 16 and 24. */
+  /* --spacing-20: 5rem;   80px  — unused, and in neither config. */
+  /* --spacing-32: 8rem;  128px  — unused, and in neither config. */
 
   /* ---- Radii ---- */
   --radius-none: 0;                 /* picasso */

@@ -190,6 +190,21 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 | Breakpoints | `--breakpoint-xs` 0 · `-sm` 480 · `-md` 768 · `-lg` 1024 · `-xl` 1440 — Picasso's screens |
 | Container | `--container-sm` 640 · `-md` 768 · `-lg` 1024 · `-xl` 1280 — extensions; Picasso has breakpoints, not container widths |
 
+**Picasso vocabulary designmd does not carry.** Its preset extends four sizing keys that
+have no counterpart here, so a prototype cannot express them and a developer reading one
+will not be prompted to use them:
+
+| Picasso | What it gives | designmd |
+|---|---|---|
+| `minWidth` | the spacing scale **plus** `14` 3.5rem · `16` 4rem · `24` 6rem | — |
+| `maxWidth` | the spacing scale **plus** twelfths, `1/12` … `11/12` — a 12-column grid | — |
+| `minHeight` / `maxHeight` | the spacing scale | — |
+| plugin utilities | `.font-inherit-weight`, `.font-inherit-size` | — |
+
+The twelfths are the notable one: that is Picasso's grid vocabulary, and designmd has no
+way to say "this column is 4/12 wide". Worth adding when a prototype needs it rather than
+up front, since unused tokens are how the last set of extensions accumulated.
+
 ### Breakpoints
 
 Match **Picasso's** screen breakpoints when writing responsive rules — viewport `@media`, or `@container` for framed previews (e.g. the app-shell device tabs). Source: [Picasso breakpoints](https://toptal.github.io/picasso/?path=/story/utils-breakpoints--breakpoints).
