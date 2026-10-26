@@ -70,7 +70,7 @@ mid-ramp red/yellow/green/blue/purple) are extensions.
 > **If you remember the old names.** `gray-100`→`gray-50`, `gray-150`→`gray-100`,
 > `graphite-500`→`graphite-700`, `graphite-600/700`→`graphite-725/750`, and the
 > cyan ramp is gone: `cyan-500` was always Picasso's `blue-400`. The old
-> `blue-400` was not Picasso's, and is now `blue-450`.
+> `blue-400` was not Picasso's; it became `blue-450` and is now commented out, since nothing used it.
 
 ### Semantic aliases (`semantic.css`) — **use these in prototypes**
 

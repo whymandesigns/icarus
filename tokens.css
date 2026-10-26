@@ -118,7 +118,10 @@
   --color-blue-150: #D5DEFA;        /* picasso */
   --color-blue-200: #B0C1F5;        /* extension */
   --color-blue-300: #7B9AEE;        /* extension */
-  --color-blue-450: #4A6FE0;        /* extension */
+  /* --color-blue-450: #4A6FE0;  designmd's old blue-400, a mid-ramp tint with
+   * no Picasso equivalent. Nothing referenced it once --color-info moved to
+   * blue-400 (Picasso's, the colour that used to be called cyan-500), so it
+   * is commented out rather than carried as a dead extension. */
   --color-blue-500: #204ECF;        /* picasso */
   --color-blue-600: #183A9E;        /* picasso */
   --color-blue-700: #0F256E;        /* picasso */
