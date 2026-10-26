@@ -265,13 +265,10 @@
   --radius-none: 0;                 /* picasso */
   --radius-sm: 4px;                 /* picasso */
   --radius-md: 8px;                 /* picasso */
-  /* 12px has no Picasso class. It is the radius of .card, whose nearest Picasso
-   * equivalent — Container with rounded — is rounded-md at 8px, and opt-in at
-   * that. So a prototype's cards are rounder than the product's. Left as-is
-   * because changing it restyles every card; flagged so the choice is visible. */
-  --radius-lg: 12px;                /* extension - used by .card */
-  /* --radius-xl: 16px;   — unused, and in neither config. */
-  /* --radius-2xl: 24px;  — unused, and in neither config. */
+  /* No extensions. The scale is Picasso's four, exactly.
+   * --radius-lg (12px), -xl (16px) and -2xl (24px) are gone: lg's ten uses —
+   * .card and nine bits of showcase chrome — now take --radius-md, which is
+   * what Picasso's Container applies, and xl/2xl were never referenced. */
   --radius-full: 9999px;            /* picasso */
   /* Numeric aliases — reach for these by px value */
 

@@ -107,7 +107,7 @@
       position: relative;
       background: var(--color-surface-muted);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       height: 360px;
       overflow: hidden;
       margin: var(--spacing-4) 0;
@@ -136,7 +136,7 @@
     }
 
     /* The switcher itself, exactly as the prototypes style it (initiatives / toptrack flavour). */
-    .sw-switcher { position: absolute; left: 16px; bottom: 16px; z-index: 5; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-5); overflow: hidden; }
+    .sw-switcher { position: absolute; left: 16px; bottom: 16px; z-index: 5; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-5); overflow: hidden; }
     .sw-switcher-head { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-2) var(--spacing-3); background: var(--color-graphite-800); color: var(--color-text-inverse); font: var(--font-weight-semibold) var(--text-2xs)/1.4 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; }
     .sw-switcher-toggle { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; }
     .sw-switcher-body { max-height: 240px; overflow: auto; padding: var(--spacing-2); display: flex; flex-direction: column; gap: var(--spacing-3); }
@@ -264,7 +264,7 @@
         <button class="doc-code-copy" type="button" data-copy aria-label="Copy snippet"><svg class="icon"><use href="./icons.svg#i-copy"/></svg><span>Copy</span></button>
         <div class="doc-code">&lt;style&gt;
   <span class="cm">/* Prototype state switcher (?states=1). Bottom-left so it stays clear of drawers. */</span>
-  .xx-switcher { position: fixed; left: 16px; bottom: 16px; z-index: 999; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-5); overflow: hidden; }
+  .xx-switcher { position: fixed; left: 16px; bottom: 16px; z-index: 999; width: 232px; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-5); overflow: hidden; }
   .xx-switcher[hidden] { display: none; }
   .xx-switcher-head { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-2) var(--spacing-3); background: var(--color-graphite-800); color: var(--color-text-inverse); font: var(--font-weight-semibold) var(--text-2xs)/1.4 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; }
   .xx-switcher-toggle { border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 4px; }

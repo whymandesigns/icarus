@@ -542,7 +542,7 @@ textarea.input {
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: var(--spacing-6);
 }
 .card-title { font: var(--type-h3); margin: 0 0 var(--spacing-2); color: var(--color-text); }

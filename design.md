@@ -182,7 +182,7 @@ Never write raw px. `padding: var(--spacing-4) var(--spacing-6)`.
 
 | Group | Tokens |
 |---|---|
-| Radii | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-full` 9999 are Picasso's. `-lg` 12 is the one extension, used by `.card`; Picasso's nearest is `rounded-md` at 8px, so prototype cards are rounder than the product's. `-xl` and `-2xl` were unused and are commented out. |
+| Radii | `--radius-none` 0 · `-sm` 4 · `-md` 8 · `-full` 9999 — **Picasso's four, no extensions.** Picasso *replaces* Tailwind's radius scale rather than extending it, so `rounded-lg` and friends do not exist; for anything off-scale it writes a literal (its Tag uses `rounded-[6.25rem]`). |
 | Shadow | `--shadow-0` … `--shadow-5`, Picasso's values. They are **roles, not a ramp**: 1 paper · 2 modal · 3 growl · 4 tooltip · 5 scroll menu. Pick by what the surface *is*. |
 | Motion | `--duration-350` (Picasso) · `--duration-fast` 120 · `-base` 200 · `-slow` 320, paired with `--ease`, `--ease-out`, `--ease-in` (extensions). Use these for hand-written transitions. |
 | Animation | `--animate-circle-spin` (Picasso) · `--animate-highlight` · `-fade-in` · `-slider-progress` · `-card-land` (from the Operationalize config). Apply whole: `animation: var(--animate-fade-in)`. All five collapse to `none` under `prefers-reduced-motion`. |

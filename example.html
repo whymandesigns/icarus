@@ -350,7 +350,7 @@
       background-size: 16px 16px;
       background-position: -8px -8px;
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       overflow: auto;
     }
     .device-frame {
@@ -611,7 +611,7 @@
       <section class="stack" id="radii">
         <div>
           <h3 class="h3">Radii</h3>
-          <p class="body-sm">Picasso's scale is <code style="font: var(--type-mono); color: var(--color-text-muted)">none</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">sm</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">md</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">full</code> — those four map to a <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-*</code> class. <code style="font: var(--type-mono); color: var(--color-text-muted)">lg</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">xl</code> and <code style="font: var(--type-mono); color: var(--color-text-muted)">2xl</code> are designmd extensions with no Tailwind class behind them.</p>
+          <p class="body-sm">Picasso's scale, exactly — four radii, each with a <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-*</code> class and no extensions. Note it <em>replaces</em> Tailwind's default scale rather than extending it, so <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-lg</code>, <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-xl</code> and the rest do not exist here. For anything off-scale Picasso writes a literal, the way its Tag uses <code style="font: var(--type-mono); color: var(--color-text-muted)">rounded-[6.25rem]</code>.</p>
         </div>
         <div class="radii-row" id="radii-root"></div>
       </section>
@@ -5822,7 +5822,7 @@
     };
 
     // Radii
-    const radii = ['none','sm','md','lg','full'].map(k => `--radius-${k}`);
+    const radii = ['none','sm','md','full'].map(k => `--radius-${k}`);
     // Picasso's border-radius scale is only none/sm/md/full. lg, xl and 2xl are
     // designmd extensions and stay unlinked — the inspector outlines the mapped
     // ones only, so an unlinked card means "no Tailwind class waiting for this".
