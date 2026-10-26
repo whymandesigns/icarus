@@ -36,9 +36,8 @@
   --color-gray-500: #C4C6CA;        /* picasso */
   --color-gray-600: #84888E;        /* picasso */
   --color-gray-700: #5F636A;        /* extension */
-  --color-gray-800: #3D4149;        /* extension */
-  --color-gray-900: #24272D;        /* extension */
-
+  /* --color-gray-800: #3D4149;  unreferenced extension */
+  /* --color-gray-900: #24272D;  unreferenced extension */
   /* Zinc — dark-theme neutrals */
   /* Zinc — NOT Picasso. Picasso has no zinc at all. These nine exist for one
    * reason: they are the entire foundation of the dark theme in semantic.css.
@@ -48,10 +47,10 @@
    * nothing without them and the theme toggle breaks. Picasso ships real dark
    * values for every token; rebuilding dark mode on those is what retires this
    * ramp for good. */
-  --color-zinc-100: #D1D2D3;        /* extension */
-  --color-zinc-200: #949597;        /* extension */
-  --color-zinc-300: #636466;        /* extension */
-  --color-zinc-400: #484A4C;        /* extension */
+  /* --color-zinc-100: #D1D2D3;  unreferenced extension */
+  /* --color-zinc-200: #949597;  unreferenced extension */
+  /* --color-zinc-300: #636466;  unreferenced extension */
+  /* --color-zinc-400: #484A4C;  unreferenced extension */
   --color-zinc-500: #343536;        /* extension */
   --color-zinc-600: #282829;        /* extension */
   --color-zinc-700: #1E1E1F;        /* extension */
@@ -59,13 +58,13 @@
   --color-zinc-900: #0A0A0A;        /* extension */
 
   /* Graphite (Operationalize brand) */
-  --color-graphite-100: #E0E3EA;    /* extension */
-  --color-graphite-150: #CDD1DC;    /* extension */
-  --color-graphite-200: #B3B9C8;    /* extension */
+  /* --color-graphite-100: #E0E3EA;  unreferenced extension */
+  /* --color-graphite-150: #CDD1DC;  unreferenced extension */
+  /* --color-graphite-200: #B3B9C8;  unreferenced extension */
   --color-graphite-300: #8F96AA;    /* extension */
-  --color-graphite-400: #6A7389;    /* extension */
+  /* --color-graphite-400: #6A7389;  unreferenced extension */
   --color-graphite-700: #455065;    /* picasso */
-  --color-graphite-725: #3A4457;    /* extension */
+  /* --color-graphite-725: #3A4457;  unreferenced extension */
   --color-graphite-750: #303A4A;    /* extension */
   --color-graphite-800: #262D3D;    /* picasso */
   --color-graphite-900: #191E28;    /* picasso */
@@ -73,28 +72,25 @@
   /* Red */
   --color-red-100: #FBEDF1;         /* picasso */
   --color-red-150: #F5D8E0;         /* picasso */
-  --color-red-200: #F0B8C4;         /* extension */
-  --color-red-300: #E5637D;         /* extension */
-  --color-red-400: #DA3F62;         /* extension */
+  /* --color-red-200: #F0B8C4;  unreferenced extension */
+  /* --color-red-300: #E5637D;  unreferenced extension */
+  /* --color-red-400: #DA3F62;  unreferenced extension */
   --color-red-500: #D42551;         /* picasso */
-  --color-red-600: #A81D41;         /* extension */
-  --color-red-700: #7D1530;         /* extension */
-  --color-red-800: #5C0F24;         /* extension */
-  --color-red-900: #3D0A18;         /* extension */
-
+  /* --color-red-600: #A81D41;  unreferenced extension */
+  /* --color-red-700: #7D1530;  unreferenced extension */
+  /* --color-red-800: #5C0F24;  unreferenced extension */
+  /* --color-red-900: #3D0A18;  unreferenced extension */
   /* Yellow */
   --color-yellow-100: #FFF5E3;      /* picasso */
   --color-yellow-150: #F8E7C8;      /* picasso */
-  --color-yellow-200: #F2D9A6;      /* extension */
-  --color-yellow-300: #EDCA7E;      /* extension */
-  --color-yellow-400: #E9B340;      /* extension */
+  /* --color-yellow-200: #F2D9A6;  unreferenced extension */
+  /* --color-yellow-300: #EDCA7E;  unreferenced extension */
+  /* --color-yellow-400: #E9B340;  unreferenced extension */
   --color-yellow-500: #E59C01;      /* picasso */
-  --color-yellow-600: #C08301;      /* extension */
+  /* --color-yellow-600: #C08301;  unreferenced extension */
   --color-yellow-700: #9A6A01;      /* extension */
-  --color-yellow-800: #704D01;      /* extension */
-  --color-yellow-900: #4A3301;      /* extension */
-
-
+  /* --color-yellow-800: #704D01;  unreferenced extension */
+  /* --color-yellow-900: #4A3301;  unreferenced extension */
   /* Green */
   --color-green-100: #EAFBF5;       /* picasso */
   --color-green-150: #D7F3E9;       /* picasso */
@@ -105,8 +101,7 @@
   --color-green-600: #03B080;       /* picasso */
   --color-green-700: #05947C;       /* picasso */
   --color-green-800: #046B5A;       /* extension */
-  --color-green-900: #034539;       /* extension */
-
+  /* --color-green-900: #034539;  unreferenced extension */
   /* Cyan — single shade. Pending removal: components currently using
      cyan-500 (.tag-blue-light, .badge-info text, --color-info) will
      migrate to a blue shade in the next pass, after which the ramp goes
@@ -116,8 +111,8 @@
   /* Blue */
   --color-blue-100: #EDF1FD;        /* picasso */
   --color-blue-150: #D5DEFA;        /* picasso */
-  --color-blue-200: #B0C1F5;        /* extension */
-  --color-blue-300: #7B9AEE;        /* extension */
+  /* --color-blue-200: #B0C1F5;  unreferenced extension */
+  /* --color-blue-300: #7B9AEE;  unreferenced extension */
   /* --color-blue-450: #4A6FE0;  designmd's old blue-400, a mid-ramp tint with
    * no Picasso equivalent. Nothing referenced it once --color-info moved to
    * blue-400 (Picasso's, the colour that used to be called cyan-500), so it
@@ -125,22 +120,19 @@
   --color-blue-500: #204ECF;        /* picasso */
   --color-blue-600: #183A9E;        /* picasso */
   --color-blue-700: #0F256E;        /* picasso */
-  --color-blue-800: #0A1A50;        /* extension */
-  --color-blue-900: #061035;        /* extension */
-
+  /* --color-blue-800: #0A1A50;  unreferenced extension */
+  /* --color-blue-900: #061035;  unreferenced extension */
   /* Purple */
-  --color-purple-100: #F1ECFD;      /* extension */
-  --color-purple-150: #DFD3F9;      /* extension */
-  --color-purple-200: #C9B5F4;      /* extension */
-  --color-purple-300: #A47DE2;      /* extension */
-  --color-purple-400: #8552D9;      /* extension */
+  /* --color-purple-100: #F1ECFD;  unreferenced extension */
+  /* --color-purple-150: #DFD3F9;  unreferenced extension */
+  /* --color-purple-200: #C9B5F4;  unreferenced extension */
+  /* --color-purple-300: #A47DE2;  unreferenced extension */
+  /* --color-purple-400: #8552D9;  unreferenced extension */
   --color-purple-500: #6727CF;      /* picasso */
-  --color-purple-600: #5019A8;      /* extension */
-  --color-purple-700: #3A1280;      /* extension */
-  --color-purple-800: #280D5C;      /* extension */
-  --color-purple-900: #1A0840;      /* extension */
-
-
+  /* --color-purple-600: #5019A8;  unreferenced extension */
+  /* --color-purple-700: #3A1280;  unreferenced extension */
+  /* --color-purple-800: #280D5C;  unreferenced extension */
+  /* --color-purple-900: #1A0840;  unreferenced extension */
   /* ---- Typography — Picasso's names and values, verbatim ----
    * Picasso's stack is `proxima-nova, Arial, sans-serif`, where proxima-nova is
    * the Adobe Fonts kit id. designmd self-hosts the licensed .woff2 under the
