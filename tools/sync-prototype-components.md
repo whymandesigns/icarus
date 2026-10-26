@@ -7,6 +7,10 @@ designmd state to inline, catching breaking changes, and verifying the result.
 
 Prototypes **inline** the design system into one `<style>` block (bounded by the
 `/* === tokens.css === */` marker) plus an icon sprite and inline logo.
+`designmd/inline.py` refuses outright if the prototype's own styles still use tokens
+the system no longer defines — it prints them with counts and writes nothing, because
+refreshing the block underneath them would orphan every one. Migrate the tokens first.
+
 `designmd/inline.py` refreshes all three in place and is idempotent — it leaves
 every other `<style>` block, all markup, and all JS untouched. This prompt wraps
 that tool with the judgment a blind re-inline would miss.

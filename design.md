@@ -375,6 +375,16 @@ Development/
 
 > **Rule — every feature prototype ships as a self-contained single file.**
 >
+> **`inline.py` refuses a prototype whose own styles use tokens the system no longer
+> defines.** It only swaps the block between the `tokens.css` markers, so a prototype
+> written against an older vocabulary would keep its hand-written styles and lose every
+> reference underneath them — the page comes out unstyled and it looks like the script
+> broke it. The check compares against what `tokens.css` and `semantic.css` actually
+> define (not a hardcoded prefix, so it survives later renames), ignores `var(--x,
+> fallback)` and anything the prototype defines itself, and prints the offending tokens
+> with counts. Rename them first, then inline. `--force` overrides, and `--only-review`
+> skips the check since it never touches the token block.
+
 > A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** — including the custom icon sprite (`icons.svg`), which `inline.py` injects after `<body>`. (Phosphor has been retired; there is no remote icon CDN anymore.)
 >
 > Why: the deliverable for every prototype is one HTML file. It needs to render identically when dropped on Netlify, attached to an email, opened from `file://`, hosted from any static server, or shared as a download. Relative `../designmd/` links work locally but break the moment the file is moved — so the file is never shipped with those links live.
