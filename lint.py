@@ -94,6 +94,26 @@ def line_of(text, index):
     return text.count("\n", 0, index) + 1
 
 
+def blank(pattern, text, flags=re.S):
+    """Remove a region but keep the line count.
+
+    Deleting it outright shifts every line number after it, so a finding in an
+    inlined prototype — where the baked CSS and the sprite are thousands of
+    lines — points at a line that holds something else entirely.
+    """
+    return re.sub(pattern, lambda m: "\n" * m.group(0).count("\n"), text, flags=flags)
+
+
+# What inline.py injects: the review bar's CSS and JS, the plugin launcher and
+# the icon sprite. It is designmd's own tooling, identical in every baked file
+# and not the prototype's to fix, so it is excluded from every scan below.
+TOOLING_REGIONS = [
+    r"<!-- === review\.css === -->.*?<!-- === /review\.css === -->",
+    r"<!-- === review\.js === -->.*?<!-- === /review\.js === -->",
+    r"<!-- === icons\.svg === -->.*?<!-- === /icons\.svg === -->",
+]
+
+
 def lint(path, kit_classes, showcase, tooling, icons, prims):
     html = path.read_text()
     inlined = INLINED_MARKER in html
@@ -104,14 +124,17 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     # only what follows that block misses a prototype's own CSS when it sits
     # above it, which is the usual order — and then reports classes as invented
     # while the file styles them a few hundred lines up.
-    blocks = re.findall(r"<style[^>]*>(.*?)</style>", html, re.S)
+    without_tooling = html
+    for region in TOOLING_REGIONS:
+        without_tooling = blank(region, without_tooling)
+    blocks = re.findall(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
     own_style = "".join(b for b in blocks if INLINED_MARKER not in b)
 
     # A class the file's own script selects on is a behaviour hook, not an
     # invented class — the same thing .dropdown-trigger is for the kit. It
     # carries no CSS on purpose, and reporting it as undefined sends a reader
     # looking for missing styles instead of leaving it alone.
-    own_script = "".join(re.findall(r"<script[^>]*>(.*?)</script>", html, re.S))
+    own_script = "".join(re.findall(r"<script[^>]*>(.*?)</script>", without_tooling, re.S))
     hooks = set()
     for m in re.finditer(r"(?:querySelector(?:All)?|closest|matches)\(\s*['\"]([^'\"]+)", own_script):
         hooks |= set(re.findall(r"\.([a-z][\w-]*)", m.group(1)))
@@ -119,11 +142,14 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
         hooks.add(m.group(1))
     own_classes = set(re.findall(r"\.([a-z][\w-]*)", re.sub(r"/\*.*?\*/", "", own_style, flags=re.S)))
 
-    markup = re.sub(r"<style[^>]*>.*?</style>", "", html, flags=re.S)
+    markup = html
+    for region in TOOLING_REGIONS:
+        markup = blank(region, markup)
+    markup = blank(r"<style[^>]*>.*?</style>", markup)
     # An HTML comment is not markup either. a page may document markup in a comment, and a
     # <link> or a class inside one is being shown, not used — reading them live reports stylesheets that are
     # not loaded and classes that are not on the page.
-    markup = re.sub(r"<!--.*?-->", "", markup, flags=re.S)
+    markup = blank(r"<!--.*?-->", markup)
 
 
     # A prototype may keep its CSS in a sibling file rather than a <style>

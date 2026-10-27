@@ -5418,7 +5418,7 @@
           const all = Array.from(new Set([...TAG_OPTS, ...chosen]));
           const ql = q.toLowerCase();
           const matches = all.filter(t => t.toLowerCase().includes(ql));
-          list.innerHTML = (matches.map(t => `<button class="sheet-opt" data-tag="${escapeAttr(t)}"><span class="tag tag-light">${escapeHtml(t)}</span>${chosen.has(t) ? '<svg class="icon ph-check"><use href="#i-check"/></svg>' : ''}</button>`).join(''))
+          list.innerHTML = (matches.map(t => `<button class="sheet-opt" data-tag="${escapeAttr(t)}"><span class="tag tag-light">${escapeHtml(t)}</span>${chosen.has(t) ? '<svg class="icon sheet-opt-check"><use href="#i-check"/></svg>' : ''}</button>`).join(''))
             || (q ? `<button class="sheet-opt" data-create="${escapeAttr(q)}"><svg class="icon"><use href="#i-plus"/></svg>&nbsp;Create “${escapeHtml(q)}”</button>` : '<span class="sheet-opt is-empty-note">No tags</span>');
           if (q && !matches.some(t => t.toLowerCase() === ql)) list.insertAdjacentHTML('beforeend', `<button class="sheet-opt" data-create="${escapeAttr(q)}"><svg class="icon"><use href="#i-plus"/></svg>&nbsp;Create “${escapeHtml(q)}”</button>`);
         };
@@ -5456,7 +5456,7 @@
         const render = (q = '') => {
           const ql = q.toLowerCase();
           const rows = options.filter(o => o.toLowerCase().includes(ql));
-          list.innerHTML = (rows.map(o => `<button class="sheet-opt${o === current ? ' is-active' : ''}" data-val="${escapeAttr(o)}">${opts.renderOpt ? opts.renderOpt(o) : escapeHtml(o)}${o === current ? '<svg class="icon ph-check"><use href="#i-check"/></svg>' : ''}</button>`).join('')
+          list.innerHTML = (rows.map(o => `<button class="sheet-opt${o === current ? ' is-active' : ''}" data-val="${escapeAttr(o)}">${opts.renderOpt ? opts.renderOpt(o) : escapeHtml(o)}${o === current ? '<svg class="icon sheet-opt-check"><use href="#i-check"/></svg>' : ''}</button>`).join('')
             + (opts.extra || []).map(x => `<button class="sheet-opt" data-clear="1">${escapeHtml(x.label)}</button>`).join(''))
             || '<span class="sheet-opt is-empty-note">No matches</span>';
         };

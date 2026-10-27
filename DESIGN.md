@@ -64,7 +64,7 @@ convenience layer over both, and a convenience layer drifts.
 | Components | `packages/base/<Component>/src/` — props *and* styles |
 | Storybook | [`toptal.github.io/picasso`](https://toptal.github.io/picasso/) — `?path=/story/<storyId>` |
 
-**Checking a component.** The `storyId` in each `figma-map.json` entry opens its story:
+**Checking a component.** The `storyId` in each `data/figma-map.json` entry opens its story:
 `https://toptal.github.io/picasso/?path=/story/{storyId}`. All 41 were checked against
 source and are correct.
 
@@ -374,14 +374,14 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Status pills](./example.html#tags) | `.badge` | `.badge-success` · `.badge-warning` · `.badge-danger` · `.badge-info`. Interactive: render as `<button class="badge">` (editable); compose `.badge-icon` (leading icon) and/or `.badge-remove` (trailing ×, click deletes the pill). Demoed under Tags. |
 | [Count badges](./example.html#badges) | `.count-badge` | `.count-badge-sm` · `.count-badge-lg` · `.count-badge-secondary` |
 | [Avatars](./example.html#avatars) | `.avatar` | `.avatar-xs` (16) · `.avatar-sm` (24) · `.avatar-md` (32, default) · `.avatar-lg` (40) · `.avatar-xl` (80) · `.avatar-2xl` (120) · `.avatar-team` (semantic hook for team/company; same neutral fill, icon child differentiates). Render as `<span>` (read-only) or `<button>` / `<a>` (interactive). Content child is one of: `<img>`, 1–2 letters, or `<svg class="icon"><use href="#i-…"></svg>`. |
-| [Accordion](./example.html#accordion) | `.accordion-group` > `.accordion` | Item = `.accordion-summary` (trigger, `aria-expanded`) + `.accordion-details` > `.accordion-content`. Open with `.is-open`, disable with `.is-disabled` (+ `disabled` on the summary). Group border modifiers: `.borders-all` (default) · `.borders-middle` · `.borders-none`. Chevron `.accordion-chevron` rotates; toggle handled by the delegated script. |
+| [Accordion](./example.html#accordion) | `.accordion-group` > `.accordion` | Item = `.accordion-summary` (trigger, `aria-expanded`) + `.accordion-details` > `.accordion-content`. Open with `.is-open`, disable with `.is-disabled` (+ `disabled` on the summary). Group border modifiers: all borders (default — no class) · `.borders-middle` · `.borders-none`. Chevron `.accordion-chevron` rotates; toggle handled by the delegated script. |
 | [Alerts](./example.html#alerts) | `.alert` | `.alert-danger` · `.alert-warning` · `.alert-success` · `.alert-info` · `.alert-icon` · `.alert-message` · `.alert-actions` · `.alert-close` |
 | [Toasts](./example.html#toasts) | `.toast-region` + `.toast` | Colors: `.toast-neutral` · `.toast-error` · `.toast-warning` · `.toast-success` · `.toast-info`. Parts: `.toast-icon` · `.toast-message` · `.toast-action` · `.toast-close`. Spawn via `toast({ variant, message, behavior: 'timed'\|'persistent'\|'action', timeout, action: { label, onClick } })`. |
 | [Loaders](./example.html#loaders) | `.chase` / `.chase-cw` | Chase spinner — the logo mark's 24 segments fading in sequence. `.chase` counter-clockwise (blue) · `.chase-cw` clockwise (graphite + blue flash). Sizes `.size-sm` 24 · `.size-md` 32 · `.size-lg` 48. Copy the `<svg viewBox="0 0 22 32">` block from example.html#loaders; segment delays come from the script block. Respects `prefers-reduced-motion`. |
-| [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-avatar` · `.dropdown-divider` · `.dropdown-header` (profile card: avatar + name + role) · `.dropdown-item-count` (trailing badge). Account menu demoed at [#topbar](./example.html#topbar). |
+| [Dropdown menu](./example.html#dropdowns) | `.dropdown` | `.dropdown-trigger` · `.dropdown-menu` · `.dropdown-menu-end` · `.dropdown-item` · `.dropdown-item-danger` · `.dropdown-item-icon` · `.dropdown-item-check` (on **every** item — it reserves the leading slot and is invisible until `.is-selected`) · `.dropdown-item-avatar` · `.dropdown-divider` · `.dropdown-header` (profile card: avatar + name + role) · `.dropdown-item-count` (trailing badge). Account menu demoed at [#topbar](./example.html#topbar). |
 | [Dropzone](./example.html#dropzone) | `.dropzone-field` > `.dropzone` | Dashed click-or-drag file target. `.dropzone` wraps a full-bleed `.dropzone-input` (`<input type=file>`) so the whole area is clickable + focusable. Parts: `.dropzone-icon` · `.dropzone-title` · `.dropzone-hint`. States: `.is-dragover` (blue) · `.is-disabled` (muted) · `.is-error` (red). Feedback row: `.dropzone-status` (+ `.is-error`) with `.dropzone-status-label` · `.dropzone-progress` > `.dropzone-progress-bar` · `.dropzone-status-dismiss`. Add `data-dropzone` to the field for the `initDropzones()` helper (drag highlight + simulated progress). |
 | [Modal](./example.html#modals) | `.modal-overlay` + `.modal` | `.modal-{xs,sm,md,lg,xl}` · `.modal-header` · `.modal-body` · `.modal-footer` · `.modal-close` · `[data-modal-open]` / `[data-modal-close]` |
-| [Drawer](./example.html#drawers) | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra,full}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
+| [Drawer](./example.html#drawers) | `.drawer-overlay` + `.drawer` | `.drawer-{narrow,regular,medium,wide,ultra}` · `.drawer-header` · `.drawer-body` · `.drawer-footer` |
 | [Breadcrumbs](./example.html#breadcrumbs) | `.breadcrumbs` + `.breadcrumb` | Parent crumbs are `<a class="breadcrumb">` (blue, underline on hover); current page is `<span class="breadcrumb is-current" aria-current="page">` (plain text). Chevron separators render automatically. Usually the first row inside a page head; works standalone. |
 | [Page heads](./example.html#page-heads) | `.page-head` | `.page-head-main` · `.page-head-title` · `.page-head-heading` · `.page-head-subtitle` · `.page-head-actions` · count next to the heading uses `.count-badge .count-badge-lg .count-badge-secondary` · optional `.breadcrumbs` as the first row inside `.page-head-main` |
 | [Tabs](./example.html#tabs) | `.tabs` + `.tab` | `.is-active` · `role="tablist"` / `role="tab"` / `aria-controls` / `[role="tabpanel"]` |
@@ -397,7 +397,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | Layout helpers | `.stack`, `.row`, `.page`, `.grid-2` | — |
 | Plugin launcher | `.pg-fab` | One button, bottom-right of every prototype, that switches the plugins below on and off. Lists only what the page carries; the rest are greyed out with the reason. CSS in `plugins.css`, JS in `plugins.js`, both inlined by `inline.py` alongside the review bar. |
 | Review bar | `.rv-bar` | Switched on from the plugin launcher bottom-right, or with `?review=1` on the URL (remembered per page; `?review=0` turns it off). Edit text / Comment / Spotlight; comments persist to `feedback.json` via `tools/serve.mjs`. `review.css` + `review.js` are auto-inlined by `inline.py` — nothing to copy. See §7. |
-| [Versions & changes](./versions.html) | `.vr-bar` · `.vr-legend` · `[data-change]` | Only on features prototyped in versions (`features/<feature>/vN-<name>/` + `versions.json`), declared per version with `<meta name="icarus-versions" content="../versions.json">`. **Versions** (`?versions=1`) — bar bottom-centre to flip between versions, state carries over, Alt+← / Alt+→. **Changes** (`?changes=1`) — outlines elements marked `data-change="new\|moved\|changed"` + `data-change-note` vs the version in `basedOn`. `versions.css` + `versions.js` are auto-inlined with the review bar. |
+| [Versions & changes](./versions.html) | `.vr-dock` · `.vr-legend` · `[data-change]` | Only on features prototyped in versions (`features/<feature>/vN-<name>/` + `versions.json`), declared per version with `<meta name="icarus-versions" content="../versions.json">`. **Versions** (`?versions=1`) — bar bottom-centre to flip between versions, state carries over, Alt+← / Alt+→. **Changes** (`?changes=1`) — outlines elements marked `data-change="new\|moved\|changed"` + `data-change-note` vs the version in `basedOn`. `versions.css` + `versions.js` are auto-inlined with the review bar. |
 
 ### Rules of thumb
 
@@ -421,9 +421,9 @@ stylesheets, the icon sprite and the handlers — and none of those is automatic
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Your feature</title>
   <!-- All three, in this order. Point them at wherever designmd sits. -->
-  <link rel="stylesheet" href="../designmd/tokens.css" />      <!-- primitives -->
-  <link rel="stylesheet" href="../designmd/semantic.css" />    <!-- aliases + reset -->
-  <link rel="stylesheet" href="../designmd/components.css" />  <!-- the classes -->
+  <link rel="stylesheet" href="../../designmd/tokens.css" />      <!-- primitives -->
+  <link rel="stylesheet" href="../../designmd/semantic.css" />    <!-- aliases + reset -->
+  <link rel="stylesheet" href="../../designmd/components.css" />  <!-- the classes -->
 </head>
 <body>
   … components …
@@ -433,7 +433,7 @@ stylesheets, the icon sprite and the handlers — and none of those is automatic
   // <use href="#i-…"> is blank until you bake. This covers the gap while you
   // work, and no-ops once the sprite is really in the document.
   if (!document.getElementById('i-plus')) {
-    fetch('../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
+    fetch('../../designmd/icons.svg').then(r => r.ok ? r.text() : null).then(svg => {
       if (!svg) return;
       const host = document.createElement('div');
       host.hidden = true; host.innerHTML = svg;
@@ -480,16 +480,56 @@ stylesheets, the icon sprite and the handlers — and none of those is automatic
       t.setAttribute('aria-selected', String(on));
     });
   });
+
+  // Select. NOT driven by the dropdown handler above — .input-select-trigger
+  // is a different hook from .dropdown-trigger, so without this the control
+  // is styled, looks finished, and does nothing when clicked.
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('.input-select-trigger');
+    const item = e.target.closest('.input-select .dropdown-item');
+    document.querySelectorAll('.input-select').forEach(sel => {
+      const menu = sel.querySelector('.dropdown-menu');
+      const btn = sel.querySelector('.input-select-trigger');
+      if (!menu || !btn) return;
+      const mine = trigger && sel.contains(trigger);
+      menu.hidden = mine ? !menu.hidden : true;
+      btn.setAttribute('aria-expanded', String(!menu.hidden));
+    });
+    if (item) {
+      const sel = item.closest('.input-select');
+      const value = sel.querySelector('.input-select-value');
+      if (value) {
+        value.textContent = (item.textContent || '').trim();
+        value.classList.remove('input-select-placeholder');
+      }
+      sel.querySelectorAll('.dropdown-item').forEach(i =>
+        i.classList.toggle('is-selected', i === item));
+    }
+  });
+
+  // Side navigation — the rail toggle and the nested group expander. Both are
+  // kit classes with real CSS keyed off .is-compact / aria-expanded, and
+  // neither ships a handler either.
+  document.addEventListener('click', e => {
+    const rail = e.target.closest('.sidenav-toggle');
+    if (rail) rail.closest('.sidenav').classList.toggle('is-compact');
+    const group = e.target.closest('.sidenav-group-trigger');
+    if (group) group.setAttribute('aria-expanded',
+      String(group.getAttribute('aria-expanded') !== 'true'));
+  });
   </script>
 </body>
 </html>
 ```
 
-Richer components — the sheet, the date picker, dropzones, tag inputs, toasts — need
-more handlers, which live in `example.html`'s `<script>` block. Take the ones you need;
-do **not** copy the whole block, because its tail renders the showcase's own palette
-swatches against elements no prototype has, throws, and stops every later handler
-attaching.
+**A component with CSS is not a component with behaviour.** Everything above is
+the complete set that ships here. The sheet, the date picker, dropzones, tag
+inputs, toasts, segmented controls and tree-table row toggles are all styled by
+the kit and all inert until you write their handler — their markup looks
+finished and does nothing. Those handlers live in `example.html`'s `<script>`
+block: take the ones you need, and do **not** copy the whole block, because its
+tail renders the showcase's own palette swatches against elements no prototype
+has, throws, and stops every later handler attaching.
 
 ### Common snippets
 
@@ -557,7 +597,7 @@ wraps which, and what actually opens a thing.
     <svg class="btn-icon"><use href="#i-list"></use></svg>
   </button>
   <div class="topbar-brand">
-    <img class="topbar-brand-logo" src="../designmd/assets/logo.svg" alt="Operationalize" />
+    <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="Operationalize" />
   </div>
   <span class="topbar-title">Page name</span>
   <div class="topbar-search">
@@ -644,7 +684,7 @@ wraps which, and what actually opens a thing.
      drawers from .modal-header and .modal-body; that is the showcase being
      inconsistent, not the pattern to copy.)
      Widths: .drawer-narrow .drawer-regular .drawer-medium .drawer-wide
-     .drawer-ultra .drawer-full. A modal is the same shape with
+     .drawer-ultra. A modal is the same shape with
      .modal-overlay > .modal.modal-sm and the .modal-* parts. -->
 <div class="drawer-overlay" id="invoice-detail" hidden>
   <aside class="drawer drawer-regular" role="dialog" aria-modal="true"
@@ -677,7 +717,10 @@ wraps which, and what actually opens a thing.
 </div>
 
 <!-- App shell — sidenav beside the page. Goes BELOW the top bar and replaces
-     <main class="page">. Add .is-compact to .sidenav for the collapsed rail. -->
+     <main class="page">. Add .is-compact to .sidenav for the collapsed rail.
+     NOTE: .app-shell ships with the showcase's 560px frame, so a real page
+     needs the override in the components.css docblock above .app-shell —
+     without it you get a bordered 560px box floating in the viewport. -->
 <div class="app-shell">
   <aside class="sidenav">
     <button class="sidenav-toggle" type="button" aria-label="Toggle navigation">
@@ -694,7 +737,7 @@ wraps which, and what actually opens a thing.
 </div>
 ```
 
-For the full inventory with every modifier and live demos, open `example.html` — it's the complete picture of what designmd offers and how each component composes. For what a component *is*, though, the authority is Picasso: its [Storybook](https://toptal.github.io/picasso/) for behaviour and props, and `packages/base/<Component>/src/` for the implementation. `figma-map.json` carries the `storyId` for each one.
+For the full inventory with every modifier and live demos, open `example.html` — it's the complete picture of what designmd offers and how each component composes. For what a component *is*, though, the authority is Picasso: its [Storybook](https://toptal.github.io/picasso/) for behaviour and props, and `packages/base/<Component>/src/` for the implementation. `data/figma-map.json` carries the `storyId` for each one.
 
 ---
 
@@ -707,31 +750,55 @@ The deliverable for any prototype is **one HTML file** with all CSS + assets inl
 ```
 Development/icarus/
 ├── designmd/                    ← the design system → pushed to GitHub
+│   ├── AGENTS.md                ← the rules, for agent or human. Start here.
+│   ├── DESIGN.md                ← this file (the full written system)
+│   ├── README.md                ← the GitHub landing page
+│   ├── llms.txt                 ← short index, for a tool that fetches one file
+│   ├── llms-full.txt            ← AGENTS.md + the full inventory, pasteable
+│   │
 │   ├── tokens.css               ← primitives
 │   ├── semantic.css             ← aliases + reset
 │   ├── components.css           ← all component CSS
-│   ├── devtools.css             ← author tooling (debug overlays) — NOT in the layer chain
-│   ├── plugins.css / plugins.js ← the plugin launcher (one button for every plugin)
-│   ├── versions.css / versions.js ← Versions + Changes plugins (versioned features only) — auto-inlined
-│   ├── review.css / review.js   ← the review bar (comments, text edits, spotlight) — auto-inlined, dormant until ?review=1
-│   ├── tools/serve.mjs          ← dev server: static files + feedback.json API for the review bar
-│   ├── design.md                ← this file (LLM context + reference)
-│   ├── assets/
-│   │   └── logo.svg
-│   ├── inline.py                ← bakes the system into a prototype HTML
-│   ├── icons.svg                ← the Figma icon sprite (325 icons), injected by inline.py
-│   ├── icons.index.json         ← icon slugs + sections, for the searchable gallery
-│   ├── figma-map.json           ← the component registry: designmd ↔ Figma ↔ Picasso React
+│   ├── icons.svg                ← the Figma icon sprite, injected by inline.py
+│   ├── assets/logo.svg          ← the Operationalize mark, inlined by inline.py
 │   ├── fonts/                   ← Proxima Nova .woff2, base64-embedded on inline
+│   │
 │   ├── example.html             ← system showcase (uses local ./ links)
-│   ├── index.html               ← the library index, linking everything below
-│   ├── component-map.html       ← how the ?map=1 inspector works
-│   ├── interaction-patterns.html← pattern labs with live playgrounds
-│   ├── master-prompt.html       ← the copy-paste project scaffold prompt
-│   ├── plugin-launcher.html     ← the plugin launcher, documented
-│   ├── review-bar.html          ← the review bar, documented
-│   ├── states-switcher.html     ← the edge-state switcher (?states=1)
-│   └── versions.html            ← the Versions + Changes plugins
+│   ├── index.html               ← the library index, linking everything here
+│   │
+│   ├── inline.py                ← bakes the system into a prototype HTML
+│   ├── lint.py                  ← checks a prototype; exits non-zero on errors
+│   │
+│   ├── dist/                    ← generated — never hand-edit
+│   │   ├── kit.json             ← the class inventory (the authority on what exists)
+│   │   ├── tokens.json          ← every token, value and usage note
+│   │   └── bundle.css           ← components.css + the bridge, for the artifact
+│   │
+│   ├── data/
+│   │   ├── icons.index.json     ← icon slugs + sections, for the searchable gallery
+│   │   ├── figma-map.json       ← the component registry: designmd ↔ Figma ↔ Picasso React
+│   │   └── icon-export-manifest.json ← the Figma export manifest
+│   │
+│   ├── plugins/                 ← author tooling, baked into every prototype
+│   │   ├── plugins.css / plugins.js   ← the plugin launcher (one button for every plugin)
+│   │   ├── review.css / review.js     ← the review bar — dormant until ?review=1
+│   │   ├── versions.css / versions.js ← Versions + Changes (versioned features only)
+│   │   └── devtools.css         ← debug overlays — NOT in the layer chain
+│   │
+│   ├── docs/                    ← browse-only reference pages
+│   │   ├── component-map.html   ← how the ?map=1 inspector works
+│   │   ├── interaction-patterns.html ← pattern labs with live playgrounds
+│   │   ├── master-prompt.html   ← the copy-paste project scaffold prompt
+│   │   ├── plugin-launcher.html ← the plugin launcher, documented
+│   │   ├── review-bar.html      ← the review bar, documented
+│   │   ├── states-switcher.html ← the edge-state switcher (?states=1)
+│   │   └── versions.html        ← the Versions + Changes plugins
+│   │
+│   └── tools/
+│       ├── build-packages.py    ← regenerates dist/, llms*.txt and the rule files
+│       ├── serve.mjs            ← dev server: static files + feedback.json API
+│       ├── export_icons.py / import_icons.py ← the Figma icon pipeline
+│       └── feedback-store.mjs   ← persistence behind the review bar
 │
 └── features/                    ← prototypes → dropped onto Netlify
     ├── integrations/
@@ -766,13 +833,13 @@ Development/icarus/
 > with counts. Rename them first, then inline. `--force` overrides, and `--only-review`
 > skips the check since it never touches the token block.
 
-> A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** — including the custom icon sprite (`icons.svg`), which `inline.py` injects after `<body>`. (Phosphor has been retired; there is no remote icon CDN anymore.)
+> A feature's `index.html` MUST have the design system inlined into it before it leaves the local checkout. That means the `<link rel="stylesheet" href="../../designmd/...">` tags get replaced with `<style>…</style>` blocks containing the actual CSS, and the logo SVG gets inlined too. After inlining, the file has **zero external dependencies** — including the custom icon sprite (`icons.svg`), which `inline.py` injects after `<body>`. (Phosphor has been retired; there is no remote icon CDN anymore.)
 >
-> Why: the deliverable for every prototype is one HTML file. It needs to render identically when dropped on Netlify, attached to an email, opened from `file://`, hosted from any static server, or shared as a download. Relative `../designmd/` links work locally but break the moment the file is moved — so the file is never shipped with those links live.
+> Why: the deliverable for every prototype is one HTML file. It needs to render identically when dropped on Netlify, attached to an email, opened from `file://`, hosted from any static server, or shared as a download. Relative `../../designmd/` links work locally but break the moment the file is moved — so the file is never shipped with those links live.
 >
 > **How:** run `python3 inline.py ../features/feature-name/index.html` from the `designmd/` folder (the script is idempotent — re-running it on an already-inlined file updates the inline block in place). Run before every commit / share / deploy.
 >
-> **Local iteration is exempt** — while actively building the feature you can keep the `<link>` tags pointing at `../designmd/` for instant feedback when the system CSS changes. Just inline before you push the prototype anywhere.
+> **Local iteration is exempt** — while actively building the feature you can keep the `<link>` tags pointing at `../../designmd/` for instant feedback when the system CSS changes. Just inline before you push the prototype anywhere.
 
 ### Building a new prototype
 
@@ -785,18 +852,18 @@ Create `features/billing-portal/index.html` (or whatever your feature is named, 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My prototype</title>
-  <link rel="stylesheet" href="../designmd/tokens.css" />
-  <link rel="stylesheet" href="../designmd/semantic.css" />
-  <link rel="stylesheet" href="../designmd/components.css" />
+  <link rel="stylesheet" href="../../designmd/tokens.css" />
+  <link rel="stylesheet" href="../../designmd/semantic.css" />
+  <link rel="stylesheet" href="../../designmd/components.css" />
 </head>
 <body>
   <!-- prototype markup -->
-  <img class="topbar-brand-logo" src="../designmd/assets/logo.svg" alt="…" />
+  <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="…" />
 </body>
 </html>
 ```
 
-Iterate locally — open via `file://` or a small static server. Relative paths to `../designmd/` resolve as long as both folders stay siblings.
+Iterate locally — open via `file://` or a small static server. Relative paths to `../../designmd/` resolve as long as both folders stay siblings.
 
 ### Inline + ship
 
@@ -898,15 +965,15 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > ([repo](https://github.com/toptal/picasso) · [Storybook](https://toptal.github.io/picasso/)).
 > Its tokens are Picasso's, name and value, except where a comment says `extension`. If you need
 > to know how a component really behaves or what props it takes, the Storybook is the authority —
-> `figma-map.json` carries the `storyId` and the React mapping for each one. Don't invent a token
+> `data/figma-map.json` carries the `storyId` and the React mapping for each one. Don't invent a token
 > or a component: if designmd lacks something, say so rather than approximating it.
 >
 > **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
 >
 > ```html
-> <link rel="stylesheet" href="../designmd/tokens.css" />
-> <link rel="stylesheet" href="../designmd/semantic.css" />
-> <link rel="stylesheet" href="../designmd/components.css" />
+> <link rel="stylesheet" href="../../designmd/tokens.css" />
+> <link rel="stylesheet" href="../../designmd/semantic.css" />
+> <link rel="stylesheet" href="../../designmd/components.css" />
 > ```
 >
 > Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS **and the icon sprite** into the file. Result: zero external dependencies.
@@ -945,15 +1012,15 @@ There are **two** component libraries for designmd: this HTML/CSS one (`designmd
 
 The binding is stored in two artifacts:
 
-1. **`figma-map.json` (phase 1 — in repo now).** The authoritative pairing: for every component it records the designmd side (`root` class, `variants`, canonical `snippet`, shortcode URL) and the Figma side (`component` name, `nodeId`, `key`, and a `propMap` from Figma variant/property values → designmd variant classes). The Figma fields start as `pending-discovery` and are filled by reading the published library (`get_code_connect_suggestions` → `get_context_for_code_connect`).
-2. **Code Connect templates (phase 2 — `figma/*.figma.ts`).** Once the Figma library is published and a Node toolchain is available, each mapping is emitted as a `.figma.ts` template that returns the designmd HTML snippet, published via the Code Connect CLI so it also surfaces natively in Figma Dev Mode and the MCP. Generated from `figma-map.json`, not authored by hand.
+1. **`data/figma-map.json` (phase 1 — in repo now).** The authoritative pairing: for every component it records the designmd side (`root` class, `variants`, canonical `snippet`, shortcode URL) and the Figma side (`component` name, `nodeId`, `key`, and a `propMap` from Figma variant/property values → designmd variant classes). The Figma fields start as `pending-discovery` and are filled by reading the published library (`get_code_connect_suggestions` → `get_context_for_code_connect`).
+2. **Code Connect templates (phase 2 — `figma/*.figma.ts`).** Once the Figma library is published and a Node toolchain is available, each mapping is emitted as a `.figma.ts` template that returns the designmd HTML snippet, published via the Code Connect CLI so it also surfaces natively in Figma Dev Mode and the MCP. Generated from `data/figma-map.json`, not authored by hand.
 3. **React cross-reference (`react` block, in repo now).** Each entry also carries a `react` block binding the component to the **Picasso** React/Storybook library — `component`, `import`, Storybook `storyId`, a `status` (`mapped` · `partial` · `gap`), and a `propMap` translating designmd variant classes → React props. A stable `slug` is stamped onto the markup as `data-component="<slug>"` (auto-applied from each entry's `stampSelector`). Engineers open any prototype with **`?map=1`** (or the goggles toggle in `example.html`'s nav): mapped components get a pink dotted outline and hovering one shows the resolved React usage (e.g. `<Button variant="positive" size="small" />` — `.btn-primary` is Picasso's `positive`, since designmd's primary CTA is green and Picasso's `primary` is blue), the import line, and a deep link to the Picasso story. `gap`/`partial` entries surface their `note` so library gaps stay visible instead of being faked.
 
 **Rules for using the binding**
 
-- **Mapped components come first — always.** Whenever a Figma flow is being built (a new frame, screen, or view), the mapped library component in `figma-map.json` is the default and must be used before anything else. The order of preference is: (1) a `mapped` / `mapped-external` component → instantiate it by `nodeId`; (2) a `composite` / `no-component-yet` entry → assemble from its listed `parts`; (3) only if neither exists, build from scratch — and flag it as a library gap. Never hand-draw or auto-generate an approximation of something that already has a mapping.
+- **Mapped components come first — always.** Whenever a Figma flow is being built (a new frame, screen, or view), the mapped library component in `data/figma-map.json` is the default and must be used before anything else. The order of preference is: (1) a `mapped` / `mapped-external` component → instantiate it by `nodeId`; (2) a `composite` / `no-component-yet` entry → assemble from its listed `parts`; (3) only if neither exists, build from scratch — and flag it as a library gap. Never hand-draw or auto-generate an approximation of something that already has a mapping.
 
-- **Code → design (approved feature → Figma).** For every element in the HTML, look up its `root` class in `figma-map.json`, then instantiate the mapped Figma component by `nodeId` (via `use_figma`) and set its variants from `propMap`. If a class has a mapping, you MUST use that component — do not draw rectangles/text to fake it. If a class has **no** mapping yet, flag it (it's a gap to add to the library), don't silently improvise.
+- **Code → design (approved feature → Figma).** For every element in the HTML, look up its `root` class in `data/figma-map.json`, then instantiate the mapped Figma component by `nodeId` (via `use_figma`) and set its variants from `propMap`. If a class has a mapping, you MUST use that component — do not draw rectangles/text to fake it. If a class has **no** mapping yet, flag it (it's a gap to add to the library), don't silently improvise.
 - **Design → code (Figma frame → HTML).** Reverse-lookup by Figma component name/`nodeId` and emit the recorded `snippet` with the right variant classes.
 - **Icons come from the custom Figma pack — both sides.** designmd now ships the pack itself as an inline SVG sprite (`icons.svg`, generated by `tools/export_icons.py` from the Figma *Iconography* file); Phosphor is fully retired. HTML uses `<svg class="icon"><use href="#i-{slug}"></svg>`; Figma flows use the same pack via icon instance-swaps. Slugs match 1:1, so there is no name translation — `#i-{slug}` in HTML ↔ the `{slug}` component in Figma. New icons: add them to the Figma pack, re-run `export_icons.py`, and they appear in both places.
   - **Two grids, and icons scale with their text.** The pack is drawn on a 16 and a 24
@@ -978,6 +1045,6 @@ The binding is stored in two artifacts:
     colour-carrying contexts (`.btn`, `a`, `.badge`, `.tag`, `.toast`). Same result in
     those contexts; a *standalone* designmd icon rests at graphite-750 where Picasso's
     would take whatever the text around it is.
-- **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `figma-map.json` entry in the same change — including its `slug`, `stampSelector`, Figma binding, and `react` block. A component isn't "done" until all three sides (designmd, Figma, React) and the mapping exist. `react.propMap` values are best-effort until confirmed against the Picasso story controls.
+- **Keep the map in sync.** Every new designmd component (a new §6 shortcode row) gets a matching `data/figma-map.json` entry in the same change — including its `slug`, `stampSelector`, Figma binding, and `react` block. A component isn't "done" until all three sides (designmd, Figma, React) and the mapping exist. `react.propMap` values are best-effort until confirmed against the Picasso story controls.
 
 Frame dimensions from the section above (1440 × 900) still apply to whatever view the mapped components are assembled into.

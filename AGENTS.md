@@ -69,11 +69,11 @@ that shape, always `index.html`. On your own, put it where you like.
 
 | | |
 |---|---|
-| `designmd/dist/kit.json` | **the inventory** — 368 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/dist/kit.json` | **the inventory** — 366 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
-| `designmd/design.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
+| `designmd/DESIGN.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
-| `designmd/llms-full.txt` | this guide plus the complete class and token inventory, ~4k tokens. **Paste this if you have no filesystem.** |
+| `designmd/llms-full.txt` | this guide, the worked markup and the complete class and token inventory, ~9k tokens. **Paste this if you have no filesystem.** |
 | `designmd/llms.txt` | a short index of everything above, for a tool that fetches one file. |
 | `designmd/tools/build-packages.py` | regenerates `dist/` and the entry points after a stylesheet change. |
 
@@ -84,8 +84,9 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
 ## Things that fail silently
 
 - **Icons.** The three stylesheets do not carry the sprite — only `inline.py` injects it,
-  so `<use href="#i-…">` renders blank until you bake. The starter fetches it at dev time
-  to cover the gap. Slugs live in `designmd/icons.svg`; the linter checks them.
+  so `<use href="#i-…">` renders blank until you bake. To see icons while you work, use the
+  dev-time fetch in the page skeleton in `DESIGN.md` §6 "The page around them". Slugs live
+  in `designmd/icons.svg`; the linter checks them.
 - **Phosphor is retired.** `<i class="ph ph-x">` renders nothing. Some CSS comments still
   show it; they are stale.
 - **The `example.html` script block.** Modals, drawers, dropdowns, tabs and the sheet get
@@ -93,11 +94,14 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   and its tail renders the showcase's own palette swatches against elements no prototype
   has, which throws and kills every handler after it. Take the handlers you need.
 - **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title; the top
-  bar is a container query that reveals it below 768px. Same for `.topbar-menu` and
+  bar is a container query that reveals it below 768px — but that is a *container*
+  query on `.topbar`, which measures its content box, and the bar carries 24px of
+  padding each side. So it collapses at a viewport of about **816px**, not 768.
+  Same for `.topbar-menu` and
   `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
   they are invisible until the bar collapses. `.topbar-cta` is the exception: add it only
   on a page with **no** page head, because nothing hides `.page-head-actions` when the bar
-  collapses, so carrying both puts two primary CTAs on screen below 768px.
+  collapses, so carrying both puts two primary CTAs on screen once it does.
 - **Some classes carry no CSS and are still right.** `.dropdown-trigger` is how the
   delegated script finds a dropdown's button; nothing styles it. `kit.json` lists these
   under `behaviourHooks`, beside `attributes` for the components driven by an attribute
@@ -110,7 +114,7 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
 [Storybook](https://toptal.github.io/picasso/)). designmd re-expresses its foundations as
 plain CSS so a screen can exist in hours. Every token is Picasso's name and value, or is
 marked `extension` with a reason in its own comment. Where the two disagree, Picasso is
-right and designmd has a bug. `designmd/figma-map.json` carries the Storybook `storyId`
+right and designmd has a bug. `designmd/data/figma-map.json` carries the Storybook `storyId`
 and React mapping per component.
 
 Note the Storybook is a client-side build: `iframe.html?id=anything` returns 200, so a

@@ -58,7 +58,7 @@ def embed_fonts(css):
 def build_style_block():
     # The three-layer chain (tokens → semantic → components) is followed by
     # devtools.css — auto-inlined for convenience but explicitly NOT part of
-    # the layer chain. See design.md §7 and devtools.css's own header for why.
+    # the layer chain. See DESIGN.md §7 and devtools.css's own header for why.
     return (
         '<style>\n'
         '    /* === tokens.css === */\n' + embed_fonts(read('tokens.css')) + '\n'
@@ -107,11 +107,17 @@ def build_icon_sprite():
     return SPRITE_OPEN + '\n' + read('icons.svg').strip() + '\n' + SPRITE_CLOSE
 
 # Pattern A: source form — optional comment block + 3 <link> tags
+# A trailing `<!-- primitives -->` after a link is how AGENTS.md and DESIGN.md
+# write the block, so the pattern has to allow it between the tags. It did not,
+# and a prototype copied from the guide fell through to `no CSS links found`
+# while the sprite and review bar still went in — a file that looks baked, is
+# not, and renders unstyled the moment it is moved.
+_GAP = r'[^\S\n]*(?:<!--[^\n]*?-->)?[^\S\n]*\n\s*'
 LINK_PATTERN = re.compile(
     r'(<!--.*?-->\s*\n\s*)?'
-    r'<link[^>]*tokens\.css[^>]*/>\s*\n\s*'
-    r'<link[^>]*semantic\.css[^>]*/>\s*\n\s*'
-    r'<link[^>]*components\.css[^>]*/>',
+    r'<link[^>]*tokens\.css[^>]*/>' + _GAP +
+    r'<link[^>]*semantic\.css[^>]*/>' + _GAP +
+    r'<link[^>]*components\.css[^>]*/>[^\S\n]*(?:<!--[^\n]*?-->)?',
     re.DOTALL
 )
 
@@ -142,7 +148,7 @@ PHOSPHOR_PATTERN = re.compile(r'\s*<link[^>]*@phosphor-icons[^>]*>\s*\n?')
 # link above: inline.py is where obsolete tooling goes to die.
 ANNOT_PROSE = [
     ("/* The annotation tool's CSS lives in devtools.css — author tooling, not a\n"
-     " * user-facing UI primitive. See design.md §7 for the four-file inline order. */\n", ''),
+     " * user-facing UI primitive. See DESIGN.md §7 for the four-file inline order. */\n", ''),
     (' * (e.g. ?notes=1 in the URL for the annotation tool).', " * (e.g. the map overlay's toggle)."),
     (' *   prototypes (annotation overlays, grid debug toggles, coachmark editors,',
      ' *   prototypes (debug overlays, grid toggles, coachmark editors,'),
@@ -223,6 +229,10 @@ def inline_review_only(path):
     print(f'  {status}')
     print(f'  final size: {os.path.getsize(path):,} bytes')
 
+class NotBaked(Exception):
+    """The file was not inlined, so it must not be reported as shipped."""
+
+
 class StaleTokens(Exception):
     """The prototype references tokens the current system does not define."""
 
@@ -291,6 +301,15 @@ def inline(path, force=False):
     else:
         html, n = LINK_PATTERN.subn(style_block, html)
         css_status = f'inlined {n} CSS link block(s)' if n else 'no CSS links found'
+        if not n and re.search(r'<link[^>]*rel="stylesheet"', html):
+            # Baking is the ship step. Reporting "no CSS links found" and then
+            # exiting 0 hands back a file with live <link> tags that still got
+            # the sprite and the review bar, so it looks baked in every way a
+            # reader checks. Refuse instead.
+            raise NotBaked(
+                f'{os.path.basename(path)}: {css_status}, but the file still links stylesheets.\n'
+                '  The three <link> tags must be consecutive, tokens → semantic → '
+                'components.\n  Nothing was written.')
 
     # Logo — try replacing existing inline SVG first; fall back to <img>
     if INLINE_LOGO_PATTERN.search(html):
@@ -350,8 +369,12 @@ def main():
             inline(path, force=force)
         except StaleTokens:
             refused += 1
+        except NotBaked as e:
+            print(f'  ERROR {e}')
+            refused += 1
     if refused:
-        print(f'\n{refused} file(s) left untouched. Migrate their tokens, or pass --force.')
+        print(f'\n{refused} file(s) left untouched — see the reason above each. '
+              'For stale tokens, migrate them or pass --force.')
         sys.exit(1)
 
 if __name__ == '__main__':
