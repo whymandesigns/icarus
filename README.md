@@ -38,6 +38,10 @@ dist/kit.json   every class, grouped — plus the attribute-driven components, t
                 behaviour hooks, and the showcase-only classes to reject.
 dist/tokens.json  every token, value and usage note, light and dark.
 lint.py         checks a prototype; exits non-zero on errors.
+
+CI runs `tools/build-packages.py --check` and `tools/smoke_test.py` on every
+push and pull request, so the generated files and the documented workflow
+cannot drift unnoticed.
 ```
 
 Two rules carry most of the weight: **never invent a class** — if it is not in

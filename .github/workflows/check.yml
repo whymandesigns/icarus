@@ -1,0 +1,35 @@
+name: check
+
+# The prototypes this system is for live in a different repository, so there
+# is nothing here for lint.py to walk. What CI can prove is that the folder is
+# still coherent: that the generated files match the stylesheets they come
+# from, that the docs only name classes that exist, and that a prototype built
+# the way the guide says to still lints and bakes. The last one is the reason
+# this file exists — the guide's own <link> snippet once defeated inline.py,
+# which reported success and shipped an unstyled file.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: dist/ and the entry points are current
+        # Also checks that every class and icon slug DESIGN.md and the
+        # components.css docblocks demonstrate actually exists.
+        run: python3 tools/build-packages.py --check
+
+      - name: the documented workflow runs end to end
+        # Builds a prototype from AGENTS.md's own <link> block, then
+        # lint.py -> inline.py -> lint.py.
+        run: python3 tools/smoke_test.py

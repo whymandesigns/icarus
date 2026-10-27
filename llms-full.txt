@@ -76,6 +76,7 @@ that shape, always `index.html`. On your own, put it where you like.
 | `designmd/llms-full.txt` | this guide, the worked markup and the complete class and token inventory, ~9k tokens. **Paste this if you have no filesystem.** |
 | `designmd/llms.txt` | a short index of everything above, for a tool that fetches one file. |
 | `designmd/tools/build-packages.py` | regenerates `dist/` and the entry points after a stylesheet change. |
+| `designmd/tools/smoke_test.py` | builds a prototype from this guide's own `<link>` block and runs lint → inline → lint. Run it after changing a tool or that snippet. |
 
 If your tool reads its own rules file, it already has this guide: `.github/copilot-instructions.md`,
 `.cursor/rules/designmd.mdc`, `.windsurfrules` and `.clinerules` are generated copies of it, so
