@@ -61,6 +61,19 @@ TYPE_PREFIXES = ("text-", "font-", "leading-")
 # ---------------------------------------------------------------- parsing
 
 
+def without_literals(text):
+    """Drop quoted strings and url() payloads before harvesting class names.
+
+    A declaration value is not a selector. An inlined SVG mask carries
+    `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" …')`,
+    and a plain scan of the line reads `.w3` and `.org` out of that URL and
+    ships them as kit classes — names an agent can legitimately use, and which
+    style nothing.
+    """
+    text = re.sub(r"url\([^)]*\)", "url()", text)
+    return re.sub(r"'[^']*'|\"[^\"]*\"", "", text)
+
+
 def strip_comments(css):
     return re.sub(r"/\*.*?\*/", "", css, flags=re.S)
 
@@ -281,7 +294,7 @@ def build_kit_json(components_css, semantic_css, example_html, other_css, design
             current = banner.group(1).strip()
             continue
         clean = strip_comments(line)
-        for cls in re.findall(r"\.([a-z][\w-]*)", clean):
+        for cls in re.findall(r"\.([a-z][\w-]*)", without_literals(clean)):
             mentions.setdefault(cls, current)
 
         # Selector lists wrap over several lines, so accumulate until the `{`.
@@ -302,15 +315,15 @@ def build_kit_json(components_css, semantic_css, example_html, other_css, design
                 owns.setdefault(lead.group(1), current)
     groups = {cls: owns.get(cls, mentions[cls]) for cls in mentions}
 
-    kit = sorted(set(re.findall(r"\.([a-z][\w-]*)", live)))
+    kit = sorted(set(re.findall(r"\.([a-z][\w-]*)", without_literals(live))))
 
     # Classes example.html styles in its own <style> block are showcase chrome.
     # They look exactly like kit classes in the markup, which is how a cold
     # model copied .btn-cta-icon into a prototype.
     inline_style = "".join(re.findall(r"<style[^>]*>(.*?)</style>", example_html, re.S))
-    showcase = sorted(set(re.findall(r"\.([a-z][\w-]*)", strip_comments(inline_style))) - set(kit))
+    showcase = sorted(set(re.findall(r"\.([a-z][\w-]*)", without_literals(strip_comments(inline_style)))) - set(kit))
 
-    tooling = set(re.findall(r"\.([a-z][\w-]*)", strip_comments(other_css))) - set(kit)
+    tooling = set(re.findall(r"\.([a-z][\w-]*)", without_literals(strip_comments(other_css)))) - set(kit)
 
     # Some classes carry no CSS at all and are still correct to use: the
     # delegated script in example.html finds its targets by class, and
@@ -344,7 +357,7 @@ def build_kit_json(components_css, semantic_css, example_html, other_css, design
     # Attributes the behaviour hangs off are invisible to the CSS scan above:
     # a drawer opens from data-modal-open, which nothing styles. Taking every
     # data-* the script touches would drag in the showcase's own playground
-    # controls, so these are the ones design.md documents AND the script or
+    # controls, so these are the ones DESIGN.md documents AND the script or
     # stylesheet actually uses — a name has to be both to count.
     documented = set(re.findall(r"(data-[\w-]+)", design_md))
     used = set(re.findall(r"\[(data-[\w-]+)", script + live)) | set(
@@ -431,10 +444,10 @@ def build_bundle_css(tokens_css, semantic_css, components_css):
     return "\n".join(bridge) + "\n" + components_css
 
 
-def check_doc_markup(design_md, kit_classes, showcase, icon_slugs):
-    """Every class and slug design.md demonstrates must really exist.
+def check_doc_markup(design_md, kit_classes, showcase, icon_slugs, tooling=()):
+    """Every class and slug DESIGN.md demonstrates must really exist.
 
-    design.md carries the worked markup now, and nothing lints a markdown file.
+    DESIGN.md carries the worked markup now, and nothing lints a markdown file.
     It has rotted before — it listed `.topbar-avatar`, which is not a class, and
     told readers for months to copy the example.html script block whole. A
     snippet that teaches a name nothing defines is worse than no snippet.
@@ -446,12 +459,62 @@ def check_doc_markup(design_md, kit_classes, showcase, icon_slugs):
                 if not re.fullmatch(r"[a-z][\w-]*", cls):
                     continue
                 if cls in showcase:
-                    problems.append(f"design.md: .{cls} is showcase-only, not a kit class")
+                    problems.append(f"DESIGN.md: .{cls} is showcase-only, not a kit class")
                 elif cls not in kit_classes:
-                    problems.append(f"design.md: .{cls} is not a kit class")
+                    problems.append(f"DESIGN.md: .{cls} is not a kit class")
         for slug in re.findall(r'href="#(i-[\w-]+)"', block):
             if slug not in icon_slugs:
-                problems.append(f"design.md: #{slug} is not in the sprite")
+                problems.append(f"DESIGN.md: #{slug} is not in the sprite")
+
+    # The §6 shortcode table is where a reader looks a class up, and it names
+    # them in backticks rather than in markup — so checking only the fenced
+    # blocks leaves the table unchecked. That is how `.drawer-full` and
+    # `.borders-all` were documented for months while nothing defined them: a
+    # reader follows the table, writes the class, and gets no styling and no
+    # error. Prose outside the table is not checked — it legitimately names
+    # things that are not kit classes, including ones it says do NOT exist.
+    section = design_md[design_md.find("## 6. Components"):design_md.find("### The page around them")]
+    known = set(kit_classes) | set(tooling)
+    for row in section.split("\n"):
+        if not row.startswith("|"):
+            continue
+        for cls in re.findall(r"`\.([a-z][\w-]*)`", row):
+            if cls in showcase:
+                problems.append(f"DESIGN.md §6: .{cls} is showcase-only, not a kit class")
+            elif cls not in known:
+                problems.append(f"DESIGN.md §6: .{cls} is in the shortcode table but nothing defines it")
+        # `.drawer-{narrow,regular,wide}` — a braced set naming several at once.
+        for stem, members in re.findall(r"`\.([a-z][\w-]*?)-\{([a-z,\s-]+)\}`", row):
+            for member in (x.strip() for x in members.split(",")):
+                cls = f"{stem}-{member}"
+                if cls not in known and cls not in showcase:
+                    problems.append(f"DESIGN.md §6: .{cls} is in the shortcode table but nothing defines it")
+
+    return sorted(set(problems))
+
+
+def check_css_docblocks(components_css, kit_classes, showcase, icon_slugs):
+    """The markup examples in components.css must name real classes too.
+
+    Both cold-start agents built from these docblocks — they sit right above
+    the rule, so they are the most convenient example there is. Nothing
+    checked them, and they drifted: retired Phosphor markup in the snippets a
+    reader copies, .modal-* parts shown inside a .drawer, and a .tag-success
+    that does not exist.
+    """
+    problems = []
+    for block in re.findall(r"/\*(.*?)\*/", components_css, re.S):
+        for m in re.finditer(r'class="([^"]*)"', block):
+            for cls in m.group(1).split():
+                if not re.fullmatch(r"[a-z][\w-]*", cls):
+                    continue
+                if cls in showcase:
+                    problems.append(f"components.css docblock: .{cls} is showcase-only")
+                elif cls not in kit_classes:
+                    problems.append(f"components.css docblock: .{cls} is not a kit class")
+        for slug in re.findall(r'href="#(i-[\w-]+)"', block):
+            if slug not in icon_slugs:
+                problems.append(f"components.css docblock: #{slug} is not in the sprite")
     return sorted(set(problems))
 
 
@@ -463,7 +526,24 @@ GENERATED = "<!-- GENERATED by tools/build-packages.py from AGENTS.md — do not
 
 
 
-def build_llms_full(agents_md, kit, tokens, icon_slugs):
+def markup_sections(design_md):
+    """DESIGN.md's worked markup — the page skeleton and the snippets.
+
+    A name list cannot be built from. Knowing `.list-row-meta` exists says
+    nothing about whether it is a sibling or a child of `.list-row-title`, and
+    the one other source of markup, example.html, is the file every reader is
+    told not to copy from. So the pasteable file carries the markup too,
+    lifted from DESIGN.md rather than written twice — check_doc_markup()
+    already proves every class and slug in it is real.
+    """
+    start = design_md.find("### The page around them")
+    end = design_md.find("\n## 7.", start)
+    if start == -1 or end == -1:
+        return ""
+    return design_md[start:end].rstrip()
+
+
+def build_llms_full(agents_md, kit, tokens, icon_slugs, design_md=""):
     """AGENTS.md plus the whole inventory, as one file you can paste anywhere.
 
     Every entry point so far assumes a filesystem. A model working in a chat
@@ -471,12 +551,25 @@ def build_llms_full(agents_md, kit, tokens, icon_slugs):
     is the failure this system exists to prevent. This is the answer to "what
     do I paste" — the rules and the complete inventory, around 5k tokens.
     """
-    out = [agents_md.rstrip(), "", "---", "",
-           "# Complete inventory",
-           "",
-           "Generated from the stylesheets. Everything the kit defines is below; if a",
-           "name is not here, it does not exist.",
-           ""]
+    out = [agents_md.rstrip(), "", "---", ""]
+
+    markup = markup_sections(design_md)
+    if markup:
+        out += ["# Markup",
+                "",
+                "How the components are actually composed, and the page they need around",
+                "them. Build from these, not from example.html.",
+                "",
+                markup,
+                "",
+                "---",
+                ""]
+
+    out += ["# Complete inventory",
+            "",
+            "Generated from the stylesheets. Everything the kit defines is below; if a",
+            "name is not here, it does not exist.",
+            ""]
 
     out.append(f"## Classes ({kit['counts']['classes']})")
     out.append("")
@@ -543,7 +636,7 @@ does not exist, and a class nothing defines renders as nothing.
 
 - [AGENTS.md](AGENTS.md): the rules, the traps, and how to build and check a prototype. Read first.
 - [llms-full.txt](llms-full.txt): the rules plus the complete class and token inventory, in one file. Paste this if you have no filesystem.
-- [design.md](design.md): the full written system, ~16k tokens. Read a section, not the file.
+- [DESIGN.md](DESIGN.md): the full written system, ~16k tokens. Read a section, not the file.
 - [README.md](README.md): what this is and how the three layers fit together.
 
 ## Machine-readable
@@ -555,7 +648,7 @@ does not exist, and a class nothing defines renders as nothing.
 ## Optional
 
 - [lint.py](lint.py): checks a prototype and exits non-zero on errors.
-- [figma-map.json](figma-map.json): per component, the Picasso React component, its import, and the Storybook story id.
+- [data/figma-map.json](data/figma-map.json): per component, the Picasso React component, its import, and the Storybook story id.
 """
 
 
@@ -593,7 +686,7 @@ def main():
     semantic_css = (ROOT / "semantic.css").read_text()
     components_css = (ROOT / "components.css").read_text()
     example_html = (ROOT / "example.html").read_text()
-    design_md = (ROOT / "design.md").read_text()
+    design_md = (ROOT / "DESIGN.md").read_text()
     icons_svg = (ROOT / "icons.svg").read_text() if (ROOT / "icons.svg").exists() else ""
     other_css = "".join(
         (ROOT / f).read_text()
@@ -632,16 +725,17 @@ def main():
 
     kit_classes = {c for g in kit["classes"].values() for c in g}
     kit_classes |= set(kit.get("behaviourHooks", []))
-    problems = check_doc_markup(design_md, kit_classes, set(kit["showcaseOnly"]), set(icon_slugs))
+    problems = check_doc_markup(design_md, kit_classes, set(kit["showcaseOnly"]), set(icon_slugs), set(kit["tooling"]))
+    problems += check_css_docblocks(components_css, kit_classes, set(kit["showcaseOnly"]), set(icon_slugs))
     if problems:
-        print("design.md demonstrates something that does not exist:", file=sys.stderr)
+        print("The docs demonstrate something that does not exist:", file=sys.stderr)
         for p_ in problems:
             print("  " + p_, file=sys.stderr)
         return 1
 
     root_outputs = {
         "llms.txt": build_llms_txt(),
-        "llms-full.txt": build_llms_full(agents_md, kit, tk, icon_slugs),
+        "llms-full.txt": build_llms_full(agents_md, kit, tk, icon_slugs, design_md),
         **build_tool_files(agents_md),
     }
 

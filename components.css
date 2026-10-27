@@ -35,7 +35,7 @@
 /* fill:none so stroke-based icons render as outlines; filled icons carry their
  * own fill="currentColor" on the paths. Colour rides on currentColor. */
 .icon { width: 1em; height: 1em; flex-shrink: 0; display: inline-block; vertical-align: -0.125em; fill: none; color: var(--color-icon); }
-/* The pack ships two sizes only — 16 and 24 (see design.md §9). */
+/* The pack ships two sizes only — 16 and 24 (see DESIGN.md §9). */
 .icon-16 { width: 16px; height: 16px; }
 .icon-24 { width: 24px; height: 24px; }
 /* Interactive / colour-carrying contexts keep the icon on the context colour
@@ -154,12 +154,12 @@
  * on that side to make room.
  *
  *   <div class="input-icon input-icon-left">
- *     <i class="ph ph-calendar-blank input-icon-glyph"></i>
+ *     <svg class="icon input-icon-glyph"><use href="#i-calendar-blank"/></svg>
  *     <input class="input" type="text" />
  *   </div>
  *   <div class="input-icon input-icon-right">
  *     <input class="input" type="search" />
- *     <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+ *     <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass"/></svg>
  *   </div>
  */
 .input-icon { position: relative; }
@@ -269,7 +269,7 @@ textarea.input {
  * On Enter the typed text becomes a chip; Backspace on empty removes the last chip.
  *
  *   <div class="input-tags">
- *     <span class="dropdown-chip">React<button class="dropdown-chip-remove">…</button></span>
+ *     <span class="chip">React<button class="chip-remove">…</button></span>
  *     <input class="input-tags-input" placeholder="Add tag…" />
  *   </div>
  */
@@ -357,10 +357,10 @@ textarea.input {
  *
  *   <div class="toolbar">
  *     <div class="input-icon input-icon-left toolbar-search">
- *       <i class="ph ph-magnifying-glass input-icon-glyph"></i>
+ *       <svg class="icon input-icon-glyph"><use href="#i-magnifying-glass"/></svg>
  *       <input class="input" placeholder="Search…">
  *     </div>
- *     <button class="btn btn-secondary"><i class="ph ph-funnel"></i>Filters</button>
+ *     <button class="btn btn-secondary"><svg class="icon"><use href="#i-funnel"/></svg>Filters</button>
  *     <div class="toolbar-end"> … .input-select.is-auto … .segmented … </div>
  *   </div>
  */
@@ -719,7 +719,7 @@ textarea.input {
  *   (default) · .is-empty · :hover · .is-selected · .is-editing ·
  *   .is-saving · .is-saved · .is-error · .is-readonly · .is-skeleton
  * Behaviour (select / edit / commit / cancel / arrow-nav / save sim) is
- * driven by the [data-sheet] JS module; see design.md §Sheet.
+ * driven by the [data-sheet] JS module; see DESIGN.md §Sheet.
  */
 .table-sheet {
   border-collapse: separate;
@@ -973,7 +973,7 @@ textarea.input {
   font: var(--type-body-sm); color: var(--color-text); cursor: pointer;
 }
 .sheet-opt:hover, .sheet-opt.is-active { background: var(--color-surface-muted); }
-.sheet-opt svg.ph-check { margin-left: auto; color: var(--color-accent); font-size: 1em; }
+.sheet-opt svg.sheet-opt-check { margin-left: auto; color: var(--color-accent); font-size: 1em; }
 .sheet-opt.is-empty-note { color: var(--color-text-subtle); cursor: default; }
 .sheet-opt.is-empty-note:hover { background: transparent; }
 
@@ -1038,7 +1038,7 @@ textarea.input {
  * Collapsible sections. One item = .accordion (a .accordion-summary trigger +
  * a .accordion-details collapsible region). Stack items in an .accordion-group;
  * the group's border modifier controls the horizontal rules:
- *   .borders-all (default) · .borders-middle (only between) · .borders-none.
+ *   all borders (default — no class) · .borders-middle (only between) · .borders-none.
  *   <div class="accordion-group">
  *     <div class="accordion is-open">
  *       <button class="accordion-summary" type="button" aria-expanded="true">
@@ -1107,13 +1107,13 @@ textarea.input {
  * Horizontal block with: icon · message · optional CTAs · optional close button.
  *
  *   <div class="alert alert-danger" role="alert">
- *     <i class="ph ph-warning-octagon alert-icon"></i>
+ *     <svg class="icon alert-icon"><use href="#i-warning-octagon"/></svg>
  *     <p class="alert-message">Something went wrong.</p>
  *     <div class="alert-actions">              optional — drop if no CTAs
  *       <button class="btn btn-xs btn-primary">Retry</button>
  *       <button class="btn btn-xs btn-secondary">Dismiss</button>
  *     </div>
- *     <button class="alert-close" aria-label="Close"><i class="ph ph-x"></i></button>
+ *     <button class="alert-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
  *   </div>
  *
  * Variants: .alert-danger · .alert-warning · .alert-success · .alert-info
@@ -1160,8 +1160,8 @@ textarea.input {
  *
  *   <span class="badge badge-success">Active</span>                          read-only
  *   <button class="badge badge-warning" type="button">Pending</button>       editable
- *   <span class="badge badge-info"><i class="ph ph-info badge-icon"></i>New</span>          icon left
- *   <span class="badge">Draft<button class="badge-remove" aria-label="Remove"><i class="ph ph-x"></i></button></span>   deletable
+ *   <span class="badge badge-info"><svg class="icon badge-icon"><use href="#i-info"/></svg>New</span>          icon left
+ *   <span class="badge">Draft<button class="badge-remove" aria-label="Remove"><svg class="icon"><use href="#i-x"/></svg></button></span>   deletable
  */
 .badge {
   display: inline-flex; align-items: center;
@@ -1319,7 +1319,7 @@ button.badge:focus-visible {
  *
  *   Photo:     <span class="avatar avatar-md"><img src="…" alt="Jane"></span>
  *   Initials:  <span class="avatar avatar-md">JD</span>
- *   Team/co:   <span class="avatar avatar-md avatar-team"><i class="ph ph-buildings"></i></span>
+ *   Team/co:   <span class="avatar avatar-md avatar-team"><svg class="icon"><use href="#i-buildings"/></svg></span>
  *
  * Sizes (default = avatar-md / 32px):
  *   .avatar-xs   16px
@@ -1603,7 +1603,7 @@ a.avatar:focus-visible {
  *   </div>
  *
  * Variants compose via optional siblings around the range input:
- *   icons        <i class="ph ph-minus slider-icon"></i> … <i class="ph ph-plus slider-icon"></i>
+ *   icons        <svg class="icon slider-icon"><use href="#i-minus"/></svg> … <svg class="icon slider-icon"><use href="#i-plus"/></svg>
  *   labels       <span class="slider-label">Zoom Out</span> (pairs with icons)
  *   min/max      <span class="slider-value">0</span> … <span class="slider-value">100</span>
  *   current      <output class="slider-value" data-slider-output></output>  ← JS-synced
@@ -1815,14 +1815,17 @@ a.avatar:focus-visible {
 }
 
 /* ---------- Drawer ----------
- * Right-anchored side panel. Reuses .modal-header / .modal-body / .modal-footer for layout.
- * Sizes: narrow / regular / medium / wide / ultra / full.
+ * Right-anchored side panel. Sizes: narrow / regular / medium / wide / ultra.
+ *
+ * Use the .drawer-* parts, not the .modal-* ones. example.html mixes modal
+ * parts into drawers in places; that is the showcase being inconsistent, not
+ * the pattern to copy, and this comment used to teach it.
  *
  *   <div class="drawer-overlay" id="my-drawer" hidden>
  *     <aside class="drawer drawer-regular">
- *       <header class="modal-header">…title + close…</header>
- *       <div class="modal-body">…</div>
- *       <footer class="modal-footer">…</footer>
+ *       <header class="drawer-header">…title + close…</header>
+ *       <div class="drawer-body">…</div>
+ *       <footer class="drawer-footer">…</footer>
  *     </aside>
  *   </div>
  */
@@ -2018,7 +2021,24 @@ a.avatar:focus-visible {
 }
 .sidenav.is-compact .sidenav-toggle svg { transform: rotate(180deg); }
 
-/* App shell — pairs sidenav + main content */
+/* ---------- App shell ----------
+ * Pairs a .sidenav with .app-shell-main.
+ *
+ * The fixed height and the border below are the SHOWCASE's framing, so
+ * example.html can show a whole screen in a box. A real page needs the shell
+ * to fill the viewport under the top bar, so every prototype that uses it
+ * writes the same four lines. Until that is fixed in the kit, copy them
+ * verbatim rather than inventing your own:
+ *
+ *   .app-shell      { flex: 1; min-height: 0; height: auto; border: 0; border-radius: 0; }
+ *   .app-shell-main { overflow-y: auto; padding: var(--spacing-6); }
+ *
+ *   html, body { height: 100%; }
+ *   body { display: flex; flex-direction: column; }
+ *
+ * This is the one sanctioned exception to "don't write component CSS in a
+ * prototype" — the kit currently leaves you no alternative.
+ */
 .app-shell {
   display: flex;
   height: 560px;
@@ -2153,7 +2173,14 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   flex-shrink: 0;
 }
 
-/* Template frame — full app preview: topbar + sidenav + main, vertically stacked */
+/* ---------- Template frame ----------
+ * Full app preview — topbar + sidenav + main, stacked vertically inside a
+ * fixed-height bordered frame. For showing a whole screen in miniature.
+ *
+ *   <div class="template-frame">
+ *     <div class="app-shell"> … </div>
+ *   </div>
+ */
 .template-frame {
   display: flex;
   flex-direction: column;
@@ -2170,7 +2197,15 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   flex: 1;
 }
 
-/* Stat tile — used inside templates */
+/* ---------- Stat card ----------
+ * A single metric on a surface: small muted label above a large value.
+ * Lay several out in a grid; the card carries its own border and padding.
+ *
+ *   <div class="stat-card">
+ *     <p class="stat-card-label">Active initiatives</p>
+ *     <p class="stat-card-value">24</p>
+ *   </div>
+ */
 .stat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -2188,7 +2223,20 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   margin: var(--spacing-1) 0 0;
 }
 
-/* List row — denser card variant for index pages */
+/* ---------- List row ----------
+ * Denser card variant for index and feed pages. The row IS the surface —
+ * it carries its own border, radius and padding, so it is a sibling of
+ * other rows, never nested inside a .card. Title and meta stack on the
+ * left; anything trailing (status, actions) sits at the right edge.
+ *
+ *   <a class="list-row" href="#">
+ *     <div>
+ *       <p class="list-row-title">Q3 revenue objective</p>
+ *       <p class="list-row-meta">Updated 2 days ago</p>
+ *     </div>
+ *     <span class="tag tag-positive">On track</span>
+ *   </a>
+ */
 .list-row {
   display: flex;
   align-items: center;
@@ -2299,7 +2347,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
  *
  *   <ol class="stepper">
  *     <li class="stepper-step is-current"><span class="stepper-num">1</span><span class="stepper-label">Details</span></li>
- *     <li class="stepper-sep"><i class="ph ph-caret-right"></i></li>
+ *     <li class="stepper-sep"><svg class="icon"><use href="#i-caret-right"/></svg></li>
  *     <li class="stepper-step"><span class="stepper-num">2</span><span class="stepper-label">Review</span></li>
  *   </ol>
  */
@@ -2641,10 +2689,10 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
  *
  *   <div class="toast-region" aria-live="polite"></div>     ← one per page
  *   <div class="toast toast-success">
- *     <i class="ph ph-check-circle toast-icon"></i>
+ *     <svg class="icon toast-icon"><use href="#i-check-circle"/></svg>
  *     <p class="toast-message">Saved.</p>
  *     <button class="btn btn-xs btn-secondary toast-action">Undo</button>
- *     <button class="toast-close" aria-label="Close"><i class="ph ph-x"></i></button>
+ *     <button class="toast-close" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button>
  *   </div>
  */
 .toast-region {
@@ -2933,7 +2981,10 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* Trailing count/badge inside a dropdown item — pushed to the right edge */
 .dropdown-item-count { margin-left: auto; flex-shrink: 0; }
 
-/* Selected state — leading check + semibold label */
+/* Selected state — leading check + semibold label.
+ * Put .dropdown-item-check on EVERY item, not just the selected one: it is
+ * opacity:0 until .is-selected, and it is what reserves the leading slot. On
+ * the selected item alone it indents that one label and shows no check. */
 .dropdown-item-check {
   width: 16px;
   height: 16px;
