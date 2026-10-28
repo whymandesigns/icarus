@@ -5934,11 +5934,11 @@
     document.getElementById('weight-root').innerHTML = WEIGHTS.map(([k, real]) => {
       const w = css.getPropertyValue(`--font-weight-${k}`).trim();
       return `
-        <div class="tok-row">
+        <div class="tok-row"${real ? scaleAttrs(`--font-weight-${k}`, `font-${k}`, w, '', { note: 'Picasso Tailwind token' }) : ''}>
           <code class="tok-name">--font-weight-${k}</code>
           <span class="type-specimen" style="font-weight: var(--font-weight-${k})">Ag</span>
           <span class="tok-val">${w}</span>
-          <code class="tok-src${real ? ' is-picasso' : ''}">${real ? 'font-' + k : 'preset only · unused'}</code>
+          <code class="tok-src${real ? ' is-picasso' : ''}">${real ? 'picasso' : 'extension'}</code>
         </div>`;
     }).join('');
 
