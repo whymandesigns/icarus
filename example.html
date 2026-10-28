@@ -5857,9 +5857,18 @@
     // class, so ?map=1 can link a token to the Storybook page that defines it.
     // Spacing also names its sibling utilities, because the number is the whole
     // mapping: --spacing-4 is p-4, m-4, gap-4 and w-4 alike.
-    const scaleAttrs = (token, cls, value, family = '') =>
+    const scaleAttrs = (token, cls, value, family = '', opts = {}) =>
       ` data-picasso-scale="${cls}" data-picasso-scale-token="${token}"` +
-      ` data-picasso-scale-value="${value}"${family ? ` data-picasso-scale-family="${family}"` : ''}`;
+      ` data-picasso-scale-value="${value}"${family ? ` data-picasso-scale-family="${family}"` : ''}` +
+      `${opts.story ? ` data-picasso-scale-story="${opts.story}"` : ''}` +
+      `${opts.note ? ` data-picasso-scale-note="${opts.note}"` : ''}` +
+      `${opts.code ? ` data-picasso-scale-code="${opts.code}"` : ''}`;
+
+    // Picasso documents its screens on their own page, not with the Tailwind
+    // tokens. Shadows and the z-index layers have neither a documented story
+    // nor a utility class anyone has written down, so they carry their value
+    // and their role instead of a class invented to fill the column.
+    const BP_STORY = 'utils-breakpoints--breakpoints';
 
     // Spacing — bar width is the step itself, so the scale is literally to scale.
     // The scale has no extensions: every step is Picasso's, so every row is
@@ -5882,7 +5891,10 @@
       .map(k => ({ k, v: parseInt(css.getPropertyValue(`--z-${k}`).trim(), 10) || 0 }))
       .sort((a, b) => a.v - b.v)
       .map(({ k, v }) => row(`--z-${k}`, `${Math.max(2, (v / 1400) * 100)}%`, v,
-                             LAYER_PICASSO.has(k) ? 'picasso' : 'extension'))
+                             LAYER_PICASSO.has(k) ? 'picasso' : 'extension',
+                             LAYER_PICASSO.has(k)
+                               ? scaleAttrs(`--z-${k}`, k, v, '', { note: 'Picasso layer', code: String(v) })
+                               : ''))
       .join('');
 
     // Breakpoints — bar is the edge against the widest screen
@@ -5891,7 +5903,9 @@
       const v = px(css.getPropertyValue(`--breakpoint-${k}`));
       const next = i < BPS.length - 1 ? px(css.getPropertyValue(`--breakpoint-${BPS[i+1]}`)) : null;
       const range = next ? `${v}–${next - 1}` : `≥ ${v}`;
-      return row(`--breakpoint-${k}`, `${Math.max(2, (v / 1440) * 100)}%`, range, 'picasso');
+      return row(`--breakpoint-${k}`, `${Math.max(2, (v / 1440) * 100)}%`, range, 'picasso',
+                 scaleAttrs(`--breakpoint-${k}`, k, `${v}px`, '',
+                            { story: BP_STORY, note: 'Picasso screen', code: `${v}px  ·  ${range}` }));
     }).join('');
 
     // Type — specimen rendered at the token's own size, with the class it becomes
@@ -5950,7 +5964,7 @@
     };
     document.getElementById('shadow-root').innerHTML = Object.entries(SHADOW_ROLE).map(([n, role]) => `
       <div class="shadow-card">
-        <div class="shadow-chip" style="box-shadow: var(--shadow-${n})"></div>
+        <div class="shadow-chip" style="box-shadow: var(--shadow-${n})"${scaleAttrs(`--shadow-${n}`, `shadow-${n}`, role, '', { note: 'Picasso elevation', code: role })}></div>
         <span class="shadow-role">${role}</span>
         <code class="radius-token">--shadow-${n}</code>
       </div>`).join('');
@@ -6186,19 +6200,23 @@
           const d = el.dataset;
           const head = document.createElement('div');
           head.className = 'map-pop-head';
-          head.textContent = `${d.picassoScaleToken} → ${d.picassoScale}`;
+          head.textContent = d.picassoScaleToken.endsWith(d.picassoScale)
+            ? d.picassoScaleToken                       // --breakpoint-md, --z-modal
+            : `${d.picassoScaleToken} → ${d.picassoScale}`;
           pop.appendChild(head);
           const code = document.createElement('code');
           code.className = 'map-pop-code';
-          code.textContent = d.picassoScaleFamily || d.picassoScale;
+          // the literal worth reading: the utility family, an explicit override,
+          // or the class itself when that is genuinely what it maps to
+          code.textContent = d.picassoScaleFamily || d.picassoScaleCode || d.picassoScale;
           pop.appendChild(code);
           const meta = document.createElement('div');
           meta.className = 'map-pop-meta';
-          meta.textContent = `Picasso Tailwind token · ${d.picassoScaleValue}`;
+          meta.textContent = d.picassoScaleNote || `Picasso Tailwind token · ${d.picassoScaleValue}`;
           pop.appendChild(meta);
           const a = document.createElement('a');
           a.className = 'map-pop-link';
-          a.href = STORYBOOK + 'contribution-tailwind-tokens--tailwind-tokens';
+          a.href = STORYBOOK + (d.picassoScaleStory || 'contribution-tailwind-tokens--tailwind-tokens');
           a.target = '_blank';
           a.rel = 'noopener';
           a.textContent = 'Open in Storybook ↗';
