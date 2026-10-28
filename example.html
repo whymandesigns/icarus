@@ -5845,23 +5845,34 @@
       if (v.endsWith('rem')) return Math.round(parseFloat(v) * 16);
       if (v.endsWith('px')) return Math.round(parseFloat(v));
       return parseFloat(v) || 0; };
-    const row = (name, barPct, value, src) => `
-      <div class="tok-row">
+    const row = (name, barPct, value, src, attrs = '') => `
+      <div class="tok-row"${attrs}>
         <code class="tok-name">${name}</code>
         <div><div class="tok-bar" style="width: ${barPct}"></div></div>
         <span class="tok-val">${value}</span>
         <span class="tok-src${src === 'picasso' ? ' is-picasso' : ''}">${src}</span>
       </div>`;
 
-    // Spacing — bar width is the step itself, so the scale is literally to scale
+    // Everything measured off Picasso's spacing scale carries its Tailwind
+    // class, so ?map=1 can link a token to the Storybook page that defines it.
+    // Spacing also names its sibling utilities, because the number is the whole
+    // mapping: --spacing-4 is p-4, m-4, gap-4 and w-4 alike.
+    const scaleAttrs = (token, cls, value, family = '') =>
+      ` data-picasso-scale="${cls}" data-picasso-scale-token="${token}"` +
+      ` data-picasso-scale-value="${value}"${family ? ` data-picasso-scale-family="${family}"` : ''}`;
+
+    // Spacing — bar width is the step itself, so the scale is literally to scale.
+    // The scale has no extensions: every step is Picasso's, so every row is
+    // mapped and the inspector outlines all of them.
     const SPACING = [0,1,2,3,4,6,8,10,12];
     document.getElementById('spacing-root').innerHTML = SPACING.map(n => {
       const v = css.getPropertyValue(`--spacing-${n}`).trim();
       const p = px(v);
       // the number works with any spacing utility — p-, m-, gap-, w- … — so
       // p-N stands in as the exemplar rather than listing them all
-      return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0',
-                 `p-${n}`);
+      return row(`--spacing-${n}`, `${p}px`, p ? `${p}px` : '0', `p-${n}`,
+                 scaleAttrs(`--spacing-${n}`, `p-${n}`, p ? `${p}px` : '0',
+                            `p-${n}  m-${n}  gap-${n}  w-${n}`));
     }).join('');
 
     // Z-index — ordered by the value it actually resolves to
@@ -5920,14 +5931,16 @@
     // Sizing — the three min-widths Picasso adds past the spacing scale
     document.getElementById('sizing-root').innerHTML = [14,16,24].map(n => {
       const v = css.getPropertyValue(`--min-width-${n}`).trim();
-      return row(`--min-width-${n}`, `${px(v)}px`, `${px(v)}px`, `min-w-${n}`);
+      return row(`--min-width-${n}`, `${px(v)}px`, `${px(v)}px`, `min-w-${n}`,
+                 scaleAttrs(`--min-width-${n}`, `min-w-${n}`, `${px(v)}px`));
     }).join('');
 
     // Twelfths — bar is the fraction itself, so the grid reads as a grid
     document.getElementById('twelfths-root').innerHTML = Array.from({length: 11}, (_, i) => {
       const n = i + 1;
       const v = css.getPropertyValue(`--max-width-${n}-12`).trim();
-      return row(`--max-width-${n}-12`, v, `${n}/12`, `max-w-${n}/12`);
+      return row(`--max-width-${n}-12`, v, `${n}/12`, `max-w-${n}/12`,
+                 scaleAttrs(`--max-width-${n}-12`, `max-w-${n}/12`, v));
     }).join('');
 
     // Shadow — the role each one plays, straight from Picasso's own source comments
@@ -6165,6 +6178,34 @@
           place(el);
         };
 
+        // Scale popover — spacing, the min-widths and the twelfths all measure
+        // off Picasso's spacing scale, so they share one card: the token, the
+        // Tailwind class it becomes, and the value it resolves to.
+        const showScale = (el) => {
+          pop.innerHTML = '';
+          const d = el.dataset;
+          const head = document.createElement('div');
+          head.className = 'map-pop-head';
+          head.textContent = `${d.picassoScaleToken} → ${d.picassoScale}`;
+          pop.appendChild(head);
+          const code = document.createElement('code');
+          code.className = 'map-pop-code';
+          code.textContent = d.picassoScaleFamily || d.picassoScale;
+          pop.appendChild(code);
+          const meta = document.createElement('div');
+          meta.className = 'map-pop-meta';
+          meta.textContent = `Picasso Tailwind token · ${d.picassoScaleValue}`;
+          pop.appendChild(meta);
+          const a = document.createElement('a');
+          a.className = 'map-pop-link';
+          a.href = STORYBOOK + 'contribution-tailwind-tokens--tailwind-tokens';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'Open in Storybook ↗';
+          pop.appendChild(a);
+          place(el);
+        };
+
         // Icon popover — Picasso icon (PascalCase + size), from the gallery.
         const showIcon = (el) => {
           pop.innerHTML = '';
@@ -6195,6 +6236,7 @@
         const show = (el) => {
           if (el.hasAttribute('data-picasso-icon')) return showIcon(el);
           if (el.hasAttribute('data-picasso-radius')) return showRadius(el);
+          if (el.hasAttribute('data-picasso-scale')) return showScale(el);
           if (el.hasAttribute('data-picasso-font')) return showFont(el);
           if (el.hasAttribute('data-picasso-color')) return showColor(el);
           const c = bySlug[el.getAttribute('data-component')];
@@ -6240,7 +6282,7 @@
           place(el);
         };
 
-        const SEL = '[data-component],[data-picasso-color],[data-picasso-font],[data-picasso-radius],[data-picasso-icon]';
+        const SEL = '[data-component],[data-picasso-color],[data-picasso-font],[data-picasso-radius],[data-picasso-icon],[data-picasso-scale]';
         document.addEventListener('mouseover', (e) => {
           const el = e.target.closest(SEL);
           if (!el) return;
