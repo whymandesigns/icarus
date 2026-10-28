@@ -5918,11 +5918,11 @@
       if (!size) return '';
       const ext = TYPE_EXT.has(k);
       return `
-        <div class="tok-row">
+        <div class="tok-row"${ext ? '' : scaleAttrs(`--text-${k}`, `text-${k}`, `${px(size)}${lh ? '/' + px(lh) : ''}`)}>
           <code class="tok-name">--text-${k}</code>
           <span class="type-specimen" style="font-size: var(--text-${k}); line-height: ${lh || 'normal'}">Ag</span>
           <span class="tok-val">${px(size)}${lh ? '/' + px(lh) : ''}</span>
-          <code class="tok-src${ext ? '' : ' is-picasso'}">${ext ? 'extension' : 'text-' + k}</code>
+          <code class="tok-src${ext ? '' : ' is-picasso'}">${ext ? 'extension' : 'picasso'}</code>
         </div>`;
     }).join('');
 
