@@ -40,15 +40,28 @@
   <main class="page">
     <a class="back" href="../index.html"><svg class="icon icon-16"><use href="../icons.svg#i-chevron-left"/></svg> Design Library</a>
     <h1 class="h1">Master prompt</h1>
-    <p class="lede">A copy-paste prompt for getting started with this project. Hand it to a coding agent (Claude Code, Cursor, …) and it scaffolds the skeleton of a new feature prototype on the Operationalize / Icarus design system.</p>
+    <p class="lede">A copy-paste prompt for getting started with this project. Hand it to a coding agent (Claude Code, Cursor, …) and it duplicates <code>designmd/template/</code> into a new feature prototype, resolves the sidenav and lists it &mdash; then builds the feature into the shell.</p>
+
+    <p class="body-sm" style="color: var(--color-text-muted); margin: 0 0 var(--spacing-8)">
+      Nothing here is generated from memory. <code>template/index.html</code> is a real file that
+      lints and inlines like any other prototype, so the shell a feature starts from is the shell
+      the system ships today. Change the top bar in <code>components.css</code>, update the template
+      once, and every prototype made afterwards has it.
+    </p>
 
     <h2 class="h3" style="margin: 0 0 var(--spacing-3)">How to use it</h2>
     <ol class="steps">
       <li>Copy the prompt below.</li>
-      <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) with your feature's folder name.</li>
-      <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings. This prompt is written for that Toptal layout; on a standalone clone of the system, start from <code>AGENTS.md</code> instead.</li>
-      <li>Iterate locally, then inline + list it as the prompt describes.</li>
+      <li>Replace <code>{{FEATURE_NAME}}</code> (kebab-case) with your feature's folder name &mdash; or leave it and the agent will ask.</li>
+      <li>Paste it into your agent, run from the folder that contains <code>designmd/</code> and <code>features/</code> as siblings. This prompt is written for that Toptal layout; on a standalone clone, pass <code>--into &lt;path&gt;</code> to the scaffolder.</li>
+      <li>Iterate locally, then lint, thumbnail and inline as the prompt describes.</li>
     </ol>
+
+    <p class="body-sm" style="color: var(--color-text-muted); margin: 0 0 var(--spacing-8)">
+      In a hurry and already know the answers? Skip the prompt and run the scaffolder directly from
+      <code>designmd/</code>:<br />
+      <code>python3 tools/new-prototype.py billing-portal --title "Billing portal" --nav Initiatives</code>
+    </p>
 
     <div class="prompt-head">
       <h2>The prompt</h2>
@@ -73,8 +86,9 @@ CONTEXT
   stylesheets, loaded in order: `tokens.css` (primitives) -> `semantic.css` (intent
   aliases + reset) -> `components.css` (every component class). Plus `assets/logo.svg`
   and an icon sprite `icons.svg`.
-- The inventory is `designmd/dist/kit.json` — every class that exists, grouped. The
-  Do NOT copy markup out of
+- The inventory is `designmd/dist/kit.json` — every class that exists, grouped. If a
+  class is not in there it does not exist, and inventing one renders as nothing, with
+  no error. Do NOT copy markup out of
   `designmd/example.html`: 88 of the classes in that file are the showcase's own chrome,
   styled in its &lt;style&gt; block and nowhere else, and they look exactly like kit classes.
   Browse it to see what a component looks like; take the class name from kit.json.
@@ -82,29 +96,33 @@ CONTEXT
 - Prototypes live at `features/&lt;feature-name&gt;/index.html` — one folder per feature,
   kebab-case, the file is always named `index.html`.
 
-TASK — create `features/{{FEATURE_NAME}}/index.html`
-1. Start from this skeleton, linking the sibling system (keep these links while
-   iterating locally for instant feedback):
+TASK — scaffold `features/{{FEATURE_NAME}}/index.html`, then build into it
 
-   &lt;!doctype html&gt;
-   &lt;html lang="en"&gt;
-   &lt;head&gt;
-     &lt;meta charset="utf-8" /&gt;
-     &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
-     &lt;title&gt;{{FEATURE_NAME}}&lt;/title&gt;
-     &lt;link rel="stylesheet" href="../../designmd/tokens.css" /&gt;
-     &lt;link rel="stylesheet" href="../../designmd/semantic.css" /&gt;
-     &lt;link rel="stylesheet" href="../../designmd/components.css" /&gt;
-   &lt;/head&gt;
-   &lt;body&gt;
-     &lt;!-- feature markup --&gt;
-   &lt;/body&gt;
-   &lt;/html&gt;
+1. DO NOT WRITE THE SHELL BY HAND. Duplicate the template. From `designmd/`, run
+   one of these, using my two answers above:
 
-2. Scaffold the main screen shell only — no real content yet: a `.topbar` (brand
-   logo + search + avatar), a left `.sidenav`, and a main area with a `.page-head`
-   (title + actions) above a placeholder content region. Use realistic placeholder
-   labels; leave the substance for a follow-up prompt.
+     python3 tools/new-prototype.py {{FEATURE_NAME}} --title "&lt;Title&gt;" --nav "&lt;Section&gt;"
+
+     python3 tools/new-prototype.py {{FEATURE_NAME}} --title "&lt;Title&gt;" \
+       --new-nav "&lt;Label&gt;" --nav-icon i-&lt;slug&gt;
+
+   The first marks an existing sidenav section active; the second inserts a new
+   nav item and marks that active. Pass one or the other, never both.
+
+   It copies `designmd/template/index.html` — the shell the system ships right
+   now: the top bar (including `.topbar-menu` and `.topbar-title`, invisible
+   until the bar collapses), the side nav, the page head, and the delegated
+   handlers for modals, drawers, dropdowns, tabs, selects and the nav rail that
+   the kit does NOT carry. It then registers a card in `features/index.html`
+   and adds a `status.json` entry.
+
+   A generated skeleton drifts from the system the moment the system moves; a
+   duplicated template cannot. If the template is missing something every screen
+   should have, fix `designmd/template/index.html` so the next one inherits it —
+   never patch only your copy.
+
+2. Build the feature into the content region, replacing the placeholder `.card`.
+   Leave the shell alone unless the feature genuinely needs it changed.
 
 RULES
 - CHECK THE SYSTEM BEFORE YOU BUILD. Look in `designmd/dist/kit.json` for the
@@ -123,13 +141,14 @@ RULES
 - Icons come from the sprite: `&lt;svg class="icon icon-16"&gt;&lt;use href="#i-&lt;name&gt;"/&gt;&lt;/svg&gt;`.
   Every slug is listed at the end of `designmd/llms-full.txt`, and in the Iconography
   gallery in `designmd/example.html`.
-- The sidenav lists the product's real top-level sections (Processes, Initiatives,
-  OKRs, People, …). Follow my answer to the sidebar question above: if I named an
-  existing section, mark that item `.is-active` and add no new entry; if I asked for a
-  new nav item, add it with the label and icon I gave and mark it active. Either way,
-  don't invent a `{{FEATURE_NAME}}` nav link or guess placement on your own.
+- The sidenav comes from the template already resolved — step 1 marked the right
+  item active. Don't add a `{{FEATURE_NAME}}` nav link on top of it, and don't
+  re-order the sections.
 - Keep it a single file. Do not add frameworks, build steps or external CDNs.
-- Make it responsive and theme-aware (the system supports a `data-theme="dark"` toggle).
+- Make it responsive. BUILD LIGHT ONLY — ignore dark theme entirely. No `data-theme`
+  toggle, no `prefers-color-scheme` block, no dark variants, no dark-specific token
+  overrides. The dark palette is being rebuilt on Picasso's own values, so anything
+  written for it now is churn that will be thrown away.
 
 BEFORE SHARING / DEPLOYING
 - From the `designmd/` folder run: `python3 inline.py ../features/{{FEATURE_NAME}}/index.html`
@@ -144,7 +163,13 @@ BEFORE SHARING / DEPLOYING
   then mark it `resolved: true` with a short `resolution`.
 - Comments are shared through `api/feedback.js` (Neon Postgres) which already exists in
   the prototypes repo. That is set up once per repo, not per feature — nothing to do here.
-- Add a card + a 1280x800 thumbnail for the feature to `features/index.html`.
+- The card in `features/index.html` is already there from step 1; the thumbnail is
+  not, on purpose — at scaffold time the page is an empty shell. Once there is
+  something to look at, from `designmd/` run:
+  `python3 tools/new-prototype.py {{FEATURE_NAME}} --thumb`
+  It shoots 1280x800 with headless Chrome against the local prototypes server
+  (port 5733; pass `--url` for anything else) and drops the `&lt;img&gt;` into the card.
+  Re-run it whenever the screen changes materially.
 
 FILL IN
 - {{FEATURE_NAME}} — kebab-case folder name (e.g. `billing-portal`).</pre>

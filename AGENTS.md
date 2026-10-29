@@ -48,16 +48,42 @@ catches it.
    the action.
 5. **Don't write component CSS in a prototype.** If a variant is missing, add it to
    `designmd/components.css` so the next screen inherits it, then re-inline.
+6. **Build light only — dark theme is parked.** `[data-theme="dark"]` exists in the
+   stylesheet, but it is being rebuilt on Picasso's own dark values. Don't set it,
+   don't write `prefers-color-scheme` blocks, and don't add dark overrides for a new
+   token. Anything written for it now gets thrown away.
+7. **A full-window screen is `<div class="app-shell is-fullscreen">`, and that is all.**
+   No `height`, `min-height`, `flex` or `overflow` in the page, and no
+   `html, body { height: 100% }` reset — the variant bounds the body and
+   `.app-shell-main` scrolls on its own. Older prototypes carry four hand-written
+   lines because the variant did not exist yet; they are not the pattern to copy.
 
 ## Start here
 
-Point a prototype's three stylesheet `<link>`s at this folder, build it from the
-classes in `dist/kit.json`, then run from here:
+**Don't write the shell by hand — duplicate `template/`.** It is a real prototype
+that lints and inlines, carrying the top bar, side nav, page head and the delegated
+handlers the kit does not ship. Run from here:
+
+```bash
+python3 tools/new-prototype.py <kebab-name> --title "<Title>" --nav "<Section>"
+# or, for a brand-new sidenav entry:
+python3 tools/new-prototype.py <kebab-name> --title "<Title>" --new-nav "<Label>" --nav-icon i-<slug>
+```
+
+That copies `template/index.html` into `features/<kebab-name>/index.html` (pass
+`--into <path>` elsewhere), marks the nav, registers a card in `features/index.html`
+and adds a `status.json` entry. Then build the feature into the content region,
+from the classes in `dist/kit.json`, and run:
 
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
+python3 tools/new-prototype.py <kebab-name> --thumb  # 1280x800 card image, re-runnable
 python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
+
+A hand-written skeleton drifts from the system the moment the system moves; a
+duplicated template cannot. If the template lacks something every screen should
+have, fix `template/index.html` — never only your copy.
 
 `inline.py` folds the CSS, the icon sprite and the fonts into the file, so what you
 share has no external dependencies and does not care where it sits.
@@ -69,7 +95,9 @@ that shape, always `index.html`. On your own, put it where you like.
 
 | | |
 |---|---|
-| `designmd/dist/kit.json` | **the inventory** — 366 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/dist/kit.json` | **the inventory** — every class grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/template/index.html` | **the shell every prototype starts as** — top bar, side nav, page head, and the delegated handlers the kit does not ship. Duplicate it with `tools/new-prototype.py`; edit it when the shell itself should change. |
+| `designmd/tools/new-prototype.py` | duplicates the template, resolves the sidenav, lists the feature. `--thumb` shoots the card image later. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
 | `designmd/DESIGN.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
@@ -94,15 +122,23 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   their behaviour from a delegated block there. Do not copy it whole: it is 2,286 lines
   and its tail renders the showcase's own palette swatches against elements no prototype
   has, which throws and kills every handler after it. Take the handlers you need.
-- **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title; the top
-  bar is a container query that reveals it below 768px — but that is a *container*
-  query on `.topbar`, which measures its content box, and the bar carries 24px of
-  padding each side. So it collapses at a viewport of about **816px**, not 768.
-  Same for `.topbar-menu` and
+- **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title, and
+  the bar collapses at **1024px** — the same edge as the side nav, because the hamburger
+  it reveals is what opens the off-canvas rail. Same for `.topbar-menu` and
   `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
-  they are invisible until the bar collapses. `.topbar-cta` is the exception: add it only
-  on a page with **no** page head, because nothing hides `.page-head-actions` when the bar
-  collapses, so carrying both puts two primary CTAs on screen once it does.
+  they are invisible until the bar collapses. Carry `.topbar-cta` too, holding the SAME
+  action as the page head's `.btn-primary`: `.page-head` is hidden at that same 1024px
+  edge, so exactly one of the two is ever on screen. (This used to be the opposite —
+  nothing hid the page head, and carrying both showed two primary CTAs once the bar
+  collapsed. That is fixed; ignore any older note saying to leave `.topbar-cta` off.)
+  (The kit's own playground collapses on a *container* query at 768px instead, since
+  there the bar is narrow inside a wide window and the viewport says nothing useful.
+  That edge measures the bar, not the screen; it never applies to a feature prototype.)
+- **The side nav is off-canvas at ≤1024px, and that needs three things.** The kit
+  hides the rail and reveals `.topbar-menu` below Picasso's lg edge; the hamburger
+  then has to toggle `.is-open` on the `.sidenav`. `template/index.html` ships the
+  markup and the handler, so a prototype duplicated from it already works. Write the
+  shell by hand and you get a hidden nav with nothing to open it.
 - **Some classes carry no CSS and are still right.** `.dropdown-trigger` is how the
   delegated script finds a dropdown's button; nothing styles it. `kit.json` lists these
   under `behaviourHooks`, beside `attributes` for the components driven by an attribute

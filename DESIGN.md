@@ -31,8 +31,16 @@ Three layers. Don't skip them.
 └──────────────────────────────────────────────────────────────┘
             │
             ▼
-       prototype.html      ← consumes components + semantic tokens
+  template/index.html      ← the SHELL, expressed once in those classes
+            │
+            ▼
+       prototype.html      ← a copy of the template with a feature built into it
 ```
+
+The fourth box matters as much as the three above it. Every screen needs the same top
+bar, side nav, page head and app shell, and anything hand-written for that drifts the
+moment the kit moves. `template/index.html` is that markup, written once, duplicated by
+`tools/new-prototype.py`. Change the shell there, not in a prototype — see §7.
 
 **Rule:** for **colour**, components and prototypes reference semantic aliases (`--color-bg`, `--type-h1`), never primitives (`--color-blue-500`) — that is what makes a theme swap a one-file edit. Scale primitives are different: there is no semantic layer over spacing, radii or motion, so `var(--spacing-4)` and `var(--ease)` in `components.css` are correct and expected.
 
@@ -185,7 +193,10 @@ primitives so a prototype reads by intent and still translates to a real class.
 Two aliases point at extensions on purpose. `--color-text-muted` is gray-700 because Picasso's darkest text grey, gray-600, is 3.56:1 on white — below AA for body text; gray-700 is 6.04:1. `--color-icon` is designmd's own call: Picasso icons carry no colour at all, they inherit `currentColor`.
 | `--color-info` / `-subtle` | blue-400 / blue-100 | — |
 
-Switch theme: `<html data-theme="dark">`.
+**Dark theme is parked — build light only.** `[data-theme="dark"]` exists in the
+stylesheet and the `zinc` ramp backs it, but it is being rebuilt on Picasso's own
+dark values. Do not set it on a prototype, do not write `prefers-color-scheme`
+blocks, and do not add dark overrides for a new token.
 
 ---
 
@@ -345,6 +356,11 @@ The four edges are **480 · 768 · 1024 · 1440**. Author mobile-first (base = `
 @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } } /* lg+ */
 ```
 
+**The shell itself turns on one edge: 1024.** Below it the top bar collapses, the side
+nav goes off-canvas and `.page-head` stands down — one breakpoint, three coupled
+behaviours, all in `components.css`. Move one and you must move the others, or you get a
+band of widths with a hidden nav and nothing to open it, or two page titles at once.
+
 CSS custom properties can't be read inside a `@media`/`@container` condition, so use the literal px edges above. On the React side Picasso exposes the same values via its `screens()` helper and the Tailwind `sm:` / `md:` / `lg:` / `xl:` prefixes.
 
 ---
@@ -364,8 +380,8 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` · `.input-icon` wrapper (`.input-icon-left` / `.input-icon-right`) with a `.input-icon-glyph` for an inset icon |
 | [Select](./example.html#inputs) | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
 | [Tag input](./example.html#inputs) | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
-| [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-brand-logo` · `.topbar-search` · `.topbar-search-input` · `.topbar-actions` · `.topbar-account` (wraps the account `.dropdown`). Collapsed-only, below 768px of the bar's **own** width: `.topbar-menu` · `.topbar-title` · `.topbar-cta` — put all three in the markup from the start; they show nothing on a wide screen. `.topbar-cta` is for screens with no page head, or you get two primary CTAs when the bar collapses. |
-| [Side navigation](./example.html#sidenav-demo) | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact` |
+| [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-brand-logo` · `.topbar-search` · `.topbar-search-input` · `.topbar-actions` · `.topbar-account` (wraps the account `.dropdown`). Collapsed-only, **below 1024px** (Picasso's lg edge — the same edge the side nav goes off-canvas at, because this bar's hamburger is what opens it): `.topbar-menu` · `.topbar-title` · `.topbar-cta` — put all three in the markup from the start; they show nothing on a wide screen. `.topbar-cta` holds the same action as the page head's `.btn-primary`: `.page-head` is hidden at that same edge, so only one of the two is ever on screen. |
+| [Side navigation](./example.html#sidenav-demo) | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact`. **Below 1024px it is off-canvas**: fixed over the full window, top bar included, slid in by `.is-open` over a scrim, opened by `.topbar-menu`. The panel then carries its own chrome — `.sidenav-head` (wrapping `.sidenav-logo` and `.sidenav-close`) and `.sidenav-search` — all three invisible above that edge, where the top bar carries the logo and search instead. `.sidenav-close` is a behaviour hook: nothing styles it, the script finds the button by it. The template ships the markup and the handler. |
 | [Switches](./example.html#switches) | `.switch` | `.switch-input` · `.switch-track` |
 | [Radios](./example.html#radios) | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
 | [Checkboxes](./example.html#checkboxes) | `.checkbox` | `.checkbox-input` · `.checkbox-box` · `.checkbox-mark` · `.is-error` |
@@ -409,6 +425,10 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 - **Wide vs. sheet tables.** Both share the `.table` base, so a prototype can offer a view toggle by swapping the modifier. Use `.table-wide` for read-heavy lists (tall rows, zebra striping, rich cell content). Use `.table-sheet` + `data-sheet` for editable, dense, Airtable/Linear-style grids where every cell is inline-editable through the shared cell state machine. Drive columns and cell values off `data-*` attributes — the module renders and wires everything; you don't hand-author cell inner markup (except the Name cell's `.sheet-tree` scaffold for the row toggle).
 
 ### The page around them
+
+**A prototype duplicated from `template/index.html` already has all of this** — see §7
+"Building a new prototype". Read this section to understand what the template is doing,
+or when you are working on the template itself; do not retype it into a feature.
 
 The snippets below are fragments. Each assumes a page that already has the three
 stylesheets, the icon sprite and the handlers — and none of those is automatic.
@@ -517,6 +537,20 @@ stylesheets, the icon sprite and the handlers — and none of those is automatic
     if (group) group.setAttribute('aria-expanded',
       String(group.getAttribute('aria-expanded') !== 'true'));
   });
+
+  // Off-canvas side nav (≤1024px). The kit hides the rail and reveals
+  // .topbar-menu at that edge; without this the nav is unreachable there.
+  const sidenav = () => document.querySelector('.app-shell > .sidenav');
+  document.addEventListener('click', e => {
+    const nav = sidenav();
+    if (!nav) return;
+    if (e.target.closest('.topbar-menu'))   { nav.classList.toggle('is-open'); return; }
+    if (e.target.closest('.sidenav-close')) { nav.classList.remove('is-open'); return; }
+    // The scrim is .app-shell's ::after, so a click on it targets .app-shell.
+    if (nav.classList.contains('is-open') && e.target === nav.parentElement) {
+      nav.classList.remove('is-open');
+    }
+  });
   </script>
 </body>
 </html>
@@ -587,11 +621,12 @@ The ones below are the structures that cannot be guessed from a class name — w
 wraps which, and what actually opens a thing.
 
 ```html
-<!-- Top bar.
+<!-- Top bar. The template already ships this — see §7; it is here to show which
+     element wraps which.
      .topbar-menu, .topbar-title and .topbar-cta are the COLLAPSED layout, revealed
-     below 768px of the bar's OWN width, so they show nothing on a wide screen. Put
-     the menu and title in from the start. Use .topbar-cta only on a page with no
-     page head, or both primaries appear at once when the bar collapses. -->
+     below 1024px, so they show nothing on a wide screen. Put all three in from the
+     start. .topbar-cta repeats the page head's primary action, which is safe because
+     .page-head is hidden at the same edge. -->
 <header class="topbar">
   <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">
     <svg class="btn-icon"><use href="#i-list"></use></svg>
@@ -843,27 +878,36 @@ Development/icarus/
 
 ### Building a new prototype
 
-Create `features/billing-portal/index.html` (or whatever your feature is named, kebab-case) linking to the sibling system:
+**Don't write the shell. Duplicate `template/index.html`** — it is the one source of
+truth for what a screen is made of, and it is a real prototype that lints and inlines
+like any other. From `designmd/`:
 
-```html
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My prototype</title>
-  <link rel="stylesheet" href="../../designmd/tokens.css" />
-  <link rel="stylesheet" href="../../designmd/semantic.css" />
-  <link rel="stylesheet" href="../../designmd/components.css" />
-</head>
-<body>
-  <!-- prototype markup -->
-  <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="…" />
-</body>
-</html>
+```bash
+python3 tools/new-prototype.py billing-portal --title "Billing portal" --nav "Initiatives"
+# a brand-new sidenav section instead of an existing one:
+python3 tools/new-prototype.py billing-portal --title "Billing portal" --new-nav "Billing" --nav-icon i-credit-card
 ```
 
-Iterate locally — open via `file://` or a small static server. Relative paths to `../../designmd/` resolve as long as both folders stay siblings.
+That writes `features/billing-portal/index.html`, marks the sidenav, registers a card
+in `features/index.html` and adds a `status.json` entry. What you inherit:
+
+| | |
+|---|---|
+| the three `<link>`s | in order, pointed at the sibling `designmd/` |
+| top bar | brand, search, account, plus `.topbar-menu` / `.topbar-title` / `.topbar-cta` for the collapsed layout |
+| side nav | the product's real sections, the Admin Settings group, and the off-canvas panel chrome (`.sidenav-head`, `.sidenav-logo`, `.sidenav-close`, `.sidenav-search`) |
+| page head | a title and the actions — no subtitle, no icons on the buttons |
+| `.app-shell is-fullscreen` | the shell sized correctly, with no prototype CSS |
+| the handlers | sprite fetch, modals, drawers, Escape, dropdowns, tabs, selects, the nav rail, and the off-canvas hamburger |
+
+Then build the feature into the content region, replacing the placeholder `.card`.
+
+A hand-written skeleton drifts from the system the moment the system moves; a duplicated
+template cannot. **If the template is missing something every screen should have, fix
+`template/index.html`** — never only your copy.
+
+Iterate locally — open via `file://` or a small static server. Relative paths to
+`../../designmd/` resolve as long as both folders stay siblings.
 
 ### Inline + ship
 
@@ -968,13 +1012,16 @@ Inlined HTML is the lightweight, zero-headache version: the file IS the design s
 > `data/figma-map.json` carries the `storyId` and the React mapping for each one. Don't invent a token
 > or a component: if designmd lacks something, say so rather than approximating it.
 >
-> **Boilerplate** — link the three stylesheets (icons are injected by `inline.py`, no icon CDN):
+> **Don't write the shell** — duplicate the template, which is the system's own:
 >
-> ```html
-> <link rel="stylesheet" href="../../designmd/tokens.css" />
-> <link rel="stylesheet" href="../../designmd/semantic.css" />
-> <link rel="stylesheet" href="../../designmd/components.css" />
+> ```bash
+> python3 tools/new-prototype.py feature-name --title "Feature name" --nav "Initiatives"
 > ```
+>
+> It writes the file with the three stylesheets linked in order, the top bar, side nav,
+> page head, app shell and the delegated handlers already in place, and lists the feature.
+> Build into the content region, replacing the placeholder `.card`. If the shell itself is
+> wrong, fix `designmd/template/index.html`, never just your copy.
 >
 > Before shipping, run `python3 inline.py ../features/feature-name/index.html` from `designmd/` to bake all CSS **and the icon sprite** into the file. Result: zero external dependencies.
 >

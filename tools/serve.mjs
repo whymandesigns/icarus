@@ -24,6 +24,18 @@ const TYPES = { '.html':'text/html; charset=utf-8', '.js':'text/javascript', '.m
   '.woff2':'font/woff2', '.woff':'font/woff', '.mp4':'video/mp4', '.webm':'video/webm', '.csv':'text/csv', '.txt':'text/plain' };
 
 const safe = p => { const f = path.normalize(path.join(ROOT, decodeURIComponent(p))); return f.startsWith(ROOT) ? f : null; };
+// A prototype that is still linked — not yet run through inline.py — asks for
+// the design system at ../../designmd/…, which normalises to /designmd/… and
+// lands outside ROOT. Serve those from the checkout this script lives in, so a
+// linked prototype renders here exactly as it will once it is baked. Anything
+// really under ROOT still wins; this is only consulted on a miss.
+const DESIGNMD = path.resolve(HERE, '..');
+const designmdFile = p => {
+  const rel = decodeURIComponent(p).replace(/^\/designmd\//, '');
+  if (rel === decodeURIComponent(p)) return null;
+  const f = path.normalize(path.join(DESIGNMD, rel));
+  return f.startsWith(DESIGNMD) ? f : null;
+};
 const json = (res, code, body) => { res.writeHead(code, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(body)); };
 const readDoc = async file => { try { return JSON.parse(await fs.readFile(file, 'utf8')); } catch { return EMPTY(); } };
 
@@ -83,7 +95,13 @@ http.createServer(async (req, res) => {
       res.writeHead(405); return res.end();
     }
     let file = safe(url.pathname); if (!file) { res.writeHead(403); return res.end(); }
-    if ((await fs.stat(file).catch(() => null))?.isDirectory()) file = path.join(file, 'index.html');
+    let stat = await fs.stat(file).catch(() => null);
+    if (!stat) {
+      const alt = designmdFile(url.pathname);
+      const altStat = alt && await fs.stat(alt).catch(() => null);
+      if (altStat) { file = alt; stat = altStat; }
+    }
+    if (stat?.isDirectory()) file = path.join(file, 'index.html');
     const data = await fs.readFile(file);
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control':'no-store' });
     res.end(data);

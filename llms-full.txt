@@ -48,16 +48,42 @@ catches it.
    the action.
 5. **Don't write component CSS in a prototype.** If a variant is missing, add it to
    `designmd/components.css` so the next screen inherits it, then re-inline.
+6. **Build light only — dark theme is parked.** `[data-theme="dark"]` exists in the
+   stylesheet, but it is being rebuilt on Picasso's own dark values. Don't set it,
+   don't write `prefers-color-scheme` blocks, and don't add dark overrides for a new
+   token. Anything written for it now gets thrown away.
+7. **A full-window screen is `<div class="app-shell is-fullscreen">`, and that is all.**
+   No `height`, `min-height`, `flex` or `overflow` in the page, and no
+   `html, body { height: 100% }` reset — the variant bounds the body and
+   `.app-shell-main` scrolls on its own. Older prototypes carry four hand-written
+   lines because the variant did not exist yet; they are not the pattern to copy.
 
 ## Start here
 
-Point a prototype's three stylesheet `<link>`s at this folder, build it from the
-classes in `dist/kit.json`, then run from here:
+**Don't write the shell by hand — duplicate `template/`.** It is a real prototype
+that lints and inlines, carrying the top bar, side nav, page head and the delegated
+handlers the kit does not ship. Run from here:
+
+```bash
+python3 tools/new-prototype.py <kebab-name> --title "<Title>" --nav "<Section>"
+# or, for a brand-new sidenav entry:
+python3 tools/new-prototype.py <kebab-name> --title "<Title>" --new-nav "<Label>" --nav-icon i-<slug>
+```
+
+That copies `template/index.html` into `features/<kebab-name>/index.html` (pass
+`--into <path>` elsewhere), marks the nav, registers a card in `features/index.html`
+and adds a `status.json` entry. Then build the feature into the content region,
+from the classes in `dist/kit.json`, and run:
 
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
+python3 tools/new-prototype.py <kebab-name> --thumb  # 1280x800 card image, re-runnable
 python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
+
+A hand-written skeleton drifts from the system the moment the system moves; a
+duplicated template cannot. If the template lacks something every screen should
+have, fix `template/index.html` — never only your copy.
 
 `inline.py` folds the CSS, the icon sprite and the fonts into the file, so what you
 share has no external dependencies and does not care where it sits.
@@ -69,7 +95,9 @@ that shape, always `index.html`. On your own, put it where you like.
 
 | | |
 |---|---|
-| `designmd/dist/kit.json` | **the inventory** — 366 classes grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/dist/kit.json` | **the inventory** — every class grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
+| `designmd/template/index.html` | **the shell every prototype starts as** — top bar, side nav, page head, and the delegated handlers the kit does not ship. Duplicate it with `tools/new-prototype.py`; edit it when the shell itself should change. |
+| `designmd/tools/new-prototype.py` | duplicates the template, resolves the sidenav, lists the feature. `--thumb` shoots the card image later. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
 | `designmd/DESIGN.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
@@ -94,15 +122,23 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   their behaviour from a delegated block there. Do not copy it whole: it is 2,286 lines
   and its tail renders the showcase's own palette swatches against elements no prototype
   has, which throws and kills every handler after it. Take the handlers you need.
-- **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title; the top
-  bar is a container query that reveals it below 768px — but that is a *container*
-  query on `.topbar`, which measures its content box, and the bar carries 24px of
-  padding each side. So it collapses at a viewport of about **816px**, not 768.
-  Same for `.topbar-menu` and
+- **`.topbar-title` shows nothing on a wide screen.** It is the *collapsed* title, and
+  the bar collapses at **1024px** — the same edge as the side nav, because the hamburger
+  it reveals is what opens the off-canvas rail. Same for `.topbar-menu` and
   `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
-  they are invisible until the bar collapses. `.topbar-cta` is the exception: add it only
-  on a page with **no** page head, because nothing hides `.page-head-actions` when the bar
-  collapses, so carrying both puts two primary CTAs on screen once it does.
+  they are invisible until the bar collapses. Carry `.topbar-cta` too, holding the SAME
+  action as the page head's `.btn-primary`: `.page-head` is hidden at that same 1024px
+  edge, so exactly one of the two is ever on screen. (This used to be the opposite —
+  nothing hid the page head, and carrying both showed two primary CTAs once the bar
+  collapsed. That is fixed; ignore any older note saying to leave `.topbar-cta` off.)
+  (The kit's own playground collapses on a *container* query at 768px instead, since
+  there the bar is narrow inside a wide window and the viewport says nothing useful.
+  That edge measures the bar, not the screen; it never applies to a feature prototype.)
+- **The side nav is off-canvas at ≤1024px, and that needs three things.** The kit
+  hides the rail and reveals `.topbar-menu` below Picasso's lg edge; the hamburger
+  then has to toggle `.is-open` on the `.sidenav`. `template/index.html` ships the
+  markup and the handler, so a prototype duplicated from it already works. Write the
+  shell by hand and you get a hidden nav with nothing to open it.
 - **Some classes carry no CSS and are still right.** `.dropdown-trigger` is how the
   delegated script finds a dropdown's button; nothing styles it. `kit.json` lists these
   under `behaviourHooks`, beside `attributes` for the components driven by an attribute
@@ -137,6 +173,10 @@ How the components are actually composed, and the page they need around
 them. Build from these, not from example.html.
 
 ### The page around them
+
+**A prototype duplicated from `template/index.html` already has all of this** — see §7
+"Building a new prototype". Read this section to understand what the template is doing,
+or when you are working on the template itself; do not retype it into a feature.
 
 The snippets below are fragments. Each assumes a page that already has the three
 stylesheets, the icon sprite and the handlers — and none of those is automatic.
@@ -245,6 +285,20 @@ stylesheets, the icon sprite and the handlers — and none of those is automatic
     if (group) group.setAttribute('aria-expanded',
       String(group.getAttribute('aria-expanded') !== 'true'));
   });
+
+  // Off-canvas side nav (≤1024px). The kit hides the rail and reveals
+  // .topbar-menu at that edge; without this the nav is unreachable there.
+  const sidenav = () => document.querySelector('.app-shell > .sidenav');
+  document.addEventListener('click', e => {
+    const nav = sidenav();
+    if (!nav) return;
+    if (e.target.closest('.topbar-menu'))   { nav.classList.toggle('is-open'); return; }
+    if (e.target.closest('.sidenav-close')) { nav.classList.remove('is-open'); return; }
+    // The scrim is .app-shell's ::after, so a click on it targets .app-shell.
+    if (nav.classList.contains('is-open') && e.target === nav.parentElement) {
+      nav.classList.remove('is-open');
+    }
+  });
   </script>
 </body>
 </html>
@@ -315,11 +369,12 @@ The ones below are the structures that cannot be guessed from a class name — w
 wraps which, and what actually opens a thing.
 
 ```html
-<!-- Top bar.
+<!-- Top bar. The template already ships this — see §7; it is here to show which
+     element wraps which.
      .topbar-menu, .topbar-title and .topbar-cta are the COLLAPSED layout, revealed
-     below 768px of the bar's OWN width, so they show nothing on a wide screen. Put
-     the menu and title in from the start. Use .topbar-cta only on a page with no
-     page head, or both primaries appear at once when the bar collapses. -->
+     below 1024px, so they show nothing on a wide screen. Put all three in from the
+     start. .topbar-cta repeats the page head's primary action, which is safe because
+     .page-head is hidden at the same edge. -->
 <header class="topbar">
   <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">
     <svg class="btn-icon"><use href="#i-list"></use></svg>
@@ -476,13 +531,15 @@ For the full inventory with every modifier and live demos, open `example.html` �
 Generated from the stylesheets. Everything the kit defines is below; if a
 name is not here, it does not exist.
 
-## Classes (366)
+## Classes (371)
 
 **Accordion** — .accordion · .accordion-chevron · .accordion-content · .accordion-details · .accordion-group · .accordion-summary · .accordion-title · .borders-middle · .borders-none · .is-open
 
 **Alert** — .alert · .alert-actions · .alert-close · .alert-danger · .alert-icon · .alert-info · .alert-message · .alert-success · .alert-warning
 
-**App shell** — .app-shell · .app-shell-main
+**Side nav — tablet and below** — .app-shell · .topbar-menu
+
+**App shell** — .app-shell-main · .is-fullscreen
 
 **Avatar** — .avatar · .avatar-2xl · .avatar-lg · .avatar-md · .avatar-sm · .avatar-team · .avatar-xl · .avatar-xs
 
@@ -526,13 +583,13 @@ name is not here, it does not exist.
 
 **Field + Input** — .field · .field-hint · .field-hint-end · .field-hint-row · .field-label · .input · .input-icon · .input-icon-glyph · .input-icon-left · .input-icon-right · .input-xs · .is-error
 
-**Layout helpers** — .grid-2 · .page · .row · .row-end · .stack
+**Layout helpers** — .grid-2 · .grid-4 · .page · .row · .row-end · .stack
 
 **Segmented control** — .is-active · .segmented · .segmented-icon · .segmented-item
 
 **Toolbar** — .is-auto · .toolbar · .toolbar-end · .toolbar-search · .toolbar-spacer
 
-**Side navigation** — .is-compact · .sidenav · .sidenav-footer · .sidenav-group · .sidenav-group-trigger · .sidenav-item · .sidenav-item-chevron · .sidenav-item-icon · .sidenav-item-label · .sidenav-list · .sidenav-spacer · .sidenav-subitem · .sidenav-sublist · .sidenav-toggle
+**Side navigation** — .is-compact · .sidenav · .sidenav-footer · .sidenav-group · .sidenav-group-trigger · .sidenav-head · .sidenav-item · .sidenav-item-chevron · .sidenav-item-icon · .sidenav-item-label · .sidenav-list · .sidenav-logo · .sidenav-search · .sidenav-spacer · .sidenav-subitem · .sidenav-sublist · .sidenav-toggle
 
 **Stepper** — .is-complete · .stepper · .stepper-compact · .stepper-current-only · .stepper-label · .stepper-num · .stepper-sep · .stepper-step
 
@@ -552,7 +609,7 @@ name is not here, it does not exist.
 
 **Radio** — .radio · .radio-circle · .radio-input · .radio-label
 
-**Top bar** — .search-icon · .topbar · .topbar-account · .topbar-actions · .topbar-brand · .topbar-brand-logo · .topbar-cta · .topbar-logo · .topbar-menu · .topbar-search · .topbar-search-input · .topbar-title
+**Top bar** — .search-icon · .topbar · .topbar-account · .topbar-actions · .topbar-brand · .topbar-brand-logo · .topbar-cta · .topbar-logo · .topbar-search · .topbar-search-input · .topbar-title
 
 **Slider** — .slider · .slider-field · .slider-icon · .slider-input · .slider-label · .slider-value
 
@@ -590,14 +647,14 @@ Not every component is a class.
 
 No CSS of their own, but the delegated script finds its targets by them.
 
-.datepicker-prev · .dropdown-trigger · .editor-counter-text · .page-view
+.datepicker-prev · .dropdown-trigger · .editor-counter-text · .page-view · .sidenav-close
 
 ## Tokens
 
 Reference the semantic aliases. The palette ramps are listed so you can
 recognise one and avoid writing it directly.
 
-**color** (83) — `--color-white`, `--color-black`, `--color-gray-50`, `--color-gray-100`, `--color-gray-200`, `--color-gray-300`, `--color-gray-400`, `--color-gray-500`, `--color-gray-600`, `--color-gray-700`, `--color-zinc-500`, `--color-zinc-600`, `--color-zinc-700`, `--color-zinc-800`, `--color-zinc-900`, `--color-graphite-300`, `--color-graphite-700`, `--color-graphite-750`, `--color-graphite-800`, `--color-graphite-900`, `--color-red-100`, `--color-red-150`, `--color-red-500`, `--color-yellow-100`, `--color-yellow-150`, `--color-yellow-500`, `--color-yellow-700`, `--color-green-100`, `--color-green-150`, `--color-green-200`, `--color-green-300`, `--color-green-400`, `--color-green-500`, `--color-green-600`, `--color-green-700`, `--color-green-800`, `--color-blue-400`, `--color-blue-100`, `--color-blue-150`, `--color-blue-500`, `--color-blue-600`, `--color-blue-700`, `--color-purple-100`, `--color-purple-150`, `--color-purple-500`, `--color-blue-500-hover`, `--color-blue-500-active`, `--color-green-500-hover`, `--color-green-500-active`, `--color-red-500-hover`, `--color-red-500-active`, `--color-bg`, `--color-surface`, `--color-surface-muted`, `--color-surface-sunken`, `--color-border`, `--color-border-strong`, `--color-border-focus`, `--color-text`, `--color-text-muted`, `--color-text-subtle`, `--color-text-inverse`, `--color-text-link`, `--color-icon`, `--color-brand`, `--color-brand-hover`, `--color-brand-active`, `--color-brand-subtle`, `--color-accent`, `--color-accent-hover`, `--color-accent-active`, `--color-accent-subtle`, `--color-success`, `--color-success-subtle`, `--color-warning`, `--color-warning-subtle`, `--color-danger`, `--color-danger-hover`, `--color-danger-active`, `--color-danger-subtle`, `--color-info`, `--color-info-subtle`, `--color-overlay`
+**color** (78) — `--color-white`, `--color-black`, `--color-gray-50`, `--color-gray-100`, `--color-gray-200`, `--color-gray-300`, `--color-gray-400`, `--color-gray-500`, `--color-gray-600`, `--color-gray-700`, `--color-graphite-300`, `--color-graphite-700`, `--color-graphite-750`, `--color-graphite-800`, `--color-graphite-900`, `--color-red-100`, `--color-red-150`, `--color-red-500`, `--color-yellow-100`, `--color-yellow-150`, `--color-yellow-500`, `--color-yellow-700`, `--color-green-100`, `--color-green-150`, `--color-green-200`, `--color-green-300`, `--color-green-400`, `--color-green-500`, `--color-green-600`, `--color-green-700`, `--color-green-800`, `--color-blue-400`, `--color-blue-100`, `--color-blue-150`, `--color-blue-500`, `--color-blue-600`, `--color-blue-700`, `--color-purple-100`, `--color-purple-150`, `--color-purple-500`, `--color-blue-500-hover`, `--color-blue-500-active`, `--color-green-500-hover`, `--color-green-500-active`, `--color-red-500-hover`, `--color-red-500-active`, `--color-bg`, `--color-surface`, `--color-surface-muted`, `--color-surface-sunken`, `--color-border`, `--color-border-strong`, `--color-border-focus`, `--color-text`, `--color-text-muted`, `--color-text-subtle`, `--color-text-inverse`, `--color-text-link`, `--color-icon`, `--color-brand`, `--color-brand-hover`, `--color-brand-active`, `--color-brand-subtle`, `--color-accent`, `--color-accent-hover`, `--color-accent-active`, `--color-accent-subtle`, `--color-success`, `--color-success-subtle`, `--color-warning`, `--color-warning-subtle`, `--color-danger`, `--color-danger-hover`, `--color-danger-active`, `--color-danger-subtle`, `--color-info`, `--color-info-subtle`, `--color-overlay`
 
 **spacing** (9) — `--spacing-0`, `--spacing-1`, `--spacing-2`, `--spacing-3`, `--spacing-4`, `--spacing-6`, `--spacing-8`, `--spacing-10`, `--spacing-12`
 
