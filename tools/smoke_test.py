@@ -117,16 +117,35 @@ SHELL_FORBIDDEN = [
 def template_phase():
     """Scaffold from template/ the way the guide says to, then bake it.
 
-    The temp folder sits beside designmd/, because the template links the system
-    at ../../designmd/ — the path a real prototype in features/ uses.
+    The template links the system at ../../designmd/ — the path a real
+    prototype in features/ uses — so the scaffold needs a `designmd` directory
+    two levels above it. We build that layout from scratch rather than lean on
+    the checkout's own:
+
+        <tmp>/designmd -> this checkout        (symlink)
+        <tmp>/features/smoke-template/index.html
+
+    An earlier version put the temp folder beside the checkout and assumed the
+    checkout was NAMED designmd. It is locally; on CI, actions/checkout clones
+    into a directory named after the repo, so ../../designmd resolved to
+    nothing and every stylesheet came back dead. The layout here does not care
+    what this folder is called.
     """
     problems = 0
-    with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = pathlib.Path(tmp)
+        features = root / "features"
+        features.mkdir()
+        try:
+            (root / "designmd").symlink_to(ROOT, target_is_directory=True)
+        except OSError as e:
+            return fail(f"could not stage a designmd/ + features/ pair in {tmp}: {e}")
+
         r = subprocess.run(
             [sys.executable, str(ROOT / "tools" / "new-prototype.py"), "smoke-template",
-             "--title", "Smoke template", "--nav", "Initiatives", "--into", tmp],
+             "--title", "Smoke template", "--nav", "Initiatives", "--into", str(features)],
             capture_output=True, text=True)
-        proto = pathlib.Path(tmp) / "smoke-template" / "index.html"
+        proto = features / "smoke-template" / "index.html"
         if r.returncode != 0 or not proto.is_file():
             return fail(f"the scaffolder did not produce a prototype:\n{r.stdout}{r.stderr}")
         print("  ok    scaffolds a prototype from template/")
