@@ -71,10 +71,19 @@ def build_style_block():
         '  </style>'
     )
 
-def build_inline_logo():
-    logo = read('assets/logo.svg')
-    # Apply the topbar-brand-logo class for sizing
-    return logo.replace('<svg ', '<svg class="topbar-brand-logo" ', 1).replace('\n', '')
+def build_inline_logo(asset='assets/logo.svg', cls='topbar-brand-logo'):
+    """Inline a logo asset, carrying the class that sizes it.
+
+    Two call sites, two assets. The top bar is graphite, so its wordmark is
+    white; the off-canvas side nav panel is a light surface, so it uses
+    logo-dark.svg — the same artwork with its fills on --color-text. They are
+    separate files rather than one currentColor asset because the UNBAKED
+    prototype references the logo as <img src>, and an <img> never inherits
+    the page's colour. One file would have to be wrong in one of the two
+    places while you work.
+    """
+    logo = read(asset)
+    return logo.replace('<svg ', f'<svg class="{cls}" ', 1).replace('\n', '')
 
 REVIEW_OPEN = '<!-- === review.js === -->'
 REVIEW_CLOSE = '<!-- === /review.js === -->'
@@ -130,6 +139,8 @@ STYLE_PATTERN = re.compile(
 # Image patterns
 IMG_PATTERN = re.compile(r'<img class="topbar-brand-logo"[^>]*src="[^"]*logo\.svg"[^>]*/?>')
 INLINE_LOGO_PATTERN = re.compile(r'<svg class="topbar-brand-logo"[^>]*>.*?</svg>', re.DOTALL)
+NAV_IMG_PATTERN = re.compile(r'<img class="sidenav-logo"[^>]*src="[^"]*logo-dark\.svg"[^>]*/?>')
+NAV_INLINE_PATTERN = re.compile(r'<svg class="sidenav-logo"[^>]*>.*?</svg>', re.DOTALL)
 
 # Icon sprite — previously-injected block (idempotent refresh) + <body> anchor
 SPRITE_PATTERN = re.compile(re.escape(SPRITE_OPEN) + r'.*?' + re.escape(SPRITE_CLOSE), re.DOTALL)
@@ -210,7 +221,6 @@ def add_review(html, with_style):
         # versions panel come through unstyled.
         html = REVIEW_PATTERN.sub(lambda _: build_review_style() + '\n' + build_review_script(), html)
         return html, 'refreshed review bar (added the missing css block)'
-        return html, 'refreshed review bar (css + js)'
     if REVIEW_PATTERN.search(html):
         html, n = REVIEW_PATTERN.subn(lambda _: build_review_script(), html)
         return html, f'refreshed review bar ({n} block)'
@@ -319,6 +329,17 @@ def inline(path, force=False):
         html, m = IMG_PATTERN.subn(inline_logo, html)
         logo_status = f'inlined {m} logo img(s)' if m else 'no logo found'
 
+    # The side nav panel's dark wordmark, same two paths. A page without the
+    # off-canvas header simply has neither to match, and m stays 0.
+    nav_logo = build_inline_logo('assets/logo-dark.svg', 'sidenav-logo')
+    if NAV_INLINE_PATTERN.search(html):
+        html, mn = NAV_INLINE_PATTERN.subn(nav_logo, html)
+        logo_status += f', refreshed nav logo ({mn} svg)'
+    else:
+        html, mn = NAV_IMG_PATTERN.subn(nav_logo, html)
+        if mn:
+            logo_status += f', inlined {mn} nav logo img(s)'
+
     # Phosphor CDN is retired — strip any leftover link
     html, ph = PHOSPHOR_PATTERN.subn('\n', html)
     html = strip_annotation_tool(html)
@@ -336,8 +357,11 @@ def inline(path, force=False):
     if ph:
         sprite_status += f' · stripped {ph} Phosphor link(s)'
 
-    # Review bar — CSS already travels in the style block; add/refresh the script
-    html, review_status = add_review(html, with_style=False)
+    # Review bar — script and CSS both. The plugin CSS used to ride in the
+    # design-system style block; it does not any more (see build_style_block),
+    # so a first inline must bring it, or the launcher and the versions panel
+    # render unstyled on every prototype that has never been baked before.
+    html, review_status = add_review(html, with_style=True)
 
     with open(path, 'w') as f:
         f.write(html)

@@ -223,14 +223,23 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
 
     # --- one primary call to action per page
     # Green is both the primary CTA and the success colour, so a second one
-    # means neither reads as the action. .topbar-cta is exempt only when it is
-    # the page's single primary: it belongs to the collapsed layout, and
-    # nothing hides .page-head-actions there, so a page carrying both shows
-    # two at once below 768px.
+    # means neither reads as the action.
+    #
+    # .topbar-cta does not count. It is the collapsed layout's primary, and the
+    # kit hides .page-head at the same 1024px edge that reveals it, so the two
+    # are never on screen together — the rule is about what the eye sees, not
+    # what the file contains. (Before that breakpoint existed they could both
+    # show, and this exemption would have been wrong.) A second .topbar-cta is
+    # still an error: those WOULD share the bar.
     primary = re.findall(r'class="([^"]*\bbtn-primary\b[^"]*)"', markup)
-    if len(primary) > 1:
+    in_bar = [c for c in primary if re.search(r'\btopbar-cta\b', c)]
+    on_page = [c for c in primary if c not in in_bar]
+    if len(on_page) > 1:
         found.append(Finding("error", line_of(markup, markup.find("btn-primary")), "two-primary",
-            f"{len(primary)} .btn-primary on one page — every CTA but the most important is .btn-secondary"))
+            f"{len(on_page)} .btn-primary on one page — every CTA but the most important is .btn-secondary"))
+    if len(in_bar) > 1:
+        found.append(Finding("error", line_of(markup, markup.find("topbar-cta")), "two-primary",
+            f"{len(in_bar)} .btn-primary.topbar-cta — the collapsed bar has room for one action"))
 
     # --- icon references
     # A prototype may ship symbols of its own alongside the sprite — product

@@ -183,6 +183,14 @@ def build_tokens_json(primitives, semantic_light, semantic_dark, table):
         fam = family_of(name)
         if fam in (None, "type", "motion"):
             continue
+        if name.startswith("--color-zinc-"):
+            # Dark-theme plumbing, not a palette anyone designs with. semantic.css
+            # builds the whole [data-theme="dark"] block on these, so they have to
+            # stay in tokens.css — but example.html never lists them, and a gallery
+            # that shows them invites a prototype to reference one directly. The
+            # downstream dark theme does not need them either: every semantic token
+            # already carries its own resolved dark value.
+            continue
         add(fam, name, resolve(value, table), usage_for(name, comment, None, fam))
 
     # --- semantic colour aliases, resolved, with the target recorded in usage
@@ -261,7 +269,8 @@ def build_tokens_json(primitives, semantic_light, semantic_dark, table):
 # ---------------------------------------------------------------- kit.json
 
 
-def build_kit_json(components_css, semantic_css, example_html, other_css, design_md):
+def build_kit_json(components_css, semantic_css, example_html, other_css, design_md,
+                   template_html=""):
     """Every class the kit defines, plus the showcase-only ones to reject.
 
     semantic.css is in here for one class, and it is the one every prototype
@@ -270,7 +279,13 @@ def build_kit_json(components_css, semantic_css, example_html, other_css, design
     leaves the most fundamental layout class looking invented.
     """
     live = strip_comments(components_css) + "\n" + strip_comments(semantic_css)
-    script = "".join(re.findall(r"<script>(.*?)</script>", example_html, re.S))
+    # Both delegated scripts count. example.html's is the showcase's, and
+    # template/index.html's is the one every prototype actually ships — a class
+    # only the template queries (.sidenav-close) is just as real a hook as one
+    # only the showcase queries, and leaving it out makes the linter warn about
+    # markup the kit itself prescribes.
+    script = "".join(re.findall(r"<script>(.*?)</script>",
+                                example_html + template_html, re.S))
 
     # Group by the top-level banners components.css already uses. Those are
     # written with a long dash run — /* ---------- Button ---------- */ —
@@ -686,6 +701,8 @@ def main():
     semantic_css = (ROOT / "semantic.css").read_text()
     components_css = (ROOT / "components.css").read_text()
     example_html = (ROOT / "example.html").read_text()
+    template_file = ROOT / "template" / "index.html"
+    template_html = template_file.read_text() if template_file.exists() else ""
     design_md = (ROOT / "DESIGN.md").read_text()
     icons_svg = (ROOT / "icons.svg").read_text() if (ROOT / "icons.svg").exists() else ""
     other_css = "".join(
@@ -709,7 +726,8 @@ def main():
         )
         + "\n",
         "kit.json": json.dumps(
-            build_kit_json(components_css, semantic_css, example_html, other_css, design_md), indent=2
+            build_kit_json(components_css, semantic_css, example_html, other_css, design_md,
+                           template_html), indent=2
         )
         + "\n",
         "bundle.css": build_bundle_css(tokens_css, semantic_css, components_css),

@@ -1032,6 +1032,7 @@ textarea.input {
   gap: var(--spacing-3); padding: var(--spacing-12);
   color: var(--color-text-muted); text-align: center;
 }
+.sheet-empty-state[hidden] { display: none; }
 .sheet-empty-state svg { font-size: 32px; color: var(--color-text-subtle); }
 
 /* ---------- Accordion ----------
@@ -1137,6 +1138,7 @@ textarea.input {
 /* Tighter than body-sm's 20px leading: the loose line box let the glyphs ride
  * high above the centred icon. 1.35 hugs the text so it optically centres with
  * the 16px icon and the CTAs, and still wraps cleanly on multi-line alerts. */
+.alert[hidden] { display: none; }
 .alert-message { flex: 1; min-width: 0; margin: 0; line-height: 1.35; padding-top: 2px; }
 .alert-actions { display: inline-flex; gap: var(--spacing-2); flex-shrink: 0; }
 /* Dismiss button — styled by the icon-only ghost button component in the
@@ -1615,6 +1617,7 @@ a.avatar:focus-visible {
   gap: var(--spacing-3);
   width: 100%;
 }
+.slider[hidden] { display: none; }
 .slider-input {
   -webkit-appearance: none;
   appearance: none;
@@ -1886,6 +1889,20 @@ a.avatar:focus-visible {
 }
 .sidenav.is-compact { width: 62px; }
 
+/* Panel header and search — the off-canvas layout's own chrome.
+ *
+ * Above 1024px the top bar carries the logo and the search field, so these
+ * would be a second copy of both; they are hidden and the ≤1024px block below
+ * reveals them. Keep them in the markup from the start, like .topbar-menu —
+ * they cost nothing until the panel exists. */
+.sidenav-head,
+.sidenav-search { display: none; }
+.sidenav-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
 .sidenav-list {
   display: flex;
   flex-direction: column;
@@ -2021,25 +2038,99 @@ a.avatar:focus-visible {
 }
 .sidenav.is-compact .sidenav-toggle svg { transform: rotate(180deg); }
 
+/* ---------- Side nav — tablet and below ----------
+ * At Picasso's lg edge (1024px) a 236px rail costs too much of the width, so
+ * it stops being a column and becomes a panel that slides over the content.
+ *
+ * It is hidden, not deleted: `display: none` on its own would strand the user
+ * with no way to navigate, because .topbar-menu is wired to nothing by
+ * default. So this block does three things together, and they only work as a
+ * set — reveal the hamburger, take the rail out of the flow, and dim what is
+ * behind it while it is open:
+ *
+ *   <button class="btn btn-icon-only btn-ghost topbar-menu" …>   in .topbar
+ *   <aside class="sidenav">…</aside>                             first child of .app-shell
+ *   JS: the hamburger toggles `.is-open` on that .sidenav
+ *
+ * The template ships all three. A prototype built from it inherits the
+ * behaviour and needs no CSS of its own.
+ *
+ * Compact mode is overridden back to full width on purpose: a 62px icon rail
+ * is a way to save horizontal space, and a panel floating over the content is
+ * not short of any. The collapse chevron goes with it.
+ */
+@media (max-width: 1024px) {
+  /* Fixed, not absolute: the panel spans the whole window, top bar included,
+   * and the bar sits behind it. Anchoring it inside .app-shell would start it
+   * below the bar and leave the product's own chrome lit while a modal
+   * surface is open over everything else. --z-drawer clears the bar, which is
+   * in normal flow with no z-index of its own. */
+  .app-shell > .sidenav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: auto;
+    z-index: var(--z-drawer);
+    width: 236px;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-2);
+    transition: transform var(--duration-base) var(--ease);
+  }
+  .app-shell > .sidenav.is-open { transform: translateX(0); }
+  .app-shell > .sidenav.is-compact { width: 236px; }
+  .app-shell > .sidenav .sidenav-toggle { display: none; }
+
+  /* The panel is the whole product chrome while it is open, so it carries the
+   * brand, a way out, and search — the three things the collapsed top bar
+   * gave up. .sidenav-close is a behaviour hook: the icon-only ghost button
+   * styles it, and the script finds it by this class. */
+  .app-shell > .sidenav .sidenav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-2) var(--spacing-4);
+  }
+  .app-shell > .sidenav .sidenav-search {
+    display: block;
+    margin-bottom: var(--spacing-4);
+  }
+
+  /* The scrim, fixed to match — dimming everything the panel is not. A
+   * pseudo-element rather than a markup node, so an existing prototype gains
+   * it without its HTML changing; clicks on it land on .app-shell, which is
+   * what the template's handler listens for. */
+  .app-shell:has(> .sidenav.is-open)::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: var(--color-overlay);
+  }
+
+  .topbar .topbar-menu { display: inline-flex; }
+}
+
 /* ---------- App shell ----------
  * Pairs a .sidenav with .app-shell-main.
  *
- * The fixed height and the border below are the SHOWCASE's framing, so
- * example.html can show a whole screen in a box. A real page needs the shell
- * to fill the viewport under the top bar, so every prototype that uses it
- * writes the same four lines. Until that is fixed in the kit, copy them
- * verbatim rather than inventing your own:
+ * TWO SHAPES, AND YOU NEVER WRITE CSS FOR EITHER:
  *
- *   .app-shell      { flex: 1; min-height: 0; height: auto; border: 0; border-radius: 0; }
- *   .app-shell-main { overflow-y: auto; padding: var(--spacing-6); }
+ *   .app-shell                 a 560px box — the SHOWCASE's framing, so
+ *                              example.html can show a screen inside a card.
+ *   .app-shell is-fullscreen   fills the window under the .topbar. This is
+ *                              what a real prototype wants, every time.
  *
- *   html, body { height: 100%; }
- *   body { display: flex; flex-direction: column; }
- *
- * This is the one sanctioned exception to "don't write component CSS in a
- * prototype" — the kit currently leaves you no alternative.
+ * A prototype that is the app writes `<div class="app-shell is-fullscreen">`
+ * and stops. Do not add `height`, `min-height`, `flex`, `overflow` or a
+ * `html, body { height: 100% }` reset in the page — .app-shell-main already
+ * scrolls on its own, and a local override is what breaks the layout rather
+ * than fixing it. Older prototypes carry four hand-written lines here because
+ * this variant did not exist yet; they are not the pattern to copy.
  */
 .app-shell {
+  position: relative;   /* the off-canvas rail below ≤1024px anchors to this */
   display: flex;
   height: 560px;
   background: var(--color-bg);
@@ -2052,6 +2143,47 @@ a.avatar:focus-visible {
   background: var(--color-surface);
   padding: var(--spacing-6);
   overflow: auto;
+}
+/* Full-viewport variant — the shell takes whatever the top bar leaves.
+ *
+ * Two mechanisms, deliberately. The calc is the floor: it works everywhere but
+ * assumes the only thing above the shell is a .topbar of exactly
+ * --header-height. The :has() block below replaces it with a real flex fill,
+ * so the shell stays correct when the bar changes height or something else
+ * (a global banner, a breadcrumb strip) is added above it. A browser without
+ * :has() drops that rule entirely and keeps the calc, which is the old
+ * behaviour — so there is no version of this that collapses to nothing.
+ *
+ * dvh is the second declaration because 100vh on mobile Safari means the
+ * viewport WITHOUT browser chrome, which overflows the page by the height of
+ * the address bar. Browsers that do not know dvh ignore the line and keep vh.
+ */
+.app-shell.is-fullscreen {
+  height: calc(100vh - var(--header-height));
+  height: calc(100dvh - var(--header-height));
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+}
+body:has(> .app-shell.is-fullscreen) {
+  /* A fixed height, not min-height: the shell is a flex child that grows into
+   * what is left, and a body that can grow has nothing left to give — the
+   * shell would size to its content and the whole page would scroll instead
+   * of .app-shell-main. overflow: hidden makes that explicit; it propagates to
+   * the viewport and does not clip the fixed-position modals or drawers. */
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* Anything above the shell keeps its own height; the shell eats the rest. */
+body:has(> .app-shell.is-fullscreen) > * { flex: 0 0 auto; }
+body:has(> .app-shell.is-fullscreen) > .app-shell.is-fullscreen {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
 }
 
 /* ---------- Breadcrumbs ----------
@@ -2171,6 +2303,18 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   align-items: center;
   gap: var(--spacing-2);
   flex-shrink: 0;
+}
+
+/* Below the lg edge the collapsed top bar carries the page title itself, so a
+ * page head here would print the same heading twice, one line apart. It stands
+ * down, and the primary action moves up with the title as `.topbar-cta` —
+ * which the collapsed bar reveals at exactly this breakpoint.
+ *
+ * This is what makes .topbar-cta safe to carry on a page that also has a page
+ * head. It used to be the opposite: nothing hid .page-head-actions, so a page
+ * with both put two primary CTAs on screen the moment the bar collapsed. */
+@media (max-width: 1024px) {
+  .page-head { display: none; }
 }
 
 /* ---------- Template frame ----------
@@ -2851,18 +2995,37 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   .topbar-search { width: 200px; }
 }
 
-/* Collapsed bar (≤768px, Picasso md edge): hamburger + page title on the left,
- * a primary action on the right; the brand logo, search and account menu drop. */
-/* The bar's own appearance when collapsed.
+/* Collapsed bar (≤1024px, Picasso lg edge): light surface, hamburger + page
+ * title on the left, a primary action on the right; the brand logo, search and
+ * account menu drop.
  *
- * This cannot live in the @container block below: .topbar carries
- * container-type itself, and a container query styles a container's
- * descendants, never the container. Inside a prototype the topbar spans the
- * viewport, so a media query says the same thing; in the kit's playground the
- * surrounding .playground-stage is the container, and the rule below covers it
- * there. Both paths land on the same result. */
-@media (max-width: 768px) {
+ * It collapses at the SAME edge as the side nav (see "Side nav — tablet and
+ * below"), and that is not a coincidence — below 1024px the rail is off-canvas
+ * and the hamburger in this bar is the only way to reach it. Move one edge and
+ * you must move the other, or there is a band of widths with a hidden nav and
+ * no control that opens it.
+ *
+ * Two queries, saying the same thing, because neither covers both cases:
+ *
+ *   @media     — a real prototype, where .topbar spans the viewport. This is
+ *                the one that matters for a feature screen.
+ *   @container — the kit's playground, where .topbar is narrow inside a wide
+ *                window, so the viewport says nothing useful about it. Its
+ *                edge stays at 768px: that is a measurement of the BAR, and a
+ *                bar 768px wide is cramped whatever the window is doing.
+ *
+ * The bar's own background cannot live in the @container block: .topbar
+ * carries container-type itself, and a container query styles a container's
+ * descendants, never the container. So the media query sets it in the
+ * prototype case and the @container block repeats it for the playground. */
+@media (max-width: 1024px) {
   .topbar { background: var(--color-surface); color: var(--color-text); gap: var(--spacing-3); }
+  .topbar .topbar-menu  { display: inline-flex; }
+  .topbar .topbar-title { display: block; font: var(--type-h2); }
+  .topbar .topbar-cta   { display: inline-flex; }
+  .topbar .topbar-brand,
+  .topbar .topbar-search,
+  .topbar .topbar-account { display: none; }
 }
 
 @container (max-width: 768px) {
@@ -3224,16 +3387,23 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
  * Tiny flex/grid primitives used across prototypes. `.page` lives in
  * semantic.css (it's the content max-width wrapper). The three below are
  * the everyday building blocks for stacking content vertically (`.stack`),
- * placing items in a wrapping row (`.row`), or a two-column grid that
- * collapses on narrow viewports (`.grid-2`).
+ * placing items in a wrapping row (`.row`), or an even grid that collapses on
+ * narrow viewports (`.grid-2`, `.grid-4`). `.grid-4` steps down to two columns
+ * before it goes to one, because four metric tiles stacked in a single column
+ * push everything below them off the first screen.
  */
 .stack  { display: flex; flex-direction: column; gap: var(--spacing-4); }
 .row    { display: flex; gap: var(--spacing-3); align-items: center; flex-wrap: wrap; }
 .row-end { justify-content: flex-end; }   /* actions pushed to the trailing edge */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-4); }
 
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 720px) {
   .grid-2 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr; }
 }
 
 /* ---------- Drawer parts ----------
