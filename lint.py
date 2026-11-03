@@ -15,6 +15,14 @@ What it catches, in the order the failures actually happen:
   dead icon           <use href="#i-…"> naming a symbol the sprite lacks.
                       Renders blank, silently.
   retired Phosphor    <i class="ph …">. The pack is gone; nothing renders.
+  local breakpoint    a @media/@container in the page's own CSS that styles a
+                      shell class, or a width-driven matchMedia in its script.
+                      The shell responds at one edge and it is the kit's —
+                      a second one here is what makes two screens disagree
+                      about a phone. Compact is a user choice, never a width.
+  incomplete shell    a .sidenav inside .app-shell with no .topbar-menu, or
+                      nothing wired to open it. Below 1024px the rail is
+                      off-canvas and the hamburger is the only way back to it.
   raw primitive       var(--color-blue-500) where a semantic alias belongs.
                       Re-pointing a theme cannot reach it.
   raw hex             a colour written past the token layer entirely.
@@ -43,6 +51,10 @@ INLINED_MARKER = "/* === tokens.css === */"
 # Spacing steps a token already covers, so a raw px value is a choice to drift.
 SPACING_PX = {"0": "0", "4": "1", "8": "2", "12": "3", "16": "4",
               "24": "6", "32": "8", "40": "10", "48": "12"}
+
+# The product chrome. A prototype may use these; it may not re-decide how they
+# behave at a width — that is components.css's single 1024px edge to move.
+SHELL_CLASS = r"\.(?:topbar|sidenav|app-shell|page-head)[\w-]*(?![\w-])"
 
 # Classes that are legitimately not in the kit: state hooks a prototype sets
 # itself, and the author tooling inline.py bakes in.
@@ -90,6 +102,20 @@ def primitives():
     return {n for n in names if re.search(r"-\d+(-hover|-active)?$", n)}
 
 
+def at_rules(css):
+    """Yield (kind, prelude, body, start) for each @media/@container rule.
+
+    Brace-matched rather than regex-matched: these blocks hold whole rules, so
+    the first } closes their first selector and not the block.
+    """
+    for m in re.finditer(r"@(media|container)([^{]*)\{", css):
+        depth, i = 1, m.end()
+        while i < len(css) and depth:
+            depth += {"{": 1, "}": -1}.get(css[i], 0)
+            i += 1
+        yield m.group(1), m.group(2).strip(), css[m.end():i - 1], m.start()
+
+
 def line_of(text, index):
     return text.count("\n", 0, index) + 1
 
@@ -127,14 +153,18 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     without_tooling = html
     for region in TOOLING_REGIONS:
         without_tooling = blank(region, without_tooling)
-    blocks = re.findall(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
-    own_style = "".join(b for b in blocks if INLINED_MARKER not in b)
+    own_style_blocks = [(m.start(1), m.group(1))
+                        for m in re.finditer(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
+                        if INLINED_MARKER not in m.group(1)]
+    own_style = "".join(b for _, b in own_style_blocks)
 
     # A class the file's own script selects on is a behaviour hook, not an
     # invented class — the same thing .dropdown-trigger is for the kit. It
     # carries no CSS on purpose, and reporting it as undefined sends a reader
     # looking for missing styles instead of leaving it alone.
-    own_script = "".join(re.findall(r"<script[^>]*>(.*?)</script>", without_tooling, re.S))
+    own_script_blocks = [(m.start(1), m.group(1))
+                         for m in re.finditer(r"<script[^>]*>(.*?)</script>", without_tooling, re.S)]
+    own_script = "".join(b for _, b in own_script_blocks)
     hooks = set()
     for m in re.finditer(r"(?:querySelector(?:All)?|closest|matches)\(\s*['\"]([^'\"]+)", own_script):
         hooks |= set(re.findall(r"\.([a-z][\w-]*)", m.group(1)))
@@ -240,6 +270,80 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     if len(in_bar) > 1:
         found.append(Finding("error", line_of(markup, markup.find("topbar-cta")), "two-primary",
             f"{len(in_bar)} .btn-primary.topbar-cta — the collapsed bar has room for one action"))
+
+    # --- the shell responds at one edge, and the page does not participate
+    #
+    # Below 1024px three things fire together: the bar collapses, the rail
+    # goes off-canvas, the page head stands down. A page-local breakpoint on a
+    # shell class re-decides one of those alone, and two screens built a month
+    # apart then disagree about what a phone looks like. The fix is always the
+    # same — move the rule into components.css, where every screen inherits it.
+    #
+    # Scoped to shell classes on purpose. A prototype laying its own content
+    # out at its own widths is doing nothing wrong; re-deciding the chrome is.
+    for offset, css in own_style_blocks:
+        for kind, prelude, body, start in at_rules(css):
+            # Width only. A preference query — prefers-reduced-motion, forced-
+            # colors — is not a breakpoint and is the page's to answer.
+            if "width" not in prelude:
+                continue
+            # A kit class only. A page's own .sidenav-panel is its invention,
+            # already reported as local-class — it is not the shell moving.
+            names = re.findall(SHELL_CLASS, re.sub(r"/\*.*?\*/", "", body, flags=re.S))
+            hit = next((n for n in names if n[1:] in kit_classes), None)
+            if not hit:
+                continue
+            found.append(Finding("error", line_of(without_tooling, offset + start),
+                "local-breakpoint",
+                f"@{kind} {prelude} styles {hit} — the shell already responds at "
+                "1024px in components.css, and a second edge here is what makes two screens "
+                "disagree"))
+
+    # The same drift written in JS. .is-compact is the one worth naming: it is
+    # the 62px icon rail, a way to buy horizontal space when the user asks for
+    # it with the chevron. Below 1024px the rail is a panel floating over the
+    # content, which is not short of room — so the kit widens it back to 236px
+    # and four prototypes fought that with a matchMedia of their own.
+    for offset, js in own_script_blocks:
+        queries = list(re.finditer(r"matchMedia\(\s*['\"]\(([^'\"]*width[^'\"]*)\)", js))
+        if not queries:
+            continue
+        ln = line_of(without_tooling, offset + queries[0].start())
+        # The tell is a FORCED toggle: toggle('is-compact', expr). The
+        # chevron's own toggle takes no second argument — this one is handed a
+        # media query's .matches, which is a width overruling a user's choice.
+        forced = re.search(r"classList\.toggle\(\s*['\"]is-compact['\"]\s*,\s*([^)]*)\)", js)
+        if forced and ".matches" in forced.group(1):
+            found.append(Finding("error", ln, "local-breakpoint",
+                "matchMedia drives .is-compact — compact is a user choice, never a width. "
+                "Below 1024px the kit widens the rail back to 236px, because a panel over the "
+                "content is not short of space"))
+            continue
+        off_edge = {m.group(1) for m in queries
+                    if not re.search(r"max-width:\s*1024px|min-width:\s*1025px", m.group(1))}
+        if off_edge and re.search(r"['\"][^'\"]*" + SHELL_CLASS, js):
+            found.append(Finding("error", ln, "local-breakpoint",
+                f"matchMedia ({'), ('.join(sorted(off_edge))}) drives a shell class — the shell "
+                "collapses at 1024px, and a second edge here splits the two apart"))
+
+    # --- the off-canvas rail needs the hamburger that opens it
+    #
+    # Below 1024px .app-shell > .sidenav leaves the flow and slides over the
+    # content. It is hidden, not deleted — and .topbar-menu is wired to nothing
+    # by default, so a page missing either the button or the handler has a
+    # navigation no one can reach on a phone. The three pieces only work as a
+    # set, and template/index.html ships all three.
+    nav = re.search(r'class="[^"]*\bsidenav(?![\w-])', markup)
+    if nav and re.search(r'class="[^"]*\bapp-shell(?![\w-])', markup):
+        ln = line_of(markup, nav.start())
+        if not re.search(r'class="[^"]*\btopbar-menu(?![\w-])', markup):
+            found.append(Finding("error", ln, "shell-incomplete",
+                ".sidenav with no .topbar-menu — below 1024px the rail is off-canvas and that "
+                "hamburger is the only way back to it"))
+        if not re.search(r"classList\.\w+\(\s*['\"]is-open", own_script):
+            found.append(Finding("error", ln, "shell-incomplete",
+                "nothing toggles .is-open on the .sidenav — below 1024px the rail slides "
+                "off-canvas and never comes back"))
 
     # --- icon references
     # A prototype may ship symbols of its own alongside the sprite — product

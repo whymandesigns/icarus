@@ -2388,8 +2388,14 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Below the lg edge the collapsed top bar carries the page title itself, so a
  * page head here would print the same heading twice, one line apart. It stands
- * down, and the primary action moves up with the title as `.topbar-cta` —
- * which the collapsed bar reveals at exactly this breakpoint.
+ * down, and its actions move up with the title as `.topbar-cta` — which the
+ * collapsed bar reveals at exactly this breakpoint.
+ *
+ * ONE .topbar-cta PER PAGE-HEAD CTA, in the same order, carrying the same
+ * variant: a `.btn-secondary` down here is a `.btn-secondary` up there. Ship
+ * only the primary and the page's other actions vanish on a phone, with
+ * nothing on screen to say they existed. `.btn-icon-only` rounds them to
+ * 32px; `.topbar-title` is flex:1, so they group against the right edge.
  *
  * This is what makes .topbar-cta safe to carry on a page that also has a page
  * head. It used to be the opposite: nothing hid .page-head-actions, so a page

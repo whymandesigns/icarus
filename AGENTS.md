@@ -126,9 +126,10 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   the bar collapses at **1024px** — the same edge as the side nav, because the hamburger
   it reveals is what opens the off-canvas rail. Same for `.topbar-menu` and
   `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
-  they are invisible until the bar collapses. Carry `.topbar-cta` too, holding the SAME
-  action as the page head's `.btn-primary`: `.page-head` is hidden at that same 1024px
-  edge, so exactly one of the two is ever on screen. (This used to be the opposite —
+  they are invisible until the bar collapses. Carry `.topbar-cta` too — **one per CTA in
+  the page head, same order, same variant** (`.btn-secondary` stays secondary). `.page-head`
+  is hidden at that same 1024px edge, so exactly one of the two sets is ever on screen, and
+  shipping only the primary is how a page's other actions disappear on a phone. (This used to be the opposite —
   nothing hid the page head, and carrying both showed two primary CTAs once the bar
   collapsed. That is fixed; ignore any older note saying to leave `.topbar-cta` off.)
   (The kit's own playground collapses on a *container* query at 768px instead, since

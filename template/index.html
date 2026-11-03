@@ -13,18 +13,23 @@
 <body>
 
   <!-- TOPBAR
-       .topbar-menu and .topbar-title are invisible until the bar collapses
-       (a container query on .topbar, so about 816px of viewport, not 768).
-       They belong in the markup from the start, .topbar-cta included: the
-       page head stands down at the same 1024px edge, so the bar's CTA is the
-       primary action rather than a second one. Keep it the same action as the
-       page head's .btn-primary. -->
+       .topbar-menu, .topbar-title and .topbar-cta are invisible until the bar
+       collapses at 1024px — the same edge that takes the page head away. They
+       belong in the markup from the start, because exactly one of the two is
+       ever on screen.
+
+       MIRROR THE PAGE HEAD, ACTION FOR ACTION. One .topbar-cta per CTA down
+       there, in the same order, carrying the same variant: .btn-secondary
+       stays secondary, .btn-primary stays primary. Shipping only the primary
+       is how an action disappears on a phone. .btn-icon-only makes them round
+       and 32px, and .topbar-title holds the free space so they group right. -->
   <header class="topbar">
     <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu"><svg class="icon"><use href="#i-overview"/></svg></button>
     <a class="topbar-brand" href="#">
       <img class="topbar-brand-logo" src="../../designmd/assets/logo.svg" alt="Operationalize" />
     </a>
     <span class="topbar-title">{{FEATURE_TITLE}}</span>
+    <button class="btn btn-secondary btn-icon-only topbar-cta" type="button" aria-label="Filter"><svg class="btn-icon"><use href="#i-filter"/></svg></button>
     <button class="btn btn-primary btn-icon-only topbar-cta" type="button" aria-label="New"><svg class="btn-icon"><use href="#i-plus"/></svg></button>
     <div class="topbar-actions">
       <div class="topbar-search">
