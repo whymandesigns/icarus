@@ -275,14 +275,24 @@ def lint(path, kit_classes, showcase, tooling, icons, prims, semantic):
     # what the file contains. (Before that breakpoint existed they could both
     # show, and this exemption would have been wrong.) A second .topbar-cta is
     # still an error: those WOULD share the bar.
-    primary = re.findall(r'class="([^"]*\bbtn-primary\b[^"]*)"', markup)
+    # Markup only, with <script> taken out. A class attribute inside a template
+    # string is not on the page — it is what some transient surface will build
+    # when it opens: a popover's confirm, a modal's save. Those are each the
+    # primary action OF THAT SURFACE, and the surface is never on screen beside
+    # the page's own CTA, so counting them here reports a clash that no one can
+    # see. (onboarding had two: a date popover's "Set" and a link editor's
+    # "Save", in a page with no static .btn-primary at all.) The cost is that a
+    # page head rendered entirely in JS escapes the tally, which is the right
+    # way round — this rule is about what the eye sees.
+    on_page_markup = blank(r"<script[^>]*>.*?</script>", markup)
+    primary = re.findall(r'class="([^"]*\bbtn-primary\b[^"]*)"', on_page_markup)
     in_bar = [c for c in primary if re.search(r'\btopbar-cta\b', c)]
     on_page = [c for c in primary if c not in in_bar]
     if len(on_page) > 1:
-        found.append(Finding("error", line_of(markup, markup.find("btn-primary")), "two-primary",
+        found.append(Finding("error", line_of(on_page_markup, on_page_markup.find("btn-primary")), "two-primary",
             f"{len(on_page)} .btn-primary on one page — every CTA but the most important is .btn-secondary"))
     if len(in_bar) > 1:
-        found.append(Finding("error", line_of(markup, markup.find("topbar-cta")), "two-primary",
+        found.append(Finding("error", line_of(on_page_markup, on_page_markup.find("topbar-cta")), "two-primary",
             f"{len(in_bar)} .btn-primary.topbar-cta — the collapsed bar has room for one action"))
 
     # --- var() pointing at a token nothing defines
