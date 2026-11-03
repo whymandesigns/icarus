@@ -75,11 +75,36 @@ That copies `template/index.html` into `features/<kebab-name>/index.html` (pass
 and adds a `status.json` entry. Then build the feature into the content region,
 from the classes in `dist/kit.json`, and run:
 
+A prototype that predates the current system carries a quarantine marker in its
+`<head>`, and `lint.py` prints its errors without failing on them:
+
+```html
+<!-- designmd:legacy — frozen on the --ic-* vocabulary, so inline.py cannot
+     refresh it and no kit change reaches it. tools/migrate-ic-tokens.py is
+     the way out; see data/ic-token-map.json. Remove this line once it lints
+     clean. -->
+```
+
+That is the whole point of the marker: **anything without one has to pass**, so
+`python3 lint.py features/*/index.html` stays a real gate for new work. The list
+can only shrink — removing the line is how a prototype says it has been migrated,
+and `--strict` ignores markers entirely. Never add one to a new screen.
+
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
 python3 tools/new-prototype.py <kebab-name> --thumb  # 1280x800 card image, re-runnable
 python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
+
+A screen that already exists but is not listed — built before the scaffolder, or
+made with `--no-register` — is registered without being touched:
+
+```bash
+python3 tools/new-prototype.py <kebab-name> --register-only --title "<Title>" --desc "<one line>"
+```
+
+Do not re-run the scaffolder over it to get the card: that copies the template
+on top of the prototype.
 
 A hand-written skeleton drifts from the system the moment the system moves; a
 duplicated template cannot. If the template lacks something every screen should
@@ -126,9 +151,10 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   the bar collapses at **1024px** — the same edge as the side nav, because the hamburger
   it reveals is what opens the off-canvas rail. Same for `.topbar-menu` and
   `.topbar-cta`. Put `.topbar-menu` and `.topbar-title` in the markup from the start —
-  they are invisible until the bar collapses. Carry `.topbar-cta` too, holding the SAME
-  action as the page head's `.btn-primary`: `.page-head` is hidden at that same 1024px
-  edge, so exactly one of the two is ever on screen. (This used to be the opposite —
+  they are invisible until the bar collapses. Carry `.topbar-cta` too — **one per CTA in
+  the page head, same order, same variant** (`.btn-secondary` stays secondary). `.page-head`
+  is hidden at that same 1024px edge, so exactly one of the two sets is ever on screen, and
+  shipping only the primary is how a page's other actions disappear on a phone. (This used to be the opposite —
   nothing hid the page head, and carrying both showed two primary CTAs once the bar
   collapsed. That is fixed; ignore any older note saying to leave `.topbar-cta` off.)
   (The kit's own playground collapses on a *container* query at 768px instead, since

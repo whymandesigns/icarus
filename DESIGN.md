@@ -380,7 +380,7 @@ All component CSS lives in `components.css` and references **semantic tokens onl
 | [Inputs](./example.html#inputs) | `.field` + `.input` | `.field-label` · `.field-hint` · `.field-hint.is-error` · `.input-xs` · `.input-icon` wrapper (`.input-icon-left` / `.input-icon-right`) with a `.input-icon-glyph` for an inset icon |
 | [Select](./example.html#inputs) | `.input-select` | `.input-select-trigger` · `.input-select-value` (+ `.dropdown-menu` for options) |
 | [Tag input](./example.html#inputs) | `.input-tags` | `.input-tags-input` · `.chip` · `.chip-remove` |
-| [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-brand-logo` · `.topbar-search` · `.topbar-search-input` · `.topbar-actions` · `.topbar-account` (wraps the account `.dropdown`). Collapsed-only, **below 1024px** (Picasso's lg edge — the same edge the side nav goes off-canvas at, because this bar's hamburger is what opens it): `.topbar-menu` · `.topbar-title` · `.topbar-cta` — put all three in the markup from the start; they show nothing on a wide screen. `.topbar-cta` holds the same action as the page head's `.btn-primary`: `.page-head` is hidden at that same edge, so only one of the two is ever on screen. |
+| [Top bar](./example.html#topbar) | `.topbar` | `.topbar-brand` · `.topbar-brand-logo` · `.topbar-search` · `.topbar-search-input` · `.topbar-actions` · `.topbar-account` (wraps the account `.dropdown`). Collapsed-only, **below 1024px** (Picasso's lg edge — the same edge the side nav goes off-canvas at, because this bar's hamburger is what opens it): `.topbar-menu` · `.topbar-title` · `.topbar-cta` — put all three in the markup from the start; they show nothing on a wide screen. Carry one `.topbar-cta` per page-head CTA, in the same order and with the same variant — `.btn-secondary` stays secondary, `.btn-primary` stays primary — each `.btn-icon-only` so it reads as a 32px round button. `.page-head` is hidden at that same edge, so only one of the two sets is ever on screen. |
 | [Side navigation](./example.html#sidenav-demo) | `.sidenav` | `.sidenav-item` · `.sidenav-group` · `.sidenav-group-trigger` · `.sidenav-sublist` · `.sidenav-subitem` · `.sidenav-toggle` · `.is-compact`. **Below 1024px it is off-canvas**: fixed over the full window, top bar included, slid in by `.is-open` over a scrim, opened by `.topbar-menu`. The panel then carries its own chrome — `.sidenav-head` (wrapping `.sidenav-logo` and `.sidenav-close`) and `.sidenav-search` — all three invisible above that edge, where the top bar carries the logo and search instead. `.sidenav-close` is a behaviour hook: nothing styles it, the script finds the button by it. The template ships the markup and the handler. |
 | [Switches](./example.html#switches) | `.switch` | `.switch-input` · `.switch-track` |
 | [Radios](./example.html#radios) | `.radio` | `.radio-input` · `.radio-circle` · `.radio-label` · `.is-error` |
@@ -625,7 +625,7 @@ wraps which, and what actually opens a thing.
      element wraps which.
      .topbar-menu, .topbar-title and .topbar-cta are the COLLAPSED layout, revealed
      below 1024px, so they show nothing on a wide screen. Put all three in from the
-     start. .topbar-cta repeats the page head's primary action, which is safe because
+     start. One .topbar-cta mirrors each page-head CTA, which is safe because
      .page-head is hidden at the same edge. -->
 <header class="topbar">
   <button class="btn btn-icon-only btn-ghost topbar-menu" type="button" aria-label="Menu">

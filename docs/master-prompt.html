@@ -34,6 +34,37 @@
       word-break: break-word;
     }
     .copy-ok { color: var(--color-success); }
+
+    /* The result shots. Real screenshots of a real scaffold, not a mock-up —
+       regenerate them with tools/shoot-template-result.sh after the template
+       changes, or the page quietly starts advertising an older shell. */
+    .shot { margin: 0 0 var(--spacing-4); }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+    .shot figcaption {
+      font: var(--type-body-sm);
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-2);
+    }
+    .result-split {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
+      margin-bottom: var(--spacing-10);
+    }
+    .result-split ul { margin: 0; padding-left: var(--spacing-5); display: flex; flex-direction: column; gap: var(--spacing-2); }
+    .result-split li { font: var(--type-body-sm); color: var(--color-text); }
+    .result-split li b { font-weight: var(--font-weight-semibold); }
+    @media (max-width: 720px) {
+      .result-split { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -62,6 +93,36 @@
       <code>designmd/</code>:<br />
       <code>python3 tools/new-prototype.py billing-portal --title "Billing portal" --nav Initiatives</code>
     </p>
+
+    <h2 class="h3" style="margin: 0 0 var(--spacing-3)">What you get</h2>
+    <p class="body-sm" style="color: var(--color-text-muted); margin: 0 0 var(--spacing-5)">
+      One command, before the agent has written a line of the feature. This is a real
+      scaffold &mdash; <code>python3 tools/new-prototype.py billing-portal --title "Billing portal"
+      --nav Initiatives</code> &mdash; screenshotted, not a mock-up.
+    </p>
+
+    <figure class="shot">
+      <img src="./assets/template-result.png" loading="lazy"
+           alt="A scaffolded prototype: dark top bar with the Operationalize logo, search and account avatar; a 236px side nav with Initiatives marked active; a page head reading Billing portal with Filter and New buttons; and a placeholder card titled Content slot." />
+      <figcaption>The shell at desktop width. Everything but the card is yours already.</figcaption>
+    </figure>
+
+    <div class="result-split">
+      <figure class="shot" style="margin: 0">
+        <img src="./assets/template-result-mobile.png" loading="lazy"
+             alt="The same prototype on a phone: the top bar has collapsed to a light surface, and the side nav has slid in over the full window as a panel carrying the logo, a close button, a search field and the same nav items." />
+        <figcaption>Below 1024px, opened from the hamburger.</figcaption>
+      </figure>
+      <ul>
+        <li><b>The three stylesheets</b>, in order, pointed at the sibling <code>designmd/</code>.</li>
+        <li><b>Top bar</b> &mdash; brand, search, account, and the collapsed layout's hamburger, title and CTA.</li>
+        <li><b>Side nav</b> with the product's real sections and your one marked active, plus the off-canvas panel chrome.</li>
+        <li><b>Page head</b> &mdash; a title and the actions. No invented subtitle.</li>
+        <li><b>A shell that fills the window</b> and a content region that scrolls, with no CSS written in the page.</li>
+        <li><b>The handlers</b> the kit does not ship: modals, drawers, Escape, dropdowns, tabs, selects, the nav rail and the hamburger.</li>
+        <li><b>A card in <code>features/index.html</code></b> and a <code>status.json</code> entry, so the feature is listed from minute one.</li>
+      </ul>
+    </div>
 
     <div class="prompt-head">
       <h2>The prompt</h2>

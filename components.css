@@ -320,9 +320,20 @@ textarea.input {
   height: 32px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  overflow: hidden;
   flex-shrink: 0;
+  /* Scrolls rather than clips. `overflow: hidden` rounds the end segments
+   * against the border, but it also means a control wider than its container
+   * loses its last segments with no way to reach them — on a phone the
+   * feature directory's "On hold" filter was simply gone. overflow-x: auto
+   * still clips to the radius and keeps them reachable, by touch, trackpad
+   * or Tab. The scrollbar is suppressed because a half-cut segment is the
+   * affordance, and a 32px control has no room for a bar under it. */
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+.segmented::-webkit-scrollbar { display: none; }
 .segmented-item {
   display: inline-flex;
   align-items: center;
@@ -330,6 +341,11 @@ textarea.input {
   gap: var(--spacing-2);
   height: 100%;
   padding: 0 var(--spacing-4);
+  /* Hold the label on one line and keep the intrinsic width: the control
+   * scrolls when it runs out of room (see .segmented), and an item that
+   * shrinks instead wraps its label and breaks the 32px row. */
+  flex: 0 0 auto;
+  white-space: nowrap;
   border: 0;
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -367,7 +383,11 @@ textarea.input {
 .toolbar { display: flex; align-items: center; gap: var(--spacing-2); flex-wrap: wrap; }
 .toolbar-search { flex: 1 1 240px; min-width: 160px; }
 .toolbar-search > .input { width: 100%; }
-.toolbar-end { margin-left: auto; display: inline-flex; align-items: center; gap: var(--spacing-2); flex-wrap: wrap; }
+/* min-width: 0 so a scrollable child can actually be capped. A flex item
+ * defaults to min-width: auto and refuses to go below its content, so a
+ * .segmented inside with max-width: 100% measures 100% of an already
+ * overflowing parent and the row runs off the screen. */
+.toolbar-end { margin-left: auto; display: inline-flex; align-items: center; gap: var(--spacing-2); flex-wrap: wrap; min-width: 0; }
 .toolbar-spacer { flex: 1 1 auto; }
 /* Quick-filter select sized to its content instead of filling the row */
 .input-select.is-auto { width: auto; }
@@ -538,7 +558,16 @@ textarea.input {
 .input.is-error                { border-color: var(--color-danger); }
 .input.is-error:focus          { border-color: var(--color-danger); box-shadow: 0 0 0 3px var(--color-danger-subtle); }
 
-/* ---------- Card ---------- */
+/* ---------- Card ----------
+ * `hidden` has to be stated. A card is often an <a> or a <div> that the page
+ * gives its own `display`, and any such rule beats the browser's
+ * `[hidden] { display: none }` — so the attribute silently stops working and
+ * a card meant to be out of the list is in it. .card[hidden] outranks both
+ * `.card` and `a.card` on specificity, so no !important is needed. (The kit
+ * carried this once and lost it; the feature directory's hidden admin card
+ * came back when it was re-baked.) */
+.card[hidden] { display: none; }
+
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -2307,8 +2336,14 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Below the lg edge the collapsed top bar carries the page title itself, so a
  * page head here would print the same heading twice, one line apart. It stands
- * down, and the primary action moves up with the title as `.topbar-cta` —
- * which the collapsed bar reveals at exactly this breakpoint.
+ * down, and its actions move up with the title as `.topbar-cta` — which the
+ * collapsed bar reveals at exactly this breakpoint.
+ *
+ * ONE .topbar-cta PER PAGE-HEAD CTA, in the same order, carrying the same
+ * variant: a `.btn-secondary` down here is a `.btn-secondary` up there. Ship
+ * only the primary and the page's other actions vanish on a phone, with
+ * nothing on screen to say they existed. `.btn-icon-only` rounds them to
+ * 32px; `.topbar-title` is flex:1, so they group against the right edge.
  *
  * This is what makes .topbar-cta safe to carry on a page that also has a page
  * head. It used to be the opposite: nothing hid .page-head-actions, so a page
