@@ -110,10 +110,52 @@ def build_review_style():
 SPRITE_OPEN = '<!-- === icons.svg === -->'
 SPRITE_CLOSE = '<!-- === /icons.svg === -->'
 
-def build_icon_sprite():
-    # The custom Figma icon sprite (designmd/icons.svg) — inlined so prototypes
-    # are fully self-contained. Referenced via <svg class="icon"><use href="#i-…"></svg>.
-    return SPRITE_OPEN + '\n' + read('icons.svg').strip() + '\n' + SPRITE_CLOSE
+# A static reference the page makes: <use href="#i-plus">.
+USE_STATIC = re.compile(r'(?:xlink:)?href\s*=\s*["\'`]#(i-[\w-]+)["\'`]')
+# A reference the page BUILDS at runtime: href="#i-${slug}", href={`#i-` + x}.
+# The slug is not in the file, so the sprite cannot be narrowed safely.
+USE_DYNAMIC = re.compile(r'(?:xlink:)?href\s*=\s*["\'`]\s*#i-(?:\$\{|["\'`]?\s*\+)')
+SYMBOL = re.compile(r'<symbol[^>]*id="([^"]+)"[^>]*>.*?</symbol>', re.DOTALL)
+
+
+def build_icon_sprite(markup=None):
+    """The custom Figma icon sprite (designmd/icons.svg), inlined so a prototype
+    is self-contained. Referenced via <svg class="icon"><use href="#i-…"></svg>.
+
+    Narrowed to the symbols the page actually names. The full sprite is 369
+    icons and a typical prototype uses under sixty, so this is most of the
+    file's weight for nothing — toptrack shipped 311 symbols it never drew.
+
+    It narrows ONLY when every reference is a literal. A page that builds the
+    slug at runtime (`href="#i-${icon}"`) keeps the whole sprite, because the
+    names it will ask for are not in the file and a missing symbol renders as
+    nothing at all, silently. That is the failure this system exists to avoid,
+    so the fallback is always the safe direction.
+    """
+    svg = read('icons.svg').strip()
+    if markup is None:
+        return SPRITE_OPEN + '\n' + svg + '\n' + SPRITE_CLOSE
+
+    # Never read the sprite already in the file: its own symbols would count
+    # as references and nothing would ever be dropped.
+    body = SPRITE_PATTERN.sub('', markup)
+    if USE_DYNAMIC.search(body):
+        return SPRITE_OPEN + '\n' + svg + '\n' + SPRITE_CLOSE, None
+
+    symbols = {m.group(1): m.group(0) for m in SYMBOL.finditer(svg)}
+    wanted, seen = set(USE_STATIC.findall(body)) & set(symbols), set()
+    # Thirty-nine symbols draw other symbols, so follow the references out.
+    while wanted - seen:
+        nxt = wanted - seen
+        seen |= nxt
+        for name in nxt:
+            wanted |= set(USE_STATIC.findall(symbols[name])) & set(symbols)
+
+    head = svg[:svg.index('>') + 1]
+    kept = '\n  '.join(symbols[n] for n in sorted(wanted))
+    small = f'{head}\n  {kept}\n</svg>' if wanted else f'{head}</svg>'
+    return (SPRITE_OPEN + '\n' + small + '\n' + SPRITE_CLOSE,
+            (len(wanted), len(symbols), len(svg) - len(small)))
 
 # Pattern A: source form — optional comment block + 3 <link> tags
 # A trailing `<!-- primitives -->` after a link is how AGENTS.md and DESIGN.md
@@ -345,7 +387,7 @@ def inline(path, force=False):
     html = strip_annotation_tool(html)
 
     # Icon sprite — refresh an existing injected block, else inject right after <body>
-    sprite = build_icon_sprite()
+    sprite, subset = build_icon_sprite(html)
     if SPRITE_PATTERN.search(html):
         html, s = SPRITE_PATTERN.subn(lambda _: sprite, html)
         sprite_status = f'refreshed icon sprite ({s} block)'
@@ -354,6 +396,11 @@ def inline(path, force=False):
         sprite_status = f'injected icon sprite after <body>'
     else:
         sprite_status = 'no <body> found — icon sprite NOT injected'
+    if subset:
+        kept, total, saved = subset
+        sprite_status += f' · {kept} of {total} symbols, {saved // 1024} KB dropped'
+    else:
+        sprite_status += ' · full sprite (the page builds icon names at runtime)'
     if ph:
         sprite_status += f' · stripped {ph} Phosphor link(s)'
 
