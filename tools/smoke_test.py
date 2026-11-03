@@ -96,6 +96,7 @@ SHELL_CONTRACT = [
     ("the collapsed bar's hamburger",   'class="btn btn-icon-only btn-ghost topbar-menu"'),
     ("the collapsed bar's title",       'class="topbar-title"'),
     ("the collapsed bar's CTA",         'topbar-cta'),
+    ("both page-head CTAs mirrored",    'btn-secondary btn-icon-only topbar-cta'),
     ("the off-canvas panel header",     'class="sidenav-head"'),
     ("the panel's dark wordmark",       'class="sidenav-logo"'),
     ("the panel's close hook",          'sidenav-close'),

@@ -44,12 +44,17 @@ def main():
         path = pathlib.Path(raw)
         html = path.read_text(errors="replace")
         spans = own_style_spans(html)
-        if not spans:
-            print(f"{path}: no prototype-owned <style> — nothing to migrate")
-            continue
 
         changed = collections.Counter()
         stranded = collections.Counter()
+
+        # A style="" attribute is markup, never the baked CSS, so it is always
+        # the prototype's own and is rewritten wherever it sits. inline.py
+        # counts these too, and will keep refusing the file while they remain.
+        spans = sorted(spans + [(m.start(1), m.end(1)) for m in
+                                re.finditer(r'style="([^"]*)"', html)
+                                if "--ic-" in m.group(1)])
+
         out, cursor = [], 0
         for start, end in spans:
             out.append(html[cursor:start])

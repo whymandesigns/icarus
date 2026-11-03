@@ -27,6 +27,9 @@ What it catches, in the order the failures actually happen:
                       Re-pointing a theme cannot reach it.
   raw hex             a colour written past the token layer entirely.
   raw spacing         a px value in a style= attribute that a token already has.
+  dead token          var(--x) naming a token nothing defines. A retired token
+                      stays in tokens.css as a comment, so it still reads as
+                      present — and CSS drops the whole declaration.
 
     python3 lint.py ../features/my-feature/index.html
     python3 lint.py ../features/*/index.html --quiet
@@ -47,6 +50,15 @@ HERE = pathlib.Path(__file__).resolve().parent
 # legitimately carries the whole system in a <style> block, so the checks that
 # look for hand-authored CSS have to stand down.
 INLINED_MARKER = "/* === tokens.css === */"
+
+# A prototype that predates the current system and is knowingly not on it yet.
+# Its errors are still printed — they are real — but they do not fail the run,
+# so a sweep over the whole folder stays meaningful: anything WITHOUT this
+# marker has to pass. The list can only shrink. Removing the marker is how a
+# prototype says it has been migrated, and --strict ignores markers entirely.
+#
+#   <!-- designmd:legacy — frozen on the --ic-* vocabulary; see AGENTS.md -->
+LEGACY_MARKER = re.compile(r"<!--\s*designmd:legacy\b([^>]*)-->")
 
 # Spacing steps a token already covers, so a raw px value is a choice to drift.
 SPACING_PX = {"0": "0", "4": "1", "8": "2", "12": "3", "16": "4",
@@ -140,9 +152,10 @@ TOOLING_REGIONS = [
 ]
 
 
-def lint(path, kit_classes, showcase, tooling, icons, prims):
+def lint(path, kit_classes, showcase, tooling, icons, prims, semantic):
     html = path.read_text()
     inlined = INLINED_MARKER in html
+    quarantined = LEGACY_MARKER.search(html)
     found = []
 
     # The file's own <style> blocks: classes defined here are prototype-scoped.
@@ -153,6 +166,7 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
     without_tooling = html
     for region in TOOLING_REGIONS:
         without_tooling = blank(region, without_tooling)
+    all_style_blocks = re.findall(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
     own_style_blocks = [(m.start(1), m.group(1))
                         for m in re.finditer(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
                         if INLINED_MARKER not in m.group(1)]
@@ -271,6 +285,44 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
         found.append(Finding("error", line_of(markup, markup.find("topbar-cta")), "two-primary",
             f"{len(in_bar)} .btn-primary.topbar-cta — the collapsed bar has room for one action"))
 
+    # --- var() pointing at a token nothing defines
+    #
+    # The quietest failure in the system. A retired token leaves its name in
+    # tokens.css as a comment, so it reads as present; CSS then drops the whole
+    # declaration, and a gradient, a colour or a shadow is simply absent. It
+    # cost one migration a hero panel, which the screenshot caught and nothing
+    # else would have. A var() with a fallback still renders, so only a bare
+    # reference is an error.
+    def defined_in(css):
+        # Comments out first. A retired token lives on as `/* --x: v; */`, and
+        # counting that as a definition is the very bug this rule is for.
+        return set(re.findall(r"(--[\w-]+)\s*:",
+                              re.sub(r"/\*.*?\*/", "", css, flags=re.S)))
+
+    local_tokens = defined_in(own_style)
+    if inlined:
+        # A baked file carries the whole system in its own <style>, so the
+        # vocabulary to check against is what IT defines, not what this
+        # checkout does — they are the same thing once it is freshly baked.
+        for b in all_style_blocks:
+            local_tokens |= defined_in(b)
+    scopes = [(css, without_tooling, off) for off, css in own_style_blocks]
+    scopes += [(m.group(1), markup, m.start(1))
+               for m in re.finditer(r'style="([^"]*)"', markup)]
+    seen_dead = set()
+    for text, frame, offset in scopes:
+        for m in re.finditer(r"var\(\s*(--[\w-]+)\s*\)", text):
+            name = m.group(1)
+            if name in prims or name in semantic or name in local_tokens:
+                continue
+            if name in seen_dead:
+                continue
+            seen_dead.add(name)
+            ln = line_of(frame, offset + m.start())
+            found.append(Finding("error", ln, "dead-token",
+                f"{name} is not defined anywhere — CSS drops the whole declaration, "
+                "so whatever it styles is simply absent"))
+
     # --- the shell responds at one edge, and the page does not participate
     #
     # Below 1024px three things fire together: the bar collapses, the rail
@@ -383,19 +435,22 @@ def lint(path, kit_classes, showcase, tooling, icons, prims):
                     found.append(Finding("warn", line_of(markup, m.start()), "raw-spacing",
                         f"{prop}: {px}px — use var(--spacing-{SPACING_PX[px]})"))
 
-    return found, inlined
+    return found, inlined, quarantined
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("paths", nargs="+")
     ap.add_argument("--quiet", action="store_true", help="errors only")
+    ap.add_argument("--strict", action="store_true",
+                    help="ignore designmd:legacy markers — every file must pass")
     args = ap.parse_args()
 
     kit, classes, showcase, tooling = load_kit()
     icons, prims = load_icons(), primitives()
+    semantic = semantic_tokens()
 
-    total_err = total_warn = 0
+    total_err = total_warn = total_quar = 0
     for raw in args.paths:
         path = pathlib.Path(raw)
         if not path.exists():
@@ -403,7 +458,9 @@ def main():
             total_err += 1
             continue
 
-        found, inlined = lint(path, classes, showcase, tooling, icons, prims)
+        found, inlined, quarantined = lint(path, classes, showcase, tooling, icons, prims, semantic)
+        if quarantined and args.strict:
+            quarantined = None
         # One complaint per distinct problem. A class used ninety times is one
         # thing to fix, and counting it ninety times buries the other eighty-
         # nine problems in the file.
@@ -416,16 +473,24 @@ def main():
         found = distinct
         errors = [f for f in found if f.level == "error"]
         warns = [f for f in found if f.level == "warn"]
-        total_err += len(errors)
+        if quarantined:
+            total_quar += len(errors)
+        else:
+            total_err += len(errors)
         total_warn += len(warns)
 
         shown = errors if args.quiet else errors + warns
         state = "inlined" if inlined else "linked"
+        if quarantined:
+            state += ", legacy"
         if not shown:
             print(f"✓ {path}  ({state}) — clean")
             continue
 
         print(f"\n{path}  ({state})  {len(errors)} error(s), {len(warns)} warning(s)")
+        if quarantined:
+            why = quarantined.group(1).strip(" —-") or "no reason given"
+            print(f"  ‣ quarantined, so these do not fail the run: {why}")
         seen = set()
         for f in sorted(shown, key=lambda f: (f.line, f.code)):
             # One line per distinct complaint; a repeated class is noise.
@@ -436,7 +501,8 @@ def main():
             mark = "✗" if f.level == "error" else "!"
             print(f"  {mark} {path.name}:{f.line}  [{f.code}] {f.message}")
 
-    print(f"\n{total_err} error(s), {total_warn} warning(s)")
+    tail = f", {total_quar} in quarantined file(s)" if total_quar else ""
+    print(f"\n{total_err} error(s), {total_warn} warning(s){tail}")
     return 1 if total_err else 0
 
 

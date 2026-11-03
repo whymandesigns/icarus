@@ -82,6 +82,21 @@ That copies `template/index.html` into `features/<kebab-name>/index.html` (pass
 and adds a `status.json` entry. Then build the feature into the content region,
 from the classes in `dist/kit.json`, and run:
 
+A prototype that predates the current system carries a quarantine marker in its
+`<head>`, and `lint.py` prints its errors without failing on them:
+
+```html
+<!-- designmd:legacy — frozen on the --ic-* vocabulary, so inline.py cannot
+     refresh it and no kit change reaches it. tools/migrate-ic-tokens.py is
+     the way out; see data/ic-token-map.json. Remove this line once it lints
+     clean. -->
+```
+
+That is the whole point of the marker: **anything without one has to pass**, so
+`python3 lint.py features/*/index.html` stays a real gate for new work. The list
+can only shrink — removing the line is how a prototype says it has been migrated,
+and `--strict` ignores markers entirely. Never add one to a new screen.
+
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
 python3 tools/new-prototype.py <kebab-name> --thumb  # 1280x800 card image, re-runnable
