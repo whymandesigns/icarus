@@ -1,0 +1,212 @@
+{
+  "_": "Legacy --ic-* vocabulary \u2192 the current one. Eight prototypes were baked",
+  "_1": "against this older system and inline.py refuses them, so no kit change can",
+  "_2": "reach them. Each entry is classified, because this is NOT a rename:",
+  "_3": "  same       identical value \u2014 safe, mechanical.",
+  "_4": "  shifts     the system deliberately changed this value. Migrating is a",
+  "_5": "             visual change, and that is the point: the screen rejoins the",
+  "_6": "             system. Review the screenshot.",
+  "_7": "  none       no current token holds this role. Needs a human decision;",
+  "_8": "             the tool leaves these alone and reports them.",
+  "same": {
+    "--ic-ease": "--ease",
+    "--ic-ease-out": "--ease-out",
+    "--ic-duration-fast": "--duration-fast",
+    "--ic-duration-base": "--duration-base",
+    "--ic-duration-slow": "--duration-slow",
+    "--ic-radius-none": "--radius-none",
+    "--ic-radius-sm": "--radius-sm",
+    "--ic-radius-md": "--radius-md",
+    "--ic-radius-full": "--radius-full",
+    "--ic-weight-regular": "--font-weight-regular",
+    "--ic-weight-semibold": "--font-weight-semibold",
+    "--ic-z-sticky": "--z-sticky",
+    "--ic-z-dropdown": "--z-dropdown",
+    "--ic-z-overlay": "--z-overlay",
+    "--ic-z-modal": "--z-modal",
+    "--ic-container-lg": "--container-lg",
+    "--ic-space-1": "--spacing-1",
+    "--ic-space-2": "--spacing-2",
+    "--ic-space-3": "--spacing-3",
+    "--ic-space-4": "--spacing-4",
+    "--ic-space-5": "--spacing-6",
+    "--ic-space-6": "--spacing-8",
+    "--ic-space-7": "--spacing-10",
+    "--ic-space-8": "--spacing-12",
+    "--ic-text-sm": "--text-sm",
+    "--ic-text-xs": "--text-xxs",
+    "--ic-text-base": "--text-md",
+    "--ic-text-md": "--text-lg",
+    "--ic-text-lg": "--text-18",
+    "--ic-text-xl": "--text-xl",
+    "--ic-text-2xl": "--text-2xl",
+    "--ic-palette-white": "--color-white",
+    "--ic-palette-black": "--color-black",
+    "--ic-palette-blue-100": "--color-blue-100",
+    "--ic-palette-blue-150": "--color-blue-150",
+    "--ic-palette-blue-200": "--color-blue-200",
+    "--ic-palette-blue-300": "--color-blue-300",
+    "--ic-palette-blue-600": "--color-blue-600",
+    "--ic-palette-blue-700": "--color-blue-700",
+    "--ic-palette-blue-800": "--color-blue-800",
+    "--ic-palette-blue-900": "--color-blue-900",
+    "--ic-palette-graphite-100": "--color-graphite-100",
+    "--ic-palette-graphite-150": "--color-graphite-150",
+    "--ic-palette-graphite-200": "--color-graphite-200",
+    "--ic-palette-graphite-300": "--color-graphite-300",
+    "--ic-palette-graphite-400": "--color-graphite-400",
+    "--ic-palette-graphite-900": "--color-graphite-900",
+    "--ic-palette-gray-600": "--color-gray-600",
+    "--ic-palette-gray-700": "--color-gray-700",
+    "--ic-palette-gray-800": "--color-gray-800",
+    "--ic-palette-gray-900": "--color-gray-900",
+    "--ic-palette-green-100": "--color-green-100",
+    "--ic-palette-green-150": "--color-green-150",
+    "--ic-palette-green-200": "--color-green-200",
+    "--ic-palette-green-300": "--color-green-300",
+    "--ic-palette-green-400": "--color-green-400",
+    "--ic-palette-green-600": "--color-green-600",
+    "--ic-palette-green-700": "--color-green-700",
+    "--ic-palette-green-800": "--color-green-800",
+    "--ic-palette-green-900": "--color-green-900",
+    "--ic-palette-purple-100": "--color-purple-100",
+    "--ic-palette-purple-150": "--color-purple-150",
+    "--ic-palette-purple-200": "--color-purple-200",
+    "--ic-palette-purple-300": "--color-purple-300",
+    "--ic-palette-purple-400": "--color-purple-400",
+    "--ic-palette-purple-500": "--color-purple-500",
+    "--ic-palette-purple-600": "--color-purple-600",
+    "--ic-palette-purple-700": "--color-purple-700",
+    "--ic-palette-purple-800": "--color-purple-800",
+    "--ic-palette-purple-900": "--color-purple-900",
+    "--ic-palette-red-100": "--color-red-100",
+    "--ic-palette-red-150": "--color-red-150",
+    "--ic-palette-red-200": "--color-red-200",
+    "--ic-palette-red-300": "--color-red-300",
+    "--ic-palette-red-400": "--color-red-400",
+    "--ic-palette-red-600": "--color-red-600",
+    "--ic-palette-red-700": "--color-red-700",
+    "--ic-palette-red-800": "--color-red-800",
+    "--ic-palette-red-900": "--color-red-900",
+    "--ic-palette-yellow-100": "--color-yellow-100",
+    "--ic-palette-yellow-150": "--color-yellow-150",
+    "--ic-palette-yellow-200": "--color-yellow-200",
+    "--ic-palette-yellow-300": "--color-yellow-300",
+    "--ic-palette-yellow-400": "--color-yellow-400",
+    "--ic-palette-yellow-500": "--color-yellow-500",
+    "--ic-palette-yellow-600": "--color-yellow-600",
+    "--ic-palette-yellow-700": "--color-yellow-700",
+    "--ic-palette-yellow-800": "--color-yellow-800",
+    "--ic-palette-yellow-900": "--color-yellow-900",
+    "--ic-palette-zinc-100": "--color-zinc-100",
+    "--ic-palette-zinc-200": "--color-zinc-200",
+    "--ic-palette-zinc-300": "--color-zinc-300",
+    "--ic-palette-zinc-400": "--color-zinc-400",
+    "--ic-palette-zinc-500": "--color-zinc-500",
+    "--ic-palette-zinc-600": "--color-zinc-600",
+    "--ic-palette-zinc-700": "--color-zinc-700",
+    "--ic-palette-zinc-800": "--color-zinc-800",
+    "--ic-palette-zinc-900": "--color-zinc-900"
+  },
+  "shifts": {
+    "--ic-font-sans": [
+      "--font-sans",
+      "Inter \u2192 Proxima Nova, the production typeface"
+    ],
+    "--ic-font-mono": [
+      "--font-mono",
+      "a different mono stack"
+    ],
+    "--ic-radius-lg": [
+      "--radius-md",
+      "12px \u2192 8px; --radius-lg was retired on purpose"
+    ],
+    "--ic-radius-pill": [
+      "--radius-full",
+      "never defined in the legacy block either"
+    ],
+    "--ic-shadow-sm": [
+      "--shadow-1",
+      "0 2px 4px/.06 \u2192 Picasso's 0 0 8px/.08"
+    ],
+    "--ic-shadow-md": [
+      "--shadow-2",
+      "0 4px 12px/.08 \u2192 Picasso's 0 4px 8px/.08"
+    ],
+    "--ic-shadow-lg": [
+      "--shadow-5",
+      "0 12px 32px/.10 \u2192 Picasso's scroll-menu shadow"
+    ],
+    "--ic-shadow-xl": [
+      "--shadow-4",
+      "0 24px 56px/.14 \u2192 Picasso's tooltip shadow"
+    ],
+    "--ic-palette-blue-500": [
+      "--color-accent",
+      "the semantic alias, not the ramp step"
+    ],
+    "--ic-palette-green-500": [
+      "--color-success",
+      "same"
+    ],
+    "--ic-palette-red-500": [
+      "--color-danger",
+      "same"
+    ],
+    "--ic-palette-graphite-800": [
+      "--color-graphite-800",
+      "the sanctioned primitive \u2014 top bar chrome"
+    ],
+    "--ic-palette-blue-400": [
+      "--color-blue-400",
+      "ramp re-pointed: #4A6FE0 \u2192 #25A9EF"
+    ],
+    "--ic-palette-graphite-700": [
+      "--color-graphite-700",
+      "ramp re-pointed: #303A4A \u2192 #455065"
+    ],
+    "--ic-palette-gray-100": [
+      "--color-gray-100",
+      "ramp re-pointed: #FCFCFC \u2192 #F3F4F6"
+    ],
+    "--ic-palette-gray-200": [
+      "--color-gray-200",
+      "ramp re-pointed: #E0E1E5 \u2192 #EBECED"
+    ],
+    "--ic-palette-gray-300": [
+      "--color-gray-300",
+      "ramp re-pointed: #CCCDD3 \u2192 #E5E7EA"
+    ],
+    "--ic-palette-gray-400": [
+      "--color-gray-400",
+      "ramp re-pointed: #B3B5BC \u2192 #D8D9DC"
+    ],
+    "--ic-palette-gray-500": [
+      "--color-gray-500",
+      "ramp re-pointed: #999BA4 \u2192 #C4C6CA"
+    ],
+    "--ic-text-xxs": [
+      "--text-xxs",
+      "0.6875rem/11px \u2192 0.75rem/12px"
+    ],
+    "--ic-weight-medium": [
+      "--font-weight-semibold",
+      "500 \u2192 600; Picasso has no medium"
+    ],
+    "--ic-weight-bold": [
+      "--font-weight-semibold",
+      "700 \u2192 600; Picasso tops out at semibold"
+    ]
+  },
+  "none": {
+    "--ic-lh-*": "the line-height family is folded into --type-* composites now",
+    "--ic-space-9": "never defined in the legacy block \u2014 already broken",
+    "--ic-space-10": "64px \u2014 --spacing-16 is retired",
+    "--ic-space-12": "80px \u2014 --spacing-20 is retired",
+    "--ic-space-16": "128px \u2014 --spacing-32 is retired",
+    "--ic-z-toast": "1000 \u2014 the current name is --z-snackbar; confirm the stacking",
+    "--ic-palette-gray-*": "the gray ramp was re-pointed; every step is a different colour",
+    "--ic-palette-orange-*": "no orange ramp in the current tokens",
+    "--ic-palette-cyan-*": "cyan-100/700 have no current step"
+  }
+}
