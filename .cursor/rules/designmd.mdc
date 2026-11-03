@@ -103,6 +103,16 @@ python3 tools/new-prototype.py <kebab-name> --thumb  # 1280x800 card image, re-r
 python3 inline.py <path-to-your-prototype>.html    # bake before sharing
 ```
 
+A screen that already exists but is not listed — built before the scaffolder, or
+made with `--no-register` — is registered without being touched:
+
+```bash
+python3 tools/new-prototype.py <kebab-name> --register-only --title "<Title>" --desc "<one line>"
+```
+
+Do not re-run the scaffolder over it to get the card: that copies the template
+on top of the prototype.
+
 A hand-written skeleton drifts from the system the moment the system moves; a
 duplicated template cannot. If the template lacks something every screen should
 have, fix `template/index.html` — never only your copy.

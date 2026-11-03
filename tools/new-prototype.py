@@ -209,6 +209,10 @@ def main():
     p.add_argument('--no-register', dest='register', action='store_false',
                    help='write the folder only — leave index.html and status.json alone '
                         '(throwaway scaffolds, previews, and layouts with no feature index)')
+    p.add_argument('--register-only', dest='register_only', action='store_true',
+                   help='list an EXISTING prototype in index.html and status.json and '
+                        'stop — the folder is not touched. For a screen built before '
+                        'the scaffolder, or one made with --no-register')
     p.add_argument('--thumb', action='store_true',
                    help='shoot the 1280x800 thumbnail for an existing prototype and stop')
     p.add_argument('--url', help='page to shoot for --thumb (default: the local prototypes server)')
@@ -226,6 +230,21 @@ def main():
         if not (features / a.name).is_dir():
             die(f'{features / a.name} does not exist')
         shoot_thumb(features, a.name, a.url or THUMB_URL.format(name=a.name))
+        return
+
+    if a.register_only:
+        # Registration without scaffolding. Without this the only way to list
+        # an existing screen was to re-run the scaffolder over it, which copies
+        # the template on top of the prototype — so in practice it was done by
+        # hand, or not at all.
+        folder = features / a.name
+        if not folder.is_dir():
+            die(f'{folder} does not exist — scaffold it first, without --register-only')
+        title = a.title or a.name.replace('-', ' ').capitalize()
+        desc = a.desc or f'{title} prototype.'
+        print(f'  {register_card(features / "index.html", a.name, title, desc)}')
+        print(f'  {register_status(features, a.name, a.status)}')
+        print(f'  thumbnail: python3 tools/new-prototype.py {a.name} --thumb')
         return
 
     if a.nav and a.new_nav:
