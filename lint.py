@@ -412,11 +412,24 @@ def lint(path, kit_classes, showcase, tooling, icons, prims, semantic):
     # marks, illustrations — so the file's own <symbol> ids count as defined.
     if icons:
         local = set(re.findall(r'<symbol[^>]*id="([^"]+)"', html))
-        known = icons | local
+        # A baked file carries its own sprite, and inline.py narrows that to the
+        # symbols the page names — so the file itself is the truth about what
+        # will render. Checking against the full icons.svg instead would pass a
+        # reference the baked sprite does not contain, which draws nothing.
+        known = local if (inlined and local) else icons | local
         for m in re.finditer(r'<use[^>]*href="#([\w-]+)"', markup):
-            if m.group(1) not in known:
-                found.append(Finding("error", line_of(markup, m.start()), "dead-icon",
-                    f"#{m.group(1)} is not in icons.svg — the glyph renders blank"))
+            name = m.group(1)
+            if name in known:
+                continue
+            if inlined and icons and name in icons:
+                # It exists in the system, just not in THIS file's sprite:
+                # inline.py narrows the sprite to the icons the page names.
+                msg = (f"#{name} is in icons.svg but not in this file's sprite — "
+                       "inline.py ships only the icons the page names, so re-bake "
+                       "after adding one")
+            else:
+                msg = f"#{name} is not in icons.svg — the glyph renders blank"
+            found.append(Finding("error", line_of(markup, m.start()), "dead-icon", msg))
 
     # --- retired Phosphor
     for m in re.finditer(r'<i[^>]*class="[^"]*\bph\b', markup):
