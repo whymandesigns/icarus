@@ -37,11 +37,41 @@ mode is usually the one a prototype drifts into.
 In a work tool, **Serious** leads. The register is a competent colleague telling
 you what happened — not a brand, not an assistant, not a friend.
 
+### The product is not the marketing site
+
+[operationalize.com](https://operationalize.com) speaks for the same product
+from the **Energetic** end of BASE: it is selling. Inside the product the user
+has already bought, and the same words read as noise. They stay on the site:
+
+> *ultimate · command center · world-class · best-in-class · unparalleled ·
+> unmatched · seamless(ly) · robust · powerful · transform · unlock ·
+> effortless · perfect fit · take full control*
+
+What **does** carry over from the site — these are the habits worth copying:
+
+- **Lines that start with a verb.** The site's feature and step headings are
+  all verb + object: *Map ownership for your processes · Connect meetings to
+  your processes · Create Slack channels for your processes · Measure the
+  impact of your processes.* Onboarding steps, empty-state actions and feature
+  descriptions in the product follow the same shape.
+- **Benefits as short noun phrases, no period:** *Clear levels of ownership ·
+  Automatic meeting recordings · Centralized workflows.* The pattern for a
+  short list of what something gives you.
+- **A reassurance line under a commitment.** The site puts *"No credit card or
+  commitment needed."* beneath every sign-up button. In the product, a step that
+  feels permanent gets the same kind of line: *"You can change the owner
+  later."* One short sentence, only where the worry is real.
+- **People, not users.** The site says *"3,000+ people using Operationalize"*.
+  Same rule here (principle 1).
+- **Integrations named plainly, in a stable order, with the Oxford comma:**
+  *Zoom, Slack, and Google Calendar.*
+
 ## Seven principles
 
 1. **People, not users.** Human, empathetic language. Never "users" in the UI —
    say who they are: *owner*, *member*, *assessor*, or just "you". No gendered
-   language; "they" when the person is unknown.
+   language; "they" when the person is unknown. The one exception is billing,
+   where a seat is a seat: *"$49.99 per user, per month"*.
 2. **Be concise.** Write for reading speed and embrace the constraint. A short,
    useful line beats a paragraph that explains.
 3. **You, not me.** Second person — *"your initiatives"* — by default. First
@@ -93,7 +123,7 @@ Toptal is an American company. Spell and standardize accordingly.
 
 ### Tense and voice
 
-- **Present tense for what the product does:** *"Owners see every Key Result"*,
+- **Present tense for what the product does:** *"Owners see every key result"*,
   not *"Owners will be able to see…"*.
 - **Simple verb forms when past or future is needed:** *"When does the cycle
   start?"*, not *"When will the cycle be starting?"*
@@ -106,6 +136,14 @@ Toptal is an American company. Spell and standardize accordingly.
 - **Periods on full sentences** — body text, hints, errors, toasts, tooltips.
   **No period** on a label, a heading, a button, a tab, a menu item or a link.
 - **En dash with spaces for ranges:** *Oct 3 – Nov 14, 2026*, *5:00 AM – 10:00 PM*.
+- **Em dash with no spaces for a break in a sentence:** *"90-day trial—no
+  credit card needed."* That is how operationalize.com writes it. Use it
+  sparingly in the product; a period is usually better.
+- **Acronyms are spelled out once, where something is taught** — onboarding,
+  an empty state, a help panel: *OKRs (Objectives and Key Results)*, *RACI
+  (Responsible, Accountable, Consulted, Informed)*. Never in chrome, a table
+  or a label, where the acronym is the name. Plurals take no apostrophe:
+  *OKRs*, *RACIs*.
 - **Question marks** only on a real question — a confirmation modal title is one.
 
 ## Capitalization
@@ -115,10 +153,18 @@ column headers, tabs, badges, tags, toasts, modal titles, empty states, links.
 
 > New initiative · End date · In review · Delete process
 
-Capitals only for proper nouns and product terms that are proper nouns
-(Tableau, TopTeam, Initiative when it names the entity). Never Title Case,
-never ALL CAPS in copy — if something needs to shout, that is a styling
-decision, not a spelling one.
+Capitals only for proper nouns: people, companies, integrations, and named
+bodies such as TopTeam. Never Title Case, never ALL CAPS in copy — if something
+needs to shout, that is a styling decision, not a spelling one.
+
+- **The things the product manages are common nouns.** Lowercase mid-sentence:
+  *"Connect meetings to your processes"*, *"3 initiatives need an owner"*. They
+  are capitalized only where sentence case already puts a capital — first word,
+  nav item, page title. operationalize.com writes them this way throughout.
+- **Acronyms keep their capitals** — *OKR, RACI, KPI* — and so does their
+  spelled-out form: *Objectives and Key Results*.
+- **Operationalize is always capitalized and is never a verb** in the product.
+  The site's *"2,850+ processes Operationalized"* is marketing play.
 
 This is a deliberate departure from the old guide, which used Title Case for
 headers, labels and buttons. See the end of this file.
@@ -170,7 +216,7 @@ A link goes somewhere; a button does something.
 - **A link is a phrase, not a sentence** — no period, sentence case.
 - **Put the link on the words that name the destination:** *"Profile updated
   Sep 2025 · [Update profile]"*. Never "Click here". Never "Learn more" on its
-  own if you can say *"How Key Results are scored"*.
+  own if you can say *"How OKRs are scored"*.
 
 ## Headings
 
@@ -317,12 +363,19 @@ genuinely nothing the user can do — and then say why.
 
 - **Numerals, not words:** *4 owners*, not *four owners* — including under ten.
 - **Thousands separators always, decimal point a period:** *1,284* ·
-  *$1,300.75*. Abbreviate to *1.2k* only in chrome too tight for the real
+  *$1,300.75* · *3,000+*. operationalize.com prints both *3000+* and *3,000+*
+  on the same page — the separator is the one to keep. Abbreviate to *1.2k* only in chrome too tight for the real
   number.
 - **Hours are decimals:** *7.5 hrs*, not *7 hrs 30 min*.
 - **Counts read as a phrase, not a parenthetical**: *"12 initiatives"*, not
   *"Initiatives (12)"*. The exception is `.count-badge`, which is numerals only.
 - **Zero is "None", not "0"**, when it is a state rather than a measurement.
+
+- **Rates spell out "per":** *$49.99 per user, per month* · *$129 per hour*.
+  Not */mo* or */hr* outside chrome too tight for the words.
+- **A figure is written the same way every time it appears.** The site says
+  *8+ years*, *over 8 years* and *over eight years* about the same fact; a
+  screen that repeats a number repeats it exactly.
 
 ### Abbreviations
 
@@ -352,15 +405,22 @@ genuinely nothing the user can do — and then say why.
 ### Spellings people get wrong
 
 *time zone* (two words) · *canceled* (one l) · *timesheet* · *startup* ·
-*onboarding* · *sign in* (verb) / *sign-in* (noun) · the plural of *talent* is
-*talent*.
+*onboarding* · the plural of *talent* is *talent*.
+
+**Account actions are *Log in*, *Log out* and *Sign up*** — what
+operationalize.com's own buttons say. Verb two words, noun one: *log in* /
+*your login*, *sign up* / *the sign-up form*. Not *Sign in*, *Register* or
+*Create account*.
 
 ### Hyphens
 
 - *part-time*, *full-time*, *on-site* — always hyphenated.
 - **Compound adjectives take a hyphen, the noun does not:** *a front-end
   engineer* / *works on the front end*; *on-demand talent* / *talent, on
-  demand*. Same for *back end*, *follow up*, *sign in*.
+  demand*. Same for *back end*, *follow up*, *real time* — *a real-time
+  dashboard* / *updates in real time*.
+- **A number joined to a unit before a noun is hyphenated:** *a 90-day trial*,
+  *a 2-week cadence*. After the noun it is not: *the trial lasts 90 days*.
 
 ### Toptal-wide terms
 
@@ -386,7 +446,8 @@ similar. Never call the Toptal network as a whole *"experts"*.
 `Click here` · `Please` · `Oops` / `Whoops` / `Uh oh` · `Something went wrong`
 (alone) · `An error occurred` · `Are you sure?` as a modal title · `Submit`
 where you mean Save · `OK` as a confirm label · `users` in UI text · `Ability
-to…` · Title Case · exclamation marks outside a welcome · British spellings ·
+to…` · Title Case · exclamation marks outside a welcome · British spellings · marketing
+superlatives (*ultimate*, *world-class*, *seamless*) · *Sign in* ·
 `Lorem ipsum` or `Step 1 title` in anything you share
 
 ## Checking it
