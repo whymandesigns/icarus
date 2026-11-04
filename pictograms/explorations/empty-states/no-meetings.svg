@@ -1,0 +1,26 @@
+<svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.15" d="M7 19H97V36H7V19Z" fill="currentColor"/>
+<path opacity="0.15" d="M33 37H45V49H33V37Z" fill="currentColor"/>
+<path d="M73.5 101.5H6.5V18.5H97.5V73.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M6.5 36.5H97.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M19.5 36.5V101.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M32.5 36.5V101.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M45.5 36.5V101.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M58.5 36.5V101.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M71.5 36.5V101.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M84.5 36.5V78" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M6.5 49.5H97.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M6.5 62.5H97.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M6.5 75.5H88.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M6.5 88.5H75.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M25.5 10.5H29.5V24.5H25.5V10.5Z" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M74.5 10.5H78.5V24.5H74.5V10.5Z" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<circle cx="98.5" cy="98.5" r="22" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M98.5 79.5V83.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M98.5 113.5V117.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M79.5 98.5H83.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M113.5 98.5H117.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M98.5 97V86.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<path d="M100 98.5H108.5" stroke="currentColor" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" vector-effect="non-scaling-stroke"/>
+<circle cx="98.5" cy="98.5" r="1.5" fill="currentColor"/>
+</svg>
