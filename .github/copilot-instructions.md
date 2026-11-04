@@ -48,13 +48,17 @@ catches it.
 4. **One `.btn-primary` per page.** Every other call to action is `.btn-secondary`. Green
    is both the primary CTA and the success colour, so two of them means neither reads as
    the action.
-5. **Don't write component CSS in a prototype.** If a variant is missing, add it to
+5. **Copy is part of the system too.** `UXCopy.md` decides how a label, an
+   error or a date is written; `features/CONTEXT.md` decides what the thing is
+   called. A screen with invented wording drifts the same way invented CSS
+   does, and is harder to spot.
+6. **Don't write component CSS in a prototype.** If a variant is missing, add it to
    `designmd/components.css` so the next screen inherits it, then re-inline.
-6. **Build light only — dark theme is parked.** `[data-theme="dark"]` exists in the
+7. **Build light only — dark theme is parked.** `[data-theme="dark"]` exists in the
    stylesheet, but it is being rebuilt on Picasso's own dark values. Don't set it,
    don't write `prefers-color-scheme` blocks, and don't add dark overrides for a new
    token. Anything written for it now gets thrown away.
-7. **A full-window screen is `<div class="app-shell is-fullscreen">`, and that is all.**
+8. **A full-window screen is `<div class="app-shell is-fullscreen">`, and that is all.**
    No `height`, `min-height`, `flex` or `overflow` in the page, and no
    `html, body { height: 100% }` reset — the variant bounds the body and
    `.app-shell-main` scrolls on its own. Older prototypes carry four hand-written
@@ -126,6 +130,7 @@ that shape, always `index.html`. On your own, put it where you like.
 | `designmd/template/index.html` | **the shell every prototype starts as** — top bar, side nav, page head, and the delegated handlers the kit does not ship. Duplicate it with `tools/new-prototype.py`; edit it when the shell itself should change. |
 | `designmd/tools/new-prototype.py` | duplicates the template, resolves the sidenav, lists the feature. `--thumb` shoots the card image later. |
 | `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
+| `designmd/UXCopy.md` | **the words** — button labels, tone, dates, and which of toast / alert / modal / field error a message belongs in. Read it before writing any user-facing string. |
 | `designmd/DESIGN.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
 | `designmd/llms-full.txt` | this guide, the worked markup and the complete class and token inventory, ~9k tokens. **Paste this if you have no filesystem.** |
