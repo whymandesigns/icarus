@@ -37,34 +37,34 @@ mode is usually the one a prototype drifts into.
 In a work tool, **Serious** leads. The register is a competent colleague telling
 you what happened — not a brand, not an assistant, not a friend.
 
-### The product is not the marketing site
+### The brand voice, in the platform
 
-[operationalize.com](https://operationalize.com) speaks for the same product
-from the **Energetic** end of BASE: it is selling. Inside the product the user
-has already bought, and the same words read as noise. They stay on the site:
+[operationalize.com](https://operationalize.com) is marketing: it is written
+to sell. The platform is B2B SaaS that people work in all day, so it doesn't
+borrow the site's words. It borrows the site's **habits**. These are how the
+brand sounds, and they carry over to every surface below:
+
+| On the site | In the platform |
+|---|---|
+| **Outcome first.** Features are named by what they get you: *Track the impact of work · Run meetings that drive results.* | Lead with what the user can now do or get, not with how the screen works. |
+| **Verb + object.** *Map ownership · Connect meetings · Measure the impact.* | Headings, steps, actions and announcement titles start with a verb. |
+| **Confident, no hedging.** *"Operationalize connects processes, people, communication, and metrics."* | State things plainly. No *"may"*, *"try to"*, *"should hopefully"* when the product knows. |
+| **Concrete.** It names Zoom, Slack, and Google Calendar, and puts numbers on outcomes: *"80% reduction in time-to-schedule interviews."* | Name the screen, the integration, the count. *"3 processes have no owner"*, not *"Some items need attention"*. |
+| **The method, not just the tool.** Built on OKRs, RACI and cadenced meetings that Toptal proved on itself. | Where the user learns something (an empty state, onboarding, a new feature), say *why* in one line, in terms of the framework. |
+| **Remove the worry.** *"No credit card or commitment needed."* under every sign-up. | A step that feels permanent gets one reassuring line: *"You can change the owner later."* |
+| **People.** *"3,000+ people using Operationalize."* | Never "users" (principle 1). |
+
+What stays on the site is the **volume**, not the voice. These words don't
+belong in the platform, not even in a feature announcement:
 
 > *ultimate · command center · world-class · best-in-class · unparalleled ·
 > unmatched · seamless(ly) · robust · powerful · transform · unlock ·
 > effortless · perfect fit · take full control*
 
-What **does** carry over from the site — these are the habits worth copying:
-
-- **Lines that start with a verb.** The site's feature and step headings are
-  all verb + object: *Map ownership for your processes · Connect meetings to
-  your processes · Create Slack channels for your processes · Measure the
-  impact of your processes.* Onboarding steps, empty-state actions and feature
-  descriptions in the product follow the same shape.
-- **Benefits as short noun phrases, no period:** *Clear levels of ownership ·
-  Automatic meeting recordings · Centralized workflows.* The pattern for a
-  short list of what something gives you.
-- **A reassurance line under a commitment.** The site puts *"No credit card or
-  commitment needed."* beneath every sign-up button. In the product, a step that
-  feels permanent gets the same kind of line: *"You can change the owner
-  later."* One short sentence, only where the worry is real.
-- **People, not users.** The site says *"3,000+ people using Operationalize"*.
-  Same rule here (principle 1).
-- **Integrations named plainly, in a stable order, with the Oxford comma:**
-  *Zoom, Slack, and Google Calendar.*
+How loud the voice gets depends on the surface. **Errors and confirmations are
+the Serious end of BASE**: plain, short, no personality. **Empty states and
+onboarding** can teach. **New-feature announcements** are the one place the
+Energetic end shows. They are still product copy, so no superlatives.
 
 ## Seven principles
 
@@ -312,6 +312,9 @@ short sentences. Every error offers a way out of what looks like a dead end.
   — that is the absence of a message.
 - A field error (`.field-hint` with `.is-error`) names the fix: *"End date must
   be after the start date."* It replaces the hint; it does not stack with it.
+- **Brand voice here is the confidence, nothing more.** The user stays in
+  control: say plainly what happened and hand them the next move. A failure is
+  not the place for personality.
 
 ### Empty states
 
@@ -328,6 +331,70 @@ order: **what isn't here, what could be, the one thing to do.**
 
 Never "No data". Never an empty state without an action, unless there is
 genuinely nothing the user can do — and then say why.
+
+**A first-use empty state teaches the method in one line.** This is where the
+site's habit of explaining the framework belongs: say what the thing is for,
+in outcome terms, then offer the one action.
+
+> **No RACI yet**
+> Assign who's accountable, so everyone knows who makes the call.
+> *[Add RACI]*
+
+> **No key results linked**
+> Link this process to a key result to see the impact of the work.
+> *[Link key result]*
+
+A filtered-to-nothing empty state does not teach. It says what to change
+(*"No results"* above).
+
+### New features
+
+An in-product announcement (a banner, a "What's new" panel, a callout on the
+changed screen) is the one surface where the Energetic end of BASE shows. It is
+still product copy: it tells someone who already uses the product what they can
+do now.
+
+1. **Title: verb + object, naming the capability.** *Schedule meetings from a
+   process.* Not *"Introducing Meeting Scheduling"*, not *"Big news"*.
+2. **One sentence of outcome**: what it does for them, concretely. *Connect
+   Google Calendar and Zoom, and every invite goes to the process's RACI.*
+3. **Where it is**, if it isn't right there: *Find it under Settings ›
+   Integrations.*
+4. **One action that names the next step**: *[Connect calendar]*. Not *"Learn
+   more"* or *"Check it out"*.
+
+> **Schedule meetings from a process**
+> Connect Google Calendar and Zoom, and every invite goes to the process's
+> RACI.
+> *[Connect calendar]* · *Dismiss*
+
+- **"New" goes on the `.badge`, not in the sentence.** The title says what,
+  the badge says new.
+- **No superlatives and no exclamation marks.** *"A faster way to…"* only if
+  it is measurably faster, and then say by how much.
+- **Dismissible, and gone once seen or used.** A feature is new once.
+
+### Changelogs
+
+The changelog is read by people checking what changed under them. It is a
+record, so it is **Serious**: plain and complete, with no selling.
+
+- **One entry per release, headed by its date**: *Nov 4, 2026*. Optionally a
+  short title for a large release: *Nov 4, 2026 — Meeting scheduling*.
+- **Group under these headings, in this order:** *Changed* · *New* ·
+  *Improved* · *Fixed*. Leave out a group with nothing in it.
+- **Each line starts with the area, then what the user can now do**, in present
+  tense: *Processes: Link a process to more than one key result.*
+- **A fix says what works now, not what was broken:** *Exports: Archived
+  processes are included in CSV exports.* Not *"Fixed a bug where…"*.
+- **Name screens and controls as they appear**, in bold if it is a control:
+  *Select **Export** on any table.*
+- **No ticket IDs, branch names, code names or people's names.** Same rule
+  as principle 4: what the team calls it internally is not what the reader
+  sees.
+- **Anything that behaves differently goes under *Changed***, first, and says
+  what the reader has to do: *Changed: Meetings now inherit invitees from the RACI.
+  Remove manual invitees you no longer need.*
 
 ---
 
