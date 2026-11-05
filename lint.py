@@ -167,9 +167,14 @@ def lint(path, kit_classes, showcase, tooling, icons, prims, semantic):
     for region in TOOLING_REGIONS:
         without_tooling = blank(region, without_tooling)
     all_style_blocks = re.findall(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
+    # The marker has to OPEN the block, as inline.py's own pattern requires.
+    # Testing `marker in block` instead dropped any prototype stylesheet that
+    # merely mentions the marker in a comment — and a block explaining "inline.py
+    # only rewrites the block starting with /* === tokens.css === */" does
+    # exactly that. Every class it defined was then reported as undefined.
     own_style_blocks = [(m.start(1), m.group(1))
                         for m in re.finditer(r"<style[^>]*>(.*?)</style>", without_tooling, re.S)
-                        if INLINED_MARKER not in m.group(1)]
+                        if not m.group(1).lstrip().startswith(INLINED_MARKER)]
     own_style = "".join(b for _, b in own_style_blocks)
 
     # A class the file's own script selects on is a behaviour hook, not an

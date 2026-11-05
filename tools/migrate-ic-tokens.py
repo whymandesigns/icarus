@@ -22,10 +22,18 @@ MARK = "/* === tokens.css === */"
 
 
 def own_style_spans(html):
-    """(start, end) of every <style> block that is not the baked system."""
+    """(start, end) of every <style> block that is not the baked system.
+
+    The marker has to OPEN the block, the way inline.py's own pattern requires.
+    Testing `MARK in block` instead silently skipped any prototype whose own
+    stylesheet merely mentions the marker in a comment — which is exactly what
+    a block explaining "inline.py only rewrites the block starting with
+    /* === tokens.css === */" does. Those files then under-migrated and
+    inline.py went on refusing them with no sign of why.
+    """
     return [(m.start(1), m.end(1))
             for m in re.finditer(r"<style[^>]*>(.*?)</style>", html, re.S)
-            if MARK not in m.group(1)]
+            if not m.group(1).lstrip().startswith(MARK)]
 
 
 def main():
