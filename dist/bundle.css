@@ -3256,6 +3256,22 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: var(--spacing-2) var(--spacing-3) var(--spacing-3);
 }
 .dropdown-header .dropdown-item-label { font-weight: var(--font-weight-semibold); white-space: nowrap; }
+/* A name and a role are identity, not content: they belong on one line each, so
+ * a long role ellipses rather than growing the menu or stacking three lines.
+ * Scoped to the header — an item's own description still wraps, which is what
+ * explanatory rows need. .dropdown-item-text already carries min-width: 0, so
+ * the flex child can shrink far enough for the ellipsis to show. */
+.dropdown-header .dropdown-item-label,
+.dropdown-header .dropdown-item-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown-header .dropdown-item-description { white-space: nowrap; }
+/* nowrap alone only stops the wrap: the menu has a min-width and no max, so a
+ * long role widens the whole panel instead of ellipsing. Capping the header's
+ * text block is what makes the ellipsis appear, and it bounds only the identity
+ * row — items still size to their own content. */
+.dropdown-header .dropdown-item-text { max-width: 220px; }
 
 /* Trailing count/badge inside a dropdown item — pushed to the right edge */
 .dropdown-item-count { margin-left: auto; flex-shrink: 0; }
