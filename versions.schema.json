@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://icarus.local/versions.schema.json",
+  "title": "features/<feature>/versions.json",
+  "description": "The version family for a feature prototyped in versions, and the change ledger for each version. Read by designmd/versions.js (the Versions + Changes plugins) and by anyone — person or agent — implementing the feature. See DESIGN.md §10.",
+  "type": "object",
+  "required": ["family", "versions"],
+  "additionalProperties": false,
+  "properties": {
+    "family": {
+      "type": "string",
+      "description": "Human name for the whole family, shown in the dock title bar."
+    },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/version" }
+    }
+  },
+  "definitions": {
+    "version": {
+      "type": "object",
+      "required": ["folder", "label", "date", "stage"],
+      "additionalProperties": false,
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "Folder name next to versions.json, e.g. v3-breadcrumb or v3.1-breadcrumb. Also the version's identity everywhere else.",
+          "pattern": "^v[0-9]+(\\.[0-9]+)?-[a-z0-9-]+$"
+        },
+        "label": { "type": "string", "description": "Display name, e.g. \"v3 · Breadcrumb + People\"." },
+        "date": { "type": "string", "format": "date", "description": "When this version was created (YYYY-MM-DD)." },
+        "note": { "type": "string", "description": "One line on what this version is." },
+        "basedOn": {
+          "type": ["string", "null"],
+          "description": "The folder this version was branched from, or null for the first. A version that a later version is basedOn, and that never shipped, is superseded — the UI derives that, there is no stage for it."
+        },
+        "kind": {
+          "enum": ["concept", "revision"],
+          "default": "concept",
+          "description": "concept = a different idea, explored on purpose (v4). revision = the same idea changed after it locked (v3.1). Revisions nest under their concept in the version list."
+        },
+        "stage": {
+          "enum": ["draft", "review", "locked", "shipped"],
+          "description": "draft = yours, nobody has seen it; a change costs nothing. review = feedback open, nobody building; edit in place and add a ledger line. locked = someone is building against it; ANY change becomes a new version. shipped = built, now the as-built reference.",
+          "default": "draft"
+        },
+        "lockedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The day this version locked — i.e. the day its Jira ticket was picked up, not the day it was written. Required once stage is locked or shipped; compared against the Figma page's modified time to detect drift."
+        },
+        "figma": {
+          "type": "object",
+          "description": "The Figma page holding this version's happy paths, built AT lock. Absent before then — there is no Figma page for a draft.",
+          "additionalProperties": false,
+          "properties": {
+            "page": { "type": "string", "description": "Page name, matching the folder, e.g. \"v3 · Breadcrumb + People\"." },
+            "nodeId": { "type": "string", "description": "Page or frame node id, colon form, e.g. 38847:2305." },
+            "url": { "type": "string", "format": "uri" }
+          }
+        },
+        "jira": {
+          "type": "object",
+          "description": "Where this version is being built.",
+          "additionalProperties": false,
+          "properties": {
+            "epic": { "type": "string", "description": "The feature's epic, e.g. OPS-128." },
+            "issue": { "type": "string", "description": "The sub-task carrying this version's change list, e.g. OPS-141." }
+          }
+        },
+        "changes": {
+          "type": "array",
+          "description": "What is new, moved, changed or removed in this version compared with basedOn. Each entry's id is stamped on the markup as data-change-id, written on the Figma page, and listed in the Jira sub-task — unmatched on any side means drift.",
+          "items": { "$ref": "#/definitions/change" }
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "required": ["id", "type", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable id, <folder version>-<n>, e.g. v3-07 or v3.1-01.",
+          "pattern": "^v[0-9]+(\\.[0-9]+)?-[0-9]{2,}$"
+        },
+        "type": { "enum": ["new", "moved", "changed", "removed"] },
+        "summary": { "type": "string", "description": "What changed, in a few words. Matches data-change-note on the marked element." },
+        "why": { "type": "string", "description": "The reason, in one line. This is the part a ticket cannot reconstruct." },
+        "source": {
+          "type": "string",
+          "description": "Where the change came from: prd, review, slack:<YYYY-MM-DD>, jira:<KEY>, or a person's name."
+        },
+        "figmaNode": { "type": "string", "description": "Node id of the affected frame or element, colon form." },
+        "status": {
+          "enum": ["pending", "accepted", "deferred", "built"],
+          "default": "pending",
+          "description": "pending = recorded, not scheduled. accepted = the person building it took it into the current ticket. deferred = it waits for a later version. built = it is in the code."
+        },
+        "amendment": {
+          "type": "boolean",
+          "default": false,
+          "description": "True only for a change that landed in place on a LOCKED version because the person building it accepted it first. Requires acknowledgedBy."
+        },
+        "acknowledgedBy": { "type": "string", "description": "Who accepted the amendment, and when." }
+      }
+    }
+  }
+}
