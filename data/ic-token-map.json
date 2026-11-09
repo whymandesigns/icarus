@@ -68,68 +68,132 @@
     "--ic-palette-zinc-600": "--color-zinc-600",
     "--ic-palette-zinc-700": "--color-zinc-700",
     "--ic-palette-zinc-800": "--color-zinc-800",
-    "--ic-palette-zinc-900": "--color-zinc-900"
+    "--ic-palette-zinc-900": "--color-zinc-900",
+    "--ic-palette-gray-100": "--color-gray-50",
+    "--ic-lh-body-xxs": "--text-2xs--line-height",
+    "--ic-lh-body-xs": "--text-xxs--line-height",
+    "--ic-lh-body-sm": "--text-sm--line-height",
+    "--ic-lh-body-md": "--text-md--line-height",
+    "--ic-lh-body-lg": "--text-lg--line-height",
+    "--ic-lh-h1": "--text-2xl--line-height",
+    "--ic-lh-h2": "--text-xl--line-height",
+    "--ic-lh-h3": "--text-lg--line-height",
+    "--ic-lh-h4": "--text-md--line-height",
+    "--ic-palette-graphite-500": "--color-graphite-700",
+    "--ic-palette-cyan-500": "--color-blue-400"
   },
   "shifts": {
-    "--ic-font-sans": [
-      "--font-sans",
-      "Inter \u2192 Proxima Nova, the production typeface"
+    "--ic-duration-slow": [
+      "--duration-350",
+      "320ms \u2192 350ms; --duration-slow was retired"
+    ],
+    "--ic-ease-out": [
+      "--ease",
+      "--ease-out was retired \u2014 one curve now"
     ],
     "--ic-font-mono": [
       "--font-mono",
       "a different mono stack"
     ],
-    "--ic-radius-lg": [
-      "--radius-md",
-      "12px \u2192 8px; --radius-lg was retired on purpose"
+    "--ic-font-sans": [
+      "--font-sans",
+      "Inter \u2192 Proxima Nova, the production typeface"
     ],
-    "--ic-radius-pill": [
-      "--radius-full",
-      "never defined in the legacy block either"
+    "--ic-palette-blue-200": [
+      "--color-blue-150",
+      "#B0C1F5 -> #D5DEFA. dE 16.8"
     ],
-    "--ic-shadow-sm": [
-      "--shadow-1",
-      "0 2px 4px/.06 \u2192 Picasso's 0 0 8px/.08"
-    ],
-    "--ic-shadow-md": [
-      "--shadow-2",
-      "0 4px 12px/.08 \u2192 Picasso's 0 4px 8px/.08"
-    ],
-    "--ic-shadow-lg": [
-      "--shadow-5",
-      "0 12px 32px/.10 \u2192 Picasso's scroll-menu shadow"
-    ],
-    "--ic-shadow-xl": [
-      "--shadow-4",
-      "0 24px 56px/.14 \u2192 Picasso's tooltip shadow"
-    ],
-    "--ic-palette-blue-500": [
-      "--color-accent",
-      "the semantic alias, not the ramp step"
-    ],
-    "--ic-palette-green-500": [
-      "--color-success",
-      "same"
-    ],
-    "--ic-palette-red-500": [
-      "--color-danger",
-      "same"
-    ],
-    "--ic-palette-graphite-800": [
-      "--color-graphite-800",
-      "the sanctioned primitive \u2014 top bar chrome"
+    "--ic-palette-blue-300": [
+      "--color-blue-400",
+      "#7B9AEE -> #25A9EF. dE 21.7"
     ],
     "--ic-palette-blue-400": [
       "--color-blue-400",
       "ramp re-pointed: #4A6FE0 \u2192 #25A9EF"
     ],
+    "--ic-palette-blue-500": [
+      "--color-accent",
+      "the semantic alias, not the ramp step"
+    ],
+    "--ic-palette-blue-800": [
+      "--color-blue-700",
+      "#0A1A50 -> #0F256E. dE 12.6"
+    ],
+    "--ic-palette-blue-900": [
+      "--color-blue-700",
+      "#061035 -> #0F256E. dE 25"
+    ],
+    "--ic-palette-cyan-100": [
+      "--color-blue-100",
+      "#E6F6FE -> #EDF1FD. dE 4.7"
+    ],
+    "--ic-palette-cyan-150": [
+      "--color-blue-150",
+      "#C8EBFD -> #D5DEFA. dE 10.6"
+    ],
+    "--ic-palette-cyan-200": [
+      "--color-blue-150",
+      "#A1DDFB -> #D5DEFA. dE 16.0"
+    ],
+    "--ic-palette-cyan-300": [
+      "--color-blue-400",
+      "#6ECAF5 -> #25A9EF. dE 19.8"
+    ],
+    "--ic-palette-cyan-400": [
+      "--color-blue-400",
+      "#45B9F2 -> #25A9EF. dE 9.7"
+    ],
+    "--ic-palette-cyan-600": [
+      "--color-blue-400",
+      "#1B8AC5 -> #25A9EF. dE 12.7"
+    ],
+    "--ic-palette-cyan-700": [
+      "--color-blue-700",
+      "#136B9B -> #0F256E. Dark cyan has no survivor; the dark end of the family is blue-700"
+    ],
+    "--ic-palette-cyan-800": [
+      "--color-blue-700",
+      "#0E5078 -> #0F256E"
+    ],
+    "--ic-palette-cyan-900": [
+      "--color-blue-700",
+      "#07334C -> #0F256E"
+    ],
+    "--ic-palette-graphite-100": [
+      "--color-surface-muted",
+      "retired step; the semantic alias for a pale chrome fill"
+    ],
+    "--ic-palette-graphite-150": [
+      "--color-gray-400",
+      "#CDD1DC -> #D8D9DC. dE 5.2 \u2014 the light graphite tints have no survivor"
+    ],
+    "--ic-palette-graphite-200": [
+      "--color-gray-500",
+      "#B3B9C8 -> #C4C6CA. dE 7.7"
+    ],
+    "--ic-palette-graphite-400": [
+      "--color-gray-700",
+      "#6A7389 -> #5F636A. dE 11.0 \u2014 gray-700 is designmd muted text; graphite-300 is lighter and would lose contrast on white"
+    ],
+    "--ic-palette-graphite-50": [
+      "--color-gray-100",
+      "never defined in the legacy block, so it already resolved to nothing. #F3F4F6 is the lightest neutral that reads as a graphite tint"
+    ],
+    "--ic-palette-graphite-600": [
+      "--color-graphite-750",
+      "#3A4457 -> #303A4A. dE 4.8 \u2014 the exact value survives only as the commented-out graphite-725"
+    ],
     "--ic-palette-graphite-700": [
       "--color-graphite-700",
       "ramp re-pointed: #303A4A \u2192 #455065"
     ],
-    "--ic-palette-gray-100": [
+    "--ic-palette-graphite-800": [
+      "--color-graphite-800",
+      "the sanctioned primitive \u2014 top bar chrome"
+    ],
+    "--ic-palette-gray-150": [
       "--color-gray-100",
-      "ramp re-pointed: #FCFCFC \u2192 #F3F4F6"
+      "ramp re-pointed: #F0F1F3 \u2192 #F3F4F6 (newer files already match)"
     ],
     "--ic-palette-gray-200": [
       "--color-gray-200",
@@ -147,37 +211,73 @@
       "--color-gray-500",
       "ramp re-pointed: #999BA4 \u2192 #C4C6CA"
     ],
-    "--ic-text-xxs": [
-      "--text-xxs",
-      "0.6875rem/11px \u2192 0.75rem/12px"
+    "--ic-palette-gray-800": [
+      "--color-graphite-750",
+      "#3D4149 -> #303A4A. dE 6.6. Nearer than gray-700; zinc is dark-theme internal and off limits to a prototype"
     ],
-    "--ic-weight-medium": [
-      "--font-weight-semibold",
-      "500 \u2192 600; Picasso has no medium"
+    "--ic-palette-gray-900": [
+      "--color-graphite-800",
+      "#24272D -> #262D3D. zinc-600 is nearer but is dark-theme internal"
     ],
-    "--ic-weight-bold": [
-      "--font-weight-semibold",
-      "700 \u2192 600; Picasso tops out at semibold"
+    "--ic-palette-green-500": [
+      "--color-success",
+      "same"
     ],
-    "--ic-text-lg": [
-      "--text-xl",
-      "1.125rem \u2192 1.25rem; --text-18 was retired"
+    "--ic-palette-green-900": [
+      "--color-green-800",
+      "#034539 -> #046B5A. dE 16.6"
     ],
-    "--ic-duration-slow": [
-      "--duration-350",
-      "320ms \u2192 350ms; --duration-slow was retired"
+    "--ic-palette-orange-100": [
+      "--color-yellow-100",
+      "#FFF0E6 -> #FFF5E3. No orange ramp exists; warning tint is yellow. dE 4.6"
     ],
-    "--ic-ease-out": [
-      "--ease",
-      "--ease-out was retired \u2014 one curve now"
+    "--ic-palette-orange-150": [
+      "--color-yellow-150",
+      "#FFDFC7 -> #F8E7C8. dE 6.8"
     ],
-    "--ic-palette-blue-900": [
-      "--color-blue-700",
-      "#061035 \u2192 #0F256E; blue-800/900 were retired"
+    "--ic-palette-orange-200": [
+      "--color-yellow-150",
+      "#FFCBA3 -> #F8E7C8. dE 17.1"
     ],
-    "--ic-palette-blue-800": [
-      "--color-blue-700",
-      "retired step, falls back one"
+    "--ic-palette-orange-300": [
+      "--color-yellow-150",
+      "#F5C07A -> #F8E7C8. dE 29.3 \u2014 the lightest surviving yellow tint"
+    ],
+    "--ic-palette-orange-400": [
+      "--color-yellow-500",
+      "#F58E42 -> #E59C01. dE 24.1"
+    ],
+    "--ic-palette-orange-500": [
+      "--color-yellow-500",
+      "#F07018 -> #E59C01. dE 29.9 \u2014 orange solid becomes the yellow solid"
+    ],
+    "--ic-palette-orange-600": [
+      "--color-yellow-700",
+      "#C05F0E -> #9A6A01. dE 23.1"
+    ],
+    "--ic-palette-orange-700": [
+      "--color-yellow-700",
+      "#964A0A -> #9A6A01. dE 20.2"
+    ],
+    "--ic-palette-orange-800": [
+      "--color-yellow-700",
+      "#6E3607 -> #9A6A01. dE 28.3 \u2014 yellow-700 is the darkest survivor"
+    ],
+    "--ic-palette-orange-900": [
+      "--color-yellow-700",
+      "#482404 -> #9A6A01. dE 38 \u2014 yellow-700 is the darkest survivor"
+    ],
+    "--ic-palette-purple-200": [
+      "--color-purple-150",
+      "#C9B5F4 -> #DFD3F9. dE 17.0"
+    ],
+    "--ic-palette-purple-300": [
+      "--color-purple-500",
+      "#A47DE2 -> #6727CF. dE 46"
+    ],
+    "--ic-palette-purple-400": [
+      "--color-purple-500",
+      "#8552D9 -> #6727CF. dE 21.2"
     ],
     "--ic-palette-purple-600": [
       "--color-purple-500",
@@ -187,50 +287,158 @@
       "--color-purple-500",
       "retired step, falls back one"
     ],
-    "--ic-palette-graphite-100": [
-      "--color-surface-muted",
-      "retired step; the semantic alias for a pale chrome fill"
+    "--ic-palette-purple-800": [
+      "--color-purple-500",
+      "#280D5C -> #6727CF. dE 50 \u2014 purple-500 is the only survivor in the family"
+    ],
+    "--ic-palette-purple-900": [
+      "--color-purple-500",
+      "#1A0840 -> #6727CF. dE 64 \u2014 purple-500 is the only survivor in the family"
+    ],
+    "--ic-palette-red-200": [
+      "--color-red-150",
+      "#F0B8C4 -> #F5D8E0. dE 14.0"
+    ],
+    "--ic-palette-red-300": [
+      "--color-red-500",
+      "#E5637D -> #D42551. dE 20.7"
+    ],
+    "--ic-palette-red-400": [
+      "--color-red-500",
+      "#DA3F62 -> #D42551. dE 7.9"
+    ],
+    "--ic-palette-red-500": [
+      "--color-danger",
+      "same"
+    ],
+    "--ic-palette-red-600": [
+      "--color-red-500",
+      "#A81D41 -> #D42551. dE 15.4 \u2014 lighter. #A81D41 survives only as --color-red-500-active, a Button state token, which is not a palette step"
+    ],
+    "--ic-palette-red-700": [
+      "--color-red-500",
+      "#7D1530 -> #D42551. dE 31"
+    ],
+    "--ic-palette-red-800": [
+      "--color-red-500",
+      "#5C0F24 -> #D42551. dE 44 \u2014 red-500 is the only survivor in the family"
+    ],
+    "--ic-palette-red-900": [
+      "--color-red-500",
+      "#3D0A18 -> #D42551. dE 57 \u2014 red-500 is the only survivor in the family"
+    ],
+    "--ic-palette-yellow-200": [
+      "--color-yellow-150",
+      "#F2D9A6 -> #F8E7C8. dE 12.1"
+    ],
+    "--ic-palette-yellow-300": [
+      "--color-yellow-150",
+      "#EDCA7E -> #F8E7C8. dE 27.0"
+    ],
+    "--ic-palette-yellow-400": [
+      "--color-yellow-500",
+      "#E9B340 -> #E59C01. dE 15.3"
+    ],
+    "--ic-palette-yellow-600": [
+      "--color-yellow-500",
+      "#C08301 -> #E59C01. dE 14.0 \u2014 closer than yellow-700"
+    ],
+    "--ic-palette-yellow-800": [
+      "--color-yellow-700",
+      "#704D01 -> #9A6A01. dE 17.5"
+    ],
+    "--ic-palette-yellow-900": [
+      "--color-yellow-700",
+      "#4A3301 -> #9A6A01. dE 32"
+    ],
+    "--ic-palette-zinc-100": [
+      "--color-gray-400",
+      "#D1D2D3 -> #D8D9DC. dE 2.8"
+    ],
+    "--ic-palette-zinc-200": [
+      "--color-gray-600",
+      "#949597 -> #84888E. dE 5.7"
+    ],
+    "--ic-palette-zinc-300": [
+      "--color-gray-700",
+      "#636466 -> #5F636A. dE 3.3"
+    ],
+    "--ic-palette-zinc-400": [
+      "--color-zinc-500",
+      "#484A4C -> #343536. dE 9.3 \u2014 stays in the dark-theme ramp, which is where zinc-400 was used"
+    ],
+    "--ic-radius-lg": [
+      "--radius-md",
+      "12px \u2192 8px; --radius-lg was retired on purpose"
+    ],
+    "--ic-radius-pill": [
+      "--radius-full",
+      "never defined in the legacy block either"
+    ],
+    "--ic-shadow-lg": [
+      "--shadow-5",
+      "0 12px 32px/.10 \u2192 Picasso's scroll-menu shadow"
+    ],
+    "--ic-shadow-md": [
+      "--shadow-2",
+      "0 4px 12px/.08 \u2192 Picasso's 0 4px 8px/.08"
+    ],
+    "--ic-shadow-sm": [
+      "--shadow-1",
+      "0 2px 4px/.06 \u2192 Picasso's 0 0 8px/.08"
+    ],
+    "--ic-shadow-xl": [
+      "--shadow-4",
+      "0 24px 56px/.14 \u2192 Picasso's tooltip shadow"
+    ],
+    "--ic-space-10": [
+      "--spacing-12",
+      "64px -> 48px. The scale stops at --spacing-12"
+    ],
+    "--ic-space-12": [
+      "--spacing-12",
+      "80px -> 48px. The scale stops at --spacing-12"
+    ],
+    "--ic-space-9": [
+      "--spacing-12",
+      "never defined in the legacy block, so every calc() using it was invalid and the declaration was dropped. 48px restores the intent"
+    ],
+    "--ic-text-lg": [
+      "--text-xl",
+      "1.125rem \u2192 1.25rem; --text-18 was retired"
+    ],
+    "--ic-text-xxs": [
+      "--text-xxs",
+      "0.6875rem/11px \u2192 0.75rem/12px"
+    ],
+    "--ic-weight-bold": [
+      "--font-weight-semibold",
+      "700 \u2192 600; Picasso tops out at semibold"
+    ],
+    "--ic-weight-medium": [
+      "--font-weight-semibold",
+      "500 \u2192 600; Picasso has no medium"
+    ],
+    "--ic-z-toast": [
+      "--z-snackbar",
+      "1000 \u2192 Picasso's 1400; the toast layer keeps its role"
     ]
   },
   "none": {
-    "--ic-lh-*": "the line-height family is folded into --type-* composites now",
-    "--ic-space-9": "never defined in the legacy block \u2014 already broken",
-    "--ic-space-10": "64px \u2014 --spacing-16 is retired",
-    "--ic-space-12": "80px \u2014 --spacing-20 is retired",
-    "--ic-space-16": "128px \u2014 --spacing-32 is retired",
-    "--ic-z-toast": "1000 \u2014 the current name is --z-snackbar; confirm the stacking",
-    "--ic-palette-gray-*": "the gray ramp was re-pointed; every step is a different colour",
-    "--ic-palette-orange-*": "no orange ramp in the current tokens",
-    "--ic-palette-cyan-*": "cyan-100/700 have no current step",
-    "--ic-palette-blue-200": "--color-blue-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-blue-300": "--color-blue-300 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-graphite-150": "--color-graphite-150 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-graphite-200": "--color-graphite-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-graphite-400": "--color-graphite-400 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-gray-800": "--color-gray-800 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-gray-900": "--color-gray-900 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-green-900": "--color-green-900 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-purple-200": "--color-purple-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-purple-300": "--color-purple-300 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-purple-400": "--color-purple-400 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-purple-800": "--color-purple-800 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-purple-900": "--color-purple-900 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-200": "--color-red-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-300": "--color-red-300 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-400": "--color-red-400 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-600": "--color-red-600 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-700": "--color-red-700 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-800": "--color-red-800 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-red-900": "--color-red-900 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-200": "--color-yellow-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-300": "--color-yellow-300 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-400": "--color-yellow-400 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-600": "--color-yellow-600 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-800": "--color-yellow-800 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-yellow-900": "--color-yellow-900 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-zinc-100": "--color-zinc-100 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-zinc-200": "--color-zinc-200 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-zinc-300": "--color-zinc-300 does not exist \u2014 it is commented out in tokens.css",
-    "--ic-palette-zinc-400": "--color-zinc-400 does not exist \u2014 it is commented out in tokens.css"
+    "--ic-palette-": "a JS template literal that builds the token name at runtime (integrations/api-token-management). Rewrite the data, not the reference",
+    "--ic-shadow-focus": "never defined, and its one use supplies a var() fallback that already renders. Unwrap the fallback by hand rather than inventing a token"
+  },
+  "_9": "  literals   the system models no token for this role at all, so the",
+  "_10": "             var() call is replaced by the value itself and the legacy",
+  "_11": "             token retires with nothing left behind.",
+  "literals": {
+    "--ic-space-16": [
+      "128px",
+      "an illustration's own size, not a spacing step. The scale stops at 48px and Picasso's stops at 12, so no token holds this"
+    ],
+    "--ic-container-xl": [
+      "1280px",
+      "Picasso has breakpoints, not containers; --container-lg is the only one designmd kept and it is 1024px, a different role"
+    ]
   }
 }

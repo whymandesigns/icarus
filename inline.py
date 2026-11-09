@@ -114,7 +114,15 @@ SPRITE_CLOSE = '<!-- === /icons.svg === -->'
 USE_STATIC = re.compile(r'(?:xlink:)?href\s*=\s*["\'`]#(i-[\w-]+)["\'`]')
 # A reference the page BUILDS at runtime: href="#i-${slug}", href={`#i-` + x}.
 # The slug is not in the file, so the sprite cannot be narrowed safely.
-USE_DYNAMIC = re.compile(r'(?:xlink:)?href\s*=\s*["\'`]\s*#i-(?:\$\{|["\'`]?\s*\+)')
+#
+# The second alternative catches the same thing with the WHOLE id interpolated
+# — <use href="#'+cfg.icon+'"> — where the literal `i-` never appears. That
+# shape read as static, so the sprite was narrowed and those icons came out
+# blank. It is scoped to <use> on purpose: `a.href = '#' + section.id` is an
+# anchor, not an icon, and matching it would ship all 369 symbols for nothing.
+USE_DYNAMIC = re.compile(
+    r'(?:xlink:)?href\s*=\s*["\'`]\s*#i-(?:\$\{|["\'`]?\s*\+)'
+    r'|<use[^>]{0,80}?(?:xlink:)?href\s*=\s*["\'`]\s*#(?:\$\{|["\'`]?\s*\+)')
 SYMBOL = re.compile(r'<symbol[^>]*id="([^"]+)"[^>]*>.*?</symbol>', re.DOTALL)
 
 

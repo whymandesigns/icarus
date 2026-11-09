@@ -476,7 +476,7 @@ textarea.input {
 
 /* ---------- Pictogram ----------
  * Detailed 64x64 line-art illustration for empty / error / success / info
- * states — a richer counterpart to the Phosphor icon set. Blue (accent)
+ * states — a richer counterpart to the plain icon set. Blue (accent)
  * strokes over light (accent-subtle) fills; recolour via the `color` property.
  *
  *   <span class="pictogram"><svg viewBox="0 0 64 64">…</svg></span>
@@ -1306,7 +1306,7 @@ button.badge:focus-visible {
   outline-offset: 1px;
 }
 
-/* Leading icon — Phosphor <i> or inline svg */
+/* Leading icon — <svg class="icon"><use href="#i-{slug}"/></svg> */
 .badge-icon { width: 1em; height: 1em; flex-shrink: 0; }
 
 /* Trailing remove × — clicking deletes the pill (delegated handler) */
@@ -1481,7 +1481,7 @@ button.badge:focus-visible {
   display: block;
 }
 
-/* Icon content — Phosphor or inline SVG, sized by --avatar-icon */
+/* Icon content — <svg class="icon">, sized by --avatar-icon */
 .avatar > svg { font-size: var(--avatar-icon); }
 .avatar > svg { width: var(--avatar-icon); height: var(--avatar-icon); }
 
@@ -3214,7 +3214,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
 .dropdown-item-icon {
   width: 16px;
   height: 16px;
-  font-size: 16px; /* sizes Phosphor <i> icons; harmless for inline SVG */
+  font-size: 16px; /* .icon is 1em, so font-size is still the sizing lever */
   flex-shrink: 0;
   color: var(--color-text-muted);
 }
@@ -3316,7 +3316,7 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-radius: var(--radius-full);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  font: var(--font-weight-regular) var(--text-xxs)/1 var(--font-sans);
+  font: var(--font-weight-semibold) var(--text-xxs)/1 var(--font-sans);
   color: var(--color-text);
 }
 /* Tight right padding when a remove button is present */

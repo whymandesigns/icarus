@@ -78,6 +78,59 @@ class Finding:
         self.level, self.line, self.code, self.message = level, line, code, message
 
 
+# Every message opens with what it is about, so one pattern names the subject
+# for all of them: a class, an icon or token, a raw colour, a spacing step.
+# A code with no subject (two-primary, shell-incomplete) groups by code alone.
+SUBJECT = re.compile(
+    r"^(\.[\w-]+"                       # .btn-cta-icon
+    r"|#[\w-]+"                          # #i-chevron  /  #FCFCFC
+    r"|--[\w-]+"                         # --color-blue-500
+    r"|(?:gap|margin|padding): \d+px)"    # padding: 16px
+)
+
+# Which failures are visible to someone looking at the page. This is the split
+# the per-file output cannot make: a file's list is sorted by line number, so
+# an invented class that renders as nothing sits between two tidy-up warnings
+# and reads like one of them.
+BLANK_ON_SCREEN = {
+    "unknown-class": "renders as nothing",
+    "phosphor-class": "renders only while a retired CDN stylesheet loads",
+    "showcase-class": "example.html's own chrome — no styles outside the showcase",
+    "phosphor": "the pack is gone; nothing renders",
+    "dead-icon": "the glyph renders blank",
+    "dead-token": "CSS drops the whole declaration",
+    "dead-stylesheet": "the page is unstyled",
+    "external-css": "depends on a stylesheet that may not load",
+}
+
+
+# Codes where naming each subject is noise, because the fix is the file: a
+# page on Phosphor needs its icons replaced, not sixty-eight decisions.
+WHOLE_FILE_FIX = {"phosphor", "phosphor-class", "external-css", "dead-stylesheet"}
+
+# State modifiers are local by design — .cal-day.is-today belongs to the
+# calendar, not to the kit — so they are not a component waiting to be written.
+STATE_PREFIXES = ("is-", "has-")
+
+
+def subject_of(finding):
+    """The thing a finding is about, for grouping across files."""
+    m = SUBJECT.match(finding.message)
+    return m.group(1) if m else None
+
+
+def family_of(name):
+    """The component a class belongs to: .sv-rail and .sv-nav are one thing.
+
+    Thirteen classes of a slide viewer hand-written in five files is one
+    missing component, and listing them separately hides that behind its own
+    thirteen rows.
+    """
+    core = name.lstrip(".")
+    head = core.split("-")[0]
+    return ".%s-*" % head if "-" in core and head else "." + core
+
+
 def load_kit():
     path = HERE / "dist" / "kit.json"
     if not path.exists():
@@ -466,12 +519,116 @@ def lint(path, kit_classes, showcase, tooling, icons, prims, semantic):
     return found, inlined, quarantined
 
 
+def report(results, top):
+    """One ranked view of every file, instead of one list per file.
+
+    The per-file output is right for the author of one screen and useless
+    across fifty: it is sorted by line number, so the classes that render as
+    nothing sit interleaved with spacing nits, and nobody reads to the end of
+    4,000 lines. The same findings ranked by code, and then by subject, say
+    two things the per-file view structurally cannot — what is broken on
+    screen right now, and which hand-written class has been written often
+    enough to belong in components.css.
+    """
+    files = [r for r in results if r["findings"]]
+    quarantined = [r for r in results if r["quarantined"]]
+    everything = [(r, f) for r in results for f in r["findings"]]
+
+    print("designmd lint — %d file(s)" % len(results))
+    print("  %d with findings, %d clean" % (len(files), len(results) - len(files)))
+    if quarantined:
+        print("  %d quarantined (designmd:legacy) — their errors do not fail the run"
+              % len(quarantined))
+
+    # --- by code, split on whether the reader can see the failure
+    by_code = {}
+    for r, f in everything:
+        slot = by_code.setdefault(f.code, {"n": 0, "files": set(), "level": f.level})
+        slot["n"] += 1
+        slot["files"].add(r["path"])
+
+    def band(title, codes, note):
+        rows = [(c, by_code[c]) for c in codes if c in by_code]
+        if not rows:
+            return
+        rows.sort(key=lambda kv: (-len(kv[1]["files"]), -kv[1]["n"]))
+        affected = set()
+        for _c, v in rows:
+            affected |= v["files"]
+        print("\n%s — %d finding(s) across %d file(s)"
+              % (title, sum(v["n"] for _c, v in rows), len(affected)))
+        print("  %s" % note)
+        print("  %-18s %9s %7s" % ("", "findings", "files"))
+        for code, v in rows:
+            tail = BLANK_ON_SCREEN.get(code, "")
+            print("  %-18s %9d %7d   %s" % (code, v["n"], len(v["files"]), tail))
+
+    band("BROKEN ON SCREEN", [c for c in BLANK_ON_SCREEN if c in by_code],
+         "someone looking at these pages can see something missing")
+    band("DRIFT", sorted(c for c in by_code if c not in BLANK_ON_SCREEN),
+         "renders correctly; wrong in the system, so the next screen inherits it")
+
+    # --- kit gaps: a class hand-written in more than one file is a component
+    fams = {}
+    for r, f in everything:
+        if f.code != "local-class":
+            continue
+        sub = subject_of(f)
+        if not sub or sub.lstrip(".").startswith(STATE_PREFIXES):
+            continue
+        slot = fams.setdefault(family_of(sub), {"files": set(), "classes": set()})
+        slot["files"].add(r["path"])
+        slot["classes"].add(sub)
+    shared = sorted(((len(v["files"]), len(v["classes"]), k)
+                     for k, v in fams.items() if len(v["files"]) > 1), reverse=True)
+    if shared:
+        print("\nKIT GAPS — %d component family(s) hand-written in more than one file"
+              % len(shared))
+        print("  each is something components.css has no answer for, so every screen"
+              " invents it again")
+        print("  %6s %9s   %s" % ("files", "classes", ""))
+        for n, c, name in shared[:top]:
+            print("  %6d %9d   %s" % (n, c, name))
+        if len(shared) > top:
+            print("  … and %d more (--top %d to widen)" % (len(shared) - top, top * 2))
+
+    # --- what to fix first, named so it can be acted on without opening a file
+    for code in sorted(BLANK_ON_SCREEN, key=lambda c: -len(by_code.get(c, {}).get("files", ()))):
+        if code not in by_code or code in WHOLE_FILE_FIX:
+            continue
+        subs = {}
+        for r, f in everything:
+            if f.code != code:
+                continue
+            subs.setdefault(subject_of(f) or "(whole file)", set()).add(r["path"])
+        ranked = sorted(((len(v), k) for k, v in subs.items()), reverse=True)
+        print("\n  %s — %d distinct, worst first" % (code, len(ranked)))
+        for n, name in ranked[:top]:
+            print("    %2d files  %s" % (n, name))
+        if len(ranked) > top:
+            print("    … and %d more" % (len(ranked) - top))
+
+    # --- the noisiest files, because some are beyond repairing in place
+    worst = sorted(((len(r["findings"]), r["path"]) for r in files), reverse=True)
+    if worst:
+        print("\nNOISIEST FILES")
+        for n, path in worst[:top]:
+            mark = " (quarantined)" if any(
+                r["path"] == path and r["quarantined"] for r in results) else ""
+            print("  %4d  %s%s" % (n, path, mark))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("paths", nargs="+")
     ap.add_argument("--quiet", action="store_true", help="errors only")
     ap.add_argument("--strict", action="store_true",
                     help="ignore designmd:legacy markers — every file must pass")
+    ap.add_argument("--report", action="store_true",
+                    help="one ranked summary across every file, instead of a list per file")
+    ap.add_argument("--top", type=int, default=12, metavar="N",
+                    help="how many rows each ranked list shows (default 12)")
     args = ap.parse_args()
 
     kit, classes, showcase, tooling = load_kit()
@@ -479,6 +636,7 @@ def main():
     semantic = semantic_tokens()
 
     total_err = total_warn = total_quar = 0
+    results = []
     for raw in args.paths:
         path = pathlib.Path(raw)
         if not path.exists():
@@ -507,6 +665,12 @@ def main():
             total_err += len(errors)
         total_warn += len(warns)
 
+        results.append({"path": str(path), "findings": found, "errors": errors,
+                        "warns": warns, "inlined": inlined,
+                        "quarantined": bool(quarantined)})
+        if args.report:
+            continue
+
         shown = errors if args.quiet else errors + warns
         state = "inlined" if inlined else "linked"
         if quarantined:
@@ -528,6 +692,9 @@ def main():
             seen.add(key)
             mark = "✗" if f.level == "error" else "!"
             print(f"  {mark} {path.name}:{f.line}  [{f.code}] {f.message}")
+
+    if args.report:
+        report(results, args.top)
 
     tail = f", {total_quar} in quarantined file(s)" if total_quar else ""
     print(f"\n{total_err} error(s), {total_warn} warning(s){tail}")

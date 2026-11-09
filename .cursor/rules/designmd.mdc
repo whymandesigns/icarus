@@ -96,10 +96,42 @@ A prototype that predates the current system carries a quarantine marker in its
      clean. -->
 ```
 
+`data/ic-token-map.json` classifies every legacy token four ways, because a
+migration is not a rename: `same` is identical in value, `shifts` is a value the
+system deliberately changed, `literals` is a role the system models no token for
+at all — the `var()` goes and its value stays — and `none` needs a human. The
+`--ic-*` vocabulary is now fully retired: where no current step survived, the
+entry names the nearest surviving one and records the CIE ΔE, so a reviewer can
+see at a glance which substitutions are invisible and which are a real change.
+Two whole ramps had no survivor and fold onto a neighbour — orange onto yellow,
+since warning is yellow here, and cyan onto blue, which `tokens.css` was already
+part-way through. Nothing maps onto `zinc`: it is dark-theme internal and must
+never appear in a prototype.
+
 That is the whole point of the marker: **anything without one has to pass**, so
 `python3 lint.py features/*/index.html` stays a real gate for new work. The list
 can only shrink — removing the line is how a prototype says it has been migrated,
 and `--strict` ignores markers entirely. Never add one to a new screen.
+
+Across many files, use `--report` instead. The per-file output is sorted by line
+number, which is right for one screen and useless for fifty: the classes that render
+as nothing end up interleaved with spacing nits, and nobody reads to the end of four
+thousand lines. `--report` ranks the same findings by code and then by subject, which
+says two things the per-file view structurally cannot — what is broken on screen right
+now, and which hand-written class has been written often enough to belong in
+`components.css`:
+
+```bash
+python3 lint.py ../features/*/index.html --report          # the whole estate, ranked
+python3 lint.py ../features/*/index.html --report --top 30 # longer lists
+```
+
+It splits findings into **BROKEN ON SCREEN** (invented classes, showcase classes, dead
+icons and tokens, Phosphor — all of which render as nothing) and **DRIFT** (correct on
+screen, wrong in the system). Then it rolls local classes up into component families,
+because thirteen `.sv-*` classes hand-written in five files is one missing component,
+not thirteen mistakes. State modifiers (`is-`, `has-`) are left out of that roll-up:
+`.cal-day.is-today` belongs to the calendar, not to the kit.
 
 ```bash
 python3 lint.py   <path-to-your-prototype>.html    # before you call it done
@@ -134,13 +166,14 @@ that shape, always `index.html`. On your own, put it where you like.
 | `designmd/dist/kit.json` | **the inventory** — every class grouped, the attribute-driven components, and the showcase-only classes to reject. Read this to find a class. |
 | `designmd/template/index.html` | **the shell every prototype starts as** — top bar, side nav, page head, and the delegated handlers the kit does not ship. Duplicate it with `tools/new-prototype.py`; edit it when the shell itself should change. |
 | `designmd/tools/new-prototype.py` | duplicates the template, resolves the sidenav, lists the feature. `--thumb` shoots the card image later. |
-| `designmd/lint.py` | checks a prototype. Exit 1 on errors. |
+| `designmd/lint.py` | checks a prototype. Exit 1 on errors. `--report` ranks every file at once instead of listing each — see below. |
 | `designmd/UXCopy.md` | **the words** — button labels, tone, dates, and which of toast / alert / modal / field error a message belongs in. Read it before writing any user-facing string. |
 | `designmd/DESIGN.md` | the full written system, ~15k tokens. Read sections, not the whole file. |
 | `designmd/example.html` | the showcase — browse it in a browser, don't copy from it (rule 2). |
 | `designmd/llms-full.txt` | this guide, the worked markup and the complete class and token inventory, ~9k tokens. **Paste this if you have no filesystem.** |
 | `designmd/llms.txt` | a short index of everything above, for a tool that fetches one file. |
 | `designmd/tools/build-packages.py` | regenerates `dist/` and the entry points after a stylesheet change. |
+| `designmd/tools/sync-picasso-tokens.py` | **checks the `/* picasso */` half of `tokens.css`** against the published Picasso preset. `--fix` rewrites drifted values; `--update` re-vendors `data/picasso-tokens.json`. |
 | `designmd/tools/smoke_test.py` | builds a prototype from this guide's own `<link>` block and runs lint → inline → lint. Run it after changing a tool or that snippet. |
 
 If your tool reads its own rules file, it already has this guide: `.github/copilot-instructions.md`,
@@ -153,8 +186,20 @@ they cannot drift. Edit `AGENTS.md` and regenerate; never edit a copy.
   so `<use href="#i-…">` renders blank until you bake. To see icons while you work, use the
   dev-time fetch in the page skeleton in `DESIGN.md` §6 "The page around them". Slugs live
   in `designmd/icons.svg`; the linter checks them.
-- **Phosphor is retired.** `<i class="ph ph-x">` renders nothing. Some CSS comments still
-  show it; they are stale.
+- **Phosphor is retired, and gone.** No prototype carries `<i class="ph ph-x">` any more;
+  the last 1,078 were migrated on 2026-11-08. If you meet one in an old branch,
+  `tools/migrate-phosphor.py` does the swap — `data/phosphor-map.json` holds all 92 glyph
+  decisions, each picked by rendering the candidates rather than by matching names, which
+  is how `i-brochure` turned out to be the open book and `i-estimated-delivery` the
+  chequered flag. `.icon` is sized in `em` exactly as the Phosphor `<i>` was, so existing
+  `font-size:` rules keep working.
+  Two traps the migration hit, both worth knowing:
+  - A CSS rule keyed on the **glyph name** (`.row .ph-caret-right`) loses its aim when the
+    glyph moves into the `<use href>`. `.icon` is not a replacement — if two icons share
+    that scope the rule now hits both. Give the element a purpose class instead.
+  - An icon id built at **runtime** must still appear in the file as a literal
+    `href="#i-…"`, or `inline.py` narrows the sprite and drops it. Put whole `<svg>` markup
+    in the lookup table, not a bare slug.
 - **The `example.html` script block.** Modals, drawers, dropdowns, tabs and the sheet get
   their behaviour from a delegated block there. Do not copy it whole: it is 2,286 lines
   and its tail renders the showcase's own palette swatches against elements no prototype
@@ -191,6 +236,35 @@ plain CSS so a screen can exist in hours. Every token is Picasso's name and valu
 marked `extension` with a reason in its own comment. Where the two disagree, Picasso is
 right and designmd has a bug. `designmd/data/figma-map.json` carries the Storybook `storyId`
 and React mapping per component.
+
+Picasso is Toptal's *company* system, not Operationalize's: it has no Operationalize side
+nav, top bar or page head, and it is not going to grow one. TopTeam builds those itself —
+78 components in `front-end/src/topkit/`, and `TopBar`/`Sidebar` written from scratch
+against Picasso's palette. So designmd is two layers in one file, and `tokens.css` already
+labels every line with which:
+
+| | upstream | drifts? |
+|---|---|---|
+| `/* picasso */` | `@toptal/picasso-tailwind` on public npm | **yes, silently** |
+| `/* extension */` | none — Operationalize's own | no |
+
+Only the first can be wrong, and it goes wrong quietly: Picasso ships a new value, nobody
+re-transcribes it, and a prototype renders a colour the product retired. That is what
+happened to `gray-100`. Picasso publishes those values as a Tailwind preset, so they never
+needed transcribing by hand:
+
+```bash
+python3 tools/sync-picasso-tokens.py            # report
+python3 tools/sync-picasso-tokens.py --check    # exit 1 if a value drifted
+python3 tools/sync-picasso-tokens.py --fix      # rewrite the ones that drifted
+python3 tools/sync-picasso-tokens.py --update   # re-vendor after a Picasso bump
+```
+
+It touches nothing but drifted values — the `extension` lines, the commented-out ramps and
+all the prose stay byte-for-byte. Run `--check` alongside `build-packages.py --check`; run
+`--fix` then `build-packages.py` when it reports drift. The preset is vendored to
+`data/picasso-tokens.json` with the version it came from, so the everyday run needs neither
+network nor `node_modules` — this repo has no `package.json` and does not want one.
 
 Note the Storybook is a client-side build: `iframe.html?id=anything` returns 200, so a
 request succeeding proves nothing about a story existing.

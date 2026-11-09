@@ -7,7 +7,9 @@ would swap the system block underneath and leave every reference unresolved.
 Nothing the kit does — a breakpoint, a component, a fix — can reach them.
 
 This is not a rename. Some roles the system deliberately re-valued, and a few
-it dropped entirely; data/ic-token-map.json classifies all three cases. Only
+it dropped entirely, and a few hold a role the system does not model at all,
+so the var() is replaced by its value; data/ic-token-map.json classifies all
+four cases. Only
 the prototype's OWN <style> is rewritten. The baked system block is left for
 inline.py, which is the next step:
 
@@ -46,22 +48,32 @@ def main():
     table = dict(m["same"])
     table.update({k: v[0] for k, v in m["shifts"].items()})
     shifts = set(m["shifts"])
+    literals = {k: v[0] for k, v in m.get("literals", {}).items()}
 
     worst = 0
     for raw in args.paths:
         path = pathlib.Path(raw)
         html = path.read_text(errors="replace")
-        spans = own_style_spans(html)
 
         changed = collections.Counter()
         stranded = collections.Counter()
 
-        # A style="" attribute is markup, never the baked CSS, so it is always
-        # the prototype's own and is rewritten wherever it sits. inline.py
-        # counts these too, and will keep refusing the file while they remain.
-        spans = sorted(spans + [(m.start(1), m.end(1)) for m in
-                                re.finditer(r'style="([^"]*)"', html)
-                                if "--ic-" in m.group(1)])
+        # Everything that is NOT the baked system block belongs to the
+        # prototype, so rewrite all of it. Enumerating the places a token can
+        # hide missed two: SVG presentation attributes (<rect
+        # fill="var(--ic-palette-white)"> inside an inlined sprite) and token
+        # names built in a script. inline.py counts those too, and went on
+        # refusing files whose own stylesheet was already clean.
+        baked = [(m.start(1), m.end(1))
+                 for m in re.finditer(r"<style[^>]*>(.*?)</style>", html, re.S)
+                 if m.group(1).lstrip().startswith(MARK)]
+        spans, cursor = [], 0
+        for bstart, bend in sorted(baked):
+            if bstart > cursor:
+                spans.append((cursor, bstart))
+            cursor = bend
+        if cursor < len(html):
+            spans.append((cursor, len(html)))
 
         out, cursor = [], 0
         for start, end in spans:
@@ -76,6 +88,20 @@ def main():
                 stranded[tok] += 1
                 return mo.group(0)
 
+            # A literal has no token to point at, so the whole var() call goes
+            # — closing paren included. A call carrying a fallback is left for
+            # a human: the fallback is the thing that renders today, and
+            # dropping it silently would change the page.
+            def lit(mo):
+                tok = mo.group(1)
+                changed[tok] += 1
+                return literals[tok]
+
+            if literals:
+                block = re.sub(
+                    r"var\(\s*(%s)\s*\)" % "|".join(map(re.escape, literals)),
+                    lit, block)
+
             out.append(re.sub(r"var\(\s*(--ic-[\w-]+)", sub, block))
             cursor = end
         out.append(html[cursor:])
@@ -88,6 +114,9 @@ def main():
             continue
         print(f"  {moved} reference(s) rewritten across {len(changed)} token(s)")
         for tok, n in changed.most_common():
+            if tok in literals:
+                print(f"     {tok:<26} x{n:<4} → {literals[tok]}  ← INLINED, token retires")
+                continue
             flag = "  ← VALUE CHANGES" if tok in shifts else ""
             print(f"     {tok:<26} x{n:<4} → {table[tok]}{flag}")
         if stranded:
