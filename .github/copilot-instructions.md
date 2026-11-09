@@ -49,9 +49,15 @@ catches it.
    is both the primary CTA and the success colour, so two of them means neither reads as
    the action.
 5. **Copy is part of the system too.** `UXCopy.md` decides how a label, an
-   error or a date is written; `features/CONTEXT.md` decides what the thing is
-   called. A screen with invented wording drifts the same way invented CSS
-   does, and is harder to spot.
+   error or a date is written. What a thing is called, and how the product
+   behaves, come from the **test oracle** — `topteam/test-oracle/`, the
+   Operationalize behaviour spec, a read-only clone beside `icarus/` in Toptal's
+   working layout; its glossary is §7 of `00-system-overview.md`. Ask it before
+   naming anything or stating a product rule, and cite the rule ID.
+   `features/CONTEXT.md` layers the Operating Framework's policy and the
+   prototype inventory on top, and says how to query the oracle. A screen with
+   invented wording drifts the same way invented CSS does, and is harder to
+   spot.
 6. **Don't write component CSS in a prototype.** If a variant is missing, add it to
    `designmd/components.css` so the next screen inherits it, then re-inline.
 7. **Build light only — dark theme is parked.** `[data-theme="dark"]` exists in the

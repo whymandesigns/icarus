@@ -9,9 +9,11 @@ that guide it says so, in [Where this departs from the old guide](#where-this-de
 — so nobody re-imports a rule from the old document that was dropped on
 purpose.
 
-**What to call things** is not here. Product vocabulary — Processes, Initiative,
-Focus Area, RoB meeting, Key Result — lives in `features/CONTEXT.md`, because it
-changes with the product and designmd is meant to outlive it. This file is about
+**What to call things** is not here. Product vocabulary — Process, Activity,
+Initiative, Project, RoB, Key Result — comes from the product itself: the test
+oracle's glossary (`topteam/test-oracle/`, §7 of `00-system-overview.md`),
+summarized for prototypes in `features/CONTEXT.md`. It changes with the
+product, and designmd is meant to outlive it. This file is about
 *how* to write, and should hold for any Toptal product built on the kit.
 
 ## The one rule
