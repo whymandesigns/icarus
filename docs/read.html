@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reader</title>
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../semantic.css" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* A reading view for the repo's .md files: read?doc=UXCopy.md.
+       The file stays the source; this page only renders it. One centred column
+       at reading width, a contents rail beside it on wide screens. */
+    body { background: var(--color-surface); }
+
+    .reader-bar {
+      position: sticky; top: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-3);
+      padding: var(--spacing-3) var(--spacing-6);
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      font: var(--type-body-sm);
+    }
+    .crumbs { display: flex; align-items: center; gap: var(--spacing-2); min-width: 0; color: var(--color-text-subtle); }
+    .crumbs a { color: var(--color-text-subtle); text-decoration: none; }
+    .crumbs a:hover { color: var(--color-text); }
+    .crumbs .here { color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .raw { color: var(--color-text-subtle); text-decoration: none; white-space: nowrap; }
+    .raw:hover { color: var(--color-text); }
+
+    .reader {
+      display: grid;
+      grid-template-columns: minmax(0, 720px);
+      justify-content: center;
+      gap: var(--spacing-12);
+      padding: var(--spacing-12) var(--spacing-6) calc(var(--spacing-12) * 2);
+    }
+    @media (min-width: 1240px) {
+      .reader { grid-template-columns: minmax(0, 720px) 240px; }
+    }
+
+    /* ---- the document ---- */
+    .doc { min-width: 0; color: var(--color-text); font-family: var(--font-sans); font-size: 16px; line-height: 1.65; }
+    .doc > :first-child { margin-top: 0; }
+
+    .doc h1, .doc h2, .doc h3, .doc h4 { position: relative; font-weight: var(--font-weight-semibold); line-height: 1.25; scroll-margin-top: 72px; text-wrap: balance; }
+    .doc h1 { font-size: clamp(30px, 6vw, 40px); letter-spacing: -0.01em; margin: 0 0 var(--spacing-6); }
+    .doc h2 { font-size: 26px; margin: var(--spacing-12) 0 var(--spacing-3); padding-top: var(--spacing-2); }
+    .doc h3 { font-size: 20px; margin: var(--spacing-8) 0 var(--spacing-2); }
+    .doc h4 { font-size: 16px; margin: var(--spacing-6) 0 var(--spacing-2); }
+    .doc h1 + p { font-size: 18px; }
+
+    .anchor {
+      position: absolute; left: -1.1em; top: 0; padding-right: 0.3em;
+      color: var(--color-text-muted); text-decoration: none; font-weight: var(--font-weight-regular);
+      opacity: 0; transition: opacity var(--duration-fast) var(--ease);
+    }
+    .doc :is(h2, h3, h4):hover .anchor, .anchor:focus-visible { opacity: 1; }
+
+    .doc p { margin: 0 0 var(--spacing-3); }
+    .doc ul, .doc ol { margin: 0 0 var(--spacing-3); padding-left: 1.6em; }
+    .doc li { margin: var(--spacing-1) 0; padding-left: 0.2em; }
+    .doc li > ul, .doc li > ol { margin: var(--spacing-1) 0 0; }
+    .doc li::marker { color: var(--color-text-subtle); }
+
+    .doc a { color: inherit; text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; }
+    .doc a:hover { text-decoration-color: var(--color-text); }
+    .doc strong { font-weight: var(--font-weight-semibold); }
+
+    .doc code {
+      font-family: var(--font-mono); font-size: 0.86em;
+      background: var(--color-surface-muted); border-radius: var(--radius-sm);
+      padding: 0.15em 0.4em;
+    }
+
+    .code-block { position: relative; margin: var(--spacing-4) 0; }
+    .doc pre {
+      margin: 0; padding: var(--spacing-4) var(--spacing-6);
+      background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+      overflow-x: auto; font-size: 13.5px; line-height: 1.6;
+    }
+    .doc pre code { background: none; padding: 0; font-size: inherit; }
+    .copy {
+      position: absolute; top: var(--spacing-2); right: var(--spacing-2);
+      font: var(--type-body-xs); color: var(--color-text-subtle);
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+      padding: 2px var(--spacing-2); cursor: pointer;
+      opacity: 0; transition: opacity var(--duration-fast) var(--ease);
+    }
+    .code-block:hover .copy, .copy:focus-visible { opacity: 1; }
+
+    .doc blockquote {
+      margin: var(--spacing-4) 0; padding: var(--spacing-3) var(--spacing-4);
+      background: var(--color-bg); border-radius: var(--radius-md);
+      color: var(--color-text);
+    }
+    .doc blockquote > :last-child { margin-bottom: 0; }
+
+    .table-wrap { margin: var(--spacing-4) 0 var(--spacing-6); overflow-x: auto; }
+    .doc table { border-collapse: collapse; width: 100%; font-size: 14px; line-height: 1.5; }
+    .doc th, .doc td { border: 1px solid var(--color-border); padding: var(--spacing-2) var(--spacing-3); text-align: left; vertical-align: top; }
+    .doc th { background: var(--color-bg); font-weight: var(--font-weight-semibold); }
+
+    .doc hr { border: 0; border-top: 1px solid var(--color-border); margin: var(--spacing-8) 0; }
+    .doc img { max-width: 100%; border-radius: var(--radius-md); }
+
+    /* ---- contents rail ---- */
+    .toc { display: none; }
+    @media (min-width: 1240px) {
+      .toc { display: block; position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 120px); overflow-y: auto; }
+    }
+    .toc-label { font: var(--type-body-xs-semibold); color: var(--color-text-subtle); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--spacing-3); }
+    .toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--color-border); }
+    .toc a {
+      display: block; padding: 3px 0 3px var(--spacing-3); margin-left: -1px;
+      border-left: 2px solid transparent;
+      font: var(--type-body-sm); color: var(--color-text-subtle); text-decoration: none;
+    }
+    .toc .lvl-3 a { padding-left: var(--spacing-6); font: var(--type-body-xs); }
+    .toc a:hover { color: var(--color-text); }
+    .toc a.is-active { color: var(--color-text); border-left-color: var(--color-text); }
+
+    .reader-note { color: var(--color-text-subtle); font: var(--type-body); }
+  </style>
+</head>
+<body>
+  <header class="reader-bar">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">designmd</a><span aria-hidden="true">/</span><span class="here" id="crumb">Loading…</span>
+    </nav>
+    <a class="raw" id="raw" href="#">View raw</a>
+  </header>
+
+  <main class="reader">
+    <article class="doc" id="doc"><p class="reader-note">Loading…</p></article>
+    <aside class="toc" id="toc" aria-label="On this page"></aside>
+  </main>
+
+  <script src="./vendor/marked.min.js"></script>
+  <script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var doc = params.get('doc') || 'AGENTS.md';
+    var docEl = document.getElementById('doc');
+    var tocEl = document.getElementById('toc');
+    var root = new URL('../', location.href);
+
+    // Only .md files inside this folder, so the page cannot be pointed elsewhere.
+    if (!/^[\w.-]+(\/[\w.-]+)*\.md$/.test(doc) || doc.split('/').indexOf('..') !== -1) {
+      docEl.innerHTML = '<p class="reader-note">This page only opens .md files in designmd. Check the link, then try again.</p>';
+      document.getElementById('crumb').textContent = 'Not found';
+      return;
+    }
+
+    var src = new URL(doc, root);
+    document.getElementById('crumb').textContent = doc;
+    document.getElementById('raw').href = src.href;
+
+    fetch(src.href, { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(render)
+      .catch(function () {
+        docEl.innerHTML = '';
+        var p = document.createElement('p');
+        p.className = 'reader-note';
+        p.textContent = doc + ' could not be loaded. Check the file exists, then reload the page.';
+        docEl.appendChild(p);
+      });
+
+    function slug(text, seen) {
+      var s = text.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+      var out = s, n = 1;
+      while (seen[out]) out = s + '-' + n++;
+      seen[out] = true;
+      return out;
+    }
+
+    function render(md) {
+      docEl.innerHTML = marked.parse(md, { gfm: true });
+
+      // The page is titled by its file, so it reads the same as the card that
+      // linked here and the name people say out loud.
+      var name = doc.split('/').pop();
+      var h1 = docEl.querySelector('h1');
+      if (!h1) {
+        h1 = document.createElement('h1');
+        docEl.insertBefore(h1, docEl.firstChild);
+      }
+      h1.textContent = name;
+      document.title = name;
+
+      // Links: another .md opens here too; anything else resolves against the file.
+      docEl.querySelectorAll('a[href]').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (/^(#|[a-z]+:)/i.test(href)) {
+          if (/^https?:/i.test(href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+          return;
+        }
+        var url = new URL(href, src);
+        if (url.origin === root.origin && url.pathname.endsWith('.md') && url.pathname.indexOf(root.pathname) === 0) {
+          a.href = 'read?doc=' + url.pathname.slice(root.pathname.length) + url.hash;
+        } else {
+          a.href = url.href;
+        }
+      });
+      docEl.querySelectorAll('img[src]').forEach(function (img) {
+        img.src = new URL(img.getAttribute('src'), src).href;
+      });
+
+      // Tables scroll on their own; code blocks get a copy button.
+      docEl.querySelectorAll('table').forEach(function (t) {
+        var w = document.createElement('div');
+        w.className = 'table-wrap';
+        t.parentNode.insertBefore(w, t);
+        w.appendChild(t);
+      });
+      docEl.querySelectorAll('pre').forEach(function (pre) {
+        var w = document.createElement('div');
+        w.className = 'code-block';
+        pre.parentNode.insertBefore(w, pre);
+        w.appendChild(pre);
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'copy'; b.textContent = 'Copy';
+        b.addEventListener('click', function () {
+          navigator.clipboard.writeText(pre.innerText).then(function () {
+            b.textContent = 'Copied';
+            setTimeout(function () { b.textContent = 'Copy'; }, 1400);
+          });
+        });
+        w.appendChild(b);
+      });
+
+      // Heading ids, hover anchors and the contents rail.
+      var seen = {};
+      var heads = Array.prototype.slice.call(docEl.querySelectorAll('h2, h3, h4'));
+      heads.concat(h1 ? [h1] : []).forEach(function (h) { h.id = slug(h.textContent, seen); });
+      heads.forEach(function (h) {
+        var a = document.createElement('a');
+        a.className = 'anchor'; a.href = '#' + h.id; a.textContent = '#';
+        a.setAttribute('aria-label', 'Link to this section');
+        h.insertBefore(a, h.firstChild);
+      });
+
+      var listed = heads.filter(function (h) { return h.tagName !== 'H4'; });
+      if (listed.length > 2) {
+        var label = document.createElement('p');
+        label.className = 'toc-label'; label.textContent = 'On this page';
+        var ol = document.createElement('ol');
+        listed.forEach(function (h) {
+          var li = document.createElement('li');
+          li.className = 'lvl-' + h.tagName.slice(1);
+          var a = document.createElement('a');
+          a.href = '#' + h.id;
+          a.textContent = h.textContent.replace(/^#/, '');
+          li.appendChild(a);
+          ol.appendChild(li);
+        });
+        tocEl.appendChild(label);
+        tocEl.appendChild(ol);
+
+        var links = tocEl.querySelectorAll('a');
+        var onScroll = function () {
+          var current = 0;
+          listed.forEach(function (h, i) { if (h.getBoundingClientRect().top < 120) current = i; });
+          links.forEach(function (a, i) { a.classList.toggle('is-active', i === current); });
+        };
+        addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+
+      if (location.hash) {
+        var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (target) target.scrollIntoView();
+      }
+    }
+  })();
+  </script>
+</body>
+</html>
