@@ -3487,3 +3487,191 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
+
+/* ---------- Notifications ----------
+ * The bell in the top bar, the panel it opens, and the row both the panel and
+ * the full Notifications page are made of.
+ *
+ *   <div class="dropdown">
+ *     <button class="btn btn-icon-only btn-ghost topbar-bell dropdown-trigger"
+ *             type="button" aria-label="Notifications, 4 unread" aria-expanded="false">
+ *       <svg class="icon"><use href="#i-bell"/></svg>
+ *       <span class="topbar-bell-dot"></span>      ← add [hidden] when nothing is unread
+ *     </button>
+ *     <div class="dropdown-menu dropdown-menu-end notification-panel" hidden>
+ *       <div class="notification-panel-head"> .tabs + .notification-panel-tools </div>
+ *       <div class="notification-list"> .notification-group + .notification … </div>
+ *       <div class="notification-panel-foot"> link to the full page </div>
+ *     </div>
+ *   </div>
+ *
+ *   <article class="notification is-unread">
+ *     <span class="notification-icon"><svg class="icon"><use href="#i-calendar"/></svg></span>
+ *       — or, when a person caused it, <span class="avatar avatar-md">DR</span>
+ *     <div class="notification-body">
+ *       <p class="notification-text"><strong>Who</strong> did what to <strong>which thing</strong>.</p>
+ *       <p class="notification-meta">Module · Today at 2:45 PM</p>
+ *       <div class="notification-actions"> .btn.btn-secondary.btn-xs … </div>
+ *     </div>
+ *     <button class="notification-mark" type="button" aria-label="Mark as read"></button>
+ *   </article>
+ *
+ * The leading slot says what kind of thing it is (module icon) or who did it
+ * (avatar); the meta line names the module in words, so nobody has to learn
+ * the icons. .is-unread is the only state: it fills the trailing dot.
+ */
+.topbar .topbar-bell { position: relative; color: inherit; flex-shrink: 0; }
+.topbar .topbar-bell:hover,
+.topbar .topbar-bell[aria-expanded="true"] { background: rgba(255, 255, 255, 0.12); color: inherit; }
+.topbar-bell-dot {
+  position: absolute;
+  top: 5px; right: 6px;
+  width: 8px; height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-danger);
+  /* The ring is the bar's own colour, so the dot reads as cut out of the bell. */
+  box-shadow: 0 0 0 2px var(--color-graphite-800);
+}
+.topbar-bell-dot[hidden] { display: none; }
+@media (max-width: 1024px) {
+  .topbar .topbar-bell:hover,
+  .topbar .topbar-bell[aria-expanded="true"] { background: var(--color-surface-muted); }
+  .topbar-bell-dot { box-shadow: 0 0 0 2px var(--color-surface); }
+}
+@container (max-width: 768px) {
+  .topbar .topbar-bell:hover,
+  .topbar .topbar-bell[aria-expanded="true"] { background: var(--color-surface-muted); }
+  .topbar-bell-dot { box-shadow: 0 0 0 2px var(--color-surface); }
+}
+
+/* The panel is a dropdown menu with its padding taken away: the head and the
+ * foot stay put and only the list scrolls. */
+.notification-panel {
+  width: 520px;
+  max-width: calc(100vw - var(--spacing-8));
+  max-height: calc(100vh - var(--header-height) - var(--spacing-6));
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  color: var(--color-text);
+}
+.notification-panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4) 0;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.notification-panel-head > .tabs { border-bottom: 0; gap: var(--spacing-6); padding-top: var(--spacing-2); }
+.notification-panel-head .tab { padding-bottom: var(--spacing-3); display: inline-flex; align-items: center; gap: var(--spacing-2); }
+.notification-panel-tools { display: flex; align-items: center; gap: var(--spacing-1); padding-bottom: var(--spacing-2); flex-shrink: 0; }
+.notification-panel-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-top: 1px solid var(--color-border);
+  font: var(--type-body-sm);
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  /* A phone has no room to anchor a panel to a button: pin it under the bar. */
+  .notification-panel.dropdown-menu-end {
+    position: fixed;
+    top: calc(var(--header-height) + var(--spacing-1));
+    left: var(--spacing-2); right: var(--spacing-2);
+    width: auto; max-width: none;
+  }
+  .notification-panel-head { flex-direction: column-reverse; align-items: stretch; gap: 0; }
+  .notification-panel-tools { justify-content: flex-end; }
+}
+
+.notification-list { display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
+/* On a page the list is its own surface; in the panel the panel is. */
+.notification-list-page {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.notification-group {
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-1);
+  font: var(--type-body-xs-semibold);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+}
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--duration-fast) var(--ease);
+}
+.notification:last-child { border-bottom: 0; }
+.notification:hover { background: var(--color-surface-muted); }
+.notification[hidden], .notification-group[hidden] { display: none; }
+.notification > .avatar { flex-shrink: 0; }
+.notification-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.notification:hover .notification-icon { background: var(--color-border); }
+.notification-icon.is-warning { background: var(--color-warning-subtle); color: var(--color-text); }
+.notification-icon.is-danger  { background: var(--color-danger-subtle);  color: var(--color-danger); }
+.notification-body { flex: 1; min-width: 0; }
+.notification-text { margin: 0; font: var(--type-body); color: var(--color-text); overflow-wrap: anywhere; }
+.notification-text strong { font-weight: var(--font-weight-semibold); }
+.notification-text a { color: inherit; text-decoration: none; }
+.notification-text a:hover { text-decoration: underline; }
+.notification-meta { margin: var(--spacing-1) 0 0; font: var(--type-body-xs); color: var(--color-text-muted); }
+.notification-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-2); margin-top: var(--spacing-2); }
+/* Read / unread toggle. Empty ring when read, and only on hover, so a read
+ * list is quiet; an accent dot when unread, always. */
+.notification-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  margin-top: var(--spacing-1);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.notification-mark::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: var(--radius-full);
+  background: transparent;
+}
+.notification.is-unread .notification-mark::before { background: var(--color-accent); }
+.notification:hover .notification-mark,
+.notification-mark:focus-visible { border-color: var(--color-border-strong); background: var(--color-surface); }
+.notification-mark:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
+.notification-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-10) var(--spacing-6);
+  text-align: center;
+  color: var(--color-text-muted);
+  font: var(--type-body-sm);
+}
+.notification-empty[hidden] { display: none; }
+.notification-empty svg { font-size: 32px; color: var(--color-text-subtle); margin-bottom: var(--spacing-2); }
+.notification-empty-title { margin: 0; font: var(--type-body-semibold); color: var(--color-text); }
