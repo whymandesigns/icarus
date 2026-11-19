@@ -1443,11 +1443,30 @@ button.badge:focus-visible {
  *
  * Interactive: render as <button> or <a> instead of <span> — picks up
  * pointer cursor, hover dim and focus-visible ring automatically.
+ *
+ * Status flag — a solid square in the bottom-right corner, the letter in
+ * the markup. The modifier on the root picks the colour; put the status in
+ * the image's alt, because the flag itself is aria-hidden:
+ *
+ *   <span class="avatar avatar-xl avatar-newcomer">
+ *     <img src="…" alt="Jane Doe, newcomer"><span class="avatar-flag" aria-hidden="true">N</span>
+ *   </span>
+ *
+ *   .avatar-newcomer  N  green    start date within the last 3 months (PPL-ROW-003)
+ *   .avatar-talent    T  blue     a Talent, not a member (ROB-OCC-069)
+ *   .avatar-pending   P  graphite start date still in the future; the photo
+ *                                 is dimmed as well (PPL-ROW-002, TEAM-PAGE-018)
+ *
+ * The flag is 37.5% of the avatar, so it scales with every size. Below md
+ * there is no room for a letter, so xs and sm show the colour only.
+ * A tooltip ([data-tooltip]) goes on a wrapper, never on the avatar: the
+ * clip-path would cut it off.
  */
 .avatar {
   --avatar-size: 32px;
   --avatar-text: var(--text-sm);
   --avatar-icon: 16px;
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1491,6 +1510,35 @@ button.badge:focus-visible {
   background: var(--color-surface-muted);
   color: var(--color-text-muted);
 }
+
+/* Status flag — see the header above. Flush to the right and bottom edges,
+ * which the chamfer (bottom-left) never reaches. */
+.avatar-flag {
+  --avatar-flag-bg: var(--color-graphite-800);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 37.5%;
+  height: 37.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--avatar-flag-bg);
+  color: var(--color-text-inverse);
+  font: var(--font-weight-semibold) calc(var(--avatar-size) * 0.26)/1 var(--font-sans);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.avatar-newcomer .avatar-flag { --avatar-flag-bg: var(--color-green-700); }
+.avatar-talent   .avatar-flag { --avatar-flag-bg: var(--color-accent); }
+.avatar-pending  .avatar-flag { --avatar-flag-bg: var(--color-graphite-800); }
+.avatar-xs .avatar-flag,
+.avatar-sm .avatar-flag { font-size: 0; }
+
+/* Pending — the person has not started yet, so the photo (or initials)
+ * recedes and the flag stays solid. */
+.avatar-pending > img { opacity: 0.45; }
+.avatar-pending:not(:has(> img)) { color: var(--color-text-subtle); }
 
 /* Interactive — applies when rendered as <button> or <a> */
 button.avatar,
