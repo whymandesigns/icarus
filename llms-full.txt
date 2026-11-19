@@ -642,7 +642,7 @@ For the full inventory with every modifier and live demos, open `example.html` �
 Generated from the stylesheets. Everything the kit defines is below; if a
 name is not here, it does not exist.
 
-## Classes (390)
+## Classes (394)
 
 **Accordion** — .accordion · .accordion-chevron · .accordion-content · .accordion-details · .accordion-group · .accordion-summary · .accordion-title · .borders-middle · .borders-none · .is-open
 
@@ -652,7 +652,7 @@ name is not here, it does not exist.
 
 **App shell** — .app-shell-main · .is-fullscreen
 
-**Avatar** — .avatar · .avatar-2xl · .avatar-lg · .avatar-md · .avatar-sm · .avatar-team · .avatar-xl · .avatar-xs
+**Avatar** — .avatar · .avatar-2xl · .avatar-flag · .avatar-lg · .avatar-md · .avatar-newcomer · .avatar-pending · .avatar-sm · .avatar-talent · .avatar-team · .avatar-xl · .avatar-xs
 
 **Badge** — .badge · .badge-danger · .badge-icon · .badge-info · .badge-remove · .badge-success · .badge-warning
 

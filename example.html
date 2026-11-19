@@ -987,7 +987,7 @@
       <section class="stack" id="avatars">
         <div>
           <h3 class="h3">Avatars</h3>
-          <p class="body-sm">Square identity badge in six sizes and three content types. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
+          <p class="body-sm">Square identity badge in six sizes and three content types, with an optional status flag — switch it on with the Status control. Render as <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;span&gt;</code> for read-only or <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;button&gt;</code> / <code style="font: var(--type-mono); color: var(--color-text-muted)">&lt;a&gt;</code> for interactive (adds focus ring and hover dim).</p>
         </div>
 
         <div class="playground" data-playground data-avatar-playground>
@@ -1011,6 +1011,15 @@
                 <button class="segmented-item" type="button" data-val="lg">LG</button>
                 <button class="segmented-item" type="button" data-val="xl">XL</button>
                 <button class="segmented-item" type="button" data-val="2xl">2XL</button>
+              </div>
+            </div>
+            <div class="control">
+              <span class="control-label">Type</span>
+              <div class="segmented" role="group" aria-label="Avatar member type" data-avatar-status>
+                <button class="segmented-item is-active" type="button" data-val="none">None</button>
+                <button class="segmented-item" type="button" data-val="newcomer">Newcomer</button>
+                <button class="segmented-item" type="button" data-val="talent">Talent</button>
+                <button class="segmented-item" type="button" data-val="pending">Pending</button>
               </div>
             </div>
           </div>
@@ -4510,6 +4519,20 @@
         const s = pg.querySelector('[data-avatar-size] .is-active')?.dataset.val || 'all';
         pg.querySelectorAll('.avatar[data-size]').forEach(a => {
           a.hidden = !(s === 'all' || a.dataset.size === s);
+        });
+        // Status flag — photo and initials only; a team is not a person.
+        const st = pg.querySelector('[data-avatar-status] .is-active')?.dataset.val || 'none';
+        const letter = { newcomer: 'N', talent: 'T', pending: 'P' }[st];
+        pg.querySelectorAll('[data-variant="photo"] .avatar, [data-variant="initials"] .avatar').forEach(a => {
+          a.classList.remove('avatar-newcomer', 'avatar-talent', 'avatar-pending');
+          a.querySelector('.avatar-flag')?.remove();
+          if (!letter) return;
+          a.classList.add('avatar-' + st);
+          const f = document.createElement('span');
+          f.className = 'avatar-flag';
+          f.setAttribute('aria-hidden', 'true');
+          f.textContent = letter;
+          a.append(f);
         });
       };
       pg.addEventListener('click', (e) => { if (e.target.closest('.segmented-item')) apply(); });
