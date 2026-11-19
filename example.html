@@ -1020,6 +1020,7 @@
                 <button class="segmented-item" type="button" data-val="newcomer">Newcomer</button>
                 <button class="segmented-item" type="button" data-val="talent">Talent</button>
                 <button class="segmented-item" type="button" data-val="pending">Pending</button>
+                <button class="segmented-item" type="button" data-val="terminated">Terminated</button>
               </div>
             </div>
           </div>
@@ -4524,10 +4525,11 @@
         const st = pg.querySelector('[data-avatar-status] .is-active')?.dataset.val || 'none';
         const letter = { newcomer: 'N', talent: 'T', pending: 'P' }[st];
         pg.querySelectorAll('[data-variant="photo"] .avatar, [data-variant="initials"] .avatar').forEach(a => {
-          a.classList.remove('avatar-newcomer', 'avatar-talent', 'avatar-pending');
+          a.classList.remove('avatar-newcomer', 'avatar-talent', 'avatar-pending', 'avatar-terminated');
           a.querySelector('.avatar-flag')?.remove();
-          if (!letter) return;
+          if (st === 'none') return;
           a.classList.add('avatar-' + st);
+          if (!letter) return;   // terminated carries no flag
           const f = document.createElement('span');
           f.className = 'avatar-flag';
           f.setAttribute('aria-hidden', 'true');

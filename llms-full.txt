@@ -642,7 +642,7 @@ For the full inventory with every modifier and live demos, open `example.html` �
 Generated from the stylesheets. Everything the kit defines is below; if a
 name is not here, it does not exist.
 
-## Classes (394)
+## Classes (396)
 
 **Accordion** — .accordion · .accordion-chevron · .accordion-content · .accordion-details · .accordion-group · .accordion-summary · .accordion-title · .borders-middle · .borders-none · .is-open
 
@@ -652,7 +652,7 @@ name is not here, it does not exist.
 
 **App shell** — .app-shell-main · .is-fullscreen
 
-**Avatar** — .avatar · .avatar-2xl · .avatar-flag · .avatar-lg · .avatar-md · .avatar-newcomer · .avatar-pending · .avatar-sm · .avatar-talent · .avatar-team · .avatar-xl · .avatar-xs
+**Avatar** — .avatar · .avatar-2xl · .avatar-flag · .avatar-lg · .avatar-md · .avatar-newcomer · .avatar-pending · .avatar-sm · .avatar-talent · .avatar-team · .avatar-terminated · .avatar-xl · .avatar-xs
 
 **Badge** — .badge · .badge-danger · .badge-icon · .badge-info · .badge-remove · .badge-success · .badge-warning
 
@@ -706,7 +706,7 @@ name is not here, it does not exist.
 
 **Table · Sheet variant** — .is-desc · .is-dragging · .is-editing · .is-empty · .is-empty-note · .is-filtered · .is-range · .is-readonly · .is-saved · .is-saving · .is-skeleton · .is-sorted · .sheet-addchild · .sheet-avatar · .sheet-cell · .sheet-cell-inner · .sheet-col · .sheet-col-inner · .sheet-collapse-all · .sheet-date · .sheet-empty · .sheet-empty-state · .sheet-error-msg · .sheet-gutter · .sheet-input · .sheet-link · .sheet-link-label · .sheet-name · .sheet-opt · .sheet-opt-check · .sheet-person · .sheet-person-name · .sheet-pop · .sheet-pop-list · .sheet-pop-search · .sheet-rownum · .sheet-status · .sheet-tags · .sheet-tags-more · .sheet-text · .sheet-toggle · .sheet-tree · .table-sheet · .th-arrow · .th-menu · .th-resize · .th-tools
 
-**Toast** — .is-entering · .is-leaving · .toast · .toast-action · .toast-close · .toast-error · .toast-icon · .toast-info · .toast-message · .toast-neutral · .toast-region · .toast-success · .toast-warning
+**Toast** — .is-entering · .is-leaving · .toast · .toast-action · .toast-close · .toast-error · .toast-icon · .toast-info · .toast-message · .toast-neutral · .toast-region · .toast-region-bottom · .toast-success · .toast-warning
 
 **Pictogram** — .is-filled · .is-muted · .pg-bg · .pg-fill · .pg-solid · .pictogram
 

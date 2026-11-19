@@ -1376,6 +1376,14 @@ button.badge:focus-visible {
  *   .avatar-pending   P  graphite start date still in the future; the photo
  *                                 is dimmed as well (PPL-ROW-002, TEAM-PAGE-018)
  *
+ * Terminated is the one status with no flag: the photo goes greyscale and
+ * fades, like a disabled control, and any flag inside is hidden — the
+ * product shows no newcomer or pending marker for a terminated member
+ * (PROF-VIEW-003). The greyscale treatment itself is a proposal; the
+ * oracle has no rule for it.
+ *
+ *   <span class="avatar avatar-xl avatar-terminated"><img src="…" alt="Jane Doe, terminated"></span>
+ *
  * The flag is 37.5% of the avatar, so it scales with every size. Below md
  * there is no room for a letter, so xs and sm show the colour only.
  * A tooltip ([data-tooltip]) goes on a wrapper, never on the avatar: the
@@ -1458,6 +1466,12 @@ button.badge:focus-visible {
  * recedes and the flag stays solid. */
 .avatar-pending > img { opacity: 0.45; }
 .avatar-pending:not(:has(> img)) { color: var(--color-text-subtle); }
+
+/* Terminated — no flag; the person reads as disabled. Greyscale tells it
+ * apart from pending, whose photo fades but keeps its colour. */
+.avatar-terminated > img { filter: grayscale(1); opacity: 0.5; }
+.avatar-terminated:not(:has(> img)) { color: var(--color-text-subtle); }
+.avatar-terminated .avatar-flag { display: none; }
 
 /* Interactive — applies when rendered as <button> or <a> */
 button.avatar,
@@ -2933,6 +2947,24 @@ a.breadcrumb:hover { text-decoration: underline; text-underline-offset: 3px; }
   max-width: 380px;
   pointer-events: none;
 }
+/* Placement variant. The default corner is right for an action taken in the
+ * page head or a toolbar — the eye is already up there. Bottom-centre is for
+ * feedback about something further down the page, a click in a grid or a drag,
+ * where a toast in the opposite corner is a long way from what the reader is
+ * looking at. Centred on the viewport rather than the content, because the
+ * content it is about may be anywhere. */
+.toast-region-bottom {
+  top: auto;
+  bottom: var(--spacing-6);
+  right: 50%;
+  transform: translateX(50%);
+  align-items: center;
+}
+/* The default slides in from the right edge it is pinned to; one pinned to the
+ * bottom has to come up from it, or it arrives sideways from nowhere. */
+.toast-region-bottom .toast.is-entering,
+.toast-region-bottom .toast.is-leaving { transform: translateY(20%); }
+
 .toast {
   --toast-accent: var(--color-border-strong);
   display: flex;
